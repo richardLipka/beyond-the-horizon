@@ -32,9 +32,22 @@
   const R_DRAW = 236;
   const TOP_Y = O.y - R_DRAW;
 
-  /** Nejvetsi kresleny uhel a nejmensi, aby byl jeste videt [rad]. */
+  /**
+   * Nejvetsi a nejmensi kresleny uhel [rad].
+   *
+   * Dolni mez musi byt slusne velka: kreslena vyska vychazi jako
+   * R*(1/cos t - 1), coz roste s druhou mocninou uhlu. Pri 0,13 rad vyjde
+   * usek dlouhy 2 px a cela leva strana obrazku splyne do jednoho bodu.
+   * Pri 0,40 rad ma usek asi 20 px a bod A' je od T vzdaleny pres 100 px,
+   * takze se vsechny kóty vejdou vedle sebe.
+   *
+   * The lower bound has to be generous: the drawn height is R*(1/cos t - 1),
+   * which grows with the square of the angle. At 0.13 rad that is a 2 px
+   * stub and the whole left half collapses onto a point; at 0.40 rad it is
+   * about 20 px, with A' over 100 px clear of T.
+   */
   const DRAW_MAX = 0.72;
-  const DRAW_MIN = 0.13;
+  const DRAW_MIN = 0.4;
 
   let uidCounter = 0;
   const uid = (name) => `gm-${name}-${++uidCounter}`;
@@ -46,6 +59,51 @@
 
   const text = (x, y, content, cls, anchor) =>
     svg('text', { x, y, class: cls, 'text-anchor': anchor || 'middle', text: content });
+
+  /**
+   * Pojistka proti prekryvu popisku. Zmeri skutecne obalky vykresleneho textu
+   * a kolidujici popisek posune po svem smeru, dokud se neuvolni. Porovnava se
+   * vzdy jen s drive umistenymi popisky, takze se dva popisky nemohou honit
+   * donekonecna a prochazeni vzdy skonci.
+   *
+   * A safety net against overlapping labels: measures the real rendered text
+   * boxes and steps a colliding label along its own direction until it is
+   * clear. Each label is only tested against earlier ones, so two labels can
+   * never chase each other and the pass always terminates.
+   */
+  function spreadLabels(items) {
+    let boxes;
+    try {
+      boxes = items.map((item) => item.node.getBBox());
+    } catch (e) {
+      return; // obrazek jeste neni vykresleny / not rendered yet
+    }
+    if (boxes.every((box) => box.width === 0 && box.height === 0)) return;
+
+    const hits = (a, b) =>
+      a.x + a.width > b.x + 1 &&
+      b.x + b.width > a.x + 1 &&
+      a.y + a.height > b.y + 1 &&
+      b.y + b.height > a.y + 1;
+
+    for (let i = 0; i < items.length; i++) {
+      if (!items[i].dir) continue;
+      for (let step = 0; step < 16; step++) {
+        let collides = false;
+        for (let j = 0; j < i; j++) {
+          if (hits(boxes[i], boxes[j])) {
+            collides = true;
+            break;
+          }
+        }
+        if (!collides) break;
+        const y = Number(items[i].node.getAttribute('y')) + 8 * items[i].dir;
+        if (y < 16 || y > VIEW.h - 8) break;
+        items[i].node.setAttribute('y', y);
+        boxes[i] = items[i].node.getBBox();
+      }
+    }
+  }
 
   function mount(container, app) {
     function degrees(radians, lang) {
@@ -146,8 +204,6 @@
           fill: 'none',
         })
       );
-      root.appendChild(text(T.x + 25, T.y + 26, '90°', 'gm-symbol-small', 'start'));
-
       // --- uhly u stredu / the angles at the centre -------------------------
       const arcR = 74;
       const upper = point(0, arcR);
@@ -168,74 +224,90 @@
         })
       );
 
-      const alphaLabel = point(-aDraw / 2, arcR + 26);
-      const betaLabel = point(bDraw / 2, arcR + 26);
-      root.appendChild(text(alphaLabel.x, alphaLabel.y, 'α', 'gm-symbol gm-observer-fill'));
-      root.appendChild(text(betaLabel.x, betaLabel.y, 'β', 'gm-symbol gm-object-fill'));
+      // --- popisky / labels --------------------------------------------------
+      // Vsechny popisky prochazi jednim mistem. Poradi urcuje prioritu: co je
+      // drive, to zustava stat, pozdejsi se pripadne uhne smerem `dir`.
+      // Every label goes through one place. Order is priority: earlier labels
+      // stay put, later ones step aside along their `dir`.
+      const labels = [];
+      const put = (x, y, content, cls, anchor, dir) => {
+        const node = text(x, y, content, cls, anchor);
+        root.appendChild(node);
+        labels.push({ node: node, dir: dir || 0 });
+        return node;
+      };
 
       // --- body / the points -------------------------------------------------
       for (const p of [
-        { at: O, label: 'O', dx: 0, dy: 24 },
-        { at: T, label: 'T', dx: -12, dy: -12 },
-        { at: eye, label: "A′", dx: -14, dy: -12 },
-        { at: top, label: "B′", dx: 14, dy: -12 },
+        { at: O, r: 4.5 },
+        { at: T, r: 4.5 },
+        { at: eye, r: 4.5 },
+        { at: top, r: 4.5 },
+        { at: A, r: 3.5, small: true },
+        { at: B, r: 3.5, small: true },
       ]) {
-        root.appendChild(svg('circle', { cx: p.at.x, cy: p.at.y, r: 4.5, class: 'gm-point' }));
         root.appendChild(
-          text(p.at.x + p.dx, p.at.y + p.dy, p.label, 'gm-symbol', p.dx < 0 ? 'end' : p.dx > 0 ? 'start' : 'middle')
+          svg('circle', {
+            cx: p.at.x,
+            cy: p.at.y,
+            r: p.r,
+            class: 'gm-point' + (p.small ? ' gm-point-small' : ''),
+          })
         );
       }
-      root.appendChild(svg('circle', { cx: A.x, cy: A.y, r: 3.5, class: 'gm-point gm-point-small' }));
-      root.appendChild(svg('circle', { cx: B.x, cy: B.y, r: 3.5, class: 'gm-point gm-point-small' }));
-      root.appendChild(text(A.x - 10, A.y + 20, 'A', 'gm-symbol-small', 'end'));
-      root.appendChild(text(B.x + 10, B.y + 20, 'B', 'gm-symbol-small', 'start'));
 
-      // --- popisy s hodnotami / labels carrying the real numbers ------------
-      root.appendChild(
-        text(O.x - 12, (O.y + TOP_Y) / 2, `R = ${F.distance(r.physicalRadius, lang)}`, 'gm-label', 'end')
+      put(O.x, O.y + 26, 'O', 'gm-symbol', 'middle', 1);
+      put(T.x - 12, T.y + 20, 'T', 'gm-symbol', 'end', 1);
+      put(T.x + 23, T.y + 30, '90°', 'gm-symbol-small', 'start', 1);
+      put(eye.x, TOP_Y - 12, 'A′', 'gm-symbol', 'middle', -1);
+      put(top.x, TOP_Y - 12, 'B′', 'gm-symbol', 'middle', -1);
+      put(A.x - 6, A.y + 22, 'A', 'gm-symbol-small', 'end', 1);
+      put(B.x + 6, B.y + 22, 'B', 'gm-symbol-small', 'start', 1);
+
+      // --- tetivy nad tecnou / the tangent segments -------------------------
+      put((eye.x + T.x) / 2, TOP_Y - 12, 't₁', 'gm-symbol gm-observer-fill', 'middle', -1);
+      put((T.x + top.x) / 2, TOP_Y - 12, 't₂', 'gm-symbol gm-object-fill', 'middle', -1);
+
+      // --- uhly u stredu / the angles at the centre -------------------------
+      const alphaAt = point(-aDraw / 2, arcR + 24);
+      const betaAt = point(bDraw / 2, arcR + 24);
+      put(alphaAt.x, alphaAt.y, 'α', 'gm-symbol gm-observer-fill', 'middle', -1);
+      put(betaAt.x, betaAt.y, 'β', 'gm-symbol gm-object-fill', 'middle', -1);
+
+      // --- sloupce s hodnotami nad tecnou / value stacks above the tangent --
+      put(eye.x, TOP_Y - 38, `α = ${degrees(alpha, lang)}`, 'gm-label gm-observer-fill', 'middle', -1);
+      put(top.x, TOP_Y - 38, `β = ${degrees(beta, lang)}`, 'gm-label gm-object-fill', 'middle', -1);
+      put(eye.x, TOP_Y - 60, t('geo.observerLabel'), 'gm-role gm-observer-fill', 'middle', -1);
+      put(top.x, TOP_Y - 60, t('geo.objectLabel'), 'gm-role gm-object-fill', 'middle', -1);
+
+      // --- kóty uvnitr kruhu a u vysek / dimensions inside the circle -------
+      const d1At = point(-aDraw / 2, R_DRAW - 34);
+      const d2At = point(bDraw / 2, R_DRAW - 34);
+      put(d1At.x, d1At.y, `d₁ = ${F.distance(r.horizon, lang)}`, 'gm-label gm-observer-fill', 'middle', 1);
+      put(d2At.x, d2At.y, `d₂ = ${F.distance(r.objectHorizon, lang)}`, 'gm-label gm-object-fill', 'middle', 1);
+
+      put(
+        A.x - 24,
+        (A.y + eye.y) / 2 + 5,
+        `h₁ = ${F.height(r.eyeHeight, lang)}`,
+        'gm-label gm-observer-fill',
+        'end',
+        -1
       );
-      root.appendChild(
-        text(
-          (A.x + eye.x) / 2 - 12,
-          (A.y + eye.y) / 2 - 6,
-          `h₁ = ${F.height(r.eyeHeight, lang)}`,
-          'gm-label gm-observer-fill',
-          'end'
-        )
-      );
-      root.appendChild(
-        text(
-          (B.x + top.x) / 2 + 12,
-          (B.y + top.y) / 2 - 6,
-          `h₂ = ${F.height(r.objectHeight, lang)}`,
-          'gm-label gm-object-fill',
-          'start'
-        )
+      put(
+        B.x + 24,
+        (B.y + top.y) / 2 + 5,
+        `h₂ = ${F.height(r.objectHeight, lang)}`,
+        'gm-label gm-object-fill',
+        'start',
+        -1
       );
 
-      const d1Label = point(-aDraw / 2, R_DRAW + 22);
-      const d2Label = point(bDraw / 2, R_DRAW + 22);
-      root.appendChild(
-        text(d1Label.x, d1Label.y, `d₁ = ${F.distance(r.horizon, lang)}`, 'gm-label gm-observer-fill')
-      );
-      root.appendChild(
-        text(d2Label.x, d2Label.y, `d₂ = ${F.distance(r.objectHorizon, lang)}`, 'gm-label gm-object-fill')
-      );
+      put(O.x - 14, O.y - 46, `R = ${F.distance(r.physicalRadius, lang)}`, 'gm-label', 'end', 1);
 
-      root.appendChild(
-        text((eye.x + T.x) / 2, TOP_Y - 14, 't₁', 'gm-symbol gm-observer-fill')
-      );
-      root.appendChild(text((T.x + top.x) / 2, TOP_Y - 14, 't₂', 'gm-symbol gm-object-fill'));
+      put(VIEW.w / 2, VIEW.h - 12, t('geo.exaggerated'), 'gm-note', 'middle', 0);
 
-      root.appendChild(
-        text(eye.x, TOP_Y - 40, `α = ${degrees(alpha, lang)}`, 'gm-label gm-observer-fill')
-      );
-      root.appendChild(text(top.x, TOP_Y - 40, `β = ${degrees(beta, lang)}`, 'gm-label gm-object-fill'));
-
-      root.appendChild(text(eye.x, TOP_Y + 26, t('geo.observerLabel'), 'gm-role gm-observer-fill'));
-      root.appendChild(text(top.x, TOP_Y + 26, t('geo.objectLabel'), 'gm-role gm-object-fill'));
-
-      root.appendChild(text(VIEW.w / 2, VIEW.h - 12, t('geo.exaggerated'), 'gm-note'));
+      spreadLabels(labels);
     }
 
     function formulaRow(symbolic, substituted, result, cls) {

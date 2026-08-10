@@ -127,6 +127,14 @@ stays internally consistent — the right angle really is a right angle and the
 tangent really is tangent — and every printed number is the true one. Keep the
 "angles are enlarged" note whenever you touch it.
 
+`DRAW_MIN` cannot be lowered casually. The drawn height is `R·(1/cos θ − 1)`,
+**quadratic** in the angle: at 0.13 rad it is a 2 px stub and `A`, `A′`, `d₁`,
+`t₁` and `α` all land on top of each other. 0.40 rad keeps the segment above
+20 px. Every label also goes through the single `put()` helper so `spreadLabels()`
+can measure the real `getBBox()` boxes afterwards and step colliding ones apart;
+labels are only tested against *earlier* ones, so the pass always terminates.
+If you add a label, add it via `put()` with a sensible direction.
+
 **Data source priority** is localStorage → `objects.json` → built-in factory
 copy. The third exists purely for `file://`, where `fetch()` of a local file
 fails. The header badge tells the user which one is live.

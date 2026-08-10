@@ -31,7 +31,7 @@
       'geo.observerLabel': 'pozorovatel',
       'geo.objectLabel': 'objekt',
       'geo.exaggerated':
-        'Úhly v obrázku jsou zvětšené, jinak by nebyly vidět. Vypsaná čísla jsou skutečná.',
+        'Úhly jsou zvětšené (menší z nich víc), aby byly vidět. Čísla jsou skutečná.',
       'geo.tangentTitle': 'Klíčová myšlenka',
       'geo.tangentText':
         'Přímka pohledu se dotýká povrchu v jediném bodě T. Tečna je vždy kolmá na poloměr vedený do bodu dotyku, takže úhel u T je pravý. Tím vzniknou dva pravoúhlé trojúhelníky – O T A′ pro pozorovatele a O T B′ pro objekt – a v nich už stačí kosinus a Pythagorova věta.',
@@ -286,7 +286,7 @@
       'geo.observerLabel': 'observer',
       'geo.objectLabel': 'object',
       'geo.exaggerated':
-        'The angles in the figure are enlarged, otherwise they would be invisible. Every printed number is real.',
+        'Angles are enlarged (the smaller one more) so they can be seen. The numbers are real.',
       'geo.tangentTitle': 'The key idea',
       'geo.tangentText':
         'The line of sight touches the surface at a single point T. A tangent is always perpendicular to the radius drawn to the point of contact, so the angle at T is a right angle. That gives two right triangles — O T A′ for the observer and O T B′ for the object — and cosine plus Pythagoras finish the job.',

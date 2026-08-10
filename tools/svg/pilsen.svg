@@ -1,15 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 100">
-  <rect x="4" y="78" width="37" height="22" fill="#efe4cd"/>
-  <path d="M4 78 22.5 68 41 78Z" fill="#b05a4a"/>
-  <rect x="14" y="34" width="17" height="66" fill="#f7efdd"/>
-  <path d="M22.5 8 33 36H12Z" fill="#8c98a6"/>
-  <rect x="11" y="34" width="23" height="4" rx="1" fill="#7d8ea3"/>
-  <rect x="21.7" y="0" width="1.8" height="10" fill="#14425c"/>
-  <rect x="19.4" y="2.6" width="6.4" height="1.8" fill="#14425c"/>
-  <circle cx="22.5" cy="46" r="4.6" fill="#f2b544"/>
-  <path d="M22.5 43v3.4l2.2 1.4" stroke="#14425c" stroke-width="1" fill="none" stroke-linecap="round"/>
-  <rect x="19.5" y="58" width="6" height="13" rx="3" fill="#2b6d8c"/>
-  <rect x="18.5" y="87" width="8" height="13" rx="4" fill="#14425c"/>
-  <rect x="8" y="86" width="5" height="9" rx="2.5" fill="#2b6d8c"/>
-  <rect x="32" y="86" width="5" height="9" rx="2.5" fill="#2b6d8c"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100">
+  <!-- Lod kostela. Vez z ni vpredu vlevo vystupuje a tvori vstup - druha vez
+       ze zapadniho prucedi se nikdy nepostavila.
+       The nave. The tower stands at its front-left corner and forms the
+       entrance; the second tower of the west front was never built. -->
+  <rect x="13" y="79" width="45" height="21" fill="#efe4cd"/>
+  <path d="M11 79 35.5 64 35.5 79Z" fill="#4e9c78"/>
+  <path d="M35.5 64 60 79 35.5 79Z" fill="#3d8062"/>
+  <g fill="#e2d5ba">
+    <rect x="27" y="80" width="2.4" height="20"/>
+    <rect x="38" y="80" width="2.4" height="20"/>
+    <rect x="49" y="80" width="2.4" height="20"/>
+  </g>
+  <circle cx="35.5" cy="85.5" r="3.2" fill="#f2b544"/>
+  <circle cx="35.5" cy="85.5" r="1.5" fill="#2b6d8c"/>
+  <g fill="#2b6d8c">
+    <rect x="31.4" y="89" width="4.2" height="11" rx="2.1"/>
+    <rect x="42.4" y="89" width="4.2" height="11" rx="2.1"/>
+    <rect x="53.4" y="89" width="4.2" height="11" rx="2.1"/>
+  </g>
+
+  <!-- Uzka vez vlevo, prekryva levy konec lodi / the narrow tower in front -->
+  <rect x="6" y="56" width="14" height="44" fill="#f7efdd"/>
+  <g fill="#e6d9bd">
+    <rect x="6" y="56" width="2.2" height="44"/>
+    <rect x="17.8" y="56" width="2.2" height="44"/>
+  </g>
+
+  <!-- Vysoka stihla zelena helmice - vyssi nez kamenna cast veze.
+       The tall slender green spire, taller than the stone shaft below it. -->
+  <path d="M13 5 4.8 55 13 55Z" fill="#4e9c78"/>
+  <path d="M13 5 21.2 55 13 55Z" fill="#3d8062"/>
+
+  <!-- Ochoz pod helmici / the gallery under the spire -->
+  <rect x="4.2" y="54.4" width="17.6" height="3" fill="#d8c9a8"/>
+  <rect x="4.2" y="54.4" width="17.6" height="1" fill="#c4b18c"/>
+
+  <!-- Krizek na spici / the finial cross -->
+  <rect x="12.3" y="0" width="1.4" height="8" fill="#14425c"/>
+  <rect x="10.4" y="2.2" width="5.2" height="1.4" fill="#14425c"/>
+
+  <!-- Hodiny, okno a vstupni portal / clock, window and the entrance portal -->
+  <circle cx="13" cy="64" r="3.8" fill="#f2b544"/>
+  <path d="M13 61.2v2.9l2 1.3" stroke="#14425c" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+  <rect x="10.6" y="73" width="4.8" height="12" rx="2.4" fill="#2b6d8c"/>
+  <rect x="9" y="88" width="8" height="12" rx="4" fill="#14425c"/>
 </svg>

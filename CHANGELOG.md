@@ -3,6 +3,31 @@
 Formát podle [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 verzování podle [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [1.2.1] — 2026-08-10
+
+### Opraveno / Fixed
+
+- **Popisky v režimu Geometrie se překrývaly.** Kreslená výška vychází jako
+  `R·(1/cos θ − 1)`, což roste s druhou mocninou úhlu – při dosavadní dolní
+  mezi 0,13 rad měl úsek `h₁` jen 2 px a bod `A`, `A′`, kóta `d₁`, `t₁`
+  i úhel `α` splynuly do jednoho místa. Dolní mez je nyní 0,40 rad, takže úsek
+  má přes 20 px a bod `A′` je od `T` vzdálený víc než 100 px.
+- Kóty `d₁` a `d₂` se přesunuly dovnitř kružnice; dřív se kreslily nad tečnu
+  a narážely do `t₁`, `t₂` a bodu `T`.
+- Popisky nad tečnou se sázejí ve sloupcích (`A′` → `α` → *pozorovatel*),
+  popisek `R` se odsunul od oblouků úhlů.
+- Přibyla pojistka, která po vykreslení změří skutečné obálky všech popisků
+  a kolidující rozestrčí. Ověřeno na 110 kombinacích jazyka, tělesa, výšky
+  očí a objektu: **nula překryvů, nic mimo plátno**.
+- Nová kresba katedrály sv. Bartoloměje: úzká věž vlevo vystupuje z lodi
+  a tvoří vstup, vysoká špičatá zelená helmice zabírá zhruba polovinu výšky,
+  druhá věž chybí – tak jak byla skutečně postavena.
+
+### Ověřeno / Verified
+
+Výkon proměřen, žádný zásah nebyl potřeba: úplné překreslení trvá 0,7–1,5 ms,
+při 200 objektech nejhůř 3,2 ms, psaní v editoru 1,1 ms na stisk klávesy.
+
 ## [1.2.0] — 2026-08-10
 
 ### Přidáno / Added
@@ -85,6 +110,7 @@ První veřejné vydání. / First public release.
 - **CI** kontrolující výpočty, úplnost překladů a reprodukovatelnost
   vygenerovaného `objects.json`.
 
+[1.2.1]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/richardLipka/beyond-the-horizon/releases/tag/v1.0.0
