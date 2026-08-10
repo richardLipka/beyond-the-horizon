@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 100">
+  <clipPath id="lhTower"><path d="M18 24h14l5 66H13Z"/></clipPath>
+  <path d="M18 24h14l5 66H13Z" fill="#f7f2e6"/>
+  <g clip-path="url(#lhTower)" fill="#e2725b">
+    <rect x="10" y="38" width="30" height="12"/>
+    <rect x="10" y="62" width="30" height="12"/>
+  </g>
+  <rect x="12" y="20" width="26" height="5" rx="2" fill="#14425c"/>
+  <rect x="16" y="10" width="18" height="10" fill="#f2b544"/>
+  <path d="M13 10 25 1 37 10Z" fill="#14425c"/>
+  <rect x="7" y="90" width="36" height="10" rx="2" fill="#7d8ea3"/>
+</svg>

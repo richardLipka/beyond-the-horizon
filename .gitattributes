@@ -1,0 +1,7 @@
+# Jednotné konce řádků, aby build byl reprodukovatelný na všech systémech.
+# Uniform line endings so the generated data files diff cleanly in CI.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.ico binary

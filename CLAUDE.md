@@ -1,0 +1,107 @@
+# CLAUDE.md
+
+Guidance for Claude Code when working in this repository.
+
+## What this is
+
+A bilingual (Czech/English) browser app for elementary-school pupils that shows
+how the curvature of the Earth hides distant objects. Plain HTML/CSS/JavaScript,
+no dependencies, no bundler, no framework.
+
+## Commands
+
+```bash
+npm start          # dev server on http://localhost:8123 (node tools/serve.mjs)
+npm run build      # regenerate objects.json + js/data/factory-objects.js
+npm test           # geometry self-test against textbook values
+node tools/check-strings.mjs   # translation completeness
+```
+
+CI runs `check-geometry`, a `build` + `git diff --exit-code` reproducibility
+check, and `check-strings`. Run all three before committing.
+
+## Hard rules
+
+1. **No build step for the app.** `index.html`, `css/` and `js/` must run exactly
+   as they are. `tools/` only regenerates the data file.
+
+2. **Classic scripts, not ES modules.** Every `js/**.js` file is an IIFE that
+   attaches to the `window.HorizonLab` (`HL`) namespace. This is deliberate: the
+   app has to work when a teacher double-clicks `index.html` (`file://`), where
+   module scripts are blocked by CORS. Never convert to `import`/`export` or add
+   `type="module"`.
+
+3. **Never hand-edit `objects.json` or `js/data/factory-objects.js`.** Both are
+   generated. Edit `tools/objects.source.json` and `tools/svg/*.svg`, then run
+   `npm run build`. The build must stay deterministic — do not add timestamps or
+   anything else that changes between runs, or CI's diff check will fail.
+
+4. **All user-visible text lives in `js/i18n/strings.js`, in both `cs` and `en`.**
+   Never hardcode a string in a UI module. `check-strings.mjs` enforces matching
+   key sets and matching `{placeholders}`.
+
+5. **No dependencies.** No npm packages, no CDN links, no web fonts, no
+   analytics. The app must work fully offline.
+
+6. **Adding a `js/` file means adding a `<script>` tag** to `index.html` in
+   dependency order (core → i18n → data → ui → app).
+
+## Architecture
+
+```
+core/     geometry, format, store, dom   — no DOM knowledge above geometry, no language
+i18n/     strings + language switching
+data/     load / validate / save objects.json (+ factory fallback)
+ui/       diagram, telescope, chart, controls, results, vanish, editor
+app.js    the only place that wires state to views
+```
+
+Each layer knows only the layer beneath it. `geometry.js` has no DOM and no
+language. UI modules never talk to each other — they read state and render.
+State flows one way: `controls → app.setXxx() → store → render(state) → views`.
+
+## Non-obvious things
+
+**The diagram's coordinate frame** (`geometry.chordFrame`): the chord between
+observer and object is horizontal — both stand at `y = 0` — and the surface
+bulges *upwards* between them. That is why `frame.point(0, 0).y` and
+`frame.point(D, 0).y` are both exactly zero and the midpoint equals `bulge(D)`.
+The `y` formula uses the `cos A − cos B` product identity because the naive
+version subtracts two numbers near 6.4 × 10⁶ and loses precision.
+
+**Horizontal and vertical scales differ** in the diagram, by design — real
+curvature is invisible at true scale. The factor is computed per render and
+printed into the picture. When the object is huge and close the factor drops
+below 1, so the wording switches to `diagram.compression` / `diagram.sameScale`.
+Never silently drop that note.
+
+**Object icons are sized by height only.** Widths use the icon's own aspect
+ratio (read from the SVG `viewBox` at build time), clamped so a 269 m Titanic
+does not fill the frame. The telescope view instead scales *uniformly* so wide
+ships are never distorted — the visible/hidden ratio must stay exact there.
+
+**The editor works on its own copy** of the data and previews every keystroke
+via `app.applyData()`. After applying, it resyncs its own `signature` to the new
+`dataStamp` so an unrelated re-render does not rebuild the form and throw away
+what the user is typing. If you touch `editor.js` or `app.applyData`, keep that
+invariant or typing will lose focus.
+
+**`controls.js` rebuilds only when `lang|objectCount|dataStamp` changes**; other
+state changes just sync input values, and inputs that currently have focus are
+skipped so typing is not fought.
+
+**Data source priority** is localStorage → `objects.json` → built-in factory
+copy. The third exists purely for `file://`, where `fetch()` of a local file
+fails. The header badge tells the user which one is live.
+
+## Style
+
+- Comments are bilingual: a Czech line, then an English line. Keep code comments
+  ASCII (no diacritics) — full Czech spelling belongs in `strings.js`, JSON data
+  and Markdown.
+- 2-space indent, LF endings, single quotes in JS.
+- Czech is the primary UI language; English is the fallback for missing keys.
+
+## Attribution
+
+Do not add AI co-author trailers or "generated with" footers to commits or PRs.

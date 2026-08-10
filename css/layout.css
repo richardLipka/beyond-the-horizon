@@ -1,0 +1,174 @@
+/* ==========================================================================
+   layout.css - rozvrzeni stranky: hlavicka, postranni panel, plocha.
+   Page skeleton: header, sidebar, stage. Vse se sklada pri uzkem okne.
+   (c) 2026 Richard Lipka <lipka@fav.zcu.cz> - MIT license
+   ========================================================================== */
+
+.app-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px var(--gap);
+  padding: 14px clamp(14px, 3vw, 30px);
+  background: linear-gradient(135deg, var(--deep-800) 0%, var(--sea-600) 65%, var(--sea-500) 100%);
+  color: #fff;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: auto;
+}
+
+.brand-mark {
+  font-size: 2rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+}
+
+.brand h1 {
+  color: #fff;
+  font-size: 1.3rem;
+}
+
+.brand p {
+  margin: 2px 0 0;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.mode-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-pill);
+}
+
+.header-side {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#main {
+  display: grid;
+  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--gap-lg);
+  max-width: 1680px;
+  margin: 0 auto;
+  padding: var(--gap-lg) clamp(14px, 3vw, 30px) 0;
+}
+
+#main.is-wide {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.controls {
+  position: sticky;
+  top: 92px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: calc(100vh - 112px);
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.controls[hidden] {
+  display: none;
+}
+
+.panels {
+  min-width: 0;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  min-width: 0;
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+.stage-row {
+  display: grid;
+  grid-template-columns: minmax(260px, 380px) minmax(0, 1fr);
+  gap: var(--gap);
+  align-items: start;
+}
+
+.panel-head {
+  padding: 2px 2px 0;
+}
+
+.panel-sub {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.panel-actions {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 8px;
+}
+
+.big-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--gap);
+}
+
+.editor-body {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  gap: var(--gap);
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  #main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .controls {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+  .stage-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .editor-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --font-size: 16px;
+    --gap: 14px;
+    --gap-lg: 18px;
+  }
+  .app-header {
+    justify-content: center;
+    text-align: center;
+  }
+  .brand {
+    margin-right: 0;
+  }
+  .mode-tabs {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}

@@ -1,0 +1,17 @@
+# závislosti (projekt žádné nemá, ale kdyby) / dependencies
+node_modules/
+package-lock.json
+
+# systémové smetí / OS clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# editory / editors
+.idea/
+*.swp
+*~
+
+# logy a dočasné soubory / logs and temporaries
+*.log
+tmp/

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 100">
+  <g>
+    <rect x="30" y="34" width="34" height="18" fill="#e2725b"/>
+    <rect x="68" y="34" width="34" height="18" fill="#f2b544"/>
+    <rect x="106" y="34" width="34" height="18" fill="#52b7c9"/>
+    <rect x="144" y="34" width="34" height="18" fill="#e2725b"/>
+    <rect x="182" y="34" width="34" height="18" fill="#7fbf6a"/>
+    <rect x="30" y="54" width="34" height="18" fill="#52b7c9"/>
+    <rect x="68" y="54" width="34" height="18" fill="#e2725b"/>
+    <rect x="106" y="54" width="34" height="18" fill="#f2b544"/>
+    <rect x="144" y="54" width="34" height="18" fill="#52b7c9"/>
+    <rect x="182" y="54" width="34" height="18" fill="#e2725b"/>
+    <rect x="68" y="14" width="34" height="18" fill="#7fbf6a"/>
+    <rect x="106" y="14" width="34" height="18" fill="#e2725b"/>
+    <rect x="144" y="14" width="34" height="18" fill="#f2b544"/>
+  </g>
+  <rect x="236" y="26" width="46" height="46" fill="#f7f2e6"/>
+  <rect x="252" y="2" width="14" height="26" fill="#e2725b"/>
+  <g fill="#14425c">
+    <rect x="242" y="34" width="34" height="7"/>
+    <rect x="242" y="46" width="34" height="7"/>
+    <rect x="242" y="58" width="34" height="7"/>
+  </g>
+  <rect x="12" y="72" width="296" height="8" fill="#3d4a55"/>
+  <path d="M12 80h296l-22 20H34Z" fill="#14425c"/>
+</svg>

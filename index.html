@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title data-i18n="app.title">Za obzorem</title>
+    <meta
+      name="description"
+      content="Za obzorem / Beyond the Horizon — školní simulace viditelnosti přes zakřivení Země. A classroom simulator of visibility over the curvature of the Earth."
+    />
+    <meta name="author" content="Richard Lipka" />
+    <meta name="theme-color" content="#0f6d8c" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Za obzorem / Beyond the Horizon" />
+    <meta
+      property="og:description"
+      content="Školní simulace viditelnosti přes zakřivení Země. A classroom simulator of visibility over the curvature of the Earth."
+    />
+    <meta property="og:url" content="https://richardlipka.github.io/beyond-the-horizon/" />
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>"
+    />
+
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/diagram.css" />
+  </head>
+
+  <body class="is-loading">
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">🌍</span>
+        <div>
+          <h1 data-i18n="app.title">Za obzorem</h1>
+          <p data-i18n="app.subtitle"></p>
+        </div>
+      </div>
+
+      <nav id="modeTabs" class="mode-tabs" role="tablist">
+        <button type="button" role="tab" data-mode="see" aria-selected="true">
+          <span aria-hidden="true">👁️</span><span data-i18n="mode.see"></span>
+        </button>
+        <button type="button" role="tab" data-mode="vanish" aria-selected="false">
+          <span aria-hidden="true">🌊</span><span data-i18n="mode.vanish"></span>
+        </button>
+        <button type="button" role="tab" data-mode="editor" aria-selected="false">
+          <span aria-hidden="true">🧰</span><span data-i18n="mode.editor"></span>
+        </button>
+      </nav>
+
+      <div class="header-side">
+        <div id="langSwitch" class="lang-switch" role="group" aria-label="Jazyk / Language">
+          <button type="button" data-lang="cs">CZ</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
+        <span id="dataBadge" class="data-badge"></span>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- Ovladaci panel je spolecny pro oba vypocetni rezimy. -->
+      <aside id="controls" class="controls" aria-label="Nastavení / Settings"></aside>
+
+      <div class="panels">
+        <!-- Rezim 1: co uvidim ve zvolene vzdalenosti -->
+        <section class="panel" data-panel="see" role="tabpanel">
+          <div id="verdict" class="verdict"></div>
+
+          <figure class="card diagram-card">
+            <figcaption class="card-title" data-i18n="diagram.title"></figcaption>
+            <svg id="mainDiagram" class="diagram-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+          </figure>
+
+          <div class="stage-row">
+            <figure class="card telescope-card">
+              <figcaption class="card-title" data-i18n="telescope.title"></figcaption>
+              <svg id="telescopeView" class="telescope-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+            </figure>
+
+            <div class="card stats-card">
+              <h3 class="card-title" data-i18n="res.heading"></h3>
+              <div id="stats" class="stats"></div>
+            </div>
+          </div>
+
+          <div id="fact" class="fact"></div>
+        </section>
+
+        <!-- Rezim 2: v jake vzdalenosti objekt zmizi -->
+        <section
+          class="panel"
+          data-panel="vanish"
+          role="tabpanel"
+          hidden
+        >
+          <div id="vanishPanel" class="vanish-panel"></div>
+        </section>
+
+        <!-- Rezim 3: editor datoveho souboru objects.json -->
+        <section class="panel" data-panel="editor" role="tabpanel" hidden>
+          <div id="editorPanel" class="editor-panel"></div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <p data-i18n="footer.note"></p>
+      <p class="muted" data-i18n="footer.made"></p>
+      <p class="footer-credit">
+        © 2026 <a href="mailto:lipka@fav.zcu.cz">Richard Lipka</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/richardLipka/beyond-the-horizon" rel="noopener">GitHub</a>
+        <span aria-hidden="true">·</span>
+        <span data-i18n="footer.license"></span>
+      </p>
+    </footer>
+
+    <noscript>
+      <p style="padding: 24px; text-align: center">
+        Tato aplikace potřebuje zapnutý JavaScript. / This app needs JavaScript enabled.
+      </p>
+    </noscript>
+
+    <!-- Poradi skriptu odpovida zavislostem: jadro -> data -> pohledy -> aplikace. -->
+    <script src="js/core/dom.js"></script>
+    <script src="js/core/geometry.js"></script>
+    <script src="js/core/format.js"></script>
+    <script src="js/core/store.js"></script>
+    <script src="js/i18n/strings.js"></script>
+    <script src="js/i18n/i18n.js"></script>
+    <script src="js/data/factory-objects.js"></script>
+    <script src="js/data/data-source.js"></script>
+    <script src="js/ui/diagram.js"></script>
+    <script src="js/ui/telescope.js"></script>
+    <script src="js/ui/chart.js"></script>
+    <script src="js/ui/controls.js"></script>
+    <script src="js/ui/results.js"></script>
+    <script src="js/ui/vanish.js"></script>
+    <script src="js/ui/editor.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

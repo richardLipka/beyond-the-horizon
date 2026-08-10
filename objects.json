@@ -1,0 +1,302 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "name": {
+      "cs": "Výchozí sada objektů",
+      "en": "Default object set"
+    },
+    "license": "MIT",
+    "copyright": "(c) 2026 Richard Lipka <lipka@fav.zcu.cz>"
+  },
+  "categories": [
+    {
+      "id": "people",
+      "icon": "🧍",
+      "name": {
+        "cs": "Lidé a domy",
+        "en": "People & houses"
+      }
+    },
+    {
+      "id": "ships",
+      "icon": "⛵",
+      "name": {
+        "cs": "Lodě",
+        "en": "Ships"
+      }
+    },
+    {
+      "id": "buildings",
+      "icon": "🏗️",
+      "name": {
+        "cs": "Stavby a věže",
+        "en": "Towers & buildings"
+      }
+    },
+    {
+      "id": "mountains",
+      "icon": "⛰️",
+      "name": {
+        "cs": "Hory",
+        "en": "Mountains"
+      }
+    }
+  ],
+  "objects": [
+    {
+      "id": "person",
+      "category": "people",
+      "name": {
+        "cs": "Člověk",
+        "en": "A person"
+      },
+      "height": 1.75,
+      "baseline": "ground",
+      "defaultDistance": 4000,
+      "fact": {
+        "cs": "Kamarád na pláži zmizí za obzorem už po několika kilometrech. Zkus si to!",
+        "en": "A friend on the beach vanishes over the horizon after just a few kilometres. Try it!"
+      },
+      "aspect": 0.4,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MCAxMDAiPjxjaXJjbGUgY3g9IjIwIiBjeT0iMTIiIHI9IjkiIGZpbGw9IiMxNDQyNWMiLz48cmVjdCB4PSIxMS41IiB5PSIyMyIgd2lkdGg9IjE3IiBoZWlnaHQ9IjM0IiByeD0iNiIgZmlsbD0iIzFmN2E4YyIvPjxyZWN0IHg9IjQiIHk9IjI2IiB3aWR0aD0iNyIgaGVpZ2h0PSIyNSIgcng9IjMuNSIgZmlsbD0iIzE0NDI1YyIvPjxyZWN0IHg9IjI5IiB5PSIyNiIgd2lkdGg9IjciIGhlaWdodD0iMjUiIHJ4PSIzLjUiIGZpbGw9IiMxNDQyNWMiLz48cmVjdCB4PSIxMi41IiB5PSI1NCIgd2lkdGg9IjciIGhlaWdodD0iNDYiIHJ4PSIzLjIiIGZpbGw9IiMxNDQyNWMiLz48cmVjdCB4PSIyMC41IiB5PSI1NCIgd2lkdGg9IjciIGhlaWdodD0iNDYiIHJ4PSIzLjIiIGZpbGw9IiMxNDQyNWMiLz48L3N2Zz4="
+    },
+    {
+      "id": "house",
+      "category": "people",
+      "name": {
+        "cs": "Rodinný dům",
+        "en": "Family house"
+      },
+      "height": 8,
+      "baseline": "ground",
+      "defaultDistance": 10000,
+      "fact": {
+        "cs": "Obyčejný dům s komínem má asi 8 metrů – jako čtyři dospělí na sobě.",
+        "en": "An ordinary house with a chimney is about 8 metres – like four grown-ups standing on each other."
+      },
+      "aspect": 1.4,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNDAgMTAwIj48cmVjdCB4PSIyMCIgeT0iNDQiIHdpZHRoPSIxMDAiIGhlaWdodD0iNTYiIGZpbGw9IiNmNGVhZDYiLz48cmVjdCB4PSI5OCIgeT0iMTIiIHdpZHRoPSIxNCIgaGVpZ2h0PSIyOCIgZmlsbD0iIzdkOGVhMyIvPjxwYXRoIGQ9Ik03MCAyIDEzNiA0OCA0IDQ4WiIgZmlsbD0iI2UyNzI1YiIvPjxyZWN0IHg9IjM0IiB5PSI1OCIgd2lkdGg9IjI2IiBoZWlnaHQ9IjIyIiByeD0iMiIgZmlsbD0iIzUyYjdjOSIvPjxyZWN0IHg9IjgwIiB5PSI1OCIgd2lkdGg9IjI2IiBoZWlnaHQ9IjIyIiByeD0iMiIgZmlsbD0iIzUyYjdjOSIvPjxyZWN0IHg9IjYwIiB5PSI3NCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjI2IiByeD0iMiIgZmlsbD0iIzE0NDI1YyIvPjwvc3ZnPg=="
+    },
+    {
+      "id": "sailboat",
+      "category": "ships",
+      "name": {
+        "cs": "Plachetnice",
+        "en": "Sailing boat"
+      },
+      "height": 30,
+      "baseline": "sea",
+      "defaultDistance": 22000,
+      "fact": {
+        "cs": "Námořníci už ve starověku věděli, že loď mizí od trupu a naposled je vidět špička stěžně.",
+        "en": "Ancient sailors already knew a ship disappears hull first – the mast tip is the last thing you see."
+      },
+      "aspect": 1,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB4PSI0NyIgeT0iMiIgd2lkdGg9IjQiIGhlaWdodD0iODAiIHJ4PSIyIiBmaWxsPSIjOGE2YTRhIi8+PHBhdGggZD0iTTQ1IDggNDUgNzYgOSA3NloiIGZpbGw9IiNmN2YyZTYiLz48cGF0aCBkPSJNNTMgMjIgNTMgNzYgODYgNzZaIiBmaWxsPSIjZTRlZGYyIi8+PHJlY3QgeD0iNSIgeT0iNzYiIHdpZHRoPSI5MCIgaGVpZ2h0PSI2IiByeD0iMi41IiBmaWxsPSIjMWY3YThjIi8+PHBhdGggZD0iTTUgODJoOTBsLTEzIDE4SDE4WiIgZmlsbD0iIzE0NDI1YyIvPjwvc3ZnPg=="
+    },
+    {
+      "id": "lighthouse",
+      "category": "ships",
+      "name": {
+        "cs": "Maják",
+        "en": "Lighthouse"
+      },
+      "height": 40,
+      "baseline": "sea",
+      "defaultDistance": 30000,
+      "fact": {
+        "cs": "Majáky se stavějí vysoké schválně – čím výš, tím dál je jejich světlo vidět přes zakřivení.",
+        "en": "Lighthouses are built tall on purpose – the higher the lamp, the further its light reaches over the curve."
+      },
+      "aspect": 0.5,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCAxMDAiPjxjbGlwUGF0aCBpZD0ibGhUb3dlciI+PHBhdGggZD0iTTE4IDI0aDE0bDUgNjZIMTNaIi8+PC9jbGlwUGF0aD48cGF0aCBkPSJNMTggMjRoMTRsNSA2NkgxM1oiIGZpbGw9IiNmN2YyZTYiLz48ZyBjbGlwLXBhdGg9InVybCgjbGhUb3dlcikiIGZpbGw9IiNlMjcyNWIiPjxyZWN0IHg9IjEwIiB5PSIzOCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjEyIi8+PHJlY3QgeD0iMTAiIHk9IjYyIiB3aWR0aD0iMzAiIGhlaWdodD0iMTIiLz48L2c+PHJlY3QgeD0iMTIiIHk9IjIwIiB3aWR0aD0iMjYiIGhlaWdodD0iNSIgcng9IjIiIGZpbGw9IiMxNDQyNWMiLz48cmVjdCB4PSIxNiIgeT0iMTAiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2YyYjU0NCIvPjxwYXRoIGQ9Ik0xMyAxMCAyNSAxIDM3IDEwWiIgZmlsbD0iIzE0NDI1YyIvPjxyZWN0IHg9IjciIHk9IjkwIiB3aWR0aD0iMzYiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjN2Q4ZWEzIi8+PC9zdmc+"
+    },
+    {
+      "id": "titanic",
+      "category": "ships",
+      "name": {
+        "cs": "Titanic",
+        "en": "Titanic"
+      },
+      "height": 53,
+      "baseline": "sea",
+      "defaultDistance": 35000,
+      "fact": {
+        "cs": "Od hladiny ke špičce komínů měl Titanic asi 53 metrů. Byl dlouhý 269 metrů!",
+        "en": "From the waterline to the funnel tops the Titanic was about 53 metres. She was 269 metres long!"
+      },
+      "aspect": 3.6,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNjAgMTAwIj48cmVjdCB4PSI0NCIgeT0iMCIgd2lkdGg9IjMiIGhlaWdodD0iNzQiIGZpbGw9IiMzZDRhNTUiLz48cmVjdCB4PSIzMTYiIHk9IjYiIHdpZHRoPSIzIiBoZWlnaHQ9IjY4IiBmaWxsPSIjM2Q0YTU1Ii8+PHJlY3QgeD0iNTgiIHk9IjU0IiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjZjdmMmU2Ii8+PGcgZmlsbD0iI2U4YjA0YiI+PHJlY3QgeD0iMTA0IiB5PSIxMiIgd2lkdGg9IjI2IiBoZWlnaHQ9IjQ0IiByeD0iMyIvPjxyZWN0IHg9IjE1MiIgeT0iMTIiIHdpZHRoPSIyNiIgaGVpZ2h0PSI0NCIgcng9IjMiLz48cmVjdCB4PSIyMDAiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iNDQiIHJ4PSIzIi8+PHJlY3QgeD0iMjQ4IiB5PSIxMiIgd2lkdGg9IjI2IiBoZWlnaHQ9IjQ0IiByeD0iMyIvPjwvZz48ZyBmaWxsPSIjMTQ0MjVjIj48cmVjdCB4PSIxMDQiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48cmVjdCB4PSIxNTIiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48cmVjdCB4PSIyMDAiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48cmVjdCB4PSIyNDgiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48L2c+PHJlY3QgeD0iMTQiIHk9Ijc0IiB3aWR0aD0iMzMyIiBoZWlnaHQ9IjciIGZpbGw9IiNmN2YyZTYiLz48cGF0aCBkPSJNMTQgODFoMzMybC0yNiAxOUg0MFoiIGZpbGw9IiMxNDQyNWMiLz48ZyBmaWxsPSIjNTJiN2M5Ij48cmVjdCB4PSI3MCIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSI4OCIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIxMDYiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMTI0IiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjxyZWN0IHg9IjE0MiIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIxNjAiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMTc4IiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjxyZWN0IHg9IjE5NiIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIyMTQiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMjMyIiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjxyZWN0IHg9IjI1MCIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIyNjgiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMjg2IiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjwvZz48L3N2Zz4="
+    },
+    {
+      "id": "containership",
+      "category": "ships",
+      "name": {
+        "cs": "Kontejnerová loď",
+        "en": "Container ship"
+      },
+      "height": 60,
+      "baseline": "sea",
+      "defaultDistance": 40000,
+      "fact": {
+        "cs": "Největší kontejnerové lodě uvezou přes 20 000 kontejnerů a s naskládaným nákladem měří přes 60 metrů.",
+        "en": "The biggest container ships carry over 20,000 containers and stand more than 60 metres above the water."
+      },
+      "aspect": 3.2,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMjAgMTAwIj48Zz48cmVjdCB4PSIzMCIgeT0iMzQiIHdpZHRoPSIzNCIgaGVpZ2h0PSIxOCIgZmlsbD0iI2UyNzI1YiIvPjxyZWN0IHg9IjY4IiB5PSIzNCIgd2lkdGg9IjM0IiBoZWlnaHQ9IjE4IiBmaWxsPSIjZjJiNTQ0Ii8+PHJlY3QgeD0iMTA2IiB5PSIzNCIgd2lkdGg9IjM0IiBoZWlnaHQ9IjE4IiBmaWxsPSIjNTJiN2M5Ii8+PHJlY3QgeD0iMTQ0IiB5PSIzNCIgd2lkdGg9IjM0IiBoZWlnaHQ9IjE4IiBmaWxsPSIjZTI3MjViIi8+PHJlY3QgeD0iMTgyIiB5PSIzNCIgd2lkdGg9IjM0IiBoZWlnaHQ9IjE4IiBmaWxsPSIjN2ZiZjZhIi8+PHJlY3QgeD0iMzAiIHk9IjU0IiB3aWR0aD0iMzQiIGhlaWdodD0iMTgiIGZpbGw9IiM1MmI3YzkiLz48cmVjdCB4PSI2OCIgeT0iNTQiIHdpZHRoPSIzNCIgaGVpZ2h0PSIxOCIgZmlsbD0iI2UyNzI1YiIvPjxyZWN0IHg9IjEwNiIgeT0iNTQiIHdpZHRoPSIzNCIgaGVpZ2h0PSIxOCIgZmlsbD0iI2YyYjU0NCIvPjxyZWN0IHg9IjE0NCIgeT0iNTQiIHdpZHRoPSIzNCIgaGVpZ2h0PSIxOCIgZmlsbD0iIzUyYjdjOSIvPjxyZWN0IHg9IjE4MiIgeT0iNTQiIHdpZHRoPSIzNCIgaGVpZ2h0PSIxOCIgZmlsbD0iI2UyNzI1YiIvPjxyZWN0IHg9IjY4IiB5PSIxNCIgd2lkdGg9IjM0IiBoZWlnaHQ9IjE4IiBmaWxsPSIjN2ZiZjZhIi8+PHJlY3QgeD0iMTA2IiB5PSIxNCIgd2lkdGg9IjM0IiBoZWlnaHQ9IjE4IiBmaWxsPSIjZTI3MjViIi8+PHJlY3QgeD0iMTQ0IiB5PSIxNCIgd2lkdGg9IjM0IiBoZWlnaHQ9IjE4IiBmaWxsPSIjZjJiNTQ0Ii8+PC9nPjxyZWN0IHg9IjIzNiIgeT0iMjYiIHdpZHRoPSI0NiIgaGVpZ2h0PSI0NiIgZmlsbD0iI2Y3ZjJlNiIvPjxyZWN0IHg9IjI1MiIgeT0iMiIgd2lkdGg9IjE0IiBoZWlnaHQ9IjI2IiBmaWxsPSIjZTI3MjViIi8+PGcgZmlsbD0iIzE0NDI1YyI+PHJlY3QgeD0iMjQyIiB5PSIzNCIgd2lkdGg9IjM0IiBoZWlnaHQ9IjciLz48cmVjdCB4PSIyNDIiIHk9IjQ2IiB3aWR0aD0iMzQiIGhlaWdodD0iNyIvPjxyZWN0IHg9IjI0MiIgeT0iNTgiIHdpZHRoPSIzNCIgaGVpZ2h0PSI3Ii8+PC9nPjxyZWN0IHg9IjEyIiB5PSI3MiIgd2lkdGg9IjI5NiIgaGVpZ2h0PSI4IiBmaWxsPSIjM2Q0YTU1Ii8+PHBhdGggZD0iTTEyIDgwaDI5NmwtMjIgMjBIMzRaIiBmaWxsPSIjMTQ0MjVjIi8+PC9zdmc+"
+    },
+    {
+      "id": "petrin",
+      "category": "buildings",
+      "name": {
+        "cs": "Petřínská rozhledna",
+        "en": "Petřín Lookout Tower"
+      },
+      "height": 63.5,
+      "baseline": "ground",
+      "defaultDistance": 35000,
+      "fact": {
+        "cs": "Petřínská rozhledna v Praze je menší sestra Eiffelovky – měří 63,5 m a stojí na kopci.",
+        "en": "Prague's Petřín tower is the Eiffel Tower's little sister – 63.5 m tall, standing on a hill."
+      },
+      "aspect": 0.5,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCAxMDAiPjxjbGlwUGF0aCBpZD0icHRTaGFwZSI+PHBhdGggZD0iTTUgMTAwIDE3IDI0aDE2bDEyIDc2WiIvPjwvY2xpcFBhdGg+PGcgY2xpcC1wYXRoPSJ1cmwoI3B0U2hhcGUpIiBzdHJva2U9IiMyYjZkOGMiIHN0cm9rZS13aWR0aD0iMS44IiBmaWxsPSJub25lIj48cGF0aCBkPSJNMCAyNiA1MCA0ME01MCAyNiAwIDQwTTAgNDAgNTAgNTRNNTAgNDAgMCA1NE0wIDU0IDUwIDY4TTUwIDU0IDAgNjhNMCA2OCA1MCA4Mk01MCA2OCAwIDgyTTAgODIgNTAgOTZNNTAgODIgMCA5NiIvPjxwYXRoIGQ9Ik0wIDQwaDUwTTAgNTRoNTBNMCA2OGg1ME0wIDgyaDUwTTAgOTZoNTAiIHN0cm9rZS13aWR0aD0iMS40Ii8+PC9nPjxwYXRoIGQ9Ik01IDEwMCAxNyAyNGgxNmwxMiA3NloiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE0NDI1YyIgc3Ryb2tlLXdpZHRoPSIzIi8+PHJlY3QgeD0iOSIgeT0iMTgiIHdpZHRoPSIzMiIgaGVpZ2h0PSI2IiByeD0iMS41IiBmaWxsPSIjMTQ0MjVjIi8+PHJlY3QgeD0iMTYiIHk9IjEwIiB3aWR0aD0iMTgiIGhlaWdodD0iOCIgZmlsbD0iI2Y3ZjJlNiIvPjxwYXRoIGQ9Ik0xNCAxMCAyNSAzIDM2IDEwWiIgZmlsbD0iI2UyNzI1YiIvPjxyZWN0IHg9IjI0IiB5PSIwIiB3aWR0aD0iMiIgaGVpZ2h0PSI0IiBmaWxsPSIjMTQ0MjVjIi8+PC9zdmc+"
+    },
+    {
+      "id": "liberty",
+      "category": "buildings",
+      "name": {
+        "cs": "Socha Svobody",
+        "en": "Statue of Liberty"
+      },
+      "height": 93,
+      "baseline": "ground",
+      "defaultDistance": 45000,
+      "fact": {
+        "cs": "I s podstavcem měří 93 metrů. Ze samotné sochy je to 46 metrů od pat k pochodni.",
+        "en": "With its pedestal it reaches 93 metres. The statue alone is 46 metres from heel to torch."
+      },
+      "aspect": 0.45,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NSAxMDAiPjxwYXRoIGQ9Ik00IDEwMCA4IDk0aDI5bDQgNloiIGZpbGw9IiM3ZDhlYTMiLz48cmVjdCB4PSI5IiB5PSI2NiIgd2lkdGg9IjI3IiBoZWlnaHQ9IjI4IiBmaWxsPSIjOWFhN2IzIi8+PHJlY3QgeD0iMTIiIHk9IjYwIiB3aWR0aD0iMjEiIGhlaWdodD0iNiIgZmlsbD0iIzg0OTNhMSIvPjxwYXRoIGQ9Ik0xNyA2NiAxOSA0MGg4bDIgMjZaIiBmaWxsPSIjNmZiOWE4Ii8+PHBhdGggZD0iTTE0IDY2cTggNCAxNyAwbC0xIDRIMTVaIiBmaWxsPSIjNWZhOTk3Ii8+PGNpcmNsZSBjeD0iMjMiIGN5PSIzMyIgcj0iNS40IiBmaWxsPSIjNmZiOWE4Ii8+PGcgc3Ryb2tlPSIjNmZiOWE4IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjMgMjZ2LTRNMTggMjhsLTItM00yOCAyOGwyLTNNMTUgMzJsLTQtMU0zMSAzMmw0LTEiLz48L2c+PHBhdGggZD0iTTI3IDQwIDM0IDIyIiBzdHJva2U9IiM2ZmI5YTgiIHN0cm9rZS13aWR0aD0iMy42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMTkgNDIgMTQgNTQiIHN0cm9rZT0iIzZmYjlhOCIgc3Ryb2tlLXdpZHRoPSIzLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZmlsbD0ibm9uZSIvPjxyZWN0IHg9IjMyLjQiIHk9IjEyIiB3aWR0aD0iNCIgaGVpZ2h0PSIxMSIgcng9IjEiIGZpbGw9IiM4ZWNmYzAiLz48cGF0aCBkPSJNMzQuNCAwcTUgNiAyLjYgMTAtMi42IDMtMi42IDN0MC0zUTMyIDYgMzQuNCAwWiIgZmlsbD0iI2YyYjU0NCIvPjwvc3ZnPg=="
+    },
+    {
+      "id": "jested",
+      "category": "buildings",
+      "name": {
+        "cs": "Vysílač Ještěd",
+        "en": "Ještěd Tower"
+      },
+      "height": 94,
+      "baseline": "ground",
+      "defaultDistance": 48000,
+      "fact": {
+        "cs": "Ještěd je hotel i vysílač zároveň. Jeho tvar plynule pokračuje ve tvaru hory pod ním.",
+        "en": "Ještěd is a hotel and a TV transmitter in one. Its shape smoothly continues the mountain beneath it."
+      },
+      "aspect": 0.7,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MCAxMDAiPjxwYXRoIGQ9Ik04IDEwMEMxNSA2NCAyNyA0NiAzMCAyMGgxMGMzIDI2IDE1IDQ0IDIyIDgwWiIgZmlsbD0iI2RmZThlZSIvPjxwYXRoIGQ9Ik04IDEwMEMxNSA2NCAyNyA0NiAzMCAyMGg0Yy0zIDI2LTEzIDQ0LTE4IDgwWiIgZmlsbD0iI2MzZDNkZSIvPjxyZWN0IHg9IjIyIiB5PSI0NiIgd2lkdGg9IjI2IiBoZWlnaHQ9IjYiIGZpbGw9IiM3ZDhlYTMiLz48ZyBmaWxsPSIjNTJiN2M5Ij48cmVjdCB4PSIyNiIgeT0iNTQiIHdpZHRoPSIxOCIgaGVpZ2h0PSI2IiByeD0iMSIvPjxyZWN0IHg9IjI0IiB5PSI2NiIgd2lkdGg9IjIyIiBoZWlnaHQ9IjYiIHJ4PSIxIi8+PC9nPjxyZWN0IHg9IjMwIiB5PSI4IiB3aWR0aD0iMTAiIGhlaWdodD0iMTQiIHJ4PSIyIiBmaWxsPSIjOWFhN2IzIi8+PHJlY3QgeD0iMzMuNiIgeT0iMCIgd2lkdGg9IjIuOCIgaGVpZ2h0PSI5IiBmaWxsPSIjMTQ0MjVjIi8+PHJlY3QgeD0iNCIgeT0iOTYiIHdpZHRoPSI2MiIgaGVpZ2h0PSI0IiByeD0iMS41IiBmaWxsPSIjN2Q4ZWEzIi8+PC9zdmc+"
+    },
+    {
+      "id": "pilsen",
+      "category": "buildings",
+      "name": {
+        "cs": "Katedrála sv. Bartoloměje (Plzeň)",
+        "en": "St Bartholomew's Cathedral (Pilsen)"
+      },
+      "height": 102.3,
+      "baseline": "ground",
+      "defaultDistance": 50000,
+      "fact": {
+        "cs": "S výškou 102,3 m je to nejvyšší kostelní věž v Česku. Nahoru vede 301 schodů.",
+        "en": "At 102.3 m this is the tallest church tower in Czechia. 301 steps lead to the top."
+      },
+      "aspect": 0.45,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NSAxMDAiPjxyZWN0IHg9IjQiIHk9Ijc4IiB3aWR0aD0iMzciIGhlaWdodD0iMjIiIGZpbGw9IiNlZmU0Y2QiLz48cGF0aCBkPSJNNCA3OCAyMi41IDY4IDQxIDc4WiIgZmlsbD0iI2IwNWE0YSIvPjxyZWN0IHg9IjE0IiB5PSIzNCIgd2lkdGg9IjE3IiBoZWlnaHQ9IjY2IiBmaWxsPSIjZjdlZmRkIi8+PHBhdGggZD0iTTIyLjUgOCAzMyAzNkgxMloiIGZpbGw9IiM4Yzk4YTYiLz48cmVjdCB4PSIxMSIgeT0iMzQiIHdpZHRoPSIyMyIgaGVpZ2h0PSI0IiByeD0iMSIgZmlsbD0iIzdkOGVhMyIvPjxyZWN0IHg9IjIxLjciIHk9IjAiIHdpZHRoPSIxLjgiIGhlaWdodD0iMTAiIGZpbGw9IiMxNDQyNWMiLz48cmVjdCB4PSIxOS40IiB5PSIyLjYiIHdpZHRoPSI2LjQiIGhlaWdodD0iMS44IiBmaWxsPSIjMTQ0MjVjIi8+PGNpcmNsZSBjeD0iMjIuNSIgY3k9IjQ2IiByPSI0LjYiIGZpbGw9IiNmMmI1NDQiLz48cGF0aCBkPSJNMjIuNSA0M3YzLjRsMi4yIDEuNCIgc3Ryb2tlPSIjMTQ0MjVjIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxyZWN0IHg9IjE5LjUiIHk9IjU4IiB3aWR0aD0iNiIgaGVpZ2h0PSIxMyIgcng9IjMiIGZpbGw9IiMyYjZkOGMiLz48cmVjdCB4PSIxOC41IiB5PSI4NyIgd2lkdGg9IjgiIGhlaWdodD0iMTMiIHJ4PSI0IiBmaWxsPSIjMTQ0MjVjIi8+PHJlY3QgeD0iOCIgeT0iODYiIHdpZHRoPSI1IiBoZWlnaHQ9IjkiIHJ4PSIyLjUiIGZpbGw9IiMyYjZkOGMiLz48cmVjdCB4PSIzMiIgeT0iODYiIHdpZHRoPSI1IiBoZWlnaHQ9IjkiIHJ4PSIyLjUiIGZpbGw9IiMyYjZkOGMiLz48L3N2Zz4="
+    },
+    {
+      "id": "windturbine",
+      "category": "buildings",
+      "name": {
+        "cs": "Větrná elektrárna",
+        "en": "Wind turbine"
+      },
+      "height": 150,
+      "baseline": "ground",
+      "defaultDistance": 60000,
+      "fact": {
+        "cs": "Měříme ke špičce vrtule nahoru. Proto jsou větrné elektrárny vidět hodně zdaleka.",
+        "en": "We measure to the blade tip pointing up. That is why wind turbines are visible from far away."
+      },
+      "aspect": 0.55,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1NSAxMDAiPjxwYXRoIGQ9Ik0yMy42IDEwMGg3LjhsLTEuOS02OGgtNFoiIGZpbGw9IiNlZWY0ZjgiIHN0cm9rZT0iI2MzZDBkYSIgc3Ryb2tlLXdpZHRoPSIwLjciLz48ZyBmaWxsPSIjZjhmYmZkIiBzdHJva2U9IiNiOWM4ZDQiIHN0cm9rZS13aWR0aD0iMC44Ij48cGF0aCBkPSJNMjcuNSAzMFEzMSAxNiAyOC45IDJRMjYgMTYgMjcuNSAzMFoiLz48cGF0aCBkPSJNMjcuNSAzMFEzMSAxNiAyOC45IDJRMjYgMTYgMjcuNSAzMFoiIHRyYW5zZm9ybT0icm90YXRlKDEyMCAyNy41IDMwKSIvPjxwYXRoIGQ9Ik0yNy41IDMwUTMxIDE2IDI4LjkgMlEyNiAxNiAyNy41IDMwWiIgdHJhbnNmb3JtPSJyb3RhdGUoMjQwIDI3LjUgMzApIi8+PC9nPjxyZWN0IHg9IjI2IiB5PSIyNyIgd2lkdGg9IjkiIGhlaWdodD0iNiIgcng9IjIuNSIgZmlsbD0iI2NkZDllMiIvPjxjaXJjbGUgY3g9IjI3LjUiIGN5PSIzMCIgcj0iMy4yIiBmaWxsPSIjN2Q4ZWEzIi8+PHJlY3QgeD0iMTkiIHk9Ijk2IiB3aWR0aD0iMTciIGhlaWdodD0iNCIgcng9IjEuNSIgZmlsbD0iIzlhYTdiMyIvPjwvc3ZnPg=="
+    },
+    {
+      "id": "eiffel",
+      "category": "buildings",
+      "name": {
+        "cs": "Eiffelova věž",
+        "en": "Eiffel Tower"
+      },
+      "height": 330,
+      "baseline": "ground",
+      "defaultDistance": 80000,
+      "fact": {
+        "cs": "330 metrů. V horkém létě se ocel roztahuje a věž je až o 15 cm vyšší než v zimě.",
+        "en": "330 metres. On a hot summer day the steel expands and the tower is up to 15 cm taller than in winter."
+      },
+      "aspect": 0.45,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NSAxMDAiPjxnIHN0cm9rZT0iIzE0NDI1YyIgZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSI0LjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PHBhdGggZD0iTTUgOThDMTAgNjYgMTkgNDQgMjEgMjAiLz48cGF0aCBkPSJNNDAgOThDMzUgNjYgMjYgNDQgMjQgMjAiLz48L2c+PGcgc3Ryb2tlPSIjMmI2ZDhjIiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTEyLjUgNzggMjEgNTBNMzIuNSA3OCAyNCA1ME0xNiA0NiAyMS41IDI2TTI5IDQ2IDIzLjUgMjZNOCA5MiAzNyA5MiIvPjwvZz48cmVjdCB4PSIxOS42IiB5PSI1IiB3aWR0aD0iNS44IiBoZWlnaHQ9IjE3IiBmaWxsPSIjMTQ0MjVjIi8+PHJlY3QgeD0iMjEuNCIgeT0iMCIgd2lkdGg9IjIuMiIgaGVpZ2h0PSI2IiBmaWxsPSIjMTQ0MjVjIi8+PHJlY3QgeD0iMTQiIHk9IjE5IiB3aWR0aD0iMTciIGhlaWdodD0iNCIgcng9IjEuMiIgZmlsbD0iIzE0NDI1YyIvPjxyZWN0IHg9IjkuNSIgeT0iNDUiIHdpZHRoPSIyNiIgaGVpZ2h0PSI0LjIiIHJ4PSIxLjIiIGZpbGw9IiMxNDQyNWMiLz48cmVjdCB4PSIzLjUiIHk9Ijc3IiB3aWR0aD0iMzgiIGhlaWdodD0iNSIgcng9IjEuNSIgZmlsbD0iIzE0NDI1YyIvPjxwYXRoIGQ9Ik05IDgycTEzLjUtMTUgMjcgMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMTQ0MjVjIiBzdHJva2Utd2lkdGg9IjMuMiIvPjwvc3ZnPg=="
+    },
+    {
+      "id": "burj",
+      "category": "buildings",
+      "name": {
+        "cs": "Burdž Chalífa",
+        "en": "Burj Khalifa"
+      },
+      "height": 828,
+      "baseline": "ground",
+      "defaultDistance": 130000,
+      "fact": {
+        "cs": "Nejvyšší budova světa (828 m). Ze základny vidí západ slunce dříve než lidé na střeše.",
+        "en": "The world's tallest building (828 m). People at the base see the sunset earlier than those on the roof."
+      },
+      "aspect": 0.28,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyOCAxMDAiPjxnIGZpbGw9IiNhOWM5ZDgiPjxwYXRoIGQ9Ik0zIDEwMCA1IDc0aDE4bDIgMjZaIi8+PHBhdGggZD0iTTUgNzQgNi42IDU0aDE0LjhMMjMgNzRaIi8+PHBhdGggZD0iTTYuNiA1NCA4IDM4aDEybDEuNCAxNloiLz48cGF0aCBkPSJNOCAzOCA5LjIgMjRoOS42TDIwIDM4WiIvPjxwYXRoIGQ9Ik05LjIgMjQgMTAuNCAxM2g3LjJMMTguOCAyNFoiLz48L2c+PHBhdGggZD0iTTEyLjggMTNoMi40bC0wLjUgLTloLTEuNFoiIGZpbGw9IiM4ZmIyYzQiLz48cmVjdCB4PSIxMy42IiB5PSIwIiB3aWR0aD0iMC44IiBoZWlnaHQ9IjUiIGZpbGw9IiMxNDQyNWMiLz48ZyBzdHJva2U9IiM3ZmE4YmQiIHN0cm9rZS13aWR0aD0iMC43IiBvcGFjaXR5PSIwLjg1Ij48cGF0aCBkPSJNOSA5OFYyNk0xNCAxMDBWMTNNMTkgOThWMjYiLz48L2c+PGcgc3Ryb2tlPSIjYzdkZGU4IiBzdHJva2Utd2lkdGg9IjAuNiI+PHBhdGggZD0iTTQgODhoMjBNNC42IDgwaDE4LjhNNS42IDY2aDE2LjhNNiA2MGgxNk03IDQ4aDE0TTcuNCA0NGgxMy4yTTguNCAzMmgxMS4yTTkuNiAxOWg4LjgiLz48L2c+PC9zdmc+"
+    },
+    {
+      "id": "snezka",
+      "category": "mountains",
+      "name": {
+        "cs": "Sněžka",
+        "en": "Mount Sněžka"
+      },
+      "height": 1603,
+      "baseline": "ground",
+      "defaultDistance": 180000,
+      "fact": {
+        "cs": "Nejvyšší hora Česka, 1603 m nad mořem. Výška zde znamená výšku nad hladinou moře.",
+        "en": "The highest mountain in Czechia, 1603 m above sea level. Here the height means height above sea level."
+      },
+      "aspect": 2.2,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMjAgMTAwIj48cGF0aCBkPSJNMCAxMDBDNDYgOTQgNzQgNzIgMTE4IDM0YzI2IDMwIDU0IDU4IDEwMiA2NloiIGZpbGw9IiM0ZjcxODMiLz48cGF0aCBkPSJNMCAxMDBDNDYgOTQgNzQgNzIgMTE4IDM0djY2WiIgZmlsbD0iIzVkODI5NiIvPjxwYXRoIGQ9Ik0xMTggMzRjLTExIDEwLTIwIDE5LTI4IDI2IDE3IDcgMzggNyA1Ni0xLTktOC0xOC0xNi0yOC0yNVoiIGZpbGw9IiNmMmY4ZmIiLz48cGF0aCBkPSJNMTA0IDIwaDI4djZoLTI4WiIgZmlsbD0ibm9uZSIvPjxlbGxpcHNlIGN4PSIxMTgiIGN5PSIyNyIgcng9IjE1IiByeT0iNS4yIiBmaWxsPSIjZDk0ZjQ1Ii8+PGVsbGlwc2UgY3g9IjExOCIgY3k9IjI0LjUiIHJ4PSI5IiByeT0iNCIgZmlsbD0iI2YwZjVmOCIvPjxyZWN0IHg9IjEyOSIgeT0iMTQiIHdpZHRoPSIyLjQiIGhlaWdodD0iMTEiIGZpbGw9IiM3ZDhlYTMiLz48cGF0aCBkPSJNMTA0IDMwaDV2LTZsLTIuNS0zLTIuNSAzWiIgZmlsbD0iI2VmZTRjZCIvPjwvc3ZnPg=="
+    },
+    {
+      "id": "everest",
+      "category": "mountains",
+      "name": {
+        "cs": "Mount Everest",
+        "en": "Mount Everest"
+      },
+      "height": 8849,
+      "baseline": "ground",
+      "defaultDistance": 340000,
+      "fact": {
+        "cs": "8849 m nad mořem. I tak obrovská hora se schová za zakřivení Země, když je dost daleko.",
+        "en": "8849 m above sea level. Even a mountain this huge hides behind Earth's curve if it is far enough away."
+      },
+      "aspect": 2.6,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNjAgMTAwIj48cGF0aCBkPSJNMCAxMDAgNDAgNTggNzAgNzYgMTA0IDQwIDEzMiA2MiAxNjggMjYgMjA2IDY2IDI2MCAxMDBaIiBmaWxsPSIjN2Q5OWFiIi8+PHBhdGggZD0iTTEwNCA0MCA4OCA1OHE5IDUgMjAgNHQxNi02WiIgZmlsbD0iI2UzZWRmMyIvPjxwYXRoIGQ9Ik0xNjggMjYgMTUyIDQ2cTEwIDYgMjIgNHQxNC04WiIgZmlsbD0iI2UzZWRmMyIvPjxwYXRoIGQ9Ik0yOCAxMDAgOTYgNDAgMTI4IDYyIDE1OCA0IDE5NiA1NCAyNDAgMTAwWiIgZmlsbD0iIzVkN2Q5MCIvPjxwYXRoIGQ9Ik0yOCAxMDAgOTYgNDAgMTI4IDYyIDE1OCA0djk2WiIgZmlsbD0iIzZiOGI5ZSIvPjxwYXRoIGQ9Ik0xNTggNCAxMzIgNDRxMTIgOSAzMCA4dDI4LTEwWiIgZmlsbD0iI2Y0ZjlmYyIvPjxwYXRoIGQ9Ik0xMjYgNjYgMTA4IDUyIDk2IDYybDE0IDEyWiIgZmlsbD0iI2Y0ZjlmYyIgb3BhY2l0eT0iLjg1Ii8+PHBhdGggZD0iTTE1OCA0cTIyIDMgNDAtMi0xOCAxMC0zMyAxMloiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9Ii43NSIvPjwvc3ZnPg=="
+    }
+  ]
+}

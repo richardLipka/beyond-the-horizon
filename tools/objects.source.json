@@ -1,0 +1,207 @@
+{
+  "_comment": "Zdroj dat pro build-objects.mjs. Obrazky jsou zde jako cesty k SVG; build je prevede do base64 a vytvori objects.json. / Source data for build-objects.mjs. Images are paths to SVG files; the build inlines them as base64 into objects.json.",
+  "schemaVersion": 1,
+  "categories": [
+    { "id": "people", "icon": "🧍", "name": { "cs": "Lidé a domy", "en": "People & houses" } },
+    { "id": "ships", "icon": "⛵", "name": { "cs": "Lodě", "en": "Ships" } },
+    { "id": "buildings", "icon": "🏗️", "name": { "cs": "Stavby a věže", "en": "Towers & buildings" } },
+    { "id": "mountains", "icon": "⛰️", "name": { "cs": "Hory", "en": "Mountains" } }
+  ],
+  "objects": [
+    {
+      "id": "person",
+      "category": "people",
+      "name": { "cs": "Člověk", "en": "A person" },
+      "height": 1.75,
+      "baseline": "ground",
+      "defaultDistance": 4000,
+      "svg": "person.svg",
+      "fact": {
+        "cs": "Kamarád na pláži zmizí za obzorem už po několika kilometrech. Zkus si to!",
+        "en": "A friend on the beach vanishes over the horizon after just a few kilometres. Try it!"
+      }
+    },
+    {
+      "id": "house",
+      "category": "people",
+      "name": { "cs": "Rodinný dům", "en": "Family house" },
+      "height": 8,
+      "baseline": "ground",
+      "defaultDistance": 10000,
+      "svg": "house.svg",
+      "fact": {
+        "cs": "Obyčejný dům s komínem má asi 8 metrů – jako čtyři dospělí na sobě.",
+        "en": "An ordinary house with a chimney is about 8 metres – like four grown-ups standing on each other."
+      }
+    },
+    {
+      "id": "sailboat",
+      "category": "ships",
+      "name": { "cs": "Plachetnice", "en": "Sailing boat" },
+      "height": 30,
+      "baseline": "sea",
+      "defaultDistance": 22000,
+      "svg": "sailboat.svg",
+      "fact": {
+        "cs": "Námořníci už ve starověku věděli, že loď mizí od trupu a naposled je vidět špička stěžně.",
+        "en": "Ancient sailors already knew a ship disappears hull first – the mast tip is the last thing you see."
+      }
+    },
+    {
+      "id": "lighthouse",
+      "category": "ships",
+      "name": { "cs": "Maják", "en": "Lighthouse" },
+      "height": 40,
+      "baseline": "sea",
+      "defaultDistance": 30000,
+      "svg": "lighthouse.svg",
+      "fact": {
+        "cs": "Majáky se stavějí vysoké schválně – čím výš, tím dál je jejich světlo vidět přes zakřivení.",
+        "en": "Lighthouses are built tall on purpose – the higher the lamp, the further its light reaches over the curve."
+      }
+    },
+    {
+      "id": "titanic",
+      "category": "ships",
+      "name": { "cs": "Titanic", "en": "Titanic" },
+      "height": 53,
+      "baseline": "sea",
+      "defaultDistance": 35000,
+      "svg": "titanic.svg",
+      "fact": {
+        "cs": "Od hladiny ke špičce komínů měl Titanic asi 53 metrů. Byl dlouhý 269 metrů!",
+        "en": "From the waterline to the funnel tops the Titanic was about 53 metres. She was 269 metres long!"
+      }
+    },
+    {
+      "id": "containership",
+      "category": "ships",
+      "name": { "cs": "Kontejnerová loď", "en": "Container ship" },
+      "height": 60,
+      "baseline": "sea",
+      "defaultDistance": 40000,
+      "svg": "containership.svg",
+      "fact": {
+        "cs": "Největší kontejnerové lodě uvezou přes 20 000 kontejnerů a s naskládaným nákladem měří přes 60 metrů.",
+        "en": "The biggest container ships carry over 20,000 containers and stand more than 60 metres above the water."
+      }
+    },
+    {
+      "id": "petrin",
+      "category": "buildings",
+      "name": { "cs": "Petřínská rozhledna", "en": "Petřín Lookout Tower" },
+      "height": 63.5,
+      "baseline": "ground",
+      "defaultDistance": 35000,
+      "svg": "petrin.svg",
+      "fact": {
+        "cs": "Petřínská rozhledna v Praze je menší sestra Eiffelovky – měří 63,5 m a stojí na kopci.",
+        "en": "Prague's Petřín tower is the Eiffel Tower's little sister – 63.5 m tall, standing on a hill."
+      }
+    },
+    {
+      "id": "liberty",
+      "category": "buildings",
+      "name": { "cs": "Socha Svobody", "en": "Statue of Liberty" },
+      "height": 93,
+      "baseline": "ground",
+      "defaultDistance": 45000,
+      "svg": "liberty.svg",
+      "fact": {
+        "cs": "I s podstavcem měří 93 metrů. Ze samotné sochy je to 46 metrů od pat k pochodni.",
+        "en": "With its pedestal it reaches 93 metres. The statue alone is 46 metres from heel to torch."
+      }
+    },
+    {
+      "id": "jested",
+      "category": "buildings",
+      "name": { "cs": "Vysílač Ještěd", "en": "Ještěd Tower" },
+      "height": 94,
+      "baseline": "ground",
+      "defaultDistance": 48000,
+      "svg": "jested.svg",
+      "fact": {
+        "cs": "Ještěd je hotel i vysílač zároveň. Jeho tvar plynule pokračuje ve tvaru hory pod ním.",
+        "en": "Ještěd is a hotel and a TV transmitter in one. Its shape smoothly continues the mountain beneath it."
+      }
+    },
+    {
+      "id": "pilsen",
+      "category": "buildings",
+      "name": { "cs": "Katedrála sv. Bartoloměje (Plzeň)", "en": "St Bartholomew's Cathedral (Pilsen)" },
+      "height": 102.3,
+      "baseline": "ground",
+      "defaultDistance": 50000,
+      "svg": "pilsen.svg",
+      "fact": {
+        "cs": "S výškou 102,3 m je to nejvyšší kostelní věž v Česku. Nahoru vede 301 schodů.",
+        "en": "At 102.3 m this is the tallest church tower in Czechia. 301 steps lead to the top."
+      }
+    },
+    {
+      "id": "windturbine",
+      "category": "buildings",
+      "name": { "cs": "Větrná elektrárna", "en": "Wind turbine" },
+      "height": 150,
+      "baseline": "ground",
+      "defaultDistance": 60000,
+      "svg": "windturbine.svg",
+      "fact": {
+        "cs": "Měříme ke špičce vrtule nahoru. Proto jsou větrné elektrárny vidět hodně zdaleka.",
+        "en": "We measure to the blade tip pointing up. That is why wind turbines are visible from far away."
+      }
+    },
+    {
+      "id": "eiffel",
+      "category": "buildings",
+      "name": { "cs": "Eiffelova věž", "en": "Eiffel Tower" },
+      "height": 330,
+      "baseline": "ground",
+      "defaultDistance": 80000,
+      "svg": "eiffel.svg",
+      "fact": {
+        "cs": "330 metrů. V horkém létě se ocel roztahuje a věž je až o 15 cm vyšší než v zimě.",
+        "en": "330 metres. On a hot summer day the steel expands and the tower is up to 15 cm taller than in winter."
+      }
+    },
+    {
+      "id": "burj",
+      "category": "buildings",
+      "name": { "cs": "Burdž Chalífa", "en": "Burj Khalifa" },
+      "height": 828,
+      "baseline": "ground",
+      "defaultDistance": 130000,
+      "svg": "burj.svg",
+      "fact": {
+        "cs": "Nejvyšší budova světa (828 m). Ze základny vidí západ slunce dříve než lidé na střeše.",
+        "en": "The world's tallest building (828 m). People at the base see the sunset earlier than those on the roof."
+      }
+    },
+    {
+      "id": "snezka",
+      "category": "mountains",
+      "name": { "cs": "Sněžka", "en": "Mount Sněžka" },
+      "height": 1603,
+      "baseline": "ground",
+      "defaultDistance": 180000,
+      "svg": "snezka.svg",
+      "fact": {
+        "cs": "Nejvyšší hora Česka, 1603 m nad mořem. Výška zde znamená výšku nad hladinou moře.",
+        "en": "The highest mountain in Czechia, 1603 m above sea level. Here the height means height above sea level."
+      }
+    },
+    {
+      "id": "everest",
+      "category": "mountains",
+      "name": { "cs": "Mount Everest", "en": "Mount Everest" },
+      "height": 8849,
+      "baseline": "ground",
+      "defaultDistance": 340000,
+      "svg": "everest.svg",
+      "fact": {
+        "cs": "8849 m nad mořem. I tak obrovská hora se schová za zakřivení Země, když je dost daleko.",
+        "en": "8849 m above sea level. Even a mountain this huge hides behind Earth's curve if it is far enough away."
+      }
+    }
+  ]
+}

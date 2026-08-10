@@ -1,0 +1,39 @@
+{
+  "name": "beyond-the-horizon",
+  "version": "1.0.0",
+  "description": "Za obzorem / Beyond the Horizon — a bilingual (cs/en) classroom simulator showing how the curvature of the Earth hides distant objects.",
+  "keywords": [
+    "education",
+    "school",
+    "physics",
+    "geography",
+    "earth-curvature",
+    "horizon",
+    "visibility",
+    "simulation",
+    "svg",
+    "vanilla-js",
+    "no-dependencies",
+    "czech",
+    "bilingual"
+  ],
+  "homepage": "https://richardlipka.github.io/beyond-the-horizon/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/richardLipka/beyond-the-horizon.git"
+  },
+  "bugs": {
+    "url": "https://github.com/richardLipka/beyond-the-horizon/issues"
+  },
+  "author": "Richard Lipka <lipka@fav.zcu.cz>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node tools/serve.mjs",
+    "serve": "node tools/serve.mjs",
+    "build": "node tools/build-objects.mjs",
+    "test": "node tools/check-geometry.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

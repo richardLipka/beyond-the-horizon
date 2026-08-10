@@ -1,0 +1,387 @@
+/* ==========================================================================
+   diagram.css - vzhled SVG grafiky: bocni pohled, dalekohled, graf.
+   Styling for the three SVG views. Barvy odpovidaji dlazdicim s cisly:
+   coral = schovano, zelena = videt, morska modra = k obzoru.
+   (c) 2026 Richard Lipka <lipka@fav.zcu.cz> - MIT license
+   ========================================================================== */
+
+/* --- spolecne / shared ---------------------------------------------------- */
+
+.diagram-svg text,
+.telescope-svg text,
+.chart-svg text {
+  font-family: var(--font);
+  fill: var(--deep-800);
+}
+
+.dg-halo,
+.ts-halo {
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3.4px;
+  stroke-linejoin: round;
+}
+
+/* --- bocni pohled / side view -------------------------------------------- */
+
+.dg-frame {
+  fill: none;
+  stroke: rgba(11, 42, 58, 0.18);
+  stroke-width: 1.5;
+}
+
+.dg-surface-line {
+  stroke: #06344a;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+
+.dg-waves path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.dg-grass path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.45);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.dg-chord {
+  stroke: rgba(11, 42, 58, 0.55);
+  stroke-width: 1.8;
+  stroke-dasharray: 7 6;
+}
+
+.dg-sight {
+  stroke: #d2382a;
+  stroke-width: 2.6;
+  stroke-dasharray: 11 7;
+  stroke-linecap: round;
+}
+
+.dg-pole {
+  stroke: var(--deep-800);
+  stroke-width: 2;
+  stroke-dasharray: 4 4;
+}
+
+.dg-observer {
+  fill: #10394f;
+}
+
+.dg-observer-body {
+  fill: #1f8fa8;
+}
+
+.dg-eye {
+  fill: #fff;
+  stroke: #d2382a;
+  stroke-width: 3;
+}
+
+.dg-horizon-dot {
+  fill: var(--sun);
+  stroke: #fff;
+  stroke-width: 2.5;
+}
+
+.dg-horizon-tick {
+  stroke: var(--sun);
+  stroke-width: 2.4;
+  stroke-dasharray: 5 4;
+}
+
+.dg-object-hidden {
+  opacity: 0.28;
+}
+
+.dg-hidden-fill {
+  opacity: 0.55;
+}
+
+.dg-hatch-line {
+  stroke: var(--coral-dark);
+  stroke-width: 2.4;
+}
+
+.dg-object-fallback {
+  fill: #6f93a5;
+  stroke: #38596b;
+  stroke-width: 2;
+}
+
+/* kotovaci cary / dimension lines */
+
+.dg-dim-line,
+.dg-dim-tick {
+  stroke: var(--deep-800);
+  stroke-width: 2;
+}
+
+.dg-dim-label {
+  font-size: 18px;
+  font-weight: 700;
+  fill: var(--deep-800);
+}
+
+.dg-dim-hidden .dg-dim-line,
+.dg-dim-hidden .dg-dim-tick {
+  stroke: var(--coral-dark);
+}
+.dg-dim-hidden .dg-dim-label {
+  fill: var(--coral-dark);
+}
+
+.dg-dim-visible .dg-dim-line,
+.dg-dim-visible .dg-dim-tick {
+  stroke: var(--kelp-dark);
+}
+.dg-dim-visible .dg-dim-label {
+  fill: var(--kelp-dark);
+}
+
+.dg-dim-eye .dg-dim-line,
+.dg-dim-eye .dg-dim-tick {
+  stroke: #10394f;
+}
+
+.dg-dim-bulge .dg-dim-line,
+.dg-dim-bulge .dg-dim-tick {
+  stroke: #06344a;
+}
+
+/* popisky / labels */
+
+.dg-label {
+  font-size: 18px;
+  font-weight: 700;
+  fill: var(--sun);
+}
+
+.dg-you {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  fill: #10394f;
+}
+
+.dg-small {
+  font-size: 15px;
+  fill: var(--muted);
+}
+
+.dg-note {
+  font-size: 15px;
+  fill: var(--muted);
+}
+
+.dg-value {
+  font-size: 20px;
+  font-weight: 700;
+  fill: var(--deep-800);
+}
+
+/* meritko a osy / ruler and axes */
+
+.dg-axis-line,
+.dg-axis-tick {
+  stroke: rgba(11, 42, 58, 0.4);
+  stroke-width: 1.6;
+}
+
+.dg-arrowhead {
+  fill: var(--deep-800);
+}
+
+.dg-total-line {
+  stroke: var(--deep-800);
+  stroke-width: 2;
+}
+
+.dg-span-horizon .dg-dim-line,
+.dg-span-horizon .dg-dim-tick {
+  stroke: var(--sea-600);
+  stroke-width: 3;
+}
+.dg-span-horizon .dg-dim-label {
+  fill: var(--sea-600);
+  font-size: 17px;
+}
+
+.dg-span-beyond .dg-dim-line,
+.dg-span-beyond .dg-dim-tick {
+  stroke: var(--sun);
+  stroke-width: 3;
+}
+.dg-span-beyond .dg-dim-label {
+  fill: #b57312;
+  font-size: 17px;
+}
+
+.dg-scalebar-line {
+  stroke: var(--deep-800);
+  stroke-width: 2.2;
+}
+
+/* --- dalekohled / telescope ---------------------------------------------- */
+
+.ts-rim {
+  fill: none;
+  stroke: var(--deep-800);
+  stroke-width: 12;
+  opacity: 0.9;
+}
+
+.ts-rim-inner {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 3;
+}
+
+.ts-horizon {
+  stroke: #05384f;
+  stroke-width: 3;
+}
+
+.ts-waves path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.4);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.ts-ghost {
+  opacity: 0.24;
+}
+
+.ts-ghost-box {
+  fill: none;
+  stroke: var(--coral-dark);
+  stroke-width: 2.4;
+  stroke-dasharray: 8 6;
+}
+
+.ts-fallback {
+  fill: #6f93a5;
+  stroke: #38596b;
+  stroke-width: 2;
+}
+
+.ts-dim-line,
+.ts-dim-tick {
+  stroke: var(--kelp-dark);
+  stroke-width: 2.4;
+}
+
+.ts-label {
+  font-size: 20px;
+  font-weight: 700;
+  fill: var(--kelp-dark);
+}
+
+.ts-hidden-label {
+  font-size: 17px;
+  font-weight: 700;
+  fill: rgba(255, 255, 255, 0.95);
+}
+
+.ts-empty {
+  font-size: 19px;
+  font-weight: 700;
+  fill: var(--muted);
+}
+
+.ts-caption {
+  font-size: 21px;
+  font-weight: 800;
+  fill: var(--deep-800);
+}
+
+.ts-subcaption {
+  font-size: 15px;
+  fill: var(--muted);
+}
+
+/* --- graf / chart --------------------------------------------------------- */
+
+.ch-band-full {
+  fill: rgba(47, 158, 111, 0.13);
+}
+.ch-band-partial {
+  fill: rgba(242, 169, 59, 0.15);
+}
+.ch-band-hidden {
+  fill: rgba(232, 105, 92, 0.15);
+}
+
+.ch-band-label {
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--muted);
+}
+
+.ch-grid {
+  stroke: rgba(11, 42, 58, 0.1);
+  stroke-width: 1;
+}
+
+.ch-tick {
+  font-size: 14px;
+  fill: var(--muted);
+}
+
+.ch-area {
+  fill: rgba(31, 143, 168, 0.22);
+}
+
+.ch-curve {
+  stroke: var(--sea-600);
+  stroke-width: 3.4;
+  stroke-linejoin: round;
+}
+
+.ch-marker {
+  stroke-width: 2.4;
+  stroke-dasharray: 8 6;
+}
+
+.ch-marker-start {
+  stroke: var(--kelp-dark);
+}
+
+.ch-marker-vanish {
+  stroke: var(--coral-dark);
+}
+
+.ch-marker-label {
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--deep-800);
+}
+
+.ch-now {
+  stroke: var(--deep-800);
+  stroke-width: 2;
+}
+
+.ch-now-dot {
+  fill: #fff;
+  stroke: var(--deep-800);
+  stroke-width: 3;
+}
+
+.ch-frame {
+  fill: none;
+  stroke: rgba(11, 42, 58, 0.25);
+  stroke-width: 1.5;
+}
+
+.ch-axis-title {
+  font-size: 15px;
+  font-weight: 600;
+  fill: var(--muted);
+}

@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    name: Geometry + data integrity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Kontrola výpočtů proti známým hodnotám z učebnic.
+      - name: Geometry self-test
+        run: node tools/check-geometry.mjs
+
+      # objects.json a tovární záloha musí přesně odpovídat zdrojům v tools/.
+      # The data file and the factory fallback must match the sources exactly.
+      - name: Data file is in sync with its sources
+        run: |
+          node tools/build-objects.mjs
+          git diff --exit-code -- objects.json js/data/factory-objects.js
+
+      # Rychlá kontrola, že oba jazyky mají stejnou sadu klíčů.
+      - name: Translations are complete
+        run: node tools/check-strings.mjs
