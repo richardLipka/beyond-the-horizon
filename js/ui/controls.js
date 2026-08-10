@@ -147,6 +147,9 @@
             [
               el('span', { class: 'planet-icon', text: planet.icon }),
               el('span', { class: 'planet-name', text: HL.i18n.pick(planet.name, planet.id) }),
+              // barevny prouzek = presne ta barva, kterou pak ma povrch
+              // v obrazcich / the strip is the colour the surface will take
+              el('span', { class: 'planet-swatch', style: { background: planet.swatch } }),
             ]
           )
         );
@@ -299,24 +302,25 @@
         oninput: (e) => app.setDistance(Number(e.target.value)),
       });
 
-      container.appendChild(
-        el('section', { class: 'control-group' }, [
-          el('h3', { class: 'control-title' }, [
-            el('span', { class: 'step-badge', text: '3' }),
-            document.createTextNode(HL.i18n.t('ctrl.distance')),
+      // Vzdalenost je vstup jen pro rezimy, ktere ji potrebuji - v Geometrii
+      // se dopocitava, takze se tam skryva.
+      refs.distanceGroup = el('section', { class: 'control-group' }, [
+        el('h3', { class: 'control-title' }, [
+          el('span', { class: 'step-badge', text: '3' }),
+          document.createTextNode(HL.i18n.t('ctrl.distance')),
+        ]),
+        field(
+          'ctrl.distanceLabel',
+          el('div', { class: 'input-row' }, [
+            refs.distanceNumber,
+            el('span', { class: 'unit', text: HL.i18n.t('unit.km') }),
           ]),
-          field(
-            'ctrl.distanceLabel',
-            el('div', { class: 'input-row' }, [
-              refs.distanceNumber,
-              el('span', { class: 'unit', text: HL.i18n.t('unit.km') }),
-            ]),
-            null
-          ),
-          refs.distanceRange,
-          el('p', { class: 'hint', text: HL.i18n.t('ctrl.distanceHelp') }),
-        ])
-      );
+          null
+        ),
+        refs.distanceRange,
+        el('p', { class: 'hint', text: HL.i18n.t('ctrl.distanceHelp') }),
+      ]);
+      container.appendChild(refs.distanceGroup);
 
       // --- nastaveni --------------------------------------------------------
       refs.refraction = el('input', {
@@ -377,6 +381,7 @@
       });
       const planet = HL.findPlanet(state.planet);
       refs.planetGaseous.style.display = planet && planet.gaseous ? '' : 'none';
+      refs.distanceGroup.style.display = state.mode === 'geometry' ? 'none' : '';
 
       if (active !== refs.eyeNumber) refs.eyeNumber.value = String(state.eyeHeight);
       refs.eyeRange.value = String(eyeToSlider(state.eyeHeight));

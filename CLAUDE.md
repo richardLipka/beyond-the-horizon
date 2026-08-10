@@ -52,7 +52,8 @@ check, and `check-strings`. Run all three before committing.
 core/     geometry, format, store, dom   — no DOM knowledge above geometry, no language
 i18n/     strings + language switching
 data/     load / validate / save objects.json (+ factory fallback), planet presets
-ui/       diagram, telescope, chart, controls, results, vanish, limits, editor
+ui/       diagram, telescope, chart, controls, results, vanish, limits,
+          geometry-view, editor
 app.js    the only place that wires state to views
 ```
 
@@ -110,6 +111,21 @@ chord midpoint.** Past that the arc curves back on itself and the surface path
 folds over. `uMin`/`uMax` are clamped for exactly this reason. The line of sight
 is built from the eye and the tangency point and extended in *pixel* space —
 never from a far-away height, which goes infinite near the limit.
+
+**Colours belong to the body, not to the view.** Each entry in `planets.js`
+carries `colors` (`sky`, `surface`, optional `water`, `accent`), a `swatch`, a
+`decor` style and an `airless` flag. `HL.planetLook(id)` feeds the side view,
+the telescope and the geometry figure so all three agree with the menu. Because
+the palette is per-body, the SVG stylesheet must **not** set `stroke`/`fill` on
+anything painted from it — pass the colour as an attribute and let CSS handle
+only width and opacity, or the class will win over the attribute.
+
+**The geometry figure exaggerates its angles on purpose.** Real α is a
+fraction of a degree, so `geometry-view.js` scales the larger of α/β up to
+`DRAW_MAX` (keeping their ratio) and lifts anything below `DRAW_MIN`. The figure
+stays internally consistent — the right angle really is a right angle and the
+tangent really is tangent — and every printed number is the true one. Keep the
+"angles are enlarged" note whenever you touch it.
 
 **Data source priority** is localStorage → `objects.json` → built-in factory
 copy. The third exists purely for `file://`, where `fetch()` of a local file

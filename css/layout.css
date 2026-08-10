@@ -136,6 +136,15 @@
   align-items: start;
 }
 
+/* Pet zalozek se do jedne rady vejde jen na sirokem okne. */
+@media (max-width: 1320px) {
+  .mode-tabs button {
+    padding: 7px 11px;
+    font-size: 0.85rem;
+    gap: 5px;
+  }
+}
+
 @media (max-width: 1100px) {
   #main {
     grid-template-columns: minmax(0, 1fr);

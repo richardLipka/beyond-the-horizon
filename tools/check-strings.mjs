@@ -87,6 +87,44 @@ for (const category of data.categories || []) {
   }
 }
 
+// --- 5. telesa maji nazvy ve vsech jazycich a platnou paletu --------------
+const planetsSource = await readFile(new URL('../js/data/planets.js', import.meta.url), 'utf8');
+new Function(planetsSource)();
+const planets = globalThis.window.HorizonLab.PLANETS;
+console.log(`Teles / bodies: ${planets.length}`);
+
+const HEX = /^#[0-9a-f]{6}$/;
+const DECORS = ['waves', 'rocks', 'bands', 'grass'];
+
+for (const planet of planets) {
+  for (const language of languages) {
+    if (!planet.name || !planet.name[language]) {
+      fail(`teleso "${planet.id}" nema nazev v "${language}" / has no name in "${language}"`);
+    }
+  }
+  if (!(planet.radius > 0)) fail(`teleso "${planet.id}" nema kladny polomer / radius must be positive`);
+  if (!DECORS.includes(planet.decor)) fail(`teleso "${planet.id}" ma neznamou texturu / unknown decor: ${planet.decor}`);
+
+  const colours = planet.colors || {};
+  const groups = [
+    ['sky', colours.sky],
+    ['surface', colours.surface],
+    ...(colours.water ? [['water', colours.water]] : []),
+  ];
+  for (const [name, stops] of groups) {
+    if (!Array.isArray(stops) || stops.length !== 3) {
+      fail(`teleso "${planet.id}" nema tri zastavky v "${name}" / needs three stops in "${name}"`);
+      continue;
+    }
+    for (const stop of stops) {
+      if (!HEX.test(stop)) fail(`teleso "${planet.id}" ma nevalidni barvu v "${name}" / invalid colour: ${stop}`);
+    }
+  }
+  for (const [label, value] of [['accent', colours.accent], ['swatch', planet.swatch]]) {
+    if (!HEX.test(value || '')) fail(`teleso "${planet.id}" ma nevalidni ${label} / invalid ${label}: ${value}`);
+  }
+}
+
 console.log(
   failures === 0 ? '\nVsechny kontroly prosly / all checks passed' : `\n${failures} chyb / failures`
 );

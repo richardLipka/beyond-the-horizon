@@ -50,6 +50,19 @@ antipode is never visible from anywhere.
 Both axes step by decades, the objects from your list sit exactly on the curve,
 and the table walks the height up from a person to "impossible".
 
+### 📐 The geometry
+
+The same thing for high school, stripped to a construction: the tangent touches
+the sphere at one point and is perpendicular to the radius, which turns the
+whole problem into two right triangles.
+
+![Geometric construction: a circle with centre O, the tangent touching at T with a right angle to the radius, angles alpha and beta at the centre, and the heights h1 and h2 marked on the radii](docs/preview-geometry.svg)
+
+Every step is written out symbolically, substituted and evaluated — `cos α =
+R/(R+h₁)`, `t = √(h(2R+h))`, `d = R·α`, `D = R(α+β)` — down to the small-height
+approximation `d ≈ √(2Rh)`. The drawn angles are enlarged so the figure is
+readable; the printed numbers are the real ones.
+
 ### 🧰 Object editor
 
 Add your own church, tower or ship — picture included. Upload an image and it is
@@ -91,6 +104,12 @@ and even the rule-of-thumb constant all follow:
 | Earth | 4.65 km | 24.2 km | 3.57 · √h |
 | Jupiter | 15.4 km | 80.2 km | 11.82 · √h |
 | The Sun | 48.6 km | 253 km | 37.30 · √h |
+
+Each body carries its own palette, so the sky and the ground in every view are
+painted to match the one you picked in the menu — and airless worlds get a black
+sky full of stars.
+
+![The side view on Mars: a rust-red surface and a dusty pink sky, with Olympus Mons partly hidden behind the curve](docs/preview-mars.svg)
 
 ## What ships in the box
 

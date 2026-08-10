@@ -36,7 +36,13 @@
     const skyId = uid('sky');
     const seaId = uid('sea');
     const aboveId = uid('above');
-    const overWater = obj.baseline === 'sea';
+
+    // Stejna paleta jako v bocnim pohledu - obloha i povrch patri telesu
+    // zvolenemu v menu. / Same palette as the side view.
+    const look = model.look || HL.CUSTOM_PALETTE;
+    const palette = look.colors;
+    const onWater = obj.baseline === 'sea' && !!palette.water;
+    const surfaceColors = onWater ? palette.water : palette.surface;
 
     root.appendChild(
       svg('defs', null, [
@@ -50,13 +56,13 @@
           }),
         ]),
         svg('linearGradient', { id: skyId, x1: 0, y1: 0, x2: 0, y2: 1 }, [
-          svg('stop', { offset: '0%', 'stop-color': '#8ccbe4' }),
-          svg('stop', { offset: '70%', 'stop-color': '#d8eef8' }),
-          svg('stop', { offset: '100%', 'stop-color': '#f4fbfd' }),
+          svg('stop', { offset: '0%', 'stop-color': palette.sky[0] }),
+          svg('stop', { offset: '70%', 'stop-color': palette.sky[1] }),
+          svg('stop', { offset: '100%', 'stop-color': palette.sky[2] }),
         ]),
         svg('linearGradient', { id: seaId, x1: 0, y1: 0, x2: 0, y2: 1 }, [
-          svg('stop', { offset: '0%', 'stop-color': overWater ? '#4aa8c4' : '#7fae76' }),
-          svg('stop', { offset: '100%', 'stop-color': overWater ? '#0d4d6b' : '#33684a' }),
+          svg('stop', { offset: '0%', 'stop-color': surfaceColors[0] }),
+          svg('stop', { offset: '100%', 'stop-color': surfaceColors[2] }),
         ]),
       ])
     );
@@ -73,6 +79,25 @@
         fill: `url(#${skyId})`,
       })
     );
+
+    if (look.airless) {
+      const stars = svg('g', { class: 'ts-stars' });
+      let seed = 20260810;
+      const random = () => {
+        seed = (seed * 1103515245 + 12345) % 2147483648;
+        return seed / 2147483648;
+      };
+      for (let i = 0; i < 45; i++) {
+        stars.appendChild(
+          svg('circle', {
+            cx: (CENTRE.x - RADIUS + random() * RADIUS * 2).toFixed(1),
+            cy: (CENTRE.y - RADIUS + random() * (HORIZON_Y - CENTRE.y + RADIUS)).toFixed(1),
+            r: (0.7 + random() * 1.4).toFixed(2),
+          })
+        );
+      }
+      scene.appendChild(stars);
+    }
     scene.appendChild(
       svg('rect', {
         x: CENTRE.x - RADIUS,
@@ -167,9 +192,10 @@
         x2: CENTRE.x + RADIUS,
         y2: HORIZON_Y,
         class: 'ts-horizon',
+        stroke: surfaceColors[2],
       })
     );
-    const waves = svg('g', { class: 'ts-waves' });
+    const waves = svg('g', { class: 'ts-waves', stroke: palette.accent });
     for (let i = 0; i < 5; i++) {
       const y = HORIZON_Y + 14 + i * 17;
       const inset = i * 6;

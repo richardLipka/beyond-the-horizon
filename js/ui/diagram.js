@@ -173,7 +173,14 @@
     const exaggeration = sy / sx;
 
     // ---- definice / defs --------------------------------------------------
-    const overWater = obj.baseline === 'sea';
+    // Barvy prichazeji ze zvoleneho telesa, takze obrazek odpovida tomu,
+    // co je vybrane v menu. / Colours come from the selected body, so the
+    // picture matches the menu.
+    const look = model.look || HL.CUSTOM_PALETTE;
+    const palette = look.colors;
+    const onWater = obj.baseline === 'sea' && !!palette.water;
+    const surfaceColors = onWater ? palette.water : palette.surface;
+    const decorStyle = obj.baseline === 'sea' ? 'waves' : look.decor || 'rocks';
     const skyId = uid('sky');
     const bodyId = uid('body');
     const clipId = uid('clip');
@@ -183,14 +190,14 @@
     root.appendChild(
       svg('defs', null, [
         svg('linearGradient', { id: skyId, x1: 0, y1: 0, x2: 0, y2: 1 }, [
-          svg('stop', { offset: '0%', 'stop-color': '#9fd6ea' }),
-          svg('stop', { offset: '62%', 'stop-color': '#d7eef7' }),
-          svg('stop', { offset: '100%', 'stop-color': '#f2fafc' }),
+          svg('stop', { offset: '0%', 'stop-color': palette.sky[0] }),
+          svg('stop', { offset: '62%', 'stop-color': palette.sky[1] }),
+          svg('stop', { offset: '100%', 'stop-color': palette.sky[2] }),
         ]),
         svg('linearGradient', { id: bodyId, x1: 0, y1: 0, x2: 0, y2: 1 }, [
-          svg('stop', { offset: '0%', 'stop-color': overWater ? '#2e9fbd' : '#79b276' }),
-          svg('stop', { offset: '55%', 'stop-color': overWater ? '#14688a' : '#3f7f56' }),
-          svg('stop', { offset: '100%', 'stop-color': overWater ? '#0a3d5c' : '#245740' }),
+          svg('stop', { offset: '0%', 'stop-color': surfaceColors[0] }),
+          svg('stop', { offset: '55%', 'stop-color': surfaceColors[1] }),
+          svg('stop', { offset: '100%', 'stop-color': surfaceColors[2] }),
         ]),
         svg('clipPath', { id: clipId }, [
           svg('rect', { x: PLOT.x0, y: PLOT.y0, width: PLOT.w, height: PLOT.h, rx: 14 }),
@@ -224,6 +231,28 @@
       svg('rect', { x: PLOT.x0, y: PLOT.y0, width: PLOT.w, height: PLOT.h, fill: `url(#${skyId})` })
     );
 
+    // Telesa bez atmosfery maji cernou oblohu s hvezdami. Pozice jsou
+    // odvozene z pevneho semene, aby pri prekresleni neposkakovaly.
+    // Airless bodies get a black sky with stars, seeded so they stay put.
+    if (look.airless) {
+      const stars = svg('g', { class: 'dg-stars' });
+      let seed = 20260810;
+      const random = () => {
+        seed = (seed * 1103515245 + 12345) % 2147483648;
+        return seed / 2147483648;
+      };
+      for (let i = 0; i < 70; i++) {
+        stars.appendChild(
+          svg('circle', {
+            cx: (PLOT.x0 + random() * PLOT.w).toFixed(1),
+            cy: (PLOT.y0 + random() * PLOT.h * 0.75).toFixed(1),
+            r: (0.7 + random() * 1.5).toFixed(2),
+          })
+        );
+      }
+      scene.appendChild(stars);
+    }
+
     // teleso Zeme / the Earth's body
     let d = `M ${X(surface[0].x).toFixed(2)} ${Y(surface[0].y).toFixed(2)}`;
     for (let i = 1; i <= SAMPLES; i++) {
@@ -236,19 +265,36 @@
         fill: `url(#${bodyId})`,
       })
     );
-    scene.appendChild(svg('path', { d: surfacePath, class: 'dg-surface-line', fill: 'none' }));
+    scene.appendChild(
+      svg('path', {
+        d: surfacePath,
+        class: 'dg-surface-line',
+        fill: 'none',
+        stroke: surfaceColors[2],
+      })
+    );
 
-    // drobne vlnky nebo travni cary / small waves or grass ticks
-    const decor = svg('g', { class: overWater ? 'dg-waves' : 'dg-grass' });
+    // Textura povrchu podle telesa: vlnky, tráva, kameny nebo oblacne pasy.
+    // Surface texture per body: waves, grass, rocks or cloud bands.
+    const decor = svg('g', {
+      class: 'dg-decor dg-decor-' + decorStyle,
+      stroke: palette.accent,
+    });
     for (let i = 6; i < SAMPLES; i += 12) {
       const p = surface[i];
       const px = X(p.x);
       const py = Y(p.y);
-      decor.appendChild(
-        overWater
-          ? svg('path', { d: `M ${px - 9} ${py + 9} q 4.5 -4 9 0 q 4.5 4 9 0` })
-          : svg('path', { d: `M ${px} ${py + 2} l 0 -7 M ${px - 4} ${py + 2} l 1.5 -5 M ${px + 4} ${py + 2} l -1.5 -5` })
-      );
+      let d;
+      if (decorStyle === 'waves') {
+        d = `M ${px - 9} ${py + 9} q 4.5 -4 9 0 q 4.5 4 9 0`;
+      } else if (decorStyle === 'grass') {
+        d = `M ${px} ${py + 2} l 0 -7 M ${px - 4} ${py + 2} l 1.5 -5 M ${px + 4} ${py + 2} l -1.5 -5`;
+      } else if (decorStyle === 'bands') {
+        d = `M ${px - 15} ${py + 8} h 30 M ${px - 8} ${py + 16} h 16`;
+      } else {
+        d = `M ${px - 8} ${py + 9} a 4 3.2 0 0 1 8 0 M ${px + 3} ${py + 13} a 3 2.4 0 0 1 6 0`;
+      }
+      decor.appendChild(svg('path', { d: d }));
     }
     scene.appendChild(decor);
 

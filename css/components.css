@@ -9,8 +9,8 @@
 .mode-tabs button {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 9px 18px;
+  gap: 7px;
+  padding: 8px 14px;
   border: 0;
   border-radius: var(--radius-pill);
   background: transparent;
@@ -469,6 +469,14 @@ textarea.text-input {
   text-align: center;
   line-height: 1.15;
   color: var(--deep-800);
+}
+
+.planet-swatch {
+  display: block;
+  width: 26px;
+  height: 5px;
+  margin-top: 3px;
+  border-radius: 3px;
 }
 
 .custom-diameter {
@@ -1108,6 +1116,145 @@ textarea.text-input {
   flex-direction: column;
   gap: 12px;
   align-items: flex-start;
+}
+
+/* --- rezim Geometrie / the geometry mode ---------------------------------- */
+
+.geometry-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.given-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--gap);
+}
+
+.given-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: var(--shadow-sm);
+  border-left: 6px solid var(--deep-700);
+}
+
+.given-symbol {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--deep-800);
+}
+
+.given-item strong {
+  font-size: 1.25rem;
+  color: var(--deep-800);
+  font-variant-numeric: tabular-nums;
+}
+
+.given-note {
+  margin-left: auto;
+  font-size: 0.76rem;
+  color: var(--muted);
+  text-align: right;
+}
+
+.given-observer {
+  border-left-color: var(--sea-600);
+}
+.given-object {
+  border-left-color: var(--coral);
+}
+
+.formula-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.formula-note {
+  padding: 8px 12px;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.formula-row {
+  display: grid;
+  grid-template-columns: minmax(190px, 1.2fr) minmax(0, 1.3fr) minmax(140px, auto);
+  align-items: baseline;
+  gap: 8px 16px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--foam-50);
+  border-left: 4px solid var(--line);
+}
+
+.formula-symbolic {
+  font-family: "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace;
+  font-size: 0.94rem;
+  color: var(--deep-800);
+}
+
+.formula-sub {
+  font-family: "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace;
+  font-size: 0.8rem;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.formula-result {
+  font-size: 1rem;
+  color: var(--deep-800);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.formula-row.row-observer {
+  border-left-color: var(--sea-500);
+}
+.formula-row.row-observer .formula-result {
+  color: var(--sea-600);
+}
+.formula-row.row-object {
+  border-left-color: var(--coral);
+}
+.formula-row.row-object .formula-result {
+  color: var(--coral-dark);
+}
+.formula-row.row-total {
+  border-left-color: var(--kelp);
+  background: rgba(47, 158, 111, 0.12);
+}
+.formula-row.row-total .formula-result {
+  color: var(--kelp-dark);
+  font-size: 1.12rem;
+  font-weight: 700;
+}
+.formula-row.row-approx {
+  border-left-color: var(--sun);
+}
+
+.formula-standalone {
+  display: block;
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(11, 42, 58, 0.05);
+  font-size: 1rem;
+}
+
+@media (max-width: 720px) {
+  .formula-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+  .formula-result {
+    text-align: left;
+  }
 }
 
 .raw-json {

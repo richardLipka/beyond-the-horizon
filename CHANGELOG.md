@@ -3,6 +3,30 @@
 Formát podle [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 verzování podle [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [1.2.0] — 2026-08-10
+
+### Přidáno / Added
+
+- **Barvy podle tělesa** – každé těleso má vlastní paletu oblohy i povrchu
+  a ta se propisuje do bočního pohledu, pohledu dalekohledem i do nové
+  geometrické konstrukce. Menu tak barevně odpovídá obrázku. Textura povrchu
+  se mění podle tělesa (vlnky, tráva, kameny, oblačné pásy) a světy bez
+  atmosféry (Merkur, Měsíc, Pluto) mají černou oblohu s hvězdami.
+- **Pátý režim „Geometrie“** pro střední školu – abstraktní konstrukce
+  kritické polohy: kružnice se středem O, tečna dotýkající se v bodě T kolmo
+  na poloměr a z toho plynoucí dva pravoúhlé trojúhelníky. Ke každému kroku
+  je symbolický vzorec, dosazení i výsledek (`cos α = R/(R+h₁)`,
+  `t = √(h(2R+h))`, `d = R·α`, `D = R(α+β)`) až po přiblížení `d ≈ √(2Rh)`.
+  Vstupy jsou přesně tři: velikost tělesa, výška pozorovatele a výška objektu,
+  takže se v tomto režimu skrývá ovládání vzdálenosti.
+- Kontrola palet těles v CI (platný formát barev, známá textura, názvy ve
+  všech jazycích).
+
+### Změněno / Changed
+
+- Záložky jsou při pěti režimech kompaktnější, aby se hlavička zbytečně
+  nerozrůstala.
+
 ## [1.1.0] — 2026-08-10
 
 ### Přidáno / Added
@@ -61,5 +85,6 @@ První veřejné vydání. / First public release.
 - **CI** kontrolující výpočty, úplnost překladů a reprodukovatelnost
   vygenerovaného `objects.json`.
 
+[1.2.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.0.0...main
 [1.1.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.0.0...main
 [1.0.0]: https://github.com/richardLipka/beyond-the-horizon/releases/tag/v1.0.0

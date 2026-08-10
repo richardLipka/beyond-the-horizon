@@ -50,6 +50,19 @@ tělesa není vidět odnikud.
 Obě osy jdou po řádech, objekty z tvého seznamu leží přesně na křivce
 a tabulka vede výšku od člověka až po „nemožné“.
 
+### 📐 Geometrie
+
+Totéž pro střední školu, obnažené na konstrukci: tečna se dotýká koule
+v jediném bodě a je kolmá na poloměr, čímž se celá úloha promění na dva
+pravoúhlé trojúhelníky.
+
+![Geometrická konstrukce: kružnice se středem O, tečna dotýkající se v bodě T pod pravým úhlem k poloměru, úhly alfa a beta u středu a výšky h1 a h2 vyznačené na poloměrech](docs/preview-geometry-cs.svg)
+
+Každý krok je vypsaný symbolicky, dosazený a vyčíslený – `cos α = R/(R+h₁)`,
+`t = √(h(2R+h))`, `d = R·α`, `D = R(α+β)` – až po přiblížení pro malé výšky
+`d ≈ √(2Rh)`. Úhly v obrázku jsou zvětšené, aby byl čitelný; vypsaná čísla
+jsou skutečná.
+
 ### 🧰 Editor objektů
 
 Přidej si vlastní kostel, rozhlednu nebo loď — i s obrázkem. Nahraný obrázek se
@@ -91,6 +104,12 @@ přepočítají:
 | Země | 4,65 km | 24,2 km | 3,57 · √h |
 | Jupiter | 15,4 km | 80,2 km | 11,82 · √h |
 | Slunce | 48,6 km | 253 km | 37,30 · √h |
+
+Každé těleso má vlastní paletu, takže obloha i povrch ve všech pohledech
+odpovídají tomu, co je vybrané v menu – a světy bez atmosféry mají černou
+oblohu plnou hvězd.
+
+![Boční pohled na Marsu: rezavě červený povrch a prašně růžová obloha, Olympus Mons částečně schovaný za zakřivením](docs/preview-mars-cs.svg)
 
 ## Co je uvnitř
 

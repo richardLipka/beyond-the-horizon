@@ -281,9 +281,12 @@
     renderChrome(state);
     views.controls.update(state);
 
+    // vzhled telesa (barvy oblohy i povrchu) putuje do vsech pohledu
+    const look = HL.planetLook(state.planet);
+
     if (state.mode === 'see') {
-      HL.Diagram.render(nodes.diagram, { result: result, object: object });
-      HL.Telescope.render(nodes.telescope, { result: result, object: object });
+      HL.Diagram.render(nodes.diagram, { result: result, object: object, look: look });
+      HL.Telescope.render(nodes.telescope, { result: result, object: object, look: look });
       HL.Results.render(nodes.verdict, nodes.stats, nodes.fact, {
         result: result,
         object: object,
@@ -293,6 +296,8 @@
       views.vanish.update(state, result, object);
     } else if (state.mode === 'limits') {
       views.limits.update(state, result, object);
+    } else if (state.mode === 'geometry') {
+      views.geometry.update(state, result, object);
     } else if (state.mode === 'editor') {
       views.editor.update(state);
     }
@@ -328,6 +333,7 @@
     views.controls = HL.Controls.mount(qs('#controls'), app);
     views.vanish = HL.VanishPanel.mount(qs('#vanishPanel'), app);
     views.limits = HL.LimitsPanel.mount(qs('#limitsPanel'), app);
+    views.geometry = HL.GeometryPanel.mount(qs('#geometryPanel'), app);
     views.editor = HL.Editor.mount(qs('#editorPanel'), app);
 
     const loaded = await HL.data.load();

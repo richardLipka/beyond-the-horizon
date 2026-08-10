@@ -72,24 +72,37 @@
   stroke-width: 1.5;
 }
 
+/* Barvu tahu urcuje zvolene teleso, proto ji tady zamerne nenastavujeme. */
 .dg-surface-line {
-  stroke: #06344a;
   stroke-width: 2.6;
   stroke-linecap: round;
 }
 
-.dg-waves path {
+.dg-decor path {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.55);
   stroke-width: 2;
   stroke-linecap: round;
+  opacity: 0.5;
 }
 
-.dg-grass path {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.45);
+.dg-decor-grass path {
   stroke-width: 1.8;
-  stroke-linecap: round;
+  opacity: 0.45;
+}
+
+.dg-decor-bands path {
+  stroke-width: 3;
+  opacity: 0.32;
+}
+
+.dg-decor-rocks path {
+  stroke-width: 2.2;
+  opacity: 0.42;
+}
+
+.dg-stars circle {
+  fill: #fff;
+  opacity: 0.85;
 }
 
 .dg-chord {
@@ -284,16 +297,21 @@
   stroke-width: 3;
 }
 
+/* Barvy opet urcuje zvolene teleso. */
 .ts-horizon {
-  stroke: #05384f;
   stroke-width: 3;
 }
 
 .ts-waves path {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.4);
   stroke-width: 2.4;
   stroke-linecap: round;
+  opacity: 0.42;
+}
+
+.ts-stars circle {
+  fill: #fff;
+  opacity: 0.85;
 }
 
 .ts-ghost {
@@ -457,4 +475,138 @@
   font-weight: 800;
   fill: var(--coral-dark);
 }
-</style><defs><clipPath id="ts-clip-289"><circle cx="220" cy="210" r="176"/></clipPath><clipPath id="ts-above-292"><rect x="44" y="34" width="352" height="250"/></clipPath><linearGradient id="ts-sky-290" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8ccbe4"/><stop offset="70%" stop-color="#d8eef8"/><stop offset="100%" stop-color="#f4fbfd"/></linearGradient><linearGradient id="ts-sea-291" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4aa8c4"/><stop offset="100%" stop-color="#0d4d6b"/></linearGradient></defs><g clip-path="url(#ts-clip-289)"><rect x="44" y="34" width="352" height="352" fill="url(#ts-sky-290)"/><rect x="44" y="284" width="352" height="102" fill="url(#ts-sea-291)"/><g class="ts-ghost"><image href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNjAgMTAwIj48cmVjdCB4PSI0NCIgeT0iMCIgd2lkdGg9IjMiIGhlaWdodD0iNzQiIGZpbGw9IiMzZDRhNTUiLz48cmVjdCB4PSIzMTYiIHk9IjYiIHdpZHRoPSIzIiBoZWlnaHQ9IjY4IiBmaWxsPSIjM2Q0YTU1Ii8+PHJlY3QgeD0iNTgiIHk9IjU0IiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjZjdmMmU2Ii8+PGcgZmlsbD0iI2U4YjA0YiI+PHJlY3QgeD0iMTA0IiB5PSIxMiIgd2lkdGg9IjI2IiBoZWlnaHQ9IjQ0IiByeD0iMyIvPjxyZWN0IHg9IjE1MiIgeT0iMTIiIHdpZHRoPSIyNiIgaGVpZ2h0PSI0NCIgcng9IjMiLz48cmVjdCB4PSIyMDAiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iNDQiIHJ4PSIzIi8+PHJlY3QgeD0iMjQ4IiB5PSIxMiIgd2lkdGg9IjI2IiBoZWlnaHQ9IjQ0IiByeD0iMyIvPjwvZz48ZyBmaWxsPSIjMTQ0MjVjIj48cmVjdCB4PSIxMDQiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48cmVjdCB4PSIxNTIiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48cmVjdCB4PSIyMDAiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48cmVjdCB4PSIyNDgiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48L2c+PHJlY3QgeD0iMTQiIHk9Ijc0IiB3aWR0aD0iMzMyIiBoZWlnaHQ9IjciIGZpbGw9IiNmN2YyZTYiLz48cGF0aCBkPSJNMTQgODFoMzMybC0yNiAxOUg0MFoiIGZpbGw9IiMxNDQyNWMiLz48ZyBmaWxsPSIjNTJiN2M5Ij48cmVjdCB4PSI3MCIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSI4OCIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIxMDYiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMTI0IiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjxyZWN0IHg9IjE0MiIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIxNjAiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMTc4IiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjxyZWN0IHg9IjE5NiIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIyMTQiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMjMyIiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjxyZWN0IHg9IjI1MCIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIyNjgiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMjg2IiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjwvZz48L3N2Zz4=" x="88" y="256.17615781865845" width="264" height="73.33333333333333" preserveAspectRatio="none"/></g><rect x="88" y="284" width="264" height="45.509491151991746" class="ts-ghost-box"/><g clip-path="url(#ts-above-292)"><image href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNjAgMTAwIj48cmVjdCB4PSI0NCIgeT0iMCIgd2lkdGg9IjMiIGhlaWdodD0iNzQiIGZpbGw9IiMzZDRhNTUiLz48cmVjdCB4PSIzMTYiIHk9IjYiIHdpZHRoPSIzIiBoZWlnaHQ9IjY4IiBmaWxsPSIjM2Q0YTU1Ii8+PHJlY3QgeD0iNTgiIHk9IjU0IiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjZjdmMmU2Ii8+PGcgZmlsbD0iI2U4YjA0YiI+PHJlY3QgeD0iMTA0IiB5PSIxMiIgd2lkdGg9IjI2IiBoZWlnaHQ9IjQ0IiByeD0iMyIvPjxyZWN0IHg9IjE1MiIgeT0iMTIiIHdpZHRoPSIyNiIgaGVpZ2h0PSI0NCIgcng9IjMiLz48cmVjdCB4PSIyMDAiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iNDQiIHJ4PSIzIi8+PHJlY3QgeD0iMjQ4IiB5PSIxMiIgd2lkdGg9IjI2IiBoZWlnaHQ9IjQ0IiByeD0iMyIvPjwvZz48ZyBmaWxsPSIjMTQ0MjVjIj48cmVjdCB4PSIxMDQiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48cmVjdCB4PSIxNTIiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48cmVjdCB4PSIyMDAiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48cmVjdCB4PSIyNDgiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48L2c+PHJlY3QgeD0iMTQiIHk9Ijc0IiB3aWR0aD0iMzMyIiBoZWlnaHQ9IjciIGZpbGw9IiNmN2YyZTYiLz48cGF0aCBkPSJNMTQgODFoMzMybC0yNiAxOUg0MFoiIGZpbGw9IiMxNDQyNWMiLz48ZyBmaWxsPSIjNTJiN2M5Ij48cmVjdCB4PSI3MCIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSI4OCIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIxMDYiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMTI0IiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjxyZWN0IHg9IjE0MiIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIxNjAiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMTc4IiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjxyZWN0IHg9IjE5NiIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIyMTQiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMjMyIiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjxyZWN0IHg9IjI1MCIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIyNjgiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMjg2IiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjwvZz48L3N2Zz4=" x="88" y="256.17615781865845" width="264" height="73.33333333333333" preserveAspectRatio="none"/></g><rect x="44" y="284" width="352" height="102" fill="url(#ts-sea-291)" opacity="0.88"/><line x1="44" y1="284" x2="396" y2="284" class="ts-horizon"/><g class="ts-waves"><path d="M 44 298 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0"/><path d="M 50 315 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0"/><path d="M 56 332 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0"/><path d="M 62 349 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0"/><path d="M 68 366 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0"/></g><g class="ts-dim ts-dim-visible"><line x1="370" y1="256.17615781865845" x2="370" y2="284" class="ts-dim-line"/><line x1="365" y1="256.17615781865845" x2="375" y2="256.17615781865845" class="ts-dim-tick"/><line x1="365" y1="284" x2="375" y2="284" class="ts-dim-tick"/><text x="362" y="275.0880789093292" class="ts-label ts-halo" text-anchor="end">20.1 m</text></g><text x="220" y="312.75474557599586" class="ts-hidden-label" text-anchor="middle">hidden: 32.9 m</text></g><circle cx="220" cy="210" r="176" class="ts-rim"/><circle cx="220" cy="210" r="167" class="ts-rim-inner"/><text x="220" y="414" class="ts-caption" text-anchor="middle">20.1 m / 53 m  ·  38 %</text><text x="220" y="434" class="ts-subcaption" text-anchor="middle">dashed = the hidden part</text></svg>
+
+/* --- rezim Geometrie / the geometry construction -------------------------- */
+
+.geometry-svg text {
+  font-family: var(--font);
+  fill: var(--deep-800);
+}
+
+.gm-body {
+  stroke-width: 2;
+}
+
+.gm-radius {
+  stroke: var(--deep-800);
+  stroke-width: 2.4;
+}
+
+.gm-hypotenuse {
+  stroke: var(--deep-800);
+  stroke-width: 1.6;
+  stroke-dasharray: 6 5;
+  opacity: 0.75;
+}
+
+.gm-sight {
+  stroke: #d2382a;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.gm-right-angle {
+  stroke: #d2382a;
+  stroke-width: 2.2;
+}
+
+.gm-arc {
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.gm-arc-observer {
+  stroke: var(--sea-500);
+}
+
+.gm-arc-object {
+  stroke: var(--coral);
+}
+
+.gm-height {
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.gm-height-observer {
+  stroke: var(--sea-600);
+}
+
+.gm-height-object {
+  stroke: var(--coral-dark);
+}
+
+.gm-angle {
+  stroke-width: 2.4;
+  fill: none;
+}
+
+.gm-angle-observer {
+  stroke: var(--sea-600);
+}
+
+.gm-angle-object {
+  stroke: var(--coral-dark);
+}
+
+.gm-point {
+  fill: var(--deep-900);
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.gm-point-small {
+  stroke-width: 1.5;
+}
+
+.gm-symbol {
+  font-size: 21px;
+  font-weight: 700;
+  font-style: italic;
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3.6px;
+  stroke-linejoin: round;
+}
+
+.gm-symbol-small {
+  font-size: 15px;
+  font-weight: 700;
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.gm-label {
+  font-size: 16px;
+  font-weight: 700;
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3.6px;
+  stroke-linejoin: round;
+}
+
+.gm-role {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3.4px;
+  stroke-linejoin: round;
+}
+
+.gm-observer-fill {
+  fill: var(--sea-600);
+}
+
+.gm-object-fill {
+  fill: var(--coral-dark);
+}
+
+.gm-note {
+  font-size: 14px;
+  fill: var(--muted);
+}
+</style><defs><clipPath id="ts-clip-113"><circle cx="220" cy="210" r="176"/></clipPath><clipPath id="ts-above-116"><rect x="44" y="34" width="352" height="250"/></clipPath><linearGradient id="ts-sky-114" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#9fd6ea"/><stop offset="70%" stop-color="#d7eef7"/><stop offset="100%" stop-color="#f2fafc"/></linearGradient><linearGradient id="ts-sea-115" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2e9fbd"/><stop offset="100%" stop-color="#0a3d5c"/></linearGradient></defs><g clip-path="url(#ts-clip-113)"><rect x="44" y="34" width="352" height="352" fill="url(#ts-sky-114)"/><rect x="44" y="284" width="352" height="102" fill="url(#ts-sea-115)"/><g class="ts-ghost"><image href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNjAgMTAwIj48cmVjdCB4PSI0NCIgeT0iMCIgd2lkdGg9IjMiIGhlaWdodD0iNzQiIGZpbGw9IiMzZDRhNTUiLz48cmVjdCB4PSIzMTYiIHk9IjYiIHdpZHRoPSIzIiBoZWlnaHQ9IjY4IiBmaWxsPSIjM2Q0YTU1Ii8+PHJlY3QgeD0iNTgiIHk9IjU0IiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjZjdmMmU2Ii8+PGcgZmlsbD0iI2U4YjA0YiI+PHJlY3QgeD0iMTA0IiB5PSIxMiIgd2lkdGg9IjI2IiBoZWlnaHQ9IjQ0IiByeD0iMyIvPjxyZWN0IHg9IjE1MiIgeT0iMTIiIHdpZHRoPSIyNiIgaGVpZ2h0PSI0NCIgcng9IjMiLz48cmVjdCB4PSIyMDAiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iNDQiIHJ4PSIzIi8+PHJlY3QgeD0iMjQ4IiB5PSIxMiIgd2lkdGg9IjI2IiBoZWlnaHQ9IjQ0IiByeD0iMyIvPjwvZz48ZyBmaWxsPSIjMTQ0MjVjIj48cmVjdCB4PSIxMDQiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48cmVjdCB4PSIxNTIiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48cmVjdCB4PSIyMDAiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48cmVjdCB4PSIyNDgiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48L2c+PHJlY3QgeD0iMTQiIHk9Ijc0IiB3aWR0aD0iMzMyIiBoZWlnaHQ9IjciIGZpbGw9IiNmN2YyZTYiLz48cGF0aCBkPSJNMTQgODFoMzMybC0yNiAxOUg0MFoiIGZpbGw9IiMxNDQyNWMiLz48ZyBmaWxsPSIjNTJiN2M5Ij48cmVjdCB4PSI3MCIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSI4OCIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIxMDYiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMTI0IiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjxyZWN0IHg9IjE0MiIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIxNjAiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMTc4IiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjxyZWN0IHg9IjE5NiIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIyMTQiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMjMyIiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjxyZWN0IHg9IjI1MCIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIyNjgiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMjg2IiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjwvZz48L3N2Zz4=" x="88" y="256.17615781865845" width="264" height="73.33333333333333" preserveAspectRatio="none"/></g><rect x="88" y="284" width="264" height="45.509491151991746" class="ts-ghost-box"/><g clip-path="url(#ts-above-116)"><image href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNjAgMTAwIj48cmVjdCB4PSI0NCIgeT0iMCIgd2lkdGg9IjMiIGhlaWdodD0iNzQiIGZpbGw9IiMzZDRhNTUiLz48cmVjdCB4PSIzMTYiIHk9IjYiIHdpZHRoPSIzIiBoZWlnaHQ9IjY4IiBmaWxsPSIjM2Q0YTU1Ii8+PHJlY3QgeD0iNTgiIHk9IjU0IiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjZjdmMmU2Ii8+PGcgZmlsbD0iI2U4YjA0YiI+PHJlY3QgeD0iMTA0IiB5PSIxMiIgd2lkdGg9IjI2IiBoZWlnaHQ9IjQ0IiByeD0iMyIvPjxyZWN0IHg9IjE1MiIgeT0iMTIiIHdpZHRoPSIyNiIgaGVpZ2h0PSI0NCIgcng9IjMiLz48cmVjdCB4PSIyMDAiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iNDQiIHJ4PSIzIi8+PHJlY3QgeD0iMjQ4IiB5PSIxMiIgd2lkdGg9IjI2IiBoZWlnaHQ9IjQ0IiByeD0iMyIvPjwvZz48ZyBmaWxsPSIjMTQ0MjVjIj48cmVjdCB4PSIxMDQiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48cmVjdCB4PSIxNTIiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48cmVjdCB4PSIyMDAiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48cmVjdCB4PSIyNDgiIHk9IjEyIiB3aWR0aD0iMjYiIGhlaWdodD0iOSIgcng9IjMiLz48L2c+PHJlY3QgeD0iMTQiIHk9Ijc0IiB3aWR0aD0iMzMyIiBoZWlnaHQ9IjciIGZpbGw9IiNmN2YyZTYiLz48cGF0aCBkPSJNMTQgODFoMzMybC0yNiAxOUg0MFoiIGZpbGw9IiMxNDQyNWMiLz48ZyBmaWxsPSIjNTJiN2M5Ij48cmVjdCB4PSI3MCIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSI4OCIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIxMDYiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMTI0IiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjxyZWN0IHg9IjE0MiIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIxNjAiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMTc4IiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjxyZWN0IHg9IjE5NiIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIyMTQiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMjMyIiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjxyZWN0IHg9IjI1MCIgeT0iNjAiIHdpZHRoPSI5IiBoZWlnaHQ9IjgiLz48cmVjdCB4PSIyNjgiIHk9IjYwIiB3aWR0aD0iOSIgaGVpZ2h0PSI4Ii8+PHJlY3QgeD0iMjg2IiB5PSI2MCIgd2lkdGg9IjkiIGhlaWdodD0iOCIvPjwvZz48L3N2Zz4=" x="88" y="256.17615781865845" width="264" height="73.33333333333333" preserveAspectRatio="none"/></g><rect x="44" y="284" width="352" height="102" fill="url(#ts-sea-115)" opacity="0.88"/><line x1="44" y1="284" x2="396" y2="284" class="ts-horizon" stroke="#0a3d5c"/><g class="ts-waves" stroke="#ffffff"><path d="M 44 298 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0"/><path d="M 50 315 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0"/><path d="M 56 332 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0"/><path d="M 62 349 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0"/><path d="M 68 366 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0 q 16 6 32 0 q 16 -6 32 0"/></g><g class="ts-dim ts-dim-visible"><line x1="370" y1="256.17615781865845" x2="370" y2="284" class="ts-dim-line"/><line x1="365" y1="256.17615781865845" x2="375" y2="256.17615781865845" class="ts-dim-tick"/><line x1="365" y1="284" x2="375" y2="284" class="ts-dim-tick"/><text x="362" y="275.0880789093292" class="ts-label ts-halo" text-anchor="end">20.1 m</text></g><text x="220" y="312.75474557599586" class="ts-hidden-label" text-anchor="middle">hidden: 32.9 m</text></g><circle cx="220" cy="210" r="176" class="ts-rim"/><circle cx="220" cy="210" r="167" class="ts-rim-inner"/><text x="220" y="414" class="ts-caption" text-anchor="middle">20.1 m / 53 m  ·  38 %</text><text x="220" y="434" class="ts-subcaption" text-anchor="middle">dashed = the hidden part</text></svg>

@@ -22,7 +22,26 @@
       'mode.see': 'Co uvidím?',
       'mode.vanish': 'Kdy zmizí?',
       'mode.limits': 'Meze viditelnosti',
+      'mode.geometry': 'Geometrie',
       'mode.editor': 'Editor objektů',
+
+      'geo.heading': 'Odkud se ty vzorce berou',
+      'geo.sub':
+        'Celý výpočet stojí na jediné myšlence: tečna je kolmá na poloměr. Zbytek je kosinus a Pythagorova věta.',
+      'geo.observerLabel': 'pozorovatel',
+      'geo.objectLabel': 'objekt',
+      'geo.exaggerated':
+        'Úhly v obrázku jsou zvětšené, jinak by nebyly vidět. Vypsaná čísla jsou skutečná.',
+      'geo.tangentTitle': 'Klíčová myšlenka',
+      'geo.tangentText':
+        'Přímka pohledu se dotýká povrchu v jediném bodě T. Tečna je vždy kolmá na poloměr vedený do bodu dotyku, takže úhel u T je pravý. Tím vzniknou dva pravoúhlé trojúhelníky – O T A′ pro pozorovatele a O T B′ pro objekt – a v nich už stačí kosinus a Pythagorova věta.',
+      'geo.stepsTitle': 'Postup výpočtu',
+      'geo.rowRight': 'Trojúhelník O T A′ má u vrcholu T pravý úhel, protože tečna ⟂ poloměr.',
+      'geo.furtherTitle': 'A když je objekt ještě dál?',
+      'geo.furtherText':
+        'Pak se jeho spodek propadne pod obzor. Označíme γ úhel, o který objekt přesahuje bod dotyku, a schovanou výšku spočítáme ze stejného pravoúhlého trojúhelníku:',
+
+      'ctrl.observer': 'Kde stojíš ty',
 
       'ctrl.planet': 'Na jakém tělese jsi',
       'ctrl.planetHelp':
@@ -258,7 +277,26 @@
       'mode.see': 'What can I see?',
       'mode.vanish': 'When does it vanish?',
       'mode.limits': 'Limits of sight',
+      'mode.geometry': 'The geometry',
       'mode.editor': 'Object editor',
+
+      'geo.heading': 'Where the formulas come from',
+      'geo.sub':
+        'The whole calculation rests on one idea: a tangent is perpendicular to the radius. The rest is cosine and Pythagoras.',
+      'geo.observerLabel': 'observer',
+      'geo.objectLabel': 'object',
+      'geo.exaggerated':
+        'The angles in the figure are enlarged, otherwise they would be invisible. Every printed number is real.',
+      'geo.tangentTitle': 'The key idea',
+      'geo.tangentText':
+        'The line of sight touches the surface at a single point T. A tangent is always perpendicular to the radius drawn to the point of contact, so the angle at T is a right angle. That gives two right triangles — O T A′ for the observer and O T B′ for the object — and cosine plus Pythagoras finish the job.',
+      'geo.stepsTitle': 'The calculation',
+      'geo.rowRight': 'Triangle O T A′ has a right angle at T, because the tangent ⟂ the radius.',
+      'geo.furtherTitle': 'And if the object is further still?',
+      'geo.furtherText':
+        'Then its base sinks below the horizon. Call γ the angle by which the object overshoots the point of contact; the hidden height comes from the very same right triangle:',
+
+      'ctrl.observer': 'Where you stand',
 
       'ctrl.planet': 'Which body you are on',
       'ctrl.planetHelp':

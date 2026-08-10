@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg class="diagram-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 610" role="img" width="1000" height="610"><style>:root {
+  /* moře / sea */
+  --deep-900: #062535;
+  --deep-800: #0b3549;
+  --deep-700: #124a63;
+  --sea-600: #0f6d8c;
+  --sea-500: #1f8fa8;
+  --sea-400: #3fb0c4;
+  --aqua-300: #7fd3e0;
+  --aqua-200: #b7e8f1;
+  --foam-100: #e4f6fa;
+  --foam-50: #f2fbfd;
+
+  /* pevnina a doplňky / land and accents */
+  --paper: #ffffff;
+  --sand: #f8eed6;
+  --sun: #f2a93b;
+  --coral: #e8695c;
+  --coral-dark: #c2483d;
+  --kelp: #2f9e6f;
+  --kelp-dark: #1e7551;
+
+  --ink: #0b2a3a;
+  --muted: #5c7d8e;
+  --line: rgba(11, 42, 58, 0.13);
+  --line-soft: rgba(11, 42, 58, 0.07);
+
+  --radius: 20px;
+  --radius-sm: 12px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 2px 6px rgba(6, 37, 53, 0.07);
+  --shadow: 0 10px 26px rgba(6, 37, 53, 0.1);
+  --shadow-lg: 0 18px 44px rgba(6, 37, 53, 0.16);
+
+  --font: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-size: 17px;
+
+  --gap: 18px;
+  --gap-lg: 26px;
+}
+/* ==========================================================================
+   diagram.css - vzhled SVG grafiky: bocni pohled, dalekohled, graf.
+   Styling for the three SVG views. Barvy odpovidaji dlazdicim s cisly:
+   coral = schovano, zelena = videt, morska modra = k obzoru.
+   (c) 2026 Richard Lipka &lt;lipka@fav.zcu.cz&gt; - MIT license
+   ========================================================================== */
+
+/* --- spolecne / shared ---------------------------------------------------- */
+
+.diagram-svg text,
+.telescope-svg text,
+.chart-svg text {
+  font-family: var(--font);
+  fill: var(--deep-800);
+}
+
+.dg-halo,
+.ts-halo {
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3.4px;
+  stroke-linejoin: round;
+}
+
+/* --- bocni pohled / side view -------------------------------------------- */
+
+.dg-frame {
+  fill: none;
+  stroke: rgba(11, 42, 58, 0.18);
+  stroke-width: 1.5;
+}
+
+/* Barvu tahu urcuje zvolene teleso, proto ji tady zamerne nenastavujeme. */
+.dg-surface-line {
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+
+.dg-decor path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0.5;
+}
+
+.dg-decor-grass path {
+  stroke-width: 1.8;
+  opacity: 0.45;
+}
+
+.dg-decor-bands path {
+  stroke-width: 3;
+  opacity: 0.32;
+}
+
+.dg-decor-rocks path {
+  stroke-width: 2.2;
+  opacity: 0.42;
+}
+
+.dg-stars circle {
+  fill: #fff;
+  opacity: 0.85;
+}
+
+.dg-chord {
+  stroke: rgba(11, 42, 58, 0.55);
+  stroke-width: 1.8;
+  stroke-dasharray: 7 6;
+}
+
+.dg-sight {
+  stroke: #d2382a;
+  stroke-width: 2.6;
+  stroke-dasharray: 11 7;
+  stroke-linecap: round;
+}
+
+.dg-pole {
+  stroke: var(--deep-800);
+  stroke-width: 2;
+  stroke-dasharray: 4 4;
+}
+
+.dg-observer {
+  fill: #10394f;
+}
+
+.dg-observer-body {
+  fill: #1f8fa8;
+}
+
+.dg-eye {
+  fill: #fff;
+  stroke: #d2382a;
+  stroke-width: 3;
+}
+
+.dg-horizon-dot {
+  fill: var(--sun);
+  stroke: #fff;
+  stroke-width: 2.5;
+}
+
+.dg-horizon-tick {
+  stroke: var(--sun);
+  stroke-width: 2.4;
+  stroke-dasharray: 5 4;
+}
+
+.dg-object-hidden {
+  opacity: 0.28;
+}
+
+.dg-hidden-fill {
+  opacity: 0.55;
+}
+
+.dg-hatch-line {
+  stroke: var(--coral-dark);
+  stroke-width: 2.4;
+}
+
+.dg-object-fallback {
+  fill: #6f93a5;
+  stroke: #38596b;
+  stroke-width: 2;
+}
+
+/* kotovaci cary / dimension lines */
+
+.dg-dim-line,
+.dg-dim-tick {
+  stroke: var(--deep-800);
+  stroke-width: 2;
+}
+
+.dg-dim-label {
+  font-size: 18px;
+  font-weight: 700;
+  fill: var(--deep-800);
+}
+
+.dg-dim-hidden .dg-dim-line,
+.dg-dim-hidden .dg-dim-tick {
+  stroke: var(--coral-dark);
+}
+.dg-dim-hidden .dg-dim-label {
+  fill: var(--coral-dark);
+}
+
+.dg-dim-visible .dg-dim-line,
+.dg-dim-visible .dg-dim-tick {
+  stroke: var(--kelp-dark);
+}
+.dg-dim-visible .dg-dim-label {
+  fill: var(--kelp-dark);
+}
+
+.dg-dim-eye .dg-dim-line,
+.dg-dim-eye .dg-dim-tick {
+  stroke: #10394f;
+}
+
+.dg-dim-bulge .dg-dim-line,
+.dg-dim-bulge .dg-dim-tick {
+  stroke: #06344a;
+}
+
+/* popisky / labels */
+
+.dg-label {
+  font-size: 18px;
+  font-weight: 700;
+  fill: var(--sun);
+}
+
+.dg-you {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  fill: #10394f;
+}
+
+.dg-small {
+  font-size: 15px;
+  fill: var(--muted);
+}
+
+.dg-note {
+  font-size: 15px;
+  fill: var(--muted);
+}
+
+.dg-value {
+  font-size: 20px;
+  font-weight: 700;
+  fill: var(--deep-800);
+}
+
+/* meritko a osy / ruler and axes */
+
+.dg-axis-line,
+.dg-axis-tick {
+  stroke: rgba(11, 42, 58, 0.4);
+  stroke-width: 1.6;
+}
+
+.dg-arrowhead {
+  fill: var(--deep-800);
+}
+
+.dg-total-line {
+  stroke: var(--deep-800);
+  stroke-width: 2;
+}
+
+.dg-span-horizon .dg-dim-line,
+.dg-span-horizon .dg-dim-tick {
+  stroke: var(--sea-600);
+  stroke-width: 3;
+}
+.dg-span-horizon .dg-dim-label {
+  fill: var(--sea-600);
+  font-size: 17px;
+}
+
+.dg-span-beyond .dg-dim-line,
+.dg-span-beyond .dg-dim-tick {
+  stroke: var(--sun);
+  stroke-width: 3;
+}
+.dg-span-beyond .dg-dim-label {
+  fill: #b57312;
+  font-size: 17px;
+}
+
+.dg-scalebar-line {
+  stroke: var(--deep-800);
+  stroke-width: 2.2;
+}
+
+/* --- dalekohled / telescope ---------------------------------------------- */
+
+.ts-rim {
+  fill: none;
+  stroke: var(--deep-800);
+  stroke-width: 12;
+  opacity: 0.9;
+}
+
+.ts-rim-inner {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 3;
+}
+
+/* Barvy opet urcuje zvolene teleso. */
+.ts-horizon {
+  stroke-width: 3;
+}
+
+.ts-waves path {
+  fill: none;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  opacity: 0.42;
+}
+
+.ts-stars circle {
+  fill: #fff;
+  opacity: 0.85;
+}
+
+.ts-ghost {
+  opacity: 0.24;
+}
+
+.ts-ghost-box {
+  fill: none;
+  stroke: var(--coral-dark);
+  stroke-width: 2.4;
+  stroke-dasharray: 8 6;
+}
+
+.ts-fallback {
+  fill: #6f93a5;
+  stroke: #38596b;
+  stroke-width: 2;
+}
+
+.ts-dim-line,
+.ts-dim-tick {
+  stroke: var(--kelp-dark);
+  stroke-width: 2.4;
+}
+
+.ts-label {
+  font-size: 20px;
+  font-weight: 700;
+  fill: var(--kelp-dark);
+}
+
+.ts-hidden-label {
+  font-size: 17px;
+  font-weight: 700;
+  fill: rgba(255, 255, 255, 0.95);
+}
+
+.ts-empty {
+  font-size: 19px;
+  font-weight: 700;
+  fill: var(--muted);
+}
+
+.ts-caption {
+  font-size: 21px;
+  font-weight: 800;
+  fill: var(--deep-800);
+}
+
+.ts-subcaption {
+  font-size: 15px;
+  fill: var(--muted);
+}
+
+/* --- graf / chart --------------------------------------------------------- */
+
+.ch-band-full {
+  fill: rgba(47, 158, 111, 0.13);
+}
+.ch-band-partial {
+  fill: rgba(242, 169, 59, 0.15);
+}
+.ch-band-hidden {
+  fill: rgba(232, 105, 92, 0.15);
+}
+
+.ch-band-label {
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--muted);
+}
+
+.ch-grid {
+  stroke: rgba(11, 42, 58, 0.1);
+  stroke-width: 1;
+}
+
+.ch-tick {
+  font-size: 14px;
+  fill: var(--muted);
+}
+
+.ch-area {
+  fill: rgba(31, 143, 168, 0.22);
+}
+
+.ch-curve {
+  stroke: var(--sea-600);
+  stroke-width: 3.4;
+  stroke-linejoin: round;
+}
+
+.ch-marker {
+  stroke-width: 2.4;
+  stroke-dasharray: 8 6;
+}
+
+.ch-marker-start {
+  stroke: var(--kelp-dark);
+}
+
+.ch-marker-vanish {
+  stroke: var(--coral-dark);
+}
+
+.ch-marker-label {
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--deep-800);
+}
+
+.ch-now {
+  stroke: var(--deep-800);
+  stroke-width: 2;
+}
+
+.ch-now-dot {
+  fill: #fff;
+  stroke: var(--deep-800);
+  stroke-width: 3;
+}
+
+.ch-frame {
+  fill: none;
+  stroke: rgba(11, 42, 58, 0.25);
+  stroke-width: 1.5;
+}
+
+.ch-axis-title {
+  font-size: 15px;
+  font-weight: 600;
+  fill: var(--muted);
+}
+
+/* --- meze viditelnosti / limits of sight ---------------------------------- */
+
+.lm-dot {
+  fill: var(--deep-700);
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.lm-dot-active {
+  fill: var(--coral);
+  stroke: #fff;
+  stroke-width: 3;
+}
+
+.lm-dot-label {
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--deep-800);
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3.4px;
+  stroke-linejoin: round;
+}
+
+.dg-warn {
+  font-size: 18px;
+  font-weight: 800;
+  fill: var(--coral-dark);
+}
+
+/* --- rezim Geometrie / the geometry construction -------------------------- */
+
+.geometry-svg text {
+  font-family: var(--font);
+  fill: var(--deep-800);
+}
+
+.gm-body {
+  stroke-width: 2;
+}
+
+.gm-radius {
+  stroke: var(--deep-800);
+  stroke-width: 2.4;
+}
+
+.gm-hypotenuse {
+  stroke: var(--deep-800);
+  stroke-width: 1.6;
+  stroke-dasharray: 6 5;
+  opacity: 0.75;
+}
+
+.gm-sight {
+  stroke: #d2382a;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.gm-right-angle {
+  stroke: #d2382a;
+  stroke-width: 2.2;
+}
+
+.gm-arc {
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.gm-arc-observer {
+  stroke: var(--sea-500);
+}
+
+.gm-arc-object {
+  stroke: var(--coral);
+}
+
+.gm-height {
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.gm-height-observer {
+  stroke: var(--sea-600);
+}
+
+.gm-height-object {
+  stroke: var(--coral-dark);
+}
+
+.gm-angle {
+  stroke-width: 2.4;
+  fill: none;
+}
+
+.gm-angle-observer {
+  stroke: var(--sea-600);
+}
+
+.gm-angle-object {
+  stroke: var(--coral-dark);
+}
+
+.gm-point {
+  fill: var(--deep-900);
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.gm-point-small {
+  stroke-width: 1.5;
+}
+
+.gm-symbol {
+  font-size: 21px;
+  font-weight: 700;
+  font-style: italic;
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3.6px;
+  stroke-linejoin: round;
+}
+
+.gm-symbol-small {
+  font-size: 15px;
+  font-weight: 700;
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.gm-label {
+  font-size: 16px;
+  font-weight: 700;
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3.6px;
+  stroke-linejoin: round;
+}
+
+.gm-role {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3.4px;
+  stroke-linejoin: round;
+}
+
+.gm-observer-fill {
+  fill: var(--sea-600);
+}
+
+.gm-object-fill {
+  fill: var(--coral-dark);
+}
+
+.gm-note {
+  font-size: 14px;
+  fill: var(--muted);
+}
+</style><defs><linearGradient id="dg-sky-232" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f2cfa9"/><stop offset="62%" stop-color="#e2ab7e"/><stop offset="100%" stop-color="#cb8a5c"/></linearGradient><linearGradient id="dg-body-233" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c9744a"/><stop offset="55%" stop-color="#9d4d2c"/><stop offset="100%" stop-color="#612b17"/></linearGradient><clipPath id="dg-clip-234"><rect x="62" y="30" width="892" height="412" rx="14"/></clipPath><pattern id="dg-hatch-235" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="9" class="dg-hatch-line"/></pattern><marker id="dg-arrow-236" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" class="dg-arrowhead"/></marker><clipPath id="dg-vis-237"><rect x="-2" y="-2" width="235.92000000000002" height="105.04681444572662"/></clipPath><clipPath id="dg-hid-238"><rect x="-2" y="103.04681444572662" width="235.92000000000002" height="209.90329971823667"/></clipPath></defs><g clip-path="url(#dg-clip-234)"><rect x="62" y="30" width="892" height="412" fill="url(#dg-sky-232)"/><path d="M 62.00 409.56 L 65.71 408.46 L 69.43 407.36 L 73.14 406.28 L 76.85 405.21 L 80.57 404.14 L 84.28 403.08 L 87.99 402.04 L 91.71 401.00 L 95.42 399.97 L 99.14 398.95 L 102.85 397.94 L 106.56 396.94 L 110.28 395.95 L 113.99 394.97 L 117.71 393.99 L 121.42 393.03 L 125.14 392.07 L 128.85 391.13 L 132.57 390.19 L 136.28 389.26 L 140.00 388.35 L 143.71 387.44 L 147.43 386.54 L 151.14 385.65 L 154.86 384.77 L 158.57 383.89 L 162.29 383.03 L 166.00 382.18 L 169.72 381.33 L 173.43 380.50 L 177.15 379.67 L 180.86 378.86 L 184.58 378.05 L 188.30 377.25 L 192.01 376.46 L 195.73 375.68 L 199.44 374.91 L 203.16 374.15 L 206.87 373.40 L 210.59 372.66 L 214.31 371.92 L 218.02 371.20 L 221.74 370.48 L 225.46 369.78 L 229.17 369.08 L 232.89 368.39 L 236.60 367.72 L 240.32 367.05 L 244.04 366.39 L 247.75 365.74 L 251.47 365.10 L 255.19 364.46 L 258.90 363.84 L 262.62 363.23 L 266.34 362.62 L 270.06 362.03 L 273.77 361.44 L 277.49 360.87 L 281.21 360.30 L 284.92 359.74 L 288.64 359.19 L 292.36 358.65 L 296.07 358.12 L 299.79 357.60 L 303.51 357.09 L 307.23 356.58 L 310.94 356.09 L 314.66 355.61 L 318.38 355.13 L 322.10 354.66 L 325.81 354.21 L 329.53 353.76 L 333.25 353.32 L 336.97 352.89 L 340.68 352.47 L 344.40 352.06 L 348.12 351.66 L 351.84 351.27 L 355.55 350.89 L 359.27 350.51 L 362.99 350.15 L 366.71 349.79 L 370.43 349.45 L 374.14 349.11 L 377.86 348.78 L 381.58 348.46 L 385.30 348.15 L 389.02 347.85 L 392.73 347.56 L 396.45 347.28 L 400.17 347.01 L 403.89 346.75 L 407.61 346.49 L 411.32 346.25 L 415.04 346.01 L 418.76 345.79 L 422.48 345.57 L 426.20 345.36 L 429.92 345.16 L 433.63 344.97 L 437.35 344.79 L 441.07 344.62 L 444.79 344.46 L 448.51 344.31 L 452.22 344.17 L 455.94 344.03 L 459.66 343.91 L 463.38 343.79 L 467.10 343.69 L 470.82 343.59 L 474.53 343.50 L 478.25 343.42 L 481.97 343.35 L 485.69 343.29 L 489.41 343.24 L 493.13 343.20 L 496.84 343.17 L 500.56 343.15 L 504.28 343.13 L 508.00 343.13 L 511.72 343.13 L 515.44 343.15 L 519.16 343.17 L 522.87 343.20 L 526.59 343.24 L 530.31 343.29 L 534.03 343.35 L 537.75 343.42 L 541.47 343.50 L 545.18 343.59 L 548.90 343.69 L 552.62 343.79 L 556.34 343.91 L 560.06 344.03 L 563.78 344.17 L 567.49 344.31 L 571.21 344.46 L 574.93 344.62 L 578.65 344.79 L 582.37 344.97 L 586.08 345.16 L 589.80 345.36 L 593.52 345.57 L 597.24 345.79 L 600.96 346.01 L 604.68 346.25 L 608.39 346.49 L 612.11 346.75 L 615.83 347.01 L 619.55 347.28 L 623.27 347.56 L 626.98 347.85 L 630.70 348.15 L 634.42 348.46 L 638.14 348.78 L 641.86 349.11 L 645.57 349.45 L 649.29 349.79 L 653.01 350.15 L 656.73 350.51 L 660.45 350.89 L 664.16 351.27 L 667.88 351.66 L 671.60 352.06 L 675.32 352.47 L 679.03 352.89 L 682.75 353.32 L 686.47 353.76 L 690.19 354.21 L 693.90 354.66 L 697.62 355.13 L 701.34 355.61 L 705.06 356.09 L 708.77 356.58 L 712.49 357.09 L 716.21 357.60 L 719.93 358.12 L 723.64 358.65 L 727.36 359.19 L 731.08 359.74 L 734.79 360.30 L 738.51 360.87 L 742.23 361.44 L 745.94 362.03 L 749.66 362.62 L 753.38 363.23 L 757.10 363.84 L 760.81 364.46 L 764.53 365.10 L 768.25 365.74 L 771.96 366.39 L 775.68 367.05 L 779.40 367.72 L 783.11 368.39 L 786.83 369.08 L 790.54 369.78 L 794.26 370.48 L 797.98 371.20 L 801.69 371.92 L 805.41 372.66 L 809.13 373.40 L 812.84 374.15 L 816.56 374.91 L 820.27 375.68 L 823.99 376.46 L 827.70 377.25 L 831.42 378.05 L 835.14 378.86 L 838.85 379.67 L 842.57 380.50 L 846.28 381.33 L 850.00 382.18 L 853.71 383.03 L 857.43 383.89 L 861.14 384.77 L 864.86 385.65 L 868.57 386.54 L 872.29 387.44 L 876.00 388.35 L 879.72 389.26 L 883.43 390.19 L 887.15 391.13 L 890.86 392.07 L 894.58 393.03 L 898.29 393.99 L 902.01 394.97 L 905.72 395.95 L 909.44 396.94 L 913.15 397.94 L 916.86 398.95 L 920.58 399.97 L 924.29 401.00 L 928.01 402.04 L 931.72 403.08 L 935.43 404.14 L 939.15 405.21 L 942.86 406.28 L 946.57 407.36 L 950.29 408.46 L 954.00 409.56 L 954 462 L 62 462 Z" fill="url(#dg-body-233)"/><path d="M 62.00 409.56 L 65.71 408.46 L 69.43 407.36 L 73.14 406.28 L 76.85 405.21 L 80.57 404.14 L 84.28 403.08 L 87.99 402.04 L 91.71 401.00 L 95.42 399.97 L 99.14 398.95 L 102.85 397.94 L 106.56 396.94 L 110.28 395.95 L 113.99 394.97 L 117.71 393.99 L 121.42 393.03 L 125.14 392.07 L 128.85 391.13 L 132.57 390.19 L 136.28 389.26 L 140.00 388.35 L 143.71 387.44 L 147.43 386.54 L 151.14 385.65 L 154.86 384.77 L 158.57 383.89 L 162.29 383.03 L 166.00 382.18 L 169.72 381.33 L 173.43 380.50 L 177.15 379.67 L 180.86 378.86 L 184.58 378.05 L 188.30 377.25 L 192.01 376.46 L 195.73 375.68 L 199.44 374.91 L 203.16 374.15 L 206.87 373.40 L 210.59 372.66 L 214.31 371.92 L 218.02 371.20 L 221.74 370.48 L 225.46 369.78 L 229.17 369.08 L 232.89 368.39 L 236.60 367.72 L 240.32 367.05 L 244.04 366.39 L 247.75 365.74 L 251.47 365.10 L 255.19 364.46 L 258.90 363.84 L 262.62 363.23 L 266.34 362.62 L 270.06 362.03 L 273.77 361.44 L 277.49 360.87 L 281.21 360.30 L 284.92 359.74 L 288.64 359.19 L 292.36 358.65 L 296.07 358.12 L 299.79 357.60 L 303.51 357.09 L 307.23 356.58 L 310.94 356.09 L 314.66 355.61 L 318.38 355.13 L 322.10 354.66 L 325.81 354.21 L 329.53 353.76 L 333.25 353.32 L 336.97 352.89 L 340.68 352.47 L 344.40 352.06 L 348.12 351.66 L 351.84 351.27 L 355.55 350.89 L 359.27 350.51 L 362.99 350.15 L 366.71 349.79 L 370.43 349.45 L 374.14 349.11 L 377.86 348.78 L 381.58 348.46 L 385.30 348.15 L 389.02 347.85 L 392.73 347.56 L 396.45 347.28 L 400.17 347.01 L 403.89 346.75 L 407.61 346.49 L 411.32 346.25 L 415.04 346.01 L 418.76 345.79 L 422.48 345.57 L 426.20 345.36 L 429.92 345.16 L 433.63 344.97 L 437.35 344.79 L 441.07 344.62 L 444.79 344.46 L 448.51 344.31 L 452.22 344.17 L 455.94 344.03 L 459.66 343.91 L 463.38 343.79 L 467.10 343.69 L 470.82 343.59 L 474.53 343.50 L 478.25 343.42 L 481.97 343.35 L 485.69 343.29 L 489.41 343.24 L 493.13 343.20 L 496.84 343.17 L 500.56 343.15 L 504.28 343.13 L 508.00 343.13 L 511.72 343.13 L 515.44 343.15 L 519.16 343.17 L 522.87 343.20 L 526.59 343.24 L 530.31 343.29 L 534.03 343.35 L 537.75 343.42 L 541.47 343.50 L 545.18 343.59 L 548.90 343.69 L 552.62 343.79 L 556.34 343.91 L 560.06 344.03 L 563.78 344.17 L 567.49 344.31 L 571.21 344.46 L 574.93 344.62 L 578.65 344.79 L 582.37 344.97 L 586.08 345.16 L 589.80 345.36 L 593.52 345.57 L 597.24 345.79 L 600.96 346.01 L 604.68 346.25 L 608.39 346.49 L 612.11 346.75 L 615.83 347.01 L 619.55 347.28 L 623.27 347.56 L 626.98 347.85 L 630.70 348.15 L 634.42 348.46 L 638.14 348.78 L 641.86 349.11 L 645.57 349.45 L 649.29 349.79 L 653.01 350.15 L 656.73 350.51 L 660.45 350.89 L 664.16 351.27 L 667.88 351.66 L 671.60 352.06 L 675.32 352.47 L 679.03 352.89 L 682.75 353.32 L 686.47 353.76 L 690.19 354.21 L 693.90 354.66 L 697.62 355.13 L 701.34 355.61 L 705.06 356.09 L 708.77 356.58 L 712.49 357.09 L 716.21 357.60 L 719.93 358.12 L 723.64 358.65 L 727.36 359.19 L 731.08 359.74 L 734.79 360.30 L 738.51 360.87 L 742.23 361.44 L 745.94 362.03 L 749.66 362.62 L 753.38 363.23 L 757.10 363.84 L 760.81 364.46 L 764.53 365.10 L 768.25 365.74 L 771.96 366.39 L 775.68 367.05 L 779.40 367.72 L 783.11 368.39 L 786.83 369.08 L 790.54 369.78 L 794.26 370.48 L 797.98 371.20 L 801.69 371.92 L 805.41 372.66 L 809.13 373.40 L 812.84 374.15 L 816.56 374.91 L 820.27 375.68 L 823.99 376.46 L 827.70 377.25 L 831.42 378.05 L 835.14 378.86 L 838.85 379.67 L 842.57 380.50 L 846.28 381.33 L 850.00 382.18 L 853.71 383.03 L 857.43 383.89 L 861.14 384.77 L 864.86 385.65 L 868.57 386.54 L 872.29 387.44 L 876.00 388.35 L 879.72 389.26 L 883.43 390.19 L 887.15 391.13 L 890.86 392.07 L 894.58 393.03 L 898.29 393.99 L 902.01 394.97 L 905.72 395.95 L 909.44 396.94 L 913.15 397.94 L 916.86 398.95 L 920.58 399.97 L 924.29 401.00 L 928.01 402.04 L 931.72 403.08 L 935.43 404.14 L 939.15 405.21 L 942.86 406.28 L 946.57 407.36 L 950.29 408.46 L 954.00 409.56" class="dg-surface-line" fill="none" stroke="#612b17"/><g class="dg-decor dg-decor-rocks" stroke="#f4d3b6"><path d="M 76.28100462555162 412.0834547828104 a 4 3.2 0 0 1 8 0 M 87.28100462555162 416.0834547828104 a 3 2.4 0 0 1 6 0"/><path d="M 120.85162596288052 400.12773759770687 a 4 3.2 0 0 1 8 0 M 131.85162596288052 404.12773759770687 a 3 2.4 0 0 1 6 0"/><path d="M 165.43270553801122 389.4996027297941 a 4 3.2 0 0 1 8 0 M 176.43270553801122 393.4996027297941 a 3 2.4 0 0 1 6 0"/><path d="M 210.02301364889655 380.19934334019183 a 4 3.2 0 0 1 8 0 M 221.02301364889655 384.19934334019183 a 3 2.4 0 0 1 6 0"/><path d="M 254.62132033893454 372.22721596257117 a 4 3.2 0 0 1 8 0 M 265.62132033893454 376.22721596257117 a 3 2.4 0 0 1 6 0"/><path d="M 299.22639543089394 365.58344049607877 a 4 3.2 0 0 1 8 0 M 310.22639543089394 369.58344049607877 a 3 2.4 0 0 1 6 0"/><path d="M 343.8370085608477 360.2682001992712 a 4 3.2 0 0 1 8 0 M 354.8370085608477 364.2682001992712 a 3 2.4 0 0 1 6 0"/><path d="M 388.45192921211014 356.28164168505975 a 4 3.2 0 0 1 8 0 M 399.45192921211014 360.28164168505975 a 3 2.4 0 0 1 6 0"/><path d="M 433.06992674917905 353.623874916667 a 4 3.2 0 0 1 8 0 M 444.06992674917905 357.623874916667 a 3 2.4 0 0 1 6 0"/><path d="M 477.68977045168106 352.2949732045928 a 4 3.2 0 0 1 8 0 M 488.68977045168106 356.2949732045928 a 3 2.4 0 0 1 6 0"/><path d="M 522.3102295483188 352.2949732045928 a 4 3.2 0 0 1 8 0 M 533.3102295483188 356.2949732045928 a 3 2.4 0 0 1 6 0"/><path d="M 566.9300732508208 353.623874916667 a 4 3.2 0 0 1 8 0 M 577.9300732508208 357.623874916667 a 3 2.4 0 0 1 6 0"/><path d="M 611.5480707878896 356.28164168505975 a 4 3.2 0 0 1 8 0 M 622.5480707878896 360.28164168505975 a 3 2.4 0 0 1 6 0"/><path d="M 656.162991439152 360.2682001992711 a 4 3.2 0 0 1 8 0 M 667.162991439152 364.2682001992711 a 3 2.4 0 0 1 6 0"/><path d="M 700.7736045691058 365.58344049607877 a 4 3.2 0 0 1 8 0 M 711.7736045691058 369.58344049607877 a 3 2.4 0 0 1 6 0"/><path d="M 745.3786796610653 372.2272159625711 a 4 3.2 0 0 1 8 0 M 756.3786796610653 376.2272159625711 a 3 2.4 0 0 1 6 0"/><path d="M 789.9769863511033 380.1993433401918 a 4 3.2 0 0 1 8 0 M 800.9769863511033 384.1993433401918 a 3 2.4 0 0 1 6 0"/><path d="M 834.5672944619887 389.4996027297941 a 4 3.2 0 0 1 8 0 M 845.5672944619887 393.4996027297941 a 3 2.4 0 0 1 6 0"/><path d="M 879.1483740371194 400.12773759770687 a 4 3.2 0 0 1 8 0 M 890.1483740371194 404.12773759770687 a 3 2.4 0 0 1 6 0"/><path d="M 923.7189953744484 412.0834547828104 a 4 3.2 0 0 1 8 0 M 934.7189953744484 416.0834547828104 a 3 2.4 0 0 1 6 0"/></g><line x1="109.74857881057005" y1="396.0890736816933" x2="906.2514211894301" y2="396.0890736816933" class="dg-chord"/><g class="dg-dim dg-dim-bulge"><line x1="508" y1="343.12885963145885" x2="508" y2="396.0890736816933" class="dg-dim-line"/><line x1="503" y1="343.12885963145885" x2="513" y2="343.12885963145885" class="dg-dim-tick"/><line x1="503" y1="396.0890736816933" x2="513" y2="396.0890736816933" class="dg-dim-tick"/></g><text x="518" y="365.60896665657606" class="dg-small dg-halo" text-anchor="start">vyboulení</text><text x="518" y="383.60896665657606" class="dg-dim-label dg-halo" text-anchor="start">3 726 m</text><line x1="109.74837906800744" y1="396.06493682806087" x2="2181.451566447698" y2="-143.4446028474004" class="dg-sight"/><g transform="translate(906.2514211894301,396.0890736816933) rotate(0.474) translate(-115.96000000000001,-310.9501141639633)"><g clip-path="url(#dg-hid-238)" class="dg-object-hidden"><image href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgMTAwIj48cGF0aCBkPSJNMCAxMDBDNTggOTIgOTYgMzQgMTIwIDhoNjBjMjQgMjYgNjIgODQgMTIwIDkyWiIgZmlsbD0iI2IwNmE0YSIvPjxwYXRoIGQ9Ik0wIDEwMEM1OCA5MiA5NiAzNCAxMjAgOGgyMmMtMTQgMjgtNDAgNjYtNjAgOTJaIiBmaWxsPSIjYzA3YzU4Ii8+PGcgc3Ryb2tlPSIjOGU1MTM4IiBzdHJva2Utd2lkdGg9IjEuNiIgZmlsbD0ibm9uZSIgb3BhY2l0eT0iMC41NSI+PHBhdGggZD0iTTEwNCA0NCA5NiAxMDBNMTM2IDI2IDEzMiAxMDBNMTcwIDMwIDE3OCAxMDBNMTk4IDUyIDIxNCAxMDAiLz48L2c+PGVsbGlwc2UgY3g9IjE1MCIgY3k9IjkiIHJ4PSIzMSIgcnk9IjciIGZpbGw9IiM4ZTUxMzgiLz48ZWxsaXBzZSBjeD0iMTUwIiBjeT0iOCIgcng9IjIyIiByeT0iNC42IiBmaWxsPSIjNjYzOTJhIi8+PHBhdGggZD0iTTAgMTAwaDMwMCIgc3Ryb2tlPSIjOGU1MTM4IiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9IjAuNCIvPjwvc3ZnPg==" x="0" y="0" width="231.92000000000002" height="310.9501141639633" preserveAspectRatio="none"/></g><rect x="0" y="103.04681444572662" width="231.92000000000002" height="207.90329971823667" fill="url(#dg-hatch-235)" class="dg-hidden-fill"/><g clip-path="url(#dg-vis-237)"><image href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgMTAwIj48cGF0aCBkPSJNMCAxMDBDNTggOTIgOTYgMzQgMTIwIDhoNjBjMjQgMjYgNjIgODQgMTIwIDkyWiIgZmlsbD0iI2IwNmE0YSIvPjxwYXRoIGQ9Ik0wIDEwMEM1OCA5MiA5NiAzNCAxMjAgOGgyMmMtMTQgMjgtNDAgNjYtNjAgOTJaIiBmaWxsPSIjYzA3YzU4Ii8+PGcgc3Ryb2tlPSIjOGU1MTM4IiBzdHJva2Utd2lkdGg9IjEuNiIgZmlsbD0ibm9uZSIgb3BhY2l0eT0iMC41NSI+PHBhdGggZD0iTTEwNCA0NCA5NiAxMDBNMTM2IDI2IDEzMiAxMDBNMTcwIDMwIDE3OCAxMDBNMTk4IDUyIDIxNCAxMDAiLz48L2c+PGVsbGlwc2UgY3g9IjE1MCIgY3k9IjkiIHJ4PSIzMSIgcnk9IjciIGZpbGw9IiM4ZTUxMzgiLz48ZWxsaXBzZSBjeD0iMTUwIiBjeT0iOCIgcng9IjIyIiByeT0iNC42IiBmaWxsPSIjNjYzOTJhIi8+PHBhdGggZD0iTTAgMTAwaDMwMCIgc3Ryb2tlPSIjOGU1MTM4IiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9IjAuNCIvPjwvc3ZnPg==" x="0" y="0" width="231.92000000000002" height="310.9501141639633" preserveAspectRatio="none"/></g></g><line x1="109.74857881057005" y1="396.0890736816933" x2="109.74837906800744" y2="396.06493682806087" class="dg-pole"/><g transform="translate(109.74857881057005,396.0890736816933) rotate(-0.474) translate(0,0)"><g transform="scale(0.14)" class="dg-observer"><rect x="-11" y="-72" width="22" height="41" rx="8" class="dg-observer-body"/><rect x="-9.5" y="-33" width="8" height="33" rx="3.4"/><rect x="1.5" y="-33" width="8" height="33" rx="3.4"/><rect x="7" y="-70" width="20" height="7.5" rx="3.6"/><circle cx="0" cy="-86" r="13"/></g></g><circle cx="109.74837906800744" cy="396.06493682806087" r="5.5" class="dg-eye"/><text x="109.74857881057005" y="422.0890736816933" class="dg-you dg-halo" text-anchor="middle">TY</text><circle cx="118.24847044660774" cy="393.85135699924945" r="6" class="dg-horizon-dot"/><line x1="118.24847044660774" y1="393.85135699924945" x2="118.24847044660774" y2="359.85135699924945" class="dg-horizon-tick"/><text x="118.24847044660774" y="351.85135699924945" class="dg-label dg-halo" text-anchor="middle">obzor</text><g><g class="dg-dim dg-dim-hidden"><line x1="774.29142118943" y1="188.19289247186296" x2="774.29142118943" y2="396.0890736816933" class="dg-dim-line"/><line x1="769.29142118943" y1="188.19289247186296" x2="779.29142118943" y2="188.19289247186296" class="dg-dim-tick"/><line x1="769.29142118943" y1="396.0890736816933" x2="779.29142118943" y2="396.0890736816933" class="dg-dim-tick"/><text x="765.29142118943" y="297.1409830767781" class="dg-dim-label dg-halo" text-anchor="end">schováno: 14 642 m</text></g><g class="dg-dim dg-dim-visible"><line x1="774.29142118943" y1="85.14960629921262" x2="774.29142118943" y2="188.19289247186296" class="dg-dim-line"/><line x1="769.29142118943" y1="85.14960629921262" x2="779.29142118943" y2="85.14960629921262" class="dg-dim-tick"/><line x1="769.29142118943" y1="188.19289247186296" x2="779.29142118943" y2="188.19289247186296" class="dg-dim-tick"/><text x="765.29142118943" y="141.6712493855378" class="dg-dim-label dg-halo" text-anchor="end">vidíš: 7 258 m</text></g></g><text x="125.74857881057005" y="386.06493682806087" class="dg-dim-label dg-halo" text-anchor="start">oči: 1,7 m</text></g><rect x="62" y="30" width="892" height="412" rx="14" class="dg-frame"/><g class="dg-axis"><line x1="62" y1="486" x2="954" y2="486" class="dg-axis-line"/><line x1="109.74857881057005" y1="480" x2="109.74857881057005" y2="492" class="dg-axis-tick"/><text x="109.74857881057005" y="506" class="dg-small" text-anchor="middle">0 km</text><line x1="360.26351247527725" y1="480" x2="360.26351247527725" y2="492" class="dg-axis-tick"/><text x="360.26351247527725" y="506" class="dg-small" text-anchor="middle">100 km</text><line x1="610.9070295654155" y1="480" x2="610.9070295654155" y2="492" class="dg-axis-tick"/><text x="610.9070295654155" y="506" class="dg-small" text-anchor="middle">200 km</text><line x1="861.4609808442625" y1="480" x2="861.4609808442625" y2="492" class="dg-axis-tick"/><text x="861.4609808442625" y="506" class="dg-small" text-anchor="middle">300 km</text></g><g class="dg-total"><line x1="109.74857881057005" y1="462" x2="906.2514211894301" y2="462" class="dg-total-line" marker-start="url(#dg-arrow-236)" marker-end="url(#dg-arrow-236)"/><text x="508.00000000000006" y="454" class="dg-value" text-anchor="middle">vzdálenost: 318 km</text></g><g><g class="dg-span dg-span-horizon"><line x1="109.74857881057005" y1="532" x2="118.24847044660774" y2="532" class="dg-dim-line"/><line x1="109.74857881057005" y1="526" x2="109.74857881057005" y2="538" class="dg-dim-tick"/><line x1="118.24847044660774" y1="526" x2="118.24847044660774" y2="538" class="dg-dim-tick"/><text x="113.9985246285889" y="552" class="dg-dim-label dg-halo" text-anchor="middle">k obzoru: 3,39 km</text></g><g class="dg-span dg-span-beyond"><line x1="118.24847044660774" y1="532" x2="906.2514211894301" y2="532" class="dg-dim-line"/><line x1="118.24847044660774" y1="526" x2="118.24847044660774" y2="538" class="dg-dim-tick"/><line x1="906.2514211894301" y1="526" x2="906.2514211894301" y2="538" class="dg-dim-tick"/><text x="512.2499458180189" y="552" class="dg-dim-label dg-halo" text-anchor="middle">za obzorem: 314 km</text></g></g><g class="dg-scalebar"><line x1="62" y1="580" x2="312.6534800755888" y2="580" class="dg-scalebar-line"/><line x1="62" y1="575" x2="62" y2="585" class="dg-scalebar-line"/><line x1="312.6534800755888" y1="575" x2="312.6534800755888" y2="585" class="dg-scalebar-line"/><text x="62" y="600" class="dg-small" text-anchor="start">100 km</text></g><text x="954" y="574" class="dg-note" text-anchor="end">Výšky jsou 5,7× zvětšené, jinak by zakřivení nebylo vidět.</text><text x="954" y="594" class="dg-note" text-anchor="end">Šířky objektů nejsou v měřítku – přesné jsou výšky a vzdálenosti.</text></svg>
