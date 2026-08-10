@@ -185,6 +185,8 @@
         el('h3', { class: 'card-title', text: t('vanish.explainTitle') }),
         el('p', {
           text: t('vanish.explain', {
+            // konstanta pravidla palce zavisi na telese, nesmi byt napevno 3,57
+            k: F.number(result.ruleConstant, 2, lang),
             a: F.distance(result.horizon, lang),
             b: F.distance(result.objectHorizon, lang),
             c: F.distance(result.vanishDistance, lang),
@@ -192,8 +194,25 @@
         }),
       ]);
       if (result.refraction) {
-        explain.appendChild(el('p', { class: 'hint', text: t('vanish.explainRefraction') }));
+        explain.appendChild(
+          el('p', {
+            class: 'hint',
+            text: t('vanish.explainRefraction', {
+              k0: F.number(G.rootRuleConstant(result.physicalRadius), 2, lang),
+              k1: F.number(result.ruleConstant, 2, lang),
+            }),
+          })
+        );
       }
+      explain.appendChild(
+        el('p', {
+          class: 'hint',
+          text: t('vanish.explainPlanet', {
+            k: F.number(result.ruleConstant, 2, lang),
+            planet: app.planetName(state),
+          }),
+        })
+      );
       container.appendChild(explain);
 
       // tabulka / table

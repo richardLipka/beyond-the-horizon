@@ -31,7 +31,10 @@
 
     // ---- barevny pruh se slovnim vysvetlenim -----------------------------
     HL.dom.clear(statusHost);
-    statusHost.className = 'verdict verdict-' + r.status;
+    // Za mezi dohledu uz nejde o "schovany objekt", ale o principialni
+    // nemoznost - proto ma vlastni text.
+    const key = r.beyondReach ? 'beyond' : r.status;
+    statusHost.className = 'verdict verdict-' + (r.beyondReach ? 'hidden' : r.status);
     const params = {
       eye: F.height(r.eyeHeight, lang),
       horizon: F.distance(r.horizon, lang),
@@ -42,9 +45,11 @@
       visible: F.height(r.visible, lang),
       percent: F.percent(r.visibleFraction, lang),
       vanish: F.distance(r.vanishDistance, lang),
+      maxSight: F.distance(r.maxSight, lang),
+      planet: model.planet || '',
     };
-    statusHost.appendChild(el('h3', { class: 'verdict-title', text: t(`status.${r.status}.title`) }));
-    statusHost.appendChild(el('p', { class: 'verdict-text', text: t(`status.${r.status}.text`, params) }));
+    statusHost.appendChild(el('h3', { class: 'verdict-title', text: t(`status.${key}.title`) }));
+    statusHost.appendChild(el('p', { class: 'verdict-text', text: t(`status.${key}.text`, params) }));
 
     // ---- dlazdice s cisly ------------------------------------------------
     HL.dom.clear(statsHost);
@@ -77,6 +82,14 @@
       )
     );
     statsHost.appendChild(tile(t('res.dip'), F.angle(r.dip, lang), t('res.dipSub')));
+    statsHost.appendChild(
+      tile(
+        t('res.planet'),
+        model.planet || '',
+        t('res.planetSub', { r: F.distance(r.physicalRadius, lang) }),
+        'stat-planet'
+      )
+    );
 
     // ---- zajimavost o objektu --------------------------------------------
     HL.dom.clear(factHost);

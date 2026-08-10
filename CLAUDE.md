@@ -51,8 +51,8 @@ check, and `check-strings`. Run all three before committing.
 ```
 core/     geometry, format, store, dom   — no DOM knowledge above geometry, no language
 i18n/     strings + language switching
-data/     load / validate / save objects.json (+ factory fallback)
-ui/       diagram, telescope, chart, controls, results, vanish, editor
+data/     load / validate / save objects.json (+ factory fallback), planet presets
+ui/       diagram, telescope, chart, controls, results, vanish, limits, editor
 app.js    the only place that wires state to views
 ```
 
@@ -90,6 +90,27 @@ invariant or typing will lose focus.
 state changes just sync input values, and inputs that currently have focus are
 skipped so typing is not fought.
 
+**Nothing is hardcoded to the Earth.** Every calculation takes the radius of the
+selected body. `effectiveRadius(refraction, baseRadius)` and `solve({planetRadius,
+…})` must always be given one; they only fall back to the Earth when it is
+omitted. Watch for Earth-specific *numbers in text*: the "3.57 · √h" rule of
+thumb is `rootRuleConstant(R)` and is passed into the strings as `{k}` — never
+write the constant into a translation.
+
+**The sight limit is real geometry, not a guard clause.** `horizonDistance`
+approaches `πR/2` as the height grows, so nothing beyond
+`horizon + πR/2` is ever visible and the antipode (`πR`) is unreachable at any
+height. `hiddenHeight` returns `Infinity` there and `solve` reports
+`beyondReach: true`; `distance` is clamped to the antipode. When displaying
+required heights, treat "at or past `maxSight`" as impossible — floating point
+still yields a finite (absurd) number exactly at the limit.
+
+**The diagram may only span a quarter of the circumference either side of the
+chord midpoint.** Past that the arc curves back on itself and the surface path
+folds over. `uMin`/`uMax` are clamped for exactly this reason. The line of sight
+is built from the eye and the tangency point and extended in *pixel* space —
+never from a far-away height, which goes infinite near the limit.
+
 **Data source priority** is localStorage → `objects.json` → built-in factory
 copy. The third exists purely for `file://`, where `fetch()` of a local file
 fails. The header badge tells the user which one is live.
@@ -101,6 +122,9 @@ fails. The header badge tells the user which one is live.
   and Markdown.
 - 2-space indent, LF endings, single quotes in JS.
 - Czech is the primary UI language; English is the fallback for missing keys.
+- Czech declines nouns, so never drop a `{planet}` placeholder straight into a
+  case-bearing slot ("skrz **Země**" is wrong). Put it in apposition or
+  parentheses — "skrz celé těleso ({planet})" — so every body reads correctly.
 
 ## Attribution
 

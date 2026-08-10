@@ -37,6 +37,19 @@ vzniká (`tvůj obzor + obzor od špičky objektu`), graf viditelné výšky pod
 vzdálenosti se třemi barevnými pásmy, tabulka po krocích a klikací srovnání
 všech objektů v datovém souboru.
 
+### ♾️ Meze viditelnosti
+
+Ať vylezeš jakkoli vysoko, uvidíš vždycky jen **polovinu tělesa** – čtvrtinu
+obvodu na každou stranu. Potřebná výška, aby objekt vykoukl nad obzor, proto
+roste přes všechny meze a narazí na svislou zeď: za vzdáleností
+`tvůj obzor + čtvrtina obvodu` už nepomůže *žádná* výška a protilehlý bod
+tělesa není vidět odnikud.
+
+![Logaritmický graf potřebné výšky podle vzdálenosti, rostoucí do svislé asymptoty na mezi dohledu, za ní červené pásmo označené jako nikdy neviditelné](docs/preview-limits-cs.svg)
+
+Obě osy jdou po řádech, objekty z tvého seznamu leží přesně na křivce
+a tabulka vede výšku od člověka až po „nemožné“.
+
 ### 🧰 Editor objektů
 
 Přidej si vlastní kostel, rozhlednu nebo loď — i s obrázkem. Nahraný obrázek se
@@ -64,9 +77,24 @@ data načtená.
 
 ---
 
+## Libovolné těleso
+
+Všechny výpočty se řídí poloměrem tělesa, na kterém stojíš. Vyber si z jedenácti
+předvoleb – Slunce, všech osm planet, Měsíc a Pluto – nebo si napiš vlastní
+průměr. Obzor, vzdálenost zmizení, diagram, grafy i konstanta pravidla palce se
+přepočítají:
+
+| Těleso | Obzor z 1,7 m | Stěžeň 30 m zmizí | Pravidlo palce |
+| --- | --- | --- | --- |
+| Měsíc | 2,43 km | 12,6 km | 1,86 · √h |
+| Mars | 3,39 km | 17,7 km | 2,60 · √h |
+| Země | 4,65 km | 24,2 km | 3,57 · √h |
+| Jupiter | 15,4 km | 80,2 km | 11,82 · √h |
+| Slunce | 48,6 km | 253 km | 37,30 · √h |
+
 ## Co je uvnitř
 
-Patnáct objektů, každý s ručně kreslenou SVG grafikou, výškou a zajímavostí
+Šestnáct objektů, každý s ručně kreslenou SVG grafikou, výškou a zajímavostí
 v obou jazycích:
 
 | | |
@@ -74,7 +102,7 @@ v obou jazycích:
 | **Lidé a domy** | člověk (1,75 m), rodinný dům (8 m) |
 | **Lodě** | plachetnice (30 m), maják (40 m), Titanic (53 m), kontejnerová loď (60 m) |
 | **Stavby a věže** | Petřínská rozhledna (63,5 m), Socha Svobody (93 m), Ještěd (94 m), katedrála sv. Bartoloměje v Plzni (102,3 m), větrná elektrárna (150 m), Eiffelova věž (330 m), Burdž Chalífa (828 m) |
-| **Hory** | Sněžka (1603 m), Mount Everest (8849 m) |
+| **Hory** | Sněžka (1603 m), Mount Everest (8849 m), Olympus Mons (21 900 m) |
 
 ---
 
@@ -85,10 +113,18 @@ vzdálenosti se měří **po povrchu**, výšky **kolmo k němu**.
 
 | Veličina | Vzorec |
 | --- | --- |
-| vzdálenost k obzoru | `d = R · arccos(R / (R + h))` ≈ 3,57 · √h  (h v metrech, d v kilometrech) |
+| vzdálenost k obzoru | `d = R · arccos(R / (R + h))` ≈ √(2R) · √h |
 | výška schovaná za vyboulením | `R · (sec(d₂ / R) − 1)`, kde `d₂` je část za obzorem |
 | vzdálenost zmizení | tvůj obzor + obzor od špičky objektu |
 | vyboulení uprostřed | `R · (1 − cos(D / 2R))` ≈ D² / 8R |
+| nejdál, kam obzor dosáhne | `πR / 2` – čtvrtina obvodu, dosažená až v nekonečné výšce |
+| absolutní mez dohledu | `tvůj obzor + πR / 2`; za ní nestačí žádná výška |
+| protilehlý bod | `πR` – polovina obvodu, odnikud není vidět |
+
+Protože `arccos(R / (R + h)) → π/2`, když výška roste, **vidíš vždycky přesně
+jednu polokouli a ani metr navíc**. Dvě nekonečně vysoké věže by se právě tak
+uviděly přes polovinu obvodu; cokoli na protilehlé straně tělesa zůstane
+schované, ať je to jakkoli vysoké.
 
 Přepínač **refrakce** nahradí poloměr efektivním `R · 7/6` — vzduch ohýbá světlo
 dolů, takže se ve skutečnosti dohlédne asi o 8 % dál a pravidlo palce se změní
@@ -168,8 +204,8 @@ objects.json        data objektů (generováno — needitovat ručně)
 css/                theme · layout · components · diagram
 js/core/            geometry · format · store · dom
 js/i18n/            texty (cs + en) · přepínání jazyka
-js/data/            tovární záloha (generováno) · načítání a kontrola
-js/ui/              diagram · telescope · chart · controls · results · vanish · editor
+js/data/            tovární záloha (generováno) · načítání a kontrola · předvolby těles
+js/ui/              diagram · telescope · chart · controls · results · vanish · limits · editor
 js/app.js           propojení stavu s pohledy
 
 tools/svg/          zdrojové kresby k úpravám

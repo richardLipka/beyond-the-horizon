@@ -131,6 +131,60 @@
     function build(state) {
       HL.dom.clear(container);
 
+      // --- teleso / the body ------------------------------------------------
+      refs.planetGrid = el('div', { class: 'planet-grid' });
+      for (const planet of HL.PLANETS) {
+        refs.planetGrid.appendChild(
+          el(
+            'button',
+            {
+              type: 'button',
+              class: 'planet-card',
+              dataset: { planet: planet.id },
+              title: HL.i18n.pick(planet.name, planet.id),
+              onclick: () => app.setPlanet(planet.id),
+            },
+            [
+              el('span', { class: 'planet-icon', text: planet.icon }),
+              el('span', { class: 'planet-name', text: HL.i18n.pick(planet.name, planet.id) }),
+            ]
+          )
+        );
+      }
+
+      refs.planetDiameter = el('input', {
+        type: 'number',
+        class: 'num-input',
+        min: 0.1,
+        step: 10,
+        oninput: (e) => {
+          const value = parseFloat(e.target.value);
+          if (isFinite(value) && value > 0) app.setCustomDiameter(value * 1000);
+        },
+      });
+      refs.planetInfo = el('p', { class: 'hint planet-info' });
+      refs.planetGaseous = el('p', { class: 'hint', text: HL.i18n.t('ctrl.planetGaseous') });
+
+      container.appendChild(
+        el('section', { class: 'control-group' }, [
+          el('h3', { class: 'control-title control-title-plain' }, [
+            el('span', { class: 'step-badge step-badge-planet', text: '🪐' }),
+            document.createTextNode(HL.i18n.t('ctrl.planet')),
+          ]),
+          refs.planetGrid,
+          el('div', { class: 'field custom-diameter' }, [
+            el('label', { class: 'field-label', text: HL.i18n.t('ctrl.planetDiameter') }),
+            el('div', { class: 'input-row' }, [
+              refs.planetDiameter,
+              el('span', { class: 'unit', text: HL.i18n.t('unit.km') }),
+            ]),
+          ]),
+          refs.planetInfo,
+          refs.planetGaseous,
+          el('p', { class: 'hint', text: HL.i18n.t('ctrl.planetHelp') }),
+        ])
+      );
+
       // --- 1. pozorovatel ---------------------------------------------------
       refs.eyeNumber = el('input', {
         type: 'number',
@@ -308,6 +362,21 @@
 
     function sync(state) {
       const active = document.activeElement;
+      const lang = HL.i18n.lang();
+
+      for (const card of HL.dom.qsa('.planet-card', refs.planetGrid)) {
+        card.classList.toggle('is-active', card.dataset.planet === state.planet);
+      }
+      const radius = app.planetRadius(state);
+      if (active !== refs.planetDiameter) {
+        refs.planetDiameter.value = String(Math.round((radius * 2) / 10) / 100);
+      }
+      refs.planetInfo.textContent = HL.i18n.t('ctrl.planetInfo', {
+        r: HL.format.distance(radius, lang),
+        c: HL.format.distance(2 * Math.PI * radius, lang),
+      });
+      const planet = HL.findPlanet(state.planet);
+      refs.planetGaseous.style.display = planet && planet.gaseous ? '' : 'none';
 
       if (active !== refs.eyeNumber) refs.eyeNumber.value = String(state.eyeHeight);
       refs.eyeRange.value = String(eyeToSlider(state.eyeHeight));

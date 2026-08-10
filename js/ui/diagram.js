@@ -126,9 +126,16 @@
     const frame = G.chordFrame(D, R);
 
     // ---- vzorkovani povrchu / sample the surface -------------------------
+    // Oblouk se smi kreslit nanejvys ctvrtinu obvodu na kazdou stranu od
+    // stredu tetivy - za tim uz se povrch stací zpet k pozorovateli a cara by
+    // se sama pres sebe prekryvala.
+    // The arc may only span a quarter of the circumference either side of the
+    // chord's midpoint; beyond that the surface curves back and the path would
+    // fold over itself.
+    const quarter = (Math.PI / 2) * R;
     const marginU = 0.06 * D;
-    const uMin = -marginU;
-    const uMax = D + marginU;
+    const uMin = Math.max(-marginU, D / 2 - quarter);
+    const uMax = Math.min(D + marginU, D / 2 + quarter);
     const SAMPLES = 240;
     const surface = [];
     for (let i = 0; i <= SAMPLES; i++) {
@@ -271,12 +278,28 @@
       );
     }
 
-    // primka pohledu / line of sight
-    const sightEndU = Math.min(uMax, r.horizon + R * 1.5);
-    const sightEndHeight = G.hiddenHeight(r.eyeHeight, sightEndU, R);
-    const sightEnd = frame.point(sightEndU, isFinite(sightEndHeight) ? sightEndHeight : 0);
+    // Primka pohledu / line of sight.
+    // Vedeme ji okem a bodem dotyku na obzoru - to jsou dva vzdy dobre
+    // definovane body - a v pixelech ji pak jen prodlouzime za okraj. Drive
+    // se druhy bod pocital z vysky primky daleko vpravo, coz u velkych
+    // vzdalenosti vychazelo nekonecno.
+    // Two always well-defined points: the eye and the tangency point. The line
+    // is then simply extended in pixel space (the scene is clipped anyway).
+    const tangentPoint = frame.point(r.horizon, 0);
+    const eyePixel = { x: X(eyePoint.x), y: Y(eyePoint.y) };
+    const tangentPixel = { x: X(tangentPoint.x), y: Y(tangentPoint.y) };
+    const sightDx = tangentPixel.x - eyePixel.x;
+    const sightDy = tangentPixel.y - eyePixel.y;
+    const sightLength = Math.hypot(sightDx, sightDy) || 1;
+    const sightReach = PLOT.w * 2.4;
     scene.appendChild(
-      line(X(eyePoint.x), Y(eyePoint.y), X(sightEnd.x), Y(sightEnd.y), 'dg-sight')
+      line(
+        eyePixel.x,
+        eyePixel.y,
+        eyePixel.x + (sightDx / sightLength) * sightReach,
+        eyePixel.y + (sightDy / sightLength) * sightReach,
+        'dg-sight'
+      )
     );
 
     // ---- objekt / the object ---------------------------------------------
@@ -440,6 +463,26 @@
       );
     }
     scene.appendChild(dims);
+
+    // upozorneni, ze uz nejde o vysku, ale o principialni mez
+    // a note that this is no longer about height but about a hard limit
+    if (r.beyondReach) {
+      const warnRight = baseP.x > PLOT.x1 - 150;
+      scene.appendChild(
+        text(
+          warnRight ? PLOT.x1 - 10 : baseP.x,
+          Math.max(PLOT.y0 + 22, Math.min(topP.y, baseP.y) - 30),
+          t('diagram.beyondReach'),
+          'dg-warn dg-halo',
+          warnRight ? 'end' : 'middle'
+        )
+      );
+    }
+    if (r.distance >= r.antipode * 0.999) {
+      scene.appendChild(
+        text(baseP.x, baseP.y + 26, t('diagram.antipode'), 'dg-you dg-halo', 'middle')
+      );
+    }
 
     // vyska oci / eye height
     if (eyePixelHeight > 14) {

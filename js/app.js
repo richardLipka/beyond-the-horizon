@@ -18,6 +18,9 @@
 
   const DEFAULTS = {
     mode: 'see',
+    planet: 'earth',
+    // pouzije se jen pri volbe "vlastni teleso"; ulozeno jako PRUMER v metrech
+    customDiameter: 12742017.6,
     eyeHeight: 1,
     distance: 22000,
     objectId: 'sailboat',
@@ -70,9 +73,15 @@
     return customObject(state);
   }
 
+  /** Skutecny polomer zvoleneho telesa [m]. */
+  function planetRadius(state) {
+    return HL.planetRadius(state.planet, state.customDiameter / 2);
+  }
+
   function currentResult(state) {
     const object = currentObject(state);
     return HL.geometry.solve({
+      planetRadius: planetRadius(state),
       eyeHeight: state.eyeHeight,
       objectHeight: object.height,
       distance: state.distance,
@@ -80,13 +89,29 @@
     });
   }
 
+  /**
+   * Vzdalenost, ve ktere je z objektu videt jen cast - na obrazku
+   * nejzajimavejsi. Doporucena hodnota z dat se pouzije jen tehdy, kdyz pri
+   * aktualnim telese a vysce oci objekt jeste uplne neschovava.
+   */
+  function suggestedDistance(state, object) {
+    const R = HL.geometry.effectiveRadius(state.refraction, planetRadius(state));
+    const vanish = HL.geometry.vanishDistance(state.eyeHeight, object.height, R);
+    const suggested = object.defaultDistance
+      ? Math.min(object.defaultDistance, vanish * 0.82)
+      : vanish * 0.78;
+    return Math.max(100, Math.round(suggested));
+  }
+
   /** Horni mez posuvniku vzdalenosti - vzdy trochu za bodem zmizeni. */
   function sliderMaxDistance(state) {
     const object = currentObject(state);
-    const R = HL.geometry.effectiveRadius(state.refraction);
+    const radius = planetRadius(state);
+    const R = HL.geometry.effectiveRadius(state.refraction, radius);
     const vanish = HL.geometry.vanishDistance(state.eyeHeight, object.height, R);
     const rounded = Math.max(5000, Math.ceil((vanish * 1.35) / 1000) * 1000);
-    return Math.max(rounded, state.distance);
+    // dal nez na protilehly bod telesa se jit neda
+    return Math.min(HL.geometry.antipodeDistance(radius), Math.max(rounded, state.distance));
   }
 
   // ---- ukladani nastaveni / remember the last setup ----------------------
@@ -97,6 +122,8 @@
         UI_KEY,
         JSON.stringify({
           mode: state.mode === 'editor' ? 'see' : state.mode,
+          planet: state.planet,
+          customDiameter: state.customDiameter,
           eyeHeight: state.eyeHeight,
           distance: state.distance,
           objectId: state.objectId,
@@ -135,7 +162,40 @@
     },
 
     setDistance(metres) {
-      store.set({ distance: Math.min(5000000, Math.max(100, Math.round(metres))) });
+      const antipode = HL.geometry.antipodeDistance(planetRadius(store.get()));
+      store.set({ distance: Math.min(antipode, Math.max(100, Math.round(metres))) });
+    },
+
+    /** Prepne teleso a rovnou srovna vzdalenost, aby obrazek dal daval smysl. */
+    setPlanet(id) {
+      const state = store.get();
+      const next = Object.assign({}, state, { planet: id });
+      const object = currentObject(next);
+      store.set({ planet: id, distance: suggestedDistance(next, object) });
+    },
+
+    /** Prumer vlastniho telesa v METRECH. */
+    setCustomDiameter(metres) {
+      const state = store.get();
+      const diameter = Math.min(4e10, Math.max(100, metres));
+      const next = Object.assign({}, state, { planet: 'custom', customDiameter: diameter });
+      const object = currentObject(next);
+      store.set({
+        planet: 'custom',
+        customDiameter: diameter,
+        distance: suggestedDistance(next, object),
+      });
+    },
+
+    /** Nazev zvoleneho telesa v aktualnim jazyce. */
+    planetName(state) {
+      const current = state || store.get();
+      const planet = HL.findPlanet(current.planet);
+      return planet ? HL.i18n.pick(planet.name, planet.id) : HL.i18n.t('ctrl.planetCustom');
+    },
+
+    planetRadius(state) {
+      return planetRadius(state || store.get());
     },
 
     setCustomHeight(metres) {
@@ -155,19 +215,7 @@
       const patch = { objectId: id };
       const object =
         id === '__custom' ? customObject(state) : state.data.objects.find((o) => o.id === id);
-      if (object) {
-        // Vybereme vzdalenost, kde je z objektu videt jen cast - to je na
-        // obrazku nejzajimavejsi. Doporucena vzdalenost z dat se pouzije jen
-        // tehdy, kdyz pri aktualni vysce oci objekt uz uplne neschovava.
-        // Pick a distance where part of the object is still visible; the
-        // curated default is used only when it is not already past vanishing.
-        const R = HL.geometry.effectiveRadius(state.refraction);
-        const vanish = HL.geometry.vanishDistance(state.eyeHeight, object.height, R);
-        const suggested = object.defaultDistance
-          ? Math.min(object.defaultDistance, vanish * 0.82)
-          : vanish * 0.78;
-        patch.distance = Math.max(100, Math.round(suggested));
-      }
+      if (object) patch.distance = suggestedDistance(state, object);
       store.set(patch);
     },
 
@@ -236,9 +284,15 @@
     if (state.mode === 'see') {
       HL.Diagram.render(nodes.diagram, { result: result, object: object });
       HL.Telescope.render(nodes.telescope, { result: result, object: object });
-      HL.Results.render(nodes.verdict, nodes.stats, nodes.fact, { result: result, object: object });
+      HL.Results.render(nodes.verdict, nodes.stats, nodes.fact, {
+        result: result,
+        object: object,
+        planet: app.planetName(state),
+      });
     } else if (state.mode === 'vanish') {
       views.vanish.update(state, result, object);
+    } else if (state.mode === 'limits') {
+      views.limits.update(state, result, object);
     } else if (state.mode === 'editor') {
       views.editor.update(state);
     }
@@ -273,6 +327,7 @@
 
     views.controls = HL.Controls.mount(qs('#controls'), app);
     views.vanish = HL.VanishPanel.mount(qs('#vanishPanel'), app);
+    views.limits = HL.LimitsPanel.mount(qs('#limitsPanel'), app);
     views.editor = HL.Editor.mount(qs('#editorPanel'), app);
 
     const loaded = await HL.data.load();

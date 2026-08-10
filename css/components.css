@@ -425,6 +425,70 @@ textarea.text-input {
   margin-top: 12px;
 }
 
+/* --- vyber telesa / body picker ------------------------------------------ */
+
+.planet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
+  gap: 6px;
+}
+
+.planet-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 4px 6px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--foam-50);
+  font: inherit;
+  cursor: pointer;
+  transition: all 0.14s ease;
+}
+
+.planet-card:hover {
+  background: var(--foam-100);
+  transform: translateY(-2px);
+}
+
+.planet-card.is-active {
+  border-color: var(--sea-500);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.planet-icon {
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.planet-name {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.15;
+  color: var(--deep-800);
+}
+
+.custom-diameter {
+  margin-top: 14px;
+}
+
+.planet-info {
+  font-weight: 600;
+  color: var(--deep-700);
+}
+
+.step-badge-planet {
+  background: linear-gradient(135deg, var(--deep-700), var(--deep-800));
+  font-size: 0.9rem;
+}
+
+.stat-planet {
+  border-left-color: var(--sun);
+}
+
 /* --- prepinac / switch --------------------------------------------------- */
 
 .switch {
@@ -739,6 +803,12 @@ textarea.text-input {
 
 .mini-bar-text {
   font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.row-note {
+  display: block;
+  font-size: 0.74rem;
   color: var(--muted);
 }
 

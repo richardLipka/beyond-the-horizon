@@ -37,6 +37,19 @@ produces it (`your horizon + horizon from the object's top`), a chart of visible
 height against distance with three coloured bands, a step-by-step table, and a
 clickable comparison of every object in the data file.
 
+### ♾️ Limits of sight
+
+However high you climb you only ever see **one half of the body** — a quarter of
+the circumference in each direction. So the required height to peek over the
+horizon grows without bound and hits a vertical wall: past
+`your horizon + a quarter of the circumference`, *no* height helps, and the
+antipode is never visible from anywhere.
+
+![Log-log chart of the height needed to be seen against distance, rising to a vertical asymptote at the sight limit, with a red band beyond it marked never visible](docs/preview-limits.svg)
+
+Both axes step by decades, the objects from your list sit exactly on the curve,
+and the table walks the height up from a person to "impossible".
+
 ### 🧰 Object editor
 
 Add your own church, tower or ship — picture included. Upload an image and it is
@@ -64,9 +77,24 @@ data source is live.
 
 ---
 
+## Any world you like
+
+Every calculation is driven by the radius of the body you are standing on. Pick
+one of eleven presets — the Sun, all eight planets, the Moon and Pluto — or type
+your own diameter. The horizon, the vanishing distance, the diagram, the charts
+and even the rule-of-thumb constant all follow:
+
+| Body | Horizon from 1.7 m | A 30 m mast vanishes at | Rule of thumb |
+| --- | --- | --- | --- |
+| The Moon | 2.43 km | 12.6 km | 1.86 · √h |
+| Mars | 3.39 km | 17.7 km | 2.60 · √h |
+| Earth | 4.65 km | 24.2 km | 3.57 · √h |
+| Jupiter | 15.4 km | 80.2 km | 11.82 · √h |
+| The Sun | 48.6 km | 253 km | 37.30 · √h |
+
 ## What ships in the box
 
-Fifteen objects, each with a hand-drawn SVG, a height, and a fun fact in both
+Sixteen objects, each with a hand-drawn SVG, a height, and a fun fact in both
 languages:
 
 | | |
@@ -74,7 +102,7 @@ languages:
 | **People & houses** | a person (1.75 m), a family house (8 m) |
 | **Ships** | sailing boat (30 m), lighthouse (40 m), Titanic (53 m), container ship (60 m) |
 | **Towers & buildings** | Petřín Lookout Tower (63.5 m), Statue of Liberty (93 m), Ještěd (94 m), St Bartholomew's Cathedral in Pilsen (102.3 m), wind turbine (150 m), Eiffel Tower (330 m), Burj Khalifa (828 m) |
-| **Mountains** | Sněžka (1603 m), Mount Everest (8849 m) |
+| **Mountains** | Sněžka (1603 m), Mount Everest (8849 m), Olympus Mons (21 900 m) |
 
 ---
 
@@ -86,10 +114,18 @@ it**.
 
 | Quantity | Formula |
 | --- | --- |
-| distance to the horizon | `d = R · arccos(R / (R + h))` ≈ 3.57 · √h  (h in m, d in km) |
+| distance to the horizon | `d = R · arccos(R / (R + h))` ≈ √(2R) · √h |
 | height hidden by the bulge | `R · (sec(d₂ / R) − 1)`, where `d₂` is the part beyond the horizon |
 | distance of disappearance | your horizon + the horizon from the object's top |
 | bulge halfway across | `R · (1 − cos(D / 2R))` ≈ D² / 8R |
+| furthest the horizon can reach | `πR / 2` — a quarter of the circumference, approached only as `h → ∞` |
+| absolute limit of sight | `your horizon + πR / 2`; past it no height is enough |
+| the antipode | `πR` — half the circumference, never visible from anywhere |
+
+Because `arccos(R / (R + h)) → π/2` as the height grows, **you always see
+exactly one hemisphere and never a metre more**. Two infinitely tall towers
+would just barely see each other across half the circumference; anything on the
+far side of the body stays hidden however tall it is.
 
 A **refraction** switch replaces the radius with an effective `R · 7/6` — air
 bends light downwards, so you really see about 8 % further, and the rule of
@@ -169,8 +205,8 @@ objects.json        object data (generated — do not hand-edit)
 css/                theme · layout · components · diagram
 js/core/            geometry · format · store · dom
 js/i18n/            strings (cs + en) · language switching
-js/data/            factory fallback (generated) · loading & validation
-js/ui/              diagram · telescope · chart · controls · results · vanish · editor
+js/data/            factory fallback (generated) · loading & validation · planet presets
+js/ui/              diagram · telescope · chart · controls · results · vanish · limits · editor
 js/app.js           wires state to views
 
 tools/svg/          editable source drawings

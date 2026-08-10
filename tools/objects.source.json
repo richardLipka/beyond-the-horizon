@@ -202,6 +202,19 @@
         "cs": "8849 m nad mořem. I tak obrovská hora se schová za zakřivení Země, když je dost daleko.",
         "en": "8849 m above sea level. Even a mountain this huge hides behind Earth's curve if it is far enough away."
       }
+    },
+    {
+      "id": "olympus",
+      "category": "mountains",
+      "name": { "cs": "Olympus Mons (Mars)", "en": "Olympus Mons (Mars)" },
+      "height": 21900,
+      "baseline": "ground",
+      "defaultDistance": 600000,
+      "svg": "olympus.svg",
+      "fact": {
+        "cs": "Nejvyšší sopka sluneční soustavy, skoro 22 km. Přepni planetu na Mars a uvidíš, že na menší planetě zmizí za obzorem mnohem dřív.",
+        "en": "The tallest volcano in the solar system, almost 22 km. Switch the planet to Mars and see how a smaller world hides it far sooner."
+      }
     }
   ]
 }

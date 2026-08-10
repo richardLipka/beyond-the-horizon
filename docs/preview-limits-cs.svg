@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg class="chart-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" width="900" height="470"><style>:root {
+  /* moře / sea */
+  --deep-900: #062535;
+  --deep-800: #0b3549;
+  --deep-700: #124a63;
+  --sea-600: #0f6d8c;
+  --sea-500: #1f8fa8;
+  --sea-400: #3fb0c4;
+  --aqua-300: #7fd3e0;
+  --aqua-200: #b7e8f1;
+  --foam-100: #e4f6fa;
+  --foam-50: #f2fbfd;
+
+  /* pevnina a doplňky / land and accents */
+  --paper: #ffffff;
+  --sand: #f8eed6;
+  --sun: #f2a93b;
+  --coral: #e8695c;
+  --coral-dark: #c2483d;
+  --kelp: #2f9e6f;
+  --kelp-dark: #1e7551;
+
+  --ink: #0b2a3a;
+  --muted: #5c7d8e;
+  --line: rgba(11, 42, 58, 0.13);
+  --line-soft: rgba(11, 42, 58, 0.07);
+
+  --radius: 20px;
+  --radius-sm: 12px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 2px 6px rgba(6, 37, 53, 0.07);
+  --shadow: 0 10px 26px rgba(6, 37, 53, 0.1);
+  --shadow-lg: 0 18px 44px rgba(6, 37, 53, 0.16);
+
+  --font: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-size: 17px;
+
+  --gap: 18px;
+  --gap-lg: 26px;
+}
+/* ==========================================================================
+   diagram.css - vzhled SVG grafiky: bocni pohled, dalekohled, graf.
+   Styling for the three SVG views. Barvy odpovidaji dlazdicim s cisly:
+   coral = schovano, zelena = videt, morska modra = k obzoru.
+   (c) 2026 Richard Lipka &lt;lipka@fav.zcu.cz&gt; - MIT license
+   ========================================================================== */
+
+/* --- spolecne / shared ---------------------------------------------------- */
+
+.diagram-svg text,
+.telescope-svg text,
+.chart-svg text {
+  font-family: var(--font);
+  fill: var(--deep-800);
+}
+
+.dg-halo,
+.ts-halo {
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3.4px;
+  stroke-linejoin: round;
+}
+
+/* --- bocni pohled / side view -------------------------------------------- */
+
+.dg-frame {
+  fill: none;
+  stroke: rgba(11, 42, 58, 0.18);
+  stroke-width: 1.5;
+}
+
+.dg-surface-line {
+  stroke: #06344a;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+
+.dg-waves path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.dg-grass path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.45);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.dg-chord {
+  stroke: rgba(11, 42, 58, 0.55);
+  stroke-width: 1.8;
+  stroke-dasharray: 7 6;
+}
+
+.dg-sight {
+  stroke: #d2382a;
+  stroke-width: 2.6;
+  stroke-dasharray: 11 7;
+  stroke-linecap: round;
+}
+
+.dg-pole {
+  stroke: var(--deep-800);
+  stroke-width: 2;
+  stroke-dasharray: 4 4;
+}
+
+.dg-observer {
+  fill: #10394f;
+}
+
+.dg-observer-body {
+  fill: #1f8fa8;
+}
+
+.dg-eye {
+  fill: #fff;
+  stroke: #d2382a;
+  stroke-width: 3;
+}
+
+.dg-horizon-dot {
+  fill: var(--sun);
+  stroke: #fff;
+  stroke-width: 2.5;
+}
+
+.dg-horizon-tick {
+  stroke: var(--sun);
+  stroke-width: 2.4;
+  stroke-dasharray: 5 4;
+}
+
+.dg-object-hidden {
+  opacity: 0.28;
+}
+
+.dg-hidden-fill {
+  opacity: 0.55;
+}
+
+.dg-hatch-line {
+  stroke: var(--coral-dark);
+  stroke-width: 2.4;
+}
+
+.dg-object-fallback {
+  fill: #6f93a5;
+  stroke: #38596b;
+  stroke-width: 2;
+}
+
+/* kotovaci cary / dimension lines */
+
+.dg-dim-line,
+.dg-dim-tick {
+  stroke: var(--deep-800);
+  stroke-width: 2;
+}
+
+.dg-dim-label {
+  font-size: 18px;
+  font-weight: 700;
+  fill: var(--deep-800);
+}
+
+.dg-dim-hidden .dg-dim-line,
+.dg-dim-hidden .dg-dim-tick {
+  stroke: var(--coral-dark);
+}
+.dg-dim-hidden .dg-dim-label {
+  fill: var(--coral-dark);
+}
+
+.dg-dim-visible .dg-dim-line,
+.dg-dim-visible .dg-dim-tick {
+  stroke: var(--kelp-dark);
+}
+.dg-dim-visible .dg-dim-label {
+  fill: var(--kelp-dark);
+}
+
+.dg-dim-eye .dg-dim-line,
+.dg-dim-eye .dg-dim-tick {
+  stroke: #10394f;
+}
+
+.dg-dim-bulge .dg-dim-line,
+.dg-dim-bulge .dg-dim-tick {
+  stroke: #06344a;
+}
+
+/* popisky / labels */
+
+.dg-label {
+  font-size: 18px;
+  font-weight: 700;
+  fill: var(--sun);
+}
+
+.dg-you {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  fill: #10394f;
+}
+
+.dg-small {
+  font-size: 15px;
+  fill: var(--muted);
+}
+
+.dg-note {
+  font-size: 15px;
+  fill: var(--muted);
+}
+
+.dg-value {
+  font-size: 20px;
+  font-weight: 700;
+  fill: var(--deep-800);
+}
+
+/* meritko a osy / ruler and axes */
+
+.dg-axis-line,
+.dg-axis-tick {
+  stroke: rgba(11, 42, 58, 0.4);
+  stroke-width: 1.6;
+}
+
+.dg-arrowhead {
+  fill: var(--deep-800);
+}
+
+.dg-total-line {
+  stroke: var(--deep-800);
+  stroke-width: 2;
+}
+
+.dg-span-horizon .dg-dim-line,
+.dg-span-horizon .dg-dim-tick {
+  stroke: var(--sea-600);
+  stroke-width: 3;
+}
+.dg-span-horizon .dg-dim-label {
+  fill: var(--sea-600);
+  font-size: 17px;
+}
+
+.dg-span-beyond .dg-dim-line,
+.dg-span-beyond .dg-dim-tick {
+  stroke: var(--sun);
+  stroke-width: 3;
+}
+.dg-span-beyond .dg-dim-label {
+  fill: #b57312;
+  font-size: 17px;
+}
+
+.dg-scalebar-line {
+  stroke: var(--deep-800);
+  stroke-width: 2.2;
+}
+
+/* --- dalekohled / telescope ---------------------------------------------- */
+
+.ts-rim {
+  fill: none;
+  stroke: var(--deep-800);
+  stroke-width: 12;
+  opacity: 0.9;
+}
+
+.ts-rim-inner {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 3;
+}
+
+.ts-horizon {
+  stroke: #05384f;
+  stroke-width: 3;
+}
+
+.ts-waves path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.4);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.ts-ghost {
+  opacity: 0.24;
+}
+
+.ts-ghost-box {
+  fill: none;
+  stroke: var(--coral-dark);
+  stroke-width: 2.4;
+  stroke-dasharray: 8 6;
+}
+
+.ts-fallback {
+  fill: #6f93a5;
+  stroke: #38596b;
+  stroke-width: 2;
+}
+
+.ts-dim-line,
+.ts-dim-tick {
+  stroke: var(--kelp-dark);
+  stroke-width: 2.4;
+}
+
+.ts-label {
+  font-size: 20px;
+  font-weight: 700;
+  fill: var(--kelp-dark);
+}
+
+.ts-hidden-label {
+  font-size: 17px;
+  font-weight: 700;
+  fill: rgba(255, 255, 255, 0.95);
+}
+
+.ts-empty {
+  font-size: 19px;
+  font-weight: 700;
+  fill: var(--muted);
+}
+
+.ts-caption {
+  font-size: 21px;
+  font-weight: 800;
+  fill: var(--deep-800);
+}
+
+.ts-subcaption {
+  font-size: 15px;
+  fill: var(--muted);
+}
+
+/* --- graf / chart --------------------------------------------------------- */
+
+.ch-band-full {
+  fill: rgba(47, 158, 111, 0.13);
+}
+.ch-band-partial {
+  fill: rgba(242, 169, 59, 0.15);
+}
+.ch-band-hidden {
+  fill: rgba(232, 105, 92, 0.15);
+}
+
+.ch-band-label {
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--muted);
+}
+
+.ch-grid {
+  stroke: rgba(11, 42, 58, 0.1);
+  stroke-width: 1;
+}
+
+.ch-tick {
+  font-size: 14px;
+  fill: var(--muted);
+}
+
+.ch-area {
+  fill: rgba(31, 143, 168, 0.22);
+}
+
+.ch-curve {
+  stroke: var(--sea-600);
+  stroke-width: 3.4;
+  stroke-linejoin: round;
+}
+
+.ch-marker {
+  stroke-width: 2.4;
+  stroke-dasharray: 8 6;
+}
+
+.ch-marker-start {
+  stroke: var(--kelp-dark);
+}
+
+.ch-marker-vanish {
+  stroke: var(--coral-dark);
+}
+
+.ch-marker-label {
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--deep-800);
+}
+
+.ch-now {
+  stroke: var(--deep-800);
+  stroke-width: 2;
+}
+
+.ch-now-dot {
+  fill: #fff;
+  stroke: var(--deep-800);
+  stroke-width: 3;
+}
+
+.ch-frame {
+  fill: none;
+  stroke: rgba(11, 42, 58, 0.25);
+  stroke-width: 1.5;
+}
+
+.ch-axis-title {
+  font-size: 15px;
+  font-weight: 600;
+  fill: var(--muted);
+}
+
+/* --- meze viditelnosti / limits of sight ---------------------------------- */
+
+.lm-dot {
+  fill: var(--deep-700);
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.lm-dot-active {
+  fill: var(--coral);
+  stroke: #fff;
+  stroke-width: 3;
+}
+
+.lm-dot-label {
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--deep-800);
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3.4px;
+  stroke-linejoin: round;
+}
+
+.dg-warn {
+  font-size: 18px;
+  font-weight: 800;
+  fill: var(--coral-dark);
+}
+</style><rect x="96" y="40" width="120.48440435687377" height="348" class="ch-band-full"/><rect x="817.7281687577358" y="40" width="54.27183124226417" height="348" class="ch-band-hidden"/><text x="844.8640843788679" y="62" class="ch-band-label" text-anchor="end">sem nedohlédneš nikdy</text><line x1="96" y1="40" x2="96" y2="388" class="ch-grid"/><text x="96" y="412" class="ch-tick" text-anchor="middle">1 km</text><line x1="276.4081376141014" y1="40" x2="276.4081376141014" y2="388" class="ch-grid"/><text x="276.4081376141014" y="412" class="ch-tick" text-anchor="middle">10 km</text><line x1="456.81627522820276" y1="40" x2="456.81627522820276" y2="388" class="ch-grid"/><text x="456.81627522820276" y="412" class="ch-tick" text-anchor="middle">100 km</text><line x1="637.2244128423041" y1="40" x2="637.2244128423041" y2="388" class="ch-grid"/><text x="637.2244128423041" y="412" class="ch-tick" text-anchor="middle">1 000 km</text><line x1="817.6325504564055" y1="40" x2="817.6325504564055" y2="388" class="ch-grid"/><text x="817.6325504564055" y="412" class="ch-tick" text-anchor="middle">10 000 km</text><line x1="96" y1="388" x2="872" y2="388" class="ch-grid"/><text x="86" y="393" class="ch-tick" text-anchor="end">1 m</text><line x1="96" y1="344.5" x2="872" y2="344.5" class="ch-grid"/><text x="86" y="349.5" class="ch-tick" text-anchor="end">10 m</text><line x1="96" y1="301" x2="872" y2="301" class="ch-grid"/><text x="86" y="306" class="ch-tick" text-anchor="end">100 m</text><line x1="96" y1="257.5" x2="872" y2="257.5" class="ch-grid"/><text x="86" y="262.5" class="ch-tick" text-anchor="end">1 km</text><line x1="96" y1="214" x2="872" y2="214" class="ch-grid"/><text x="86" y="219" class="ch-tick" text-anchor="end">10 km</text><line x1="96" y1="170.5" x2="872" y2="170.5" class="ch-grid"/><text x="86" y="175.5" class="ch-tick" text-anchor="end">100 km</text><line x1="96" y1="127" x2="872" y2="127" class="ch-grid"/><text x="86" y="132" class="ch-tick" text-anchor="end">1 000 km</text><line x1="96" y1="83.5" x2="872" y2="83.5" class="ch-grid"/><text x="86" y="88.5" class="ch-tick" text-anchor="end">10 000 km</text><line x1="96" y1="40" x2="872" y2="40" class="ch-grid"/><text x="86" y="45" class="ch-tick" text-anchor="end">100 000 km</text><path d="M 216.88 388.00 L 218.37 388.00 L 219.86 388.00 L 221.35 388.00 L 222.85 388.00 L 224.34 388.00 L 225.83 388.00 L 227.32 388.00 L 228.82 388.00 L 230.31 388.00 L 231.80 388.00 L 233.29 388.00 L 234.78 388.00 L 236.28 388.00 L 237.77 388.00 L 239.26 388.00 L 240.75 388.00 L 242.25 388.00 L 243.74 388.00 L 245.23 388.00 L 246.72 388.00 L 248.22 388.00 L 249.71 388.00 L 251.20 388.00 L 252.69 388.00 L 254.18 388.00 L 255.68 388.00 L 257.17 388.00 L 258.66 388.00 L 260.15 388.00 L 261.65 387.38 L 263.14 385.76 L 264.63 384.17 L 266.12 382.62 L 267.62 381.10 L 269.11 379.62 L 270.60 378.16 L 272.09 376.73 L 273.58 375.33 L 275.08 373.95 L 276.57 372.60 L 278.06 371.26 L 279.55 369.95 L 281.05 368.66 L 282.54 367.39 L 284.03 366.13 L 285.52 364.89 L 287.02 363.67 L 288.51 362.47 L 290.00 361.28 L 291.49 360.10 L 292.98 358.94 L 294.48 357.80 L 295.97 356.66 L 297.46 355.54 L 298.95 354.43 L 300.45 353.33 L 301.94 352.24 L 303.43 351.16 L 304.92 350.09 L 306.42 349.03 L 307.91 347.98 L 309.40 346.94 L 310.89 345.91 L 312.38 344.89 L 313.88 343.87 L 315.37 342.86 L 316.86 341.86 L 318.35 340.87 L 319.85 339.88 L 321.34 338.91 L 322.83 337.93 L 324.32 336.97 L 325.82 336.01 L 327.31 335.05 L 328.80 334.11 L 330.29 333.16 L 331.78 332.23 L 333.28 331.30 L 334.77 330.37 L 336.26 329.45 L 337.75 328.53 L 339.25 327.62 L 340.74 326.71 L 342.23 325.81 L 343.72 324.91 L 345.22 324.02 L 346.71 323.13 L 348.20 322.24 L 349.69 321.36 L 351.18 320.48 L 352.68 319.60 L 354.17 318.73 L 355.66 317.86 L 357.15 317.00 L 358.65 316.14 L 360.14 315.28 L 361.63 314.43 L 363.12 313.57 L 364.62 312.72 L 366.11 311.88 L 367.60 311.04 L 369.09 310.19 L 370.58 309.36 L 372.08 308.52 L 373.57 307.69 L 375.06 306.86 L 376.55 306.03 L 378.05 305.20 L 379.54 304.38 L 381.03 303.56 L 382.52 302.74 L 384.02 301.92 L 385.51 301.11 L 387.00 300.30 L 388.49 299.49 L 389.98 298.68 L 391.48 297.87 L 392.97 297.06 L 394.46 296.26 L 395.95 295.46 L 397.45 294.66 L 398.94 293.86 L 400.43 293.06 L 401.92 292.27 L 403.42 291.48 L 404.91 290.68 L 406.40 289.89 L 407.89 289.11 L 409.38 288.32 L 410.88 287.53 L 412.37 286.75 L 413.86 285.96 L 415.35 285.18 L 416.85 284.40 L 418.34 283.62 L 419.83 282.84 L 421.32 282.07 L 422.82 281.29 L 424.31 280.52 L 425.80 279.74 L 427.29 278.97 L 428.78 278.20 L 430.28 277.43 L 431.77 276.66 L 433.26 275.89 L 434.75 275.12 L 436.25 274.36 L 437.74 273.59 L 439.23 272.82 L 440.72 272.06 L 442.22 271.30 L 443.71 270.54 L 445.20 269.78 L 446.69 269.01 L 448.18 268.26 L 449.68 267.50 L 451.17 266.74 L 452.66 265.98 L 454.15 265.22 L 455.65 264.47 L 457.14 263.71 L 458.63 262.96 L 460.12 262.21 L 461.62 261.45 L 463.11 260.70 L 464.60 259.95 L 466.09 259.20 L 467.58 258.45 L 469.08 257.70 L 470.57 256.95 L 472.06 256.20 L 473.55 255.45 L 475.05 254.70 L 476.54 253.96 L 478.03 253.21 L 479.52 252.46 L 481.02 251.72 L 482.51 250.97 L 484.00 250.23 L 485.49 249.49 L 486.98 248.74 L 488.48 248.00 L 489.97 247.26 L 491.46 246.51 L 492.95 245.77 L 494.45 245.03 L 495.94 244.29 L 497.43 243.55 L 498.92 242.81 L 500.42 242.07 L 501.91 241.33 L 503.40 240.59 L 504.89 239.85 L 506.38 239.11 L 507.88 238.38 L 509.37 237.64 L 510.86 236.90 L 512.35 236.16 L 513.85 235.43 L 515.34 234.69 L 516.83 233.95 L 518.32 233.22 L 519.82 232.48 L 521.31 231.75 L 522.80 231.01 L 524.29 230.28 L 525.78 229.54 L 527.28 228.81 L 528.77 228.08 L 530.26 227.34 L 531.75 226.61 L 533.25 225.88 L 534.74 225.14 L 536.23 224.41 L 537.72 223.68 L 539.22 222.95 L 540.71 222.21 L 542.20 221.48 L 543.69 220.75 L 545.18 220.02 L 546.68 219.29 L 548.17 218.56 L 549.66 217.83 L 551.15 217.09 L 552.65 216.36 L 554.14 215.63 L 555.63 214.90 L 557.12 214.17 L 558.62 213.44 L 560.11 212.71 L 561.60 211.98 L 563.09 211.25 L 564.58 210.53 L 566.08 209.80 L 567.57 209.07 L 569.06 208.34 L 570.55 207.61 L 572.05 206.88 L 573.54 206.15 L 575.03 205.42 L 576.52 204.69 L 578.02 203.97 L 579.51 203.24 L 581.00 202.51 L 582.49 201.78 L 583.98 201.05 L 585.48 200.32 L 586.97 199.60 L 588.46 198.87 L 589.95 198.14 L 591.45 197.41 L 592.94 196.68 L 594.43 195.96 L 595.92 195.23 L 597.42 194.50 L 598.91 193.77 L 600.40 193.04 L 601.89 192.32 L 603.38 191.59 L 604.88 190.86 L 606.37 190.13 L 607.86 189.40 L 609.35 188.68 L 610.85 187.95 L 612.34 187.22 L 613.83 186.49 L 615.32 185.76 L 616.82 185.03 L 618.31 184.31 L 619.80 183.58 L 621.29 182.85 L 622.78 182.12 L 624.28 181.39 L 625.77 180.66 L 627.26 179.93 L 628.75 179.20 L 630.25 178.47 L 631.74 177.74 L 633.23 177.02 L 634.72 176.29 L 636.22 175.55 L 637.71 174.82 L 639.20 174.09 L 640.69 173.36 L 642.18 172.63 L 643.68 171.90 L 645.17 171.17 L 646.66 170.44 L 648.15 169.70 L 649.65 168.97 L 651.14 168.24 L 652.63 167.51 L 654.12 166.77 L 655.62 166.04 L 657.11 165.30 L 658.60 164.57 L 660.09 163.83 L 661.58 163.10 L 663.08 162.36 L 664.57 161.62 L 666.06 160.89 L 667.55 160.15 L 669.05 159.41 L 670.54 158.67 L 672.03 157.93 L 673.52 157.19 L 675.02 156.45 L 676.51 155.71 L 678.00 154.97 L 679.49 154.22 L 680.98 153.48 L 682.48 152.73 L 683.97 151.99 L 685.46 151.24 L 686.95 150.49 L 688.45 149.74 L 689.94 148.99 L 691.43 148.24 L 692.92 147.49 L 694.42 146.73 L 695.91 145.98 L 697.40 145.22 L 698.89 144.46 L 700.38 143.71 L 701.88 142.94 L 703.37 142.18 L 704.86 141.42 L 706.35 140.65 L 707.85 139.88 L 709.34 139.12 L 710.83 138.34 L 712.32 137.57 L 713.82 136.79 L 715.31 136.02 L 716.80 135.24 L 718.29 134.45 L 719.78 133.67 L 721.28 132.88 L 722.77 132.09 L 724.26 131.29 L 725.75 130.50 L 727.25 129.70 L 728.74 128.89 L 730.23 128.09 L 731.72 127.27 L 733.22 126.46 L 734.71 125.64 L 736.20 124.82 L 737.69 123.99 L 739.18 123.16 L 740.68 122.32 L 742.17 121.48 L 743.66 120.63 L 745.15 119.77 L 746.65 118.91 L 748.14 118.04 L 749.63 117.17 L 751.12 116.29 L 752.62 115.40 L 754.11 114.50 L 755.60 113.60 L 757.09 112.68 L 758.58 111.76 L 760.08 110.82 L 761.57 109.88 L 763.06 108.92 L 764.55 107.95 L 766.05 106.97 L 767.54 105.98 L 769.03 104.97 L 770.52 103.94 L 772.02 102.90 L 773.51 101.83 L 775.00 100.75 L 776.49 99.65 L 777.98 98.53 L 779.48 97.38 L 780.97 96.20 L 782.46 94.99 L 783.95 93.75 L 785.45 92.48 L 786.94 91.17 L 788.43 89.81 L 789.92 88.41 L 791.42 86.96 L 792.91 85.44 L 794.40 83.86 L 795.89 82.21 L 797.38 80.46 L 798.88 78.62 L 800.37 76.66 L 801.86 74.56 L 803.35 72.29 L 804.85 69.83 L 806.34 67.10 L 807.83 64.06 L 809.32 60.57 L 810.82 56.49 L 812.31 51.50 L 813.80 45.03 L 815.29 40.00" class="ch-curve" fill="none"/><line x1="817.7281687577358" y1="30" x2="817.7281687577358" y2="388" class="ch-marker ch-marker-vanish"/><text x="817.7281687577358" y="22" class="ch-marker-label" text-anchor="end">mez dohledu · 10 012 km</text><circle cx="271.3625177113378" cy="377.4278448821462" r="4" class="lm-dot"/><circle cx="306.8623605349061" cy="348.71558556585046" r="4" class="lm-dot"/><circle cx="345.6697763245964" cy="323.7452254196947" r="4" class="lm-dot"/><circle cx="354.8949447856941" cy="318.3103903772336" r="4" class="lm-dot"/><circle cx="364.141519555422" cy="312.9939996723657" r="4" class="lm-dot"/><circle cx="368.2822374056371" cy="310.6504206083115" r="4" class="lm-dot"/><circle cx="370.18712960191425" cy="309.57934294979907" r="4" class="lm-dot"/><circle cx="383.1973744156767" cy="302.3709917379038" r="4" class="lm-dot"/><circle cx="383.56657493785985" cy="302.16893836841314" r="4" class="lm-dot"/><circle cx="386.4956479161367" cy="300.57040993352103" r="4" class="lm-dot"/><circle cx="399.91480150664347" cy="293.3400302310779" r="4" class="lm-dot"/><circle cx="428.30647864013326" cy="278.44464361531186" r="4" class="lm-dot"/><circle cx="462.38322563359577" cy="261.0656803498577" r="4" class="lm-dot"/><circle cx="487.2979222127813" cy="248.5853917775947" r="4" class="lm-dot"/><circle cx="552.7567145161903" cy="216.3101025130488" r="7" class="lm-dot lm-dot-active"/><circle cx="587.7989155781372" cy="199.19068100445486" r="4" class="lm-dot"/><text x="282.3625177113378" y="369.4278448821462" class="lm-dot-label" text-anchor="start">Člověk</text><text x="598.7989155781372" y="191.19068100445486" class="lm-dot-label" text-anchor="start">Olympus Mons (Mars)</text><text x="563.7567145161903" y="208.3101025130488" class="lm-dot-label" text-anchor="start">Mount Everest</text><rect x="96" y="40" width="776" height="348" class="ch-frame"/><text x="872" y="456" class="ch-axis-title" text-anchor="end">vzdálenost</text><text x="20" y="214" class="ch-axis-title" text-anchor="middle" transform="rotate(-90 20 214)">potřebná výška</text></svg>

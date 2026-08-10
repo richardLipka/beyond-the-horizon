@@ -297,6 +297,23 @@
       },
       "aspect": 2.6,
       "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNjAgMTAwIj48cGF0aCBkPSJNMCAxMDAgNDAgNTggNzAgNzYgMTA0IDQwIDEzMiA2MiAxNjggMjYgMjA2IDY2IDI2MCAxMDBaIiBmaWxsPSIjN2Q5OWFiIi8+PHBhdGggZD0iTTEwNCA0MCA4OCA1OHE5IDUgMjAgNHQxNi02WiIgZmlsbD0iI2UzZWRmMyIvPjxwYXRoIGQ9Ik0xNjggMjYgMTUyIDQ2cTEwIDYgMjIgNHQxNC04WiIgZmlsbD0iI2UzZWRmMyIvPjxwYXRoIGQ9Ik0yOCAxMDAgOTYgNDAgMTI4IDYyIDE1OCA0IDE5NiA1NCAyNDAgMTAwWiIgZmlsbD0iIzVkN2Q5MCIvPjxwYXRoIGQ9Ik0yOCAxMDAgOTYgNDAgMTI4IDYyIDE1OCA0djk2WiIgZmlsbD0iIzZiOGI5ZSIvPjxwYXRoIGQ9Ik0xNTggNCAxMzIgNDRxMTIgOSAzMCA4dDI4LTEwWiIgZmlsbD0iI2Y0ZjlmYyIvPjxwYXRoIGQ9Ik0xMjYgNjYgMTA4IDUyIDk2IDYybDE0IDEyWiIgZmlsbD0iI2Y0ZjlmYyIgb3BhY2l0eT0iLjg1Ii8+PHBhdGggZD0iTTE1OCA0cTIyIDMgNDAtMi0xOCAxMC0zMyAxMloiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9Ii43NSIvPjwvc3ZnPg=="
+    },
+    {
+      "id": "olympus",
+      "category": "mountains",
+      "name": {
+        "cs": "Olympus Mons (Mars)",
+        "en": "Olympus Mons (Mars)"
+      },
+      "height": 21900,
+      "baseline": "ground",
+      "defaultDistance": 600000,
+      "fact": {
+        "cs": "Nejvyšší sopka sluneční soustavy, skoro 22 km. Přepni planetu na Mars a uvidíš, že na menší planetě zmizí za obzorem mnohem dřív.",
+        "en": "The tallest volcano in the solar system, almost 22 km. Switch the planet to Mars and see how a smaller world hides it far sooner."
+      },
+      "aspect": 3,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgMTAwIj48cGF0aCBkPSJNMCAxMDBDNTggOTIgOTYgMzQgMTIwIDhoNjBjMjQgMjYgNjIgODQgMTIwIDkyWiIgZmlsbD0iI2IwNmE0YSIvPjxwYXRoIGQ9Ik0wIDEwMEM1OCA5MiA5NiAzNCAxMjAgOGgyMmMtMTQgMjgtNDAgNjYtNjAgOTJaIiBmaWxsPSIjYzA3YzU4Ii8+PGcgc3Ryb2tlPSIjOGU1MTM4IiBzdHJva2Utd2lkdGg9IjEuNiIgZmlsbD0ibm9uZSIgb3BhY2l0eT0iMC41NSI+PHBhdGggZD0iTTEwNCA0NCA5NiAxMDBNMTM2IDI2IDEzMiAxMDBNMTcwIDMwIDE3OCAxMDBNMTk4IDUyIDIxNCAxMDAiLz48L2c+PGVsbGlwc2UgY3g9IjE1MCIgY3k9IjkiIHJ4PSIzMSIgcnk9IjciIGZpbGw9IiM4ZTUxMzgiLz48ZWxsaXBzZSBjeD0iMTUwIiBjeT0iOCIgcng9IjIyIiByeT0iNC42IiBmaWxsPSIjNjYzOTJhIi8+PHBhdGggZD0iTTAgMTAwaDMwMCIgc3Ryb2tlPSIjOGU1MTM4IiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9IjAuNCIvPjwvc3ZnPg=="
     }
   ]
 }

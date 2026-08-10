@@ -385,3 +385,33 @@
   font-weight: 600;
   fill: var(--muted);
 }
+
+/* --- meze viditelnosti / limits of sight ---------------------------------- */
+
+.lm-dot {
+  fill: var(--deep-700);
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.lm-dot-active {
+  fill: var(--coral);
+  stroke: #fff;
+  stroke-width: 3;
+}
+
+.lm-dot-label {
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--deep-800);
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3.4px;
+  stroke-linejoin: round;
+}
+
+.dg-warn {
+  font-size: 18px;
+  font-weight: 800;
+  fill: var(--coral-dark);
+}

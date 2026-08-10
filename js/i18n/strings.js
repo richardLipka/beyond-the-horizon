@@ -21,7 +21,18 @@
 
       'mode.see': 'Co uvidím?',
       'mode.vanish': 'Kdy zmizí?',
+      'mode.limits': 'Meze viditelnosti',
       'mode.editor': 'Editor objektů',
+
+      'ctrl.planet': 'Na jakém tělese jsi',
+      'ctrl.planetHelp':
+        'Menší těleso je zakřivené víc, takže obzor je mnohem blíž. Zkus Měsíc a pak Jupiter!',
+      'ctrl.planetCustom': 'Vlastní',
+      'ctrl.planetDiameter': 'Průměr tělesa (km)',
+      'ctrl.planetInfo': 'poloměr {r} · obvod {c}',
+      'ctrl.planetGaseous':
+        'U Slunce a plynných obrů se „povrchem“ myslí vrchol mraků – stát se na něm nedá.',
+      'ctrl.planetRefraction': 'Refrakce používá hodnotu pro pozemský vzduch.',
 
       'ctrl.observer': 'Kde stojíš ty',
       'ctrl.eyeHeight': 'Výška očí nad hladinou',
@@ -68,6 +79,8 @@
       'res.apparentSub': '{n}× Měsíc v úplňku',
       'res.dip': 'Pokles obzoru',
       'res.dipSub': 'o kolik je obzor níž než vodorovno',
+      'res.planet': 'Těleso',
+      'res.planetSub': 'poloměr {r}',
 
       'status.full.title': 'Vidíš celý objekt! 🎉',
       'status.full.text':
@@ -78,6 +91,9 @@
       'status.hidden.title': 'Nevidíš vůbec nic 🙈',
       'status.hidden.text':
         '{object} je {distance} daleko. Úplně zmizí už od {vanish}, takže se celý schoval za zakřivení Země. Vylez výš, nebo se přibliž!',
+      'status.beyond.title': 'Za hranicí dohledu 🌑',
+      'status.beyond.text':
+        '{object} je {distance} daleko – to je dál než {maxSight}. Tady už nepomůže žádná výška: i nekonečně vysoká věž by musela prorůst skrz celé těleso. Ať vylezeš kamkoli, vidíš vždycky jen polovinu tělesa ({planet}) a druhá polovina zůstane schovaná.',
 
       'diagram.title': 'Boční pohled na Zemi',
       'diagram.you': 'TY',
@@ -95,6 +111,8 @@
       'diagram.compression': 'Vzdálenosti jsou {n}× zvětšené oproti výškám.',
       'diagram.sameScale': 'Výšky i vzdálenosti mají tady stejné měřítko.',
       'diagram.widthNote': 'Šířky objektů nejsou v měřítku – přesné jsou výšky a vzdálenosti.',
+      'diagram.beyondReach': 'za hranicí dohledu – tady nepomůže žádná výška',
+      'diagram.antipode': 'protilehlý bod tělesa',
       'diagram.scalebar': 'měřítko vzdálenosti',
       'diagram.legendSurface': 'povrch Země',
       'diagram.legendSight': 'paprsek k tvému oku',
@@ -113,9 +131,11 @@
       'vanish.objectHorizon': 'Obzor od špičky objektu',
       'vanish.explainTitle': 'Jak se to počítá?',
       'vanish.explain':
-        'Vzdálenost k obzoru se spočítá jako 3,57 × odmocnina z výšky (výška v metrech, výsledek v kilometrech). Objekt zmizí, když se sečte tvůj obzor a obzor od jeho špičky: {a} + {b} = {c}.',
+        'Vzdálenost k obzoru se spočítá jako {k} × odmocnina z výšky (výška v metrech, výsledek v kilometrech). Objekt zmizí, když se sečte tvůj obzor a obzor od jeho špičky: {a} + {b} = {c}.',
       'vanish.explainRefraction':
-        'Se zapnutou refrakcí se místo čísla 3,57 počítá s 3,86 – vzduch ohýbá světlo a vidíš o kousek dál.',
+        'Se zapnutou refrakcí se místo {k0} počítá s {k1} – vzduch ohýbá světlo a vidíš o kousek dál.',
+      'vanish.explainPlanet':
+        'Číslo {k} platí pro těleso {planet}. Na menším tělese je menší, na větším větší.',
       'vanish.chartTitle': 'Kolik zůstane vidět podle vzdálenosti',
       'vanish.chartX': 'vzdálenost',
       'vanish.chartY': 'viditelná výška',
@@ -130,6 +150,36 @@
       'vanish.tryIt': 'Ukaž mi to na obrázku',
       'vanish.compare': 'Porovnání: kdy zmizí ostatní objekty',
       'vanish.compareHint': 'Klikni na sloupec a objekt se rovnou nastaví.',
+
+      'limits.heading': 'Jak vysoké to musí být, aby to bylo vidět?',
+      'limits.sub': 'Čím dál je objekt, tím vyšší musí být. A od jisté vzdálenosti nepomůže už vůbec nic.',
+      'limits.maxSight': 'Dál než sem nedohlédneš',
+      'limits.maxSightSub': 'ani z nekonečně vysoké věže',
+      'limits.antipode': 'Opačná strana tělesa',
+      'limits.antipodeSub': 'polovina obvodu – tam není vidět nikdy nic',
+      'limits.quarter': 'Obzor z nekonečné výšky',
+      'limits.quarterSub': 'čtvrtina obvodu tělesa ({planet})',
+      'limits.chartTitle': 'Jak vysoký objekt potřebuješ',
+      'limits.chartX': 'vzdálenost',
+      'limits.chartY': 'potřebná výška',
+      'limits.never': 'sem nedohlédneš nikdy',
+      'limits.asymptote': 'mez dohledu',
+      'limits.curveNote':
+        'Obě osy mají násobné měřítko – každý dílek je 10× větší než předchozí. Jinak by se křivka do obrázku nevešla.',
+      'limits.dotsNote': 'Tečky jsou objekty z tvého seznamu. Leží přesně na křivce.',
+      'limits.tableTitle': 'Kolik je potřeba',
+      'limits.colDistance': 'Vzdálenost',
+      'limits.colHeight': 'Potřebná výška',
+      'limits.colCompare': 'Co by stačilo',
+      'limits.enough': 'stačil by {name}',
+      'limits.noneEnough': 'nic z tvého seznamu',
+      'limits.explainTitle': 'Proč to nejde donekonečna?',
+      'limits.explain':
+        'Ať vylezeš jakkoli vysoko, uvidíš vždycky nanejvýš polovinu tělesa – přesně čtvrtinu obvodu na každou stranu. Obzor se proto nikdy nedostane dál než {quarter}. Když k tomu přičteš svůj vlastní obzor ({horizon}), vyjde mez {max}. Za ní by objekt musel prorůst skrz celé těleso ({planet}), a to nejde.',
+      'limits.showAntipode': 'Postavit objekt na opačnou stranu',
+      'limits.impossible': 'nemožné',
+      'limits.radii': '{n}× poloměr tělesa',
+      'limits.yourObject': 'tvůj objekt',
 
       'editor.heading': 'Editor objektů',
       'editor.intro':
@@ -195,7 +245,7 @@
       'unit.m': 'm',
       'unit.km': 'km',
       'footer.note':
-        'Země má poloměr 6 371 km. Všechny výpočty počítají s dokonalou koulí a rovným povrchem mezi tebou a objektem.',
+        'Všechny výpočty počítají s dokonalou koulí a hladkým povrchem mezi tebou a objektem. Těleso i jeho průměr se dají přepnout v panelu vlevo.',
       'footer.made': 'Za obzorem · školní pomůcka pro objevování zakřivení Země',
       'footer.license': 'Volně k použití ve školách (licence MIT)',
     },
@@ -207,7 +257,18 @@
 
       'mode.see': 'What can I see?',
       'mode.vanish': 'When does it vanish?',
+      'mode.limits': 'Limits of sight',
       'mode.editor': 'Object editor',
+
+      'ctrl.planet': 'Which body you are on',
+      'ctrl.planetHelp':
+        'A smaller body curves away faster, so its horizon is much closer. Try the Moon, then Jupiter!',
+      'ctrl.planetCustom': 'Custom',
+      'ctrl.planetDiameter': 'Diameter of the body (km)',
+      'ctrl.planetInfo': 'radius {r} · circumference {c}',
+      'ctrl.planetGaseous':
+        'For the Sun and the gas giants the "surface" means the cloud tops — you could not stand there.',
+      'ctrl.planetRefraction': 'Refraction uses the value for air on Earth.',
 
       'ctrl.observer': 'Where you stand',
       'ctrl.eyeHeight': 'Eye height above the surface',
@@ -254,6 +315,8 @@
       'res.apparentSub': '{n}× the full Moon',
       'res.dip': 'Horizon dip',
       'res.dipSub': 'how far the horizon sits below level',
+      'res.planet': 'Body',
+      'res.planetSub': 'radius {r}',
 
       'status.full.title': 'You can see all of it! 🎉',
       'status.full.text':
@@ -264,6 +327,9 @@
       'status.hidden.title': 'You see nothing at all 🙈',
       'status.hidden.text':
         'The {object} is {distance} away. It disappears completely beyond {vanish}, so the whole thing is behind the curve. Climb higher or come closer!',
+      'status.beyond.title': 'Past every line of sight 🌑',
+      'status.beyond.text':
+        'The {object} is {distance} away — further than {maxSight}. No height helps here: even an infinitely tall tower would have to grow straight through the body. However high you climb you always see just one half of {planet}, and the other half stays hidden.',
 
       'diagram.title': 'Side view of the Earth',
       'diagram.you': 'YOU',
@@ -281,6 +347,8 @@
       'diagram.compression': 'Distances are stretched {n}× compared with heights.',
       'diagram.sameScale': 'Heights and distances share the same scale here.',
       'diagram.widthNote': 'Object widths are not to scale — heights and distances are.',
+      'diagram.beyondReach': 'past every line of sight — no height helps here',
+      'diagram.antipode': 'the far side of the body',
       'diagram.scalebar': 'distance scale',
       'diagram.legendSurface': "Earth's surface",
       'diagram.legendSight': 'ray reaching your eye',
@@ -299,9 +367,11 @@
       'vanish.objectHorizon': 'Horizon from the object top',
       'vanish.explainTitle': 'How is it calculated?',
       'vanish.explain':
-        'Distance to the horizon is 3.57 × the square root of the height (height in metres, answer in kilometres). The object vanishes when your horizon and the horizon from its top add up: {a} + {b} = {c}.',
+        'Distance to the horizon is {k} × the square root of the height (height in metres, answer in kilometres). The object vanishes when your horizon and the horizon from its top add up: {a} + {b} = {c}.',
       'vanish.explainRefraction':
-        'With refraction switched on we use 3.86 instead of 3.57 — bent light lets you see a little further.',
+        'With refraction switched on we use {k1} instead of {k0} — bent light lets you see a little further.',
+      'vanish.explainPlanet':
+        'The number {k} belongs to {planet}. It is smaller on a smaller body and larger on a bigger one.',
       'vanish.chartTitle': 'How much stays visible with distance',
       'vanish.chartX': 'distance',
       'vanish.chartY': 'visible height',
@@ -316,6 +386,36 @@
       'vanish.tryIt': 'Show me the picture',
       'vanish.compare': 'Compare: when do the others vanish?',
       'vanish.compareHint': 'Click a bar to switch to that object.',
+
+      'limits.heading': 'How tall must it be to show up at all?',
+      'limits.sub': 'The further away it is, the taller it must be. And past a certain distance nothing helps at all.',
+      'limits.maxSight': 'You can never see past',
+      'limits.maxSightSub': 'not even from an infinitely tall tower',
+      'limits.antipode': 'The far side of the body',
+      'limits.antipodeSub': 'half the circumference — nothing there is ever visible',
+      'limits.quarter': 'Horizon from infinite height',
+      'limits.quarterSub': 'a quarter of the circumference of {planet}',
+      'limits.chartTitle': 'How tall an object you need',
+      'limits.chartX': 'distance',
+      'limits.chartY': 'required height',
+      'limits.never': 'never visible from here',
+      'limits.asymptote': 'sight limit',
+      'limits.curveNote':
+        'Both axes step by multiples — every division is 10× the one before. Otherwise the curve would not fit on the page.',
+      'limits.dotsNote': 'The dots are the objects from your list. They sit exactly on the curve.',
+      'limits.tableTitle': 'What it takes',
+      'limits.colDistance': 'Distance',
+      'limits.colHeight': 'Required height',
+      'limits.colCompare': 'What would be tall enough',
+      'limits.enough': '{name} would do',
+      'limits.noneEnough': 'nothing on your list',
+      'limits.explainTitle': 'Why does it not go on for ever?',
+      'limits.explain':
+        'However high you climb, you see at most one half of the body — exactly a quarter of the circumference in each direction. So the horizon never reaches further than {quarter}. Add your own horizon ({horizon}) and you get the limit {max}. Beyond it an object would have to grow straight through the whole body ({planet}), and that cannot happen.',
+      'limits.showAntipode': 'Put the object on the far side',
+      'limits.impossible': 'impossible',
+      'limits.radii': "{n}× the body's radius",
+      'limits.yourObject': 'your object',
 
       'editor.heading': 'Object editor',
       'editor.intro':
@@ -381,7 +481,7 @@
       'unit.m': 'm',
       'unit.km': 'km',
       'footer.note':
-        'The Earth has a radius of 6,371 km. Every calculation assumes a perfect sphere with a smooth surface between you and the object.',
+        'Every calculation assumes a perfect sphere with a smooth surface between you and the object. The body and its diameter can be changed in the panel on the left.',
       'footer.made': 'Beyond the Horizon · a classroom toy for discovering the curve of the Earth',
       'footer.license': 'Free to use in schools (MIT licence)',
     },

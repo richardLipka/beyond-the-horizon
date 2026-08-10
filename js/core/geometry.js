@@ -30,18 +30,58 @@
   /** Zdanlivy prumer Mesice na obloze [rad] - hodi se pro porovnani. */
   const MOON_ANGULAR_DIAMETER = 0.0090757; // ~0.52 stupne
 
-  function effectiveRadius(useRefraction) {
-    return useRefraction ? R_MEAN * K_REFRACTION : R_MEAN;
+  /**
+   * Efektivni polomer telesa. Bez zadaneho polomeru se pocita se Zemi.
+   * Effective radius of the body; defaults to the Earth.
+   */
+  function effectiveRadius(useRefraction, baseRadius) {
+    const R = baseRadius > 0 ? baseRadius : R_MEAN;
+    return useRefraction ? R * K_REFRACTION : R;
   }
 
   /**
    * Vzdalenost k obzoru merena PO POVRCHU (delka oblouku).
    * Distance to the horizon measured along the surface (arc length).
    * Pro male vysky plati priblizne d ~ sqrt(2*R*h)  ->  3,57 * sqrt(h[m]) km.
+   *
+   * S rostouci vyskou se vysledek blizi ctvrtine obvodu (R*pi/2) a nikdy ji
+   * neprekroci - i z nekonecne vysky je videt prave na polokouli.
+   * As the height grows the result approaches a quarter of the circumference
+   * and never exceeds it: even from infinitely high you see exactly one
+   * hemisphere.
    */
   function horizonDistance(height, R) {
     if (!(height > 0)) return 0;
     return R * Math.acos(R / (R + height));
+  }
+
+  /** Ctvrtina obvodu - mez, ke ktere se obzor blizi v nekonecne vysce. */
+  function maxHorizonDistance(R) {
+    return (Math.PI / 2) * R;
+  }
+
+  /** Vzdalenost k protilehlemu bodu telesa (polovina obvodu). */
+  function antipodeDistance(R) {
+    return Math.PI * R;
+  }
+
+  /**
+   * Nejvetsi vzdalenost, ve ktere lze jeste neco spatrit: obzor pozorovatele
+   * plus ctvrtina obvodu. Za ni uz nepomuze ani nekonecne vysoky objekt,
+   * protoze by musel prosahnout skrz planetu.
+   * The furthest anything can ever be seen from: the observer's horizon plus a
+   * quarter of the circumference. Beyond it no height whatsoever helps.
+   */
+  function maxSightDistance(eyeHeight, R) {
+    return horizonDistance(eyeHeight, R) + maxHorizonDistance(R);
+  }
+
+  /**
+   * Konstanta pravidla palce  d[km] = k * odmocnina(h[m]).
+   * Pro Zemi vyjde 3,57 (s refrakci 3,86), pro jina telesa jinak.
+   */
+  function rootRuleConstant(R) {
+    return Math.sqrt(2 * R) / 1000;
   }
 
   /** Prima (vzdusna) vzdalenost od oka k bodu dotyku na obzoru. */
@@ -91,6 +131,19 @@
     return hiddenHeight(eyeHeight, x, R);
   }
 
+  /**
+   * Jak vysoky musi objekt byt, aby ve vzdalenosti `distance` prave vykoukl
+   * nad obzor. Je to tataz velicina jako schovana vyska, jen z druhe strany -
+   * pojmenovana zvlast, protoze o tom je cely rezim "Meze viditelnosti".
+   *
+   * How tall an object must be to just peek over the horizon at `distance`.
+   * The same quantity as the hidden height, seen from the other side; it grows
+   * beyond all bounds as the distance approaches the sight limit.
+   */
+  function heightToBeSeen(eyeHeight, distance, R) {
+    return hiddenHeight(eyeHeight, distance, R);
+  }
+
   /** Zdanlivy uhlovy rozmer predmetu vysokeho `size` ve vzdalenosti `distance`. */
   function angularSize(size, distance) {
     if (!(distance > 0) || !(size > 0)) return 0;
@@ -131,10 +184,17 @@
    * Solves one complete scenario. Everything the UI needs, in one object.
    */
   function solve(input) {
-    const R = effectiveRadius(!!input.refraction);
+    const physicalRadius = input.planetRadius > 0 ? input.planetRadius : R_MEAN;
+    const R = effectiveRadius(!!input.refraction, physicalRadius);
     const eyeHeight = Math.max(0, Number(input.eyeHeight) || 0);
     const objectHeight = Math.max(0, Number(input.objectHeight) || 0);
-    const distance = Math.max(0, Number(input.distance) || 0);
+
+    // Dal nez na protilehly bod telesa se jit neda - za nim uz se vzdalenost
+    // po povrchu zase zkracuje z druhe strany.
+    // Nothing can be further away than the antipode; past it the surface
+    // distance starts shrinking again from the other side.
+    const antipode = antipodeDistance(physicalRadius);
+    const distance = Math.min(Math.max(0, Number(input.distance) || 0), antipode);
 
     const horizon = horizonDistance(eyeHeight, R);
     const objectHorizon = horizonDistance(objectHeight, R);
@@ -154,6 +214,13 @@
 
     return {
       R: R,
+      physicalRadius: physicalRadius,
+      antipode: antipode,
+      maxSight: maxSightDistance(eyeHeight, R),
+      // true = ani nekonecne vysoky objekt by tu nebyl videt
+      // true = not even an infinitely tall object would show here
+      beyondReach: !isFinite(hiddenRaw),
+      ruleConstant: rootRuleConstant(R),
       refraction: !!input.refraction,
       eyeHeight: eyeHeight,
       objectHeight: objectHeight,
@@ -181,8 +248,13 @@
     MOON_ANGULAR_DIAMETER,
     effectiveRadius,
     horizonDistance,
+    maxHorizonDistance,
+    antipodeDistance,
+    maxSightDistance,
+    rootRuleConstant,
     horizonLineOfSight,
     hiddenHeight,
+    heightToBeSeen,
     vanishDistance,
     bulge,
     dip,

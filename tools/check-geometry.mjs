@@ -60,5 +60,56 @@ check('tetiva - levy kraj', frame.point(0, 0).y, 0, 1e-6);
 check('tetiva - pravy kraj', frame.point(30000, 0).y, 0, 1e-6);
 check('tetiva - vrchol vyduti', frame.point(15000, 0).y, G.bulge(30000, R), 1e-6);
 
+// --- meze viditelnosti / limits of sight ---------------------------------
+// I z nekonecne vysky je videt prave na polokouli: obzor se blizi ctvrtine
+// obvodu a nikdy ji neprekroci.
+check('obzor z obri vysky -> ctvrtina obvodu', G.horizonDistance(1e15, R), (Math.PI / 2) * R, 1);
+const quarterR = (Math.PI / 2) * R;
+check('obzor z 1e9 m mez neprekroci', G.horizonDistance(1e9, R) < quarterR ? 1 : 0, 1, 0);
+check('obzor z 1e9 m se k mezi blizi na 1 %', G.horizonDistance(1e9, R) / quarterR, 1, 0.01);
+check('mez dohledu z 1,7 m', G.maxSightDistance(1.7, R), G.horizonDistance(1.7, R) + (Math.PI / 2) * R, 1e-6);
+
+// Za mezi dohledu nepomuze zadna vyska - potrebna vyska je nekonecna.
+const limit = G.maxSightDistance(1.7, R);
+check('tesne pred mezi je vyska konecna', G.heightToBeSeen(1.7, limit * 0.999, R) > 0 ? 1 : 0, 1, 0);
+check(
+  'za mezi je potreba nekonecna vyska',
+  isFinite(G.heightToBeSeen(1.7, limit * 1.001, R)) ? 0 : 1,
+  1,
+  0
+);
+check('na protilehlem bode neni videt nic', isFinite(G.hiddenHeight(1.7, G.antipodeDistance(R), R)) ? 0 : 1, 1, 0);
+
+// Ani dve nekonecne vysoke veze se navzajem neuvidi dal nez pres pul obvodu.
+check('dve obri veze -> polovina obvodu', G.vanishDistance(1e15, 1e15, R), Math.PI * R, 2);
+check('Everest je porad hluboko pod mezi', G.vanishDistance(1.7, 8849, R) < limit ? 1 : 0, 1, 0);
+
+// --- jina telesa / other bodies -------------------------------------------
+const R_MOON = 1737400;
+const R_MARS = 3389500;
+check('obzor z 1,7 m na Mesici', G.horizonDistance(1.7, R_MOON), Math.sqrt(2 * R_MOON * 1.7), 1);
+check('pravidlo palce pro Zemi', G.rootRuleConstant(R), 3.5696, 0.001);
+check('pravidlo palce pro Mesic', G.rootRuleConstant(R_MOON), 1.8641, 0.001);
+check('pravidlo palce pro Mars', G.rootRuleConstant(R_MARS), 2.6037, 0.001);
+check('protilehly bod Marsu', G.antipodeDistance(R_MARS), Math.PI * R_MARS, 1e-6);
+
+// Mensi teleso schova stejny objekt driv.
+check(
+  'plachetnice zmizi na Mesici driv nez na Zemi',
+  G.vanishDistance(1.7, 30, R_MOON) < G.vanishDistance(1.7, 30, R) ? 1 : 0,
+  1,
+  0
+);
+
+// solve() musi vzdalenost oriznout na protilehly bod a oznacit ji jako marnou
+const farSide = G.solve({ planetRadius: R, eyeHeight: 1.7, objectHeight: 8849, distance: 1e9 });
+check('solve orizne vzdalenost na protilehly bod', farSide.distance, Math.PI * R, 1e-6);
+check('solve hlasi beyondReach', farSide.beyondReach ? 1 : 0, 1, 0);
+check('solve na protilehlem bode nic nevidi', farSide.visible, 0, 0);
+
+// solve() bez zadaneho polomeru pocita se Zemi
+const earthDefault = G.solve({ eyeHeight: 1.7, objectHeight: 30, distance: 20000 });
+check('solve bez polomeru pouzije Zemi', earthDefault.physicalRadius, G.R_MEAN, 1e-6);
+
 console.log(failures === 0 ? '\nVsechny kontroly prosly / all checks passed' : `\n${failures} chyb / failures`);
 process.exit(failures === 0 ? 0 : 1);

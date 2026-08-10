@@ -47,6 +47,9 @@
         <button type="button" role="tab" data-mode="vanish" aria-selected="false">
           <span aria-hidden="true">🌊</span><span data-i18n="mode.vanish"></span>
         </button>
+        <button type="button" role="tab" data-mode="limits" aria-selected="false">
+          <span aria-hidden="true">♾️</span><span data-i18n="mode.limits"></span>
+        </button>
         <button type="button" role="tab" data-mode="editor" aria-selected="false">
           <span aria-hidden="true">🧰</span><span data-i18n="mode.editor"></span>
         </button>
@@ -100,7 +103,12 @@
           <div id="vanishPanel" class="vanish-panel"></div>
         </section>
 
-        <!-- Rezim 3: editor datoveho souboru objects.json -->
+        <!-- Rezim 3: meze viditelnosti - potrebna vyska roste do nekonecna -->
+        <section class="panel" data-panel="limits" role="tabpanel" hidden>
+          <div id="limitsPanel" class="limits-panel"></div>
+        </section>
+
+        <!-- Rezim 4: editor datoveho souboru objects.json -->
         <section class="panel" data-panel="editor" role="tabpanel" hidden>
           <div id="editorPanel" class="editor-panel"></div>
         </section>
@@ -133,6 +141,7 @@
     <script src="js/i18n/strings.js"></script>
     <script src="js/i18n/i18n.js"></script>
     <script src="js/data/factory-objects.js"></script>
+    <script src="js/data/planets.js"></script>
     <script src="js/data/data-source.js"></script>
     <script src="js/ui/diagram.js"></script>
     <script src="js/ui/telescope.js"></script>
@@ -140,6 +149,7 @@
     <script src="js/ui/controls.js"></script>
     <script src="js/ui/results.js"></script>
     <script src="js/ui/vanish.js"></script>
+    <script src="js/ui/limits.js"></script>
     <script src="js/ui/editor.js"></script>
     <script src="js/app.js"></script>
   </body>
