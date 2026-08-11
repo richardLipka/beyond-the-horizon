@@ -446,6 +446,12 @@
           el('code', { class: 'formula-symbolic formula-standalone', text: 'h_skr = R · ( 1 / cos γ − 1 ),   γ = (D − d₁) / R' }),
         ])
       );
+
+      // --- odvozeni obou funkci a jejich grafy / the two functions ---------
+      HL.Derivation.render(container, {
+        result: result,
+        objectName: HL.i18n.pick(object.name, object.id),
+      });
     }
 
     return { update };

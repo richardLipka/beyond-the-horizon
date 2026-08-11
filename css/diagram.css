@@ -381,6 +381,14 @@
   fill: var(--deep-800);
 }
 
+/* Bila obalka pod textem, aby popisek prekryl krivku i mrizku a zustal citelny. */
+.ch-halo {
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3.6px;
+  stroke-linejoin: round;
+}
+
 .ch-now {
   stroke: var(--deep-800);
   stroke-width: 2;

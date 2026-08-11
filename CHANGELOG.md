@@ -3,6 +3,48 @@
 Formát podle [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 verzování podle [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [1.3.0] — 2026-08-11
+
+### Přidáno / Added
+
+- **Odvození obou funkcí** v režimu Geometrie, hned pod postupem výpočtu.
+  Z téhož pravoúhlého trojúhelníku se odvodí `D(h₂) = d₁ + R·arccos(R/(R+h₂))`
+  (režim „Kdy zmizí?“) i `h₂(D) = R·(1/cos((D−d₁)/R) − 1)` (režim „Meze
+  viditelnosti“) včetně směrnice `D′(h₂)` a přiblížení `h₂ ≈ (D−d₁)²/2R`.
+  Text popisuje tvar každé křivky a končí tím, že jsou **navzájem inverzní** –
+  proto má první vodorovný strop tam, kde má druhá svislou asymptotu.
+- **Dva nové grafy v lineárních osách**, ne logaritmických. První se výřezem
+  řídí vybraným objektem, aby byl vidět odmocninový tvar u školních výšek;
+  druhý pokrývá celý rozsah až k mezi dohledu, takže je vidět svislá asymptota
+  – a je z něj hned jasné, proč režim „Meze viditelnosti“ logaritmické osy
+  potřebuje.
+- **Sedm nových objektů**: Saturn V (110,6 m), Starship se Super Heavy (121 m),
+  Velká pyramida v Gíze (138,5 m), Aneto v Pyrenejích (3404 m), Mauna Kea
+  (4207 m), Mont Blanc (4806 m) a Kilimandžáro (5895 m). Přibyla kategorie
+  **Rakety** 🚀. Celkem je tak v sadě 23 objektů.
+
+### Opraveno / Fixed
+
+- **Přesně na mezi dohledu vracel výpočet obrovské, ale konečné číslo.** Podíl
+  `(D − d₁)/R` vyjde po zaokrouhlení o vlásek pod π/2 a sekans pak dá až
+  2,5 · 10²⁴ m. Kontrola má nyní úhlovou rezervu 10⁻¹² rad – na Zemi je to
+  6 mikrometrů oblouku, zato potřebná výška by v tu chvíli byla 6 · 10¹² km.
+  Proměřeno na 180 kombinacích tělesa a výšky očí: nikde už nevyjde konečná.
+- Vodorovná osa grafu v režimu „Kdy zmizí?“ se ořezává protilehlým bodem
+  tělesa. U malého vlastního tělesa (průměr 0,1 km) osa dřív kvůli spodní mezi
+  1 km sahala šestkrát dál, než je celé těleso velké.
+- Křivka téhož grafu se v okolí obzoru vzorkuje hustěji. Při vysokém
+  pozorovateli a nízkém objektu připadalo na celý zajímavý úsek jen 8 z 260
+  bodů.
+
+### Ověřeno / Verified
+
+Tvar obou funkcí proměřen v `check-geometry`: inverznost, monotonie a chování
+na mezi dohledu na 5 tělesech × 7 výškách očí × 8 výškách objektu, směrnice
+proti numerické derivaci. Vykreslené křivky se shodují s nezávisle dopočítanou
+cestou znak po znaku; 440 kombinací jazyka, tělesa, výšky očí a objektu bez
+jediného bodu mimo rámeček.
+
 ## [1.2.1] — 2026-08-10
 
 ### Opraveno / Fixed
@@ -110,6 +152,7 @@ První veřejné vydání. / First public release.
 - **CI** kontrolující výpočty, úplnost překladů a reprodukovatelnost
   vygenerovaného `objects.json`.
 
+[1.3.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.0.0...v1.1.0

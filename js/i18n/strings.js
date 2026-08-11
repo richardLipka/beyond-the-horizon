@@ -41,6 +41,35 @@
       'geo.furtherText':
         'Pak se jeho spodek propadne pod obzor. Označíme γ úhel, o který objekt přesahuje bod dotyku, a schovanou výšku spočítáme ze stejného pravoúhlého trojúhelníku:',
 
+      'geo.deriveTitle': 'Odvození obou funkcí',
+      'geo.deriveIntro':
+        'Z jediného pravoúhlého trojúhelníku nad tečnou vypadnou obě funkce, na kterých stojí celá aplikace. Stačí se pokaždé zeptat na něco jiného: jednou na vzdálenost, podruhé na výšku.',
+      'geo.deriveOneTitle': '1. Vzdálenost zmizení jako funkce výšky objektu',
+      'geo.deriveOneText':
+        'Otázka režimu „Kdy zmizí?“: jak daleko dohlédnu na objekt vysoký h₂? Objekt zmizí přesně ve chvíli, kdy jeho špička leží na tečně. Vzdálenost po povrchu je pak součet obou oblouků.',
+      'geo.deriveSlope': 'o kolik metrů se posune zmizení na každý další metr výšky',
+      'geo.deriveOneShape':
+        'Tvar křivky: v nule začíná na d₁, tedy na obzoru samotného pozorovatele, a hned vystřelí vzhůru – směrnice je tam nekonečná, protože arkuskosinus má v jedničce svislou tečnu. Pak se křivka stále víc ohýbá a nad hodnotu D_max = d₁ + πR/2 = {max} se nikdy nedostane. Je to odmocninová křivka, která nakonec narazí na strop.',
+      'geo.deriveTwoTitle': '2. Potřebná výška jako funkce vzdálenosti',
+      'geo.deriveTwoText':
+        'Otázka režimu „Meze viditelnosti“: objekt je ve vzdálenosti D, jak vysoký musí být, aby vykoukl nad obzor? Ze stejné rovnice jen vyjádříme h₂ místo D.',
+      'geo.deriveTwoShape':
+        'Tvar křivky: až do vzdálenosti d₁ je nula – objekt je ještě před obzorem a je vidět celý. Hned za obzorem roste jako parabola, protože pro malé úhly je 1/cos β − 1 ≈ β²/2. Čím dál, tím strměji, a ve vzdálenosti D_max = {max} má svislou asymptotu: tam už nepomůže žádná výška.',
+      'geo.deriveInverse':
+        'Obě funkce jsou navzájem inverzní – jsou to tytéž body, jen s prohozenými osami. Proto má první křivka vodorovný strop přesně tam, kde má druhá svislou asymptotu: v D_max = {max}.',
+
+      'geo.chartATitle': 'Graf 1: vzdálenost zmizení podle výšky objektu',
+      'geo.chartAX': 'výška objektu h₂',
+      'geo.chartAY': 'vzdálenost zmizení D',
+      'geo.chartANote':
+        'Obyčejné (lineární) osy, žádné logaritmy. Výřez se řídí vybraným objektem, aby byl vidět tvar křivky u výšek, které se opravdu používají. Zelený pás dole je příspěvek pozorovatele – ten je pořád stejný, ať je objekt jakkoli vysoký. Strop D_max = {max} leží daleko nad tímto výřezem.',
+      'geo.chartBTitle': 'Graf 2: potřebná výška podle vzdálenosti',
+      'geo.chartBX': 'vzdálenost D',
+      'geo.chartBY': 'potřebná výška h₂ (v násobcích R = {r})',
+      'geo.chartBNote':
+        'Tentýž typ os, ale celý rozsah až k mezi dohledu {max}, aby byla vidět svislá asymptota. Všechno školní – Sněžka, Everest, plavba přes moře – se vejde do levého dolního rohu u nuly. Přesně proto kreslí režim „Meze viditelnosti“ tutéž křivku v logaritmických osách: jinak by na ní nebylo nic vidět.',
+      'geo.markAsymptote': 'mez dohledu',
+
       'ctrl.observer': 'Kde stojíš ty',
 
       'ctrl.planet': 'Na jakém tělese jsi',
@@ -295,6 +324,35 @@
       'geo.furtherTitle': 'And if the object is further still?',
       'geo.furtherText':
         'Then its base sinks below the horizon. Call γ the angle by which the object overshoots the point of contact; the hidden height comes from the very same right triangle:',
+
+      'geo.deriveTitle': 'Deriving the two functions',
+      'geo.deriveIntro':
+        'One right triangle above the tangent yields both functions the whole app is built on. You only have to ask a different question each time: once for a distance, once for a height.',
+      'geo.deriveOneTitle': '1. Vanishing distance as a function of the object’s height',
+      'geo.deriveOneText':
+        'The question behind “When does it vanish?”: how far can an object of height h₂ still be seen? It vanishes exactly when its top lies on the tangent, and the distance along the surface is then the sum of the two arcs.',
+      'geo.deriveSlope': 'extra distance gained per extra metre of height',
+      'geo.deriveOneShape':
+        'The shape: at zero it starts at d₁, the observer’s own horizon, and immediately shoots upwards — the slope there is infinite, because arccosine has a vertical tangent at one. The curve then bends over more and more and never rises above D_max = d₁ + πR/2 = {max}. It is a square-root curve that finally hits a ceiling.',
+      'geo.deriveTwoTitle': '2. Required height as a function of distance',
+      'geo.deriveTwoText':
+        'The question behind “Limits of sight”: the object sits at distance D, how tall must it be to peek over the horizon? The same equation, solved for h₂ instead of D.',
+      'geo.deriveTwoShape':
+        'The shape: it is flat zero out to d₁ — the object is still short of the horizon and fully visible. Just past the horizon it grows like a parabola, because for small angles 1/cos β − 1 ≈ β²/2. The further out, the steeper, and at D_max = {max} it has a vertical asymptote: beyond that no height helps at all.',
+      'geo.deriveInverse':
+        'The two functions are inverses of each other — the same points with the axes swapped. That is why the first curve has its horizontal ceiling exactly where the second has its vertical asymptote, at D_max = {max}.',
+
+      'geo.chartATitle': 'Chart 1: vanishing distance against the object’s height',
+      'geo.chartAX': 'height of the object h₂',
+      'geo.chartAY': 'vanishing distance D',
+      'geo.chartANote':
+        'Plain linear axes, no logarithms. The window follows the selected object so the shape is visible at the heights actually used. The green band at the bottom is the observer’s own contribution — it stays the same however tall the object gets. The ceiling D_max = {max} lies far above this window.',
+      'geo.chartBTitle': 'Chart 2: required height against distance',
+      'geo.chartBX': 'distance D',
+      'geo.chartBY': 'required height h₂ (in multiples of R = {r})',
+      'geo.chartBNote':
+        'The same kind of axes, but the full range out to the sight limit {max}, so the vertical asymptote shows. Everything from school — a mountain, Everest, a voyage across the sea — fits into the bottom-left corner near zero. That is exactly why the “Limits of sight” mode plots this same curve on logarithmic axes: otherwise there would be nothing to see.',
+      'geo.markAsymptote': 'sight limit',
 
       'ctrl.observer': 'Where you stand',
 

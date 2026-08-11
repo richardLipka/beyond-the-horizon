@@ -1247,6 +1247,35 @@ textarea.text-input {
   font-size: 1rem;
 }
 
+/* Radek bez dosazeni a bez vysledku si bere celou sirku, aby se dlouhy
+   vzorec nezalomil uprostred vyrazu. */
+.formula-row.formula-solo {
+  grid-template-columns: 1fr;
+}
+
+/* --- odvozeni funkci / deriving the functions ----------------------------- */
+
+.sub-title {
+  margin: 22px 0 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--deep-800);
+}
+
+.sub-title:first-of-type {
+  margin-top: 12px;
+}
+
+/* Vysledek celeho odvozeni - obe funkce jsou navzajem inverzni. */
+.derive-inverse {
+  margin: 18px 0 0;
+  padding: 12px 14px;
+  border-left: 4px solid var(--kelp);
+  border-radius: var(--radius-sm);
+  background: rgba(47, 158, 111, 0.12);
+  color: var(--deep-800);
+}
+
 @media (max-width: 720px) {
   .formula-row {
     grid-template-columns: minmax(0, 1fr);

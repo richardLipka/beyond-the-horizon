@@ -31,6 +31,24 @@
   const MOON_ANGULAR_DIAMETER = 0.0090757; // ~0.52 stupne
 
   /**
+   * Uhlova rezerva u meze dohledu.
+   *
+   * Presne na mezi vyjde (D - d1)/R kvuli zaokrouhleni o vlasek POD pi/2
+   * a sekans pak vrati obrovske, ale konecne cislo - namereno az 2,5e24 m.
+   * 1e-12 rad je na Zemi 6 mikrometru oblouku, zato potrebna vyska by v te
+   * chvili byla 6e12 km (asi 43 astronomickych jednotek). Obe cisla jsou
+   * daleko za hranici jakekoli ulohy, takze je poctivejsi drzet se meze
+   * z bezpecne strany a rict rovnou "nekonecno".
+   *
+   * Angular slack at the sight limit: exactly at the limit rounding can leave
+   * (D - d1)/R a hair below pi/2, and the secant then returns a huge but
+   * finite number (up to 2.5e24 m was measured). 1e-12 rad is 6 micrometres
+   * of arc on the Earth, while the required height there would be 6e12 km,
+   * so erring towards "infinite" is the honest choice.
+   */
+  const ANGLE_EPSILON = 1e-12;
+
+  /**
    * Efektivni polomer telesa. Bez zadaneho polomeru se pocita se Zemi.
    * Effective radius of the body; defaults to the Earth.
    */
@@ -100,7 +118,7 @@
     const beyond = distance - toHorizon;
     if (beyond <= 0) return 0;
     const angle = beyond / R;
-    if (angle >= Math.PI / 2) return Infinity;
+    if (angle >= Math.PI / 2 - ANGLE_EPSILON) return Infinity;
     return R * (1 / Math.cos(angle) - 1);
   }
 
@@ -110,6 +128,21 @@
    */
   function vanishDistance(eyeHeight, objectHeight, R) {
     return horizonDistance(eyeHeight, R) + horizonDistance(objectHeight, R);
+  }
+
+  /**
+   * Smernice krivky D(h2) = d1 + R*arccos(R/(R+h2)), tedy o kolik metru se
+   * posune vzdalenost zmizeni na kazdy dalsi metr vysky objektu.
+   *
+   * Slope of the vanish-distance curve: how much further the object can be
+   * seen for each extra metre of its height. Derivative of R*arccos(R/(R+h)).
+   * V nule je nekonecna (arccos ma v jednicce svislou tecnu) a s rostouci
+   * vyskou klesa k nule - proto ma krivka odmocninovy tvar se stropem.
+   */
+  function vanishSlope(objectHeight, R) {
+    const h = objectHeight;
+    if (!(h > 0)) return Infinity;
+    return (R * R) / ((R + h) * Math.sqrt(h * (2 * R + h)));
   }
 
   /**
@@ -256,6 +289,7 @@
     hiddenHeight,
     heightToBeSeen,
     vanishDistance,
+    vanishSlope,
     bulge,
     dip,
     sightLineHeight,

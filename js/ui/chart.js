@@ -47,7 +47,11 @@
     root.setAttribute('viewBox', `0 0 ${VIEW.w} ${VIEW.h}`);
 
     const objectHeight = Math.max(r.objectHeight, 1e-6);
-    const maxDistance = Math.max(r.vanishDistance * 1.18, 1000);
+    // Dal nez na protilehly bod telesa se jit neda - u malych vlastnich telies
+    // by jinak spodni mez 1000 m utekla az za nej.
+    // Never past the antipode: on a small custom body the 1000 m floor would
+    // otherwise run the axis right off the far side of the world.
+    const maxDistance = Math.min(Math.max(r.vanishDistance * 1.18, 1000), r.antipode);
     const X = (metres) => AREA.x0 + (metres / maxDistance) * AREA.w;
     const Y = (metres) => AREA.y1 - (metres / objectHeight) * AREA.h;
 
@@ -115,10 +119,26 @@
     }
 
     // ---- krivka viditelne vysky / visible-height curve --------------------
+    // Zajimavy je jen usek mezi obzorem a zmizenim; pri vysokem pozorovateli
+    // a nizkem objektu je to jen par procent osy, takze se tam vzorkuje husteji.
+    // Only the stretch between the horizon and the vanishing point matters;
+    // with a tall observer and a short object that is a couple of per cent of
+    // the axis, so it gets sampled densely.
     const STEPS = 260;
+    const KNEE_STEPS = 160;
+    const samples = [];
+    for (let i = 0; i <= STEPS; i++) samples.push((maxDistance * i) / STEPS);
+    const kneeFrom = Math.min(r.horizon, maxDistance);
+    const kneeTo = Math.min(r.vanishDistance, maxDistance);
+    if (kneeTo > kneeFrom) {
+      for (let i = 0; i <= KNEE_STEPS; i++) {
+        samples.push(kneeFrom + ((kneeTo - kneeFrom) * i) / KNEE_STEPS);
+      }
+      samples.sort((a, b) => a - b);
+    }
+
     const points = [];
-    for (let i = 0; i <= STEPS; i++) {
-      const distance = (maxDistance * i) / STEPS;
+    for (const distance of samples) {
       const hidden = G.hiddenHeight(r.eyeHeight, distance, r.R);
       const visible = Math.max(0, objectHeight - (isFinite(hidden) ? hidden : Infinity));
       points.push({ x: X(distance), y: Y(visible) });

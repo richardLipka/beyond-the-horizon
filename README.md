@@ -63,6 +63,20 @@ R/(R+h₁)`, `t = √(h(2R+h))`, `d = R·α`, `D = R(α+β)` — down to the sma
 approximation `d ≈ √(2Rh)`. The drawn angles are enlarged so the figure is
 readable; the printed numbers are the real ones.
 
+Below the calculation the same triangle is used to **derive both functions the
+rest of the app plots**, and each is drawn on plain linear axes:
+
+| | |
+| --- | --- |
+| *When does it vanish?* | `D(h₂) = d₁ + R · arccos(R / (R + h₂))` — a square-root curve that starts at the observer's own horizon and flattens against a ceiling |
+| *Limits of sight* | `h₂(D) = R · (1 / cos((D − d₁) / R) − 1)` — flat zero out to the horizon, then a parabola, then a vertical asymptote |
+
+They are **inverses of one another**, which is why the first has its horizontal
+ceiling exactly where the second has its vertical asymptote: at `d₁ + πR/2`. The
+first chart's window follows the selected object so the shape is visible at
+school heights; the second spans the full range so the asymptote shows — and
+makes it obvious why the *Limits of sight* mode needs logarithmic axes.
+
 ### 🧰 Object editor
 
 Add your own church, tower or ship — picture included. Upload an image and it is
@@ -113,15 +127,16 @@ sky full of stars.
 
 ## What ships in the box
 
-Sixteen objects, each with a hand-drawn SVG, a height, and a fun fact in both
-languages:
+Twenty-three objects, each with a hand-drawn SVG, a height, and a fun fact in
+both languages:
 
 | | |
 | --- | --- |
 | **People & houses** | a person (1.75 m), a family house (8 m) |
 | **Ships** | sailing boat (30 m), lighthouse (40 m), Titanic (53 m), container ship (60 m) |
-| **Towers & buildings** | Petřín Lookout Tower (63.5 m), Statue of Liberty (93 m), Ještěd (94 m), St Bartholomew's Cathedral in Pilsen (102.3 m), wind turbine (150 m), Eiffel Tower (330 m), Burj Khalifa (828 m) |
-| **Mountains** | Sněžka (1603 m), Mount Everest (8849 m), Olympus Mons (21 900 m) |
+| **Towers & buildings** | Petřín Lookout Tower (63.5 m), Statue of Liberty (93 m), Ještěd (94 m), St Bartholomew's Cathedral in Pilsen (102.3 m), Great Pyramid of Giza (138.5 m), wind turbine (150 m), Eiffel Tower (330 m), Burj Khalifa (828 m) |
+| **Rockets** | Saturn V (110.6 m), Starship with Super Heavy (121 m) |
+| **Mountains** | Sněžka (1603 m), Aneto in the Pyrenees (3404 m), Mauna Kea (4207 m), Mont Blanc (4806 m), Kilimanjaro (5895 m), Mount Everest (8849 m), Olympus Mons (21 900 m) |
 
 ---
 

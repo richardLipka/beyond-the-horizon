@@ -102,9 +102,16 @@ write the constant into a translation.
 approaches `πR/2` as the height grows, so nothing beyond
 `horizon + πR/2` is ever visible and the antipode (`πR`) is unreachable at any
 height. `hiddenHeight` returns `Infinity` there and `solve` reports
-`beyondReach: true`; `distance` is clamped to the antipode. When displaying
-required heights, treat "at or past `maxSight`" as impossible — floating point
-still yields a finite (absurd) number exactly at the limit.
+`beyondReach: true`; `distance` is clamped to the antipode.
+
+That `Infinity` needs `ANGLE_EPSILON` (1e-12 rad) to be reliable. Exactly at the
+limit, `(D − d₁)/R` rounds a hair *below* `π/2` and the secant returns a huge but
+finite number — 2.5 × 10²⁴ m was measured, and it happened in 14 of 180
+body/eye-height combinations. Comparing arc lengths instead of angles only fixes
+11 of them, so the slack is the fix. It is physically invisible (6 µm of arc on
+Earth) and numerically decisive (the required height there would be 6 × 10¹² km).
+Do not remove it, and keep treating "at or past `maxSight`" as impossible in the
+UI as well.
 
 **The diagram may only span a quarter of the circumference either side of the
 chord midpoint.** Past that the arc curves back on itself and the surface path
@@ -134,6 +141,18 @@ tangent really is tangent — and every printed number is the true one. Keep the
 can measure the real `getBBox()` boxes afterwards and step colliding ones apart;
 labels are only tested against *earlier* ones, so the pass always terminates.
 If you add a label, add it via `put()` with a sensible direction.
+
+**`derivation.js` renders the two functions on LINEAR axes on purpose.** The
+whole app plots only two curves and they are inverses of one another:
+`D(h₂) = d₁ + R·arccos(R/(R+h₂))` and `h₂(D) = R·(sec((D−d₁)/R) − 1)`. The first
+chart's window follows the selected object (the far field is off-scale and named
+in the caption); the second spans the full range so the asymptote at `maxSight`
+is visible. Chart 2 samples uniformly in the **angle β**, not in distance — near
+the asymptote the distance barely moves while the height races away — and its
+y-axis steps in whole radii, because a "nice" step of its own rounds two
+different gridlines to the same `2R` label. If a formula row has neither a
+substitution nor a result, `formulaRow` gives it `formula-solo` so the
+three-column grid does not break the expression mid-line.
 
 **Data source priority** is localStorage → `objects.json` → built-in factory
 copy. The third exists purely for `file://`, where `fetch()` of a local file

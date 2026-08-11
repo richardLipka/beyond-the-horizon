@@ -111,5 +111,67 @@ check('solve na protilehlem bode nic nevidi', farSide.visible, 0, 0);
 const earthDefault = G.solve({ eyeHeight: 1.7, objectHeight: 30, distance: 20000 });
 check('solve bez polomeru pouzije Zemi', earthDefault.physicalRadius, G.R_MEAN, 1e-6);
 
+// --- tvar obou funkci / the shape of the two plotted functions -------------
+// Cely zbytek aplikace kresli jen dve funkce a jsou navzajem inverzni:
+//   D(h2)  = d1 + R * arccos(R/(R+h2))       "Kdy zmizi?"
+//   h2(D)  = R * (1/cos((D-d1)/R) - 1)       "Meze viditelnosti"
+const BODIES = [R, R_MOON, R_MARS, 1188300, 695700000];
+const EYE_SET = [0.1, 1, 1.7, 10, 100, 1000, 100000];
+const HEIGHT_SET = [1.75, 30, 93, 330, 828, 1603, 8849, 21900];
+
+let worstInverse = 0;
+let notRising = 0;
+let notFallingVisible = 0;
+let finiteAtLimit = 0;
+
+for (const radius of BODIES) {
+  for (const h1 of EYE_SET) {
+    const d1 = G.horizonDistance(h1, radius);
+    const sightLimit = G.maxSightDistance(h1, radius);
+
+    // Presne NA mezi dohledu musi vyjit nekonecno. Bez uhlove rezervy tu
+    // zaokrouhleni vraci obrovske, ale konecne cislo.
+    if (isFinite(G.heightToBeSeen(h1, sightLimit, radius))) finiteAtLimit++;
+
+    // Potrebna vyska roste s kazdym metrem vzdalenosti.
+    let previous = -1;
+    for (let i = 1; i < 200; i++) {
+      const value = G.heightToBeSeen(h1, d1 + ((sightLimit - d1) * i) / 200, radius);
+      if (!(value > previous)) notRising++;
+      previous = value;
+    }
+
+    for (const h2 of HEIGHT_SET) {
+      // Inverze: ve vzdalenosti zmizeni je potrebna vyska prave h2.
+      const vanishAt = G.vanishDistance(h1, h2, radius);
+      worstInverse = Math.max(worstInverse, Math.abs(G.heightToBeSeen(h1, vanishAt, radius) - h2) / h2);
+
+      // Viditelna vyska h2 - h_potrebna nesmi nikde vzrust.
+      let last = h2 + 1;
+      for (let i = 0; i <= 100; i++) {
+        const visible = Math.max(0, h2 - G.heightToBeSeen(h1, d1 + ((vanishAt - d1) * i) / 100, radius));
+        if (visible > last + 1e-9) notFallingVisible++;
+        last = visible;
+      }
+    }
+  }
+}
+
+check('obe funkce jsou navzajem inverzni', worstInverse, 0, 1e-6);
+check('potrebna vyska nikde neklesa', notRising, 0, 0);
+check('viditelna vyska nikde neroste', notFallingVisible, 0, 0);
+check('na mezi dohledu vzdy nekonecno', finiteAtLimit, 0, 0);
+
+// Smernice krivky D(h2) proti numericke derivaci. Krok je pomerny k vysce;
+// chyba centralni diference je pak radove (krok/vyska)^2 / 8, tedy 1e-7.
+for (const h2 of [1, 100, 8849]) {
+  const step = h2 * 1e-3;
+  const numeric = (G.vanishDistance(0, h2 + step, R) - G.vanishDistance(0, h2 - step, R)) / (2 * step);
+  check(`smernice D(h2) v ${h2} m`, G.vanishSlope(h2, R), numeric, Math.abs(numeric) * 1e-5);
+}
+// Odmocninovy tvar: u nuly nekonecne strma, ve velke vysce skoro vodorovna.
+check('smernice u nuly je nekonecna', isFinite(G.vanishSlope(0, R)) ? 0 : 1, 1, 0);
+check('smernice ve velke vysce klesa k nule', G.vanishSlope(1e9, R), 0, 0.01);
+
 console.log(failures === 0 ? '\nVsechny kontroly prosly / all checks passed' : `\n${failures} chyb / failures`);
 process.exit(failures === 0 ? 0 : 1);

@@ -45,6 +45,14 @@ window.HorizonLab.FACTORY_DATA = {
       }
     },
     {
+      "id": "rockets",
+      "icon": "🚀",
+      "name": {
+        "cs": "Rakety",
+        "en": "Rockets"
+      }
+    },
+    {
       "id": "mountains",
       "icon": "⛰️",
       "name": {
@@ -225,6 +233,57 @@ window.HorizonLab.FACTORY_DATA = {
       "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCAxMDAiPjxyZWN0IHg9IjEzIiB5PSI3OSIgd2lkdGg9IjQ1IiBoZWlnaHQ9IjIxIiBmaWxsPSIjZWZlNGNkIi8+PHBhdGggZD0iTTExIDc5IDM1LjUgNjQgMzUuNSA3OVoiIGZpbGw9IiM0ZTljNzgiLz48cGF0aCBkPSJNMzUuNSA2NCA2MCA3OSAzNS41IDc5WiIgZmlsbD0iIzNkODA2MiIvPjxnIGZpbGw9IiNlMmQ1YmEiPjxyZWN0IHg9IjI3IiB5PSI4MCIgd2lkdGg9IjIuNCIgaGVpZ2h0PSIyMCIvPjxyZWN0IHg9IjM4IiB5PSI4MCIgd2lkdGg9IjIuNCIgaGVpZ2h0PSIyMCIvPjxyZWN0IHg9IjQ5IiB5PSI4MCIgd2lkdGg9IjIuNCIgaGVpZ2h0PSIyMCIvPjwvZz48Y2lyY2xlIGN4PSIzNS41IiBjeT0iODUuNSIgcj0iMy4yIiBmaWxsPSIjZjJiNTQ0Ii8+PGNpcmNsZSBjeD0iMzUuNSIgY3k9Ijg1LjUiIHI9IjEuNSIgZmlsbD0iIzJiNmQ4YyIvPjxnIGZpbGw9IiMyYjZkOGMiPjxyZWN0IHg9IjMxLjQiIHk9Ijg5IiB3aWR0aD0iNC4yIiBoZWlnaHQ9IjExIiByeD0iMi4xIi8+PHJlY3QgeD0iNDIuNCIgeT0iODkiIHdpZHRoPSI0LjIiIGhlaWdodD0iMTEiIHJ4PSIyLjEiLz48cmVjdCB4PSI1My40IiB5PSI4OSIgd2lkdGg9IjQuMiIgaGVpZ2h0PSIxMSIgcng9IjIuMSIvPjwvZz48cmVjdCB4PSI2IiB5PSI1NiIgd2lkdGg9IjE0IiBoZWlnaHQ9IjQ0IiBmaWxsPSIjZjdlZmRkIi8+PGcgZmlsbD0iI2U2ZDliZCI+PHJlY3QgeD0iNiIgeT0iNTYiIHdpZHRoPSIyLjIiIGhlaWdodD0iNDQiLz48cmVjdCB4PSIxNy44IiB5PSI1NiIgd2lkdGg9IjIuMiIgaGVpZ2h0PSI0NCIvPjwvZz48cGF0aCBkPSJNMTMgNSA0LjggNTUgMTMgNTVaIiBmaWxsPSIjNGU5Yzc4Ii8+PHBhdGggZD0iTTEzIDUgMjEuMiA1NSAxMyA1NVoiIGZpbGw9IiMzZDgwNjIiLz48cmVjdCB4PSI0LjIiIHk9IjU0LjQiIHdpZHRoPSIxNy42IiBoZWlnaHQ9IjMiIGZpbGw9IiNkOGM5YTgiLz48cmVjdCB4PSI0LjIiIHk9IjU0LjQiIHdpZHRoPSIxNy42IiBoZWlnaHQ9IjEiIGZpbGw9IiNjNGIxOGMiLz48cmVjdCB4PSIxMi4zIiB5PSIwIiB3aWR0aD0iMS40IiBoZWlnaHQ9IjgiIGZpbGw9IiMxNDQyNWMiLz48cmVjdCB4PSIxMC40IiB5PSIyLjIiIHdpZHRoPSI1LjIiIGhlaWdodD0iMS40IiBmaWxsPSIjMTQ0MjVjIi8+PGNpcmNsZSBjeD0iMTMiIGN5PSI2NCIgcj0iMy44IiBmaWxsPSIjZjJiNTQ0Ii8+PHBhdGggZD0iTTEzIDYxLjJ2Mi45bDIgMS4zIiBzdHJva2U9IiMxNDQyNWMiIHN0cm9rZS13aWR0aD0iMC45IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cmVjdCB4PSIxMC42IiB5PSI3MyIgd2lkdGg9IjQuOCIgaGVpZ2h0PSIxMiIgcng9IjIuNCIgZmlsbD0iIzJiNmQ4YyIvPjxyZWN0IHg9IjkiIHk9Ijg4IiB3aWR0aD0iOCIgaGVpZ2h0PSIxMiIgcng9IjQiIGZpbGw9IiMxNDQyNWMiLz48L3N2Zz4="
     },
     {
+      "id": "saturn5",
+      "category": "rockets",
+      "name": {
+        "cs": "Raketa Saturn V",
+        "en": "Saturn V rocket"
+      },
+      "height": 110.6,
+      "baseline": "ground",
+      "defaultDistance": 52000,
+      "fact": {
+        "cs": "Raketa, která vozila lidi na Měsíc. Se 110,6 m je vyšší než nejvyšší kostelní věž v Česku.",
+        "en": "The rocket that carried people to the Moon. At 110.6 m it stands taller than the tallest church tower in Czechia."
+      },
+      "aspect": 0.18,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOCAxMDAiPjxyZWN0IHg9IjguNSIgeT0iMSIgd2lkdGg9IjEiIGhlaWdodD0iNyIgZmlsbD0iIzU3NjQ2ZiIvPjxwYXRoIGQ9Ik05IDYgMTEgMTRIN1oiIGZpbGw9IiM1NzY0NmYiLz48cGF0aCBkPSJNOSAxMyAxMiAyM0g2WiIgZmlsbD0iI2YxZjVmOCIvPjxyZWN0IHg9IjYiIHk9IjIyIiB3aWR0aD0iNiIgaGVpZ2h0PSIxMiIgZmlsbD0iI2YxZjVmOCIvPjxyZWN0IHg9IjYiIHk9IjMxIiB3aWR0aD0iNiIgaGVpZ2h0PSIzLjQiIGZpbGw9IiMzMzQxNGMiLz48cGF0aCBkPSJNNSA0MCA2IDM0aDZsMSA2WiIgZmlsbD0iI2YxZjVmOCIvPjxyZWN0IHg9IjUiIHk9IjM5IiB3aWR0aD0iOCIgaGVpZ2h0PSIyMiIgZmlsbD0iI2YxZjVmOCIvPjxyZWN0IHg9IjUiIHk9IjQzLjUiIHdpZHRoPSI4IiBoZWlnaHQ9IjMuNiIgZmlsbD0iI2M4NTQzZiIvPjxyZWN0IHg9IjUiIHk9IjU4IiB3aWR0aD0iOCIgaGVpZ2h0PSIzLjQiIGZpbGw9IiMzMzQxNGMiLz48cGF0aCBkPSJNNCA2OCA1IDYxaDhsMSA3WiIgZmlsbD0iI2YxZjVmOCIvPjxyZWN0IHg9IjQiIHk9IjY3IiB3aWR0aD0iMTAiIGhlaWdodD0iMjkiIGZpbGw9IiNmMWY1ZjgiLz48cmVjdCB4PSI0IiB5PSI3MSIgd2lkdGg9IjEwIiBoZWlnaHQ9IjUiIGZpbGw9IiMzMzQxNGMiLz48cmVjdCB4PSI0IiB5PSI4NiIgd2lkdGg9IjEwIiBoZWlnaHQ9IjQuNCIgZmlsbD0iIzMzNDE0YyIvPjxwYXRoIGQ9Ik00IDg3IDAuNCAxMDBINFoiIGZpbGw9IiMzMzQxNGMiLz48cGF0aCBkPSJNMTQgODcgMTcuNiAxMDBIMTRaIiBmaWxsPSIjMzM0MTRjIi8+PHJlY3QgeD0iNC42IiB5PSI5NSIgd2lkdGg9IjguOCIgaGVpZ2h0PSI1IiByeD0iMSIgZmlsbD0iIzdkOGVhMyIvPjwvc3ZnPg=="
+    },
+    {
+      "id": "starship",
+      "category": "rockets",
+      "name": {
+        "cs": "Starship se Super Heavy",
+        "en": "Starship with Super Heavy"
+      },
+      "height": 121,
+      "baseline": "ground",
+      "defaultDistance": 54000,
+      "fact": {
+        "cs": "Celá sestava Super Heavy + Starship měří 121 m – zatím nejvyšší raketa, jaká kdy odstartovala. Falcon Heavy je jiná, menší raketa SpaceX (70 m).",
+        "en": "The full Super Heavy + Starship stack is 121 m – the tallest rocket ever to fly. Falcon Heavy is a different, smaller SpaceX rocket (70 m)."
+      },
+      "aspect": 0.16,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxMDAiPjxwYXRoIGQ9Ik00LjQgOC41IDAuOCAxNXY2LjVsMy42LTNaIiBmaWxsPSIjYTliNmMxIi8+PHBhdGggZD0iTTExLjYgOC41IDE1LjIgMTV2Ni41bC0zLjYtM1oiIGZpbGw9IiNhOWI2YzEiLz48cGF0aCBkPSJNNC40IDI5IDAuNCAzNS41djYuNWw0LTNaIiBmaWxsPSIjOTdhNmIxIi8+PHBhdGggZD0iTTExLjYgMjkgMTUuNiAzNS41djYuNWwtNC0zWiIgZmlsbD0iIzk3YTZiMSIvPjxwYXRoIGQ9Ik04IDBxMy42IDcuNiAzLjYgMTVINC40UTQuNCA3LjYgOCAwWiIgZmlsbD0iI2U4ZWVmMyIvPjxyZWN0IHg9IjQuNCIgeT0iMTQiIHdpZHRoPSI3LjIiIGhlaWdodD0iMjQiIGZpbGw9IiNkYWUyZTkiLz48cmVjdCB4PSI0LjQiIHk9IjM3IiB3aWR0aD0iNy4yIiBoZWlnaHQ9IjMuMiIgZmlsbD0iIzMzNDE0YyIvPjxyZWN0IHg9IjMuOCIgeT0iNDAiIHdpZHRoPSI4LjQiIGhlaWdodD0iNTYiIGZpbGw9IiNlOGVlZjMiLz48cGF0aCBkPSJNMy44IDQ1LjUgMS4yIDQzLjZ2NS42bDIuNi0xLjdaIiBmaWxsPSIjOGI5YWE1Ii8+PHBhdGggZD0iTTEyLjIgNDUuNSAxNC44IDQzLjZ2NS42bC0yLjYtMS43WiIgZmlsbD0iIzhiOWFhNSIvPjxyZWN0IHg9IjMuOCIgeT0iOTIiIHdpZHRoPSI4LjQiIGhlaWdodD0iMy40IiBmaWxsPSIjMzM0MTRjIi8+PHBhdGggZD0iTTQuMiA5NWg3LjZsMS43IDVIMi41WiIgZmlsbD0iIzViNjg3NCIvPjwvc3ZnPg=="
+    },
+    {
+      "id": "pyramid",
+      "category": "buildings",
+      "name": {
+        "cs": "Velká pyramida v Gíze",
+        "en": "Great Pyramid of Giza"
+      },
+      "height": 138.5,
+      "baseline": "ground",
+      "defaultDistance": 58000,
+      "fact": {
+        "cs": "Dnes měří 138,5 m, původně 146,6 m – špička a hladký obklad se ztratily. Přes 3800 let byla nejvyšší stavbou světa.",
+        "en": "Today it is 138.5 m tall, originally 146.6 m – the tip and the smooth casing are gone. For over 3,800 years it was the tallest building in the world."
+      },
+      "aspect": 1.66,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjYgMTAwIj48cGF0aCBkPSJNODMgMCAxNjYgMTAwSDgzWiIgZmlsbD0iI2MzYTA2NSIvPjxwYXRoIGQ9Ik04MyAwIDAgMTAwaDgzWiIgZmlsbD0iI2UyYzc4YyIvPjxnIHN0cm9rZT0iI2E4ODczZiIgc3Ryb2tlLXdpZHRoPSIwLjkiIG9wYWNpdHk9IjAuNDUiIGZpbGw9Im5vbmUiPjxwYXRoIGQ9Ik02NiAyMGgzNE01MCA0MGg2Nk0zMyA2MGgxMDBNMTcgODBoMTMyIi8+PC9nPjxwYXRoIGQ9Ik04MyAwIDkxIDEwSDc1WiIgZmlsbD0iI2YwZGZiMiIvPjxwYXRoIGQ9Ik0wIDEwMGgxNjYiIHN0cm9rZT0iI2E4ODczZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIwLjQiLz48L3N2Zz4="
+    },
+    {
       "id": "windturbine",
       "category": "buildings",
       "name": {
@@ -291,6 +350,74 @@ window.HorizonLab.FACTORY_DATA = {
       },
       "aspect": 2.2,
       "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMjAgMTAwIj48cGF0aCBkPSJNMCAxMDBDNDYgOTQgNzQgNzIgMTE4IDM0YzI2IDMwIDU0IDU4IDEwMiA2NloiIGZpbGw9IiM0ZjcxODMiLz48cGF0aCBkPSJNMCAxMDBDNDYgOTQgNzQgNzIgMTE4IDM0djY2WiIgZmlsbD0iIzVkODI5NiIvPjxwYXRoIGQ9Ik0xMTggMzRjLTExIDEwLTIwIDE5LTI4IDI2IDE3IDcgMzggNyA1Ni0xLTktOC0xOC0xNi0yOC0yNVoiIGZpbGw9IiNmMmY4ZmIiLz48cGF0aCBkPSJNMTA0IDIwaDI4djZoLTI4WiIgZmlsbD0ibm9uZSIvPjxlbGxpcHNlIGN4PSIxMTgiIGN5PSIyNyIgcng9IjE1IiByeT0iNS4yIiBmaWxsPSIjZDk0ZjQ1Ii8+PGVsbGlwc2UgY3g9IjExOCIgY3k9IjI0LjUiIHJ4PSI5IiByeT0iNCIgZmlsbD0iI2YwZjVmOCIvPjxyZWN0IHg9IjEyOSIgeT0iMTQiIHdpZHRoPSIyLjQiIGhlaWdodD0iMTEiIGZpbGw9IiM3ZDhlYTMiLz48cGF0aCBkPSJNMTA0IDMwaDV2LTZsLTIuNS0zLTIuNSAzWiIgZmlsbD0iI2VmZTRjZCIvPjwvc3ZnPg=="
+    },
+    {
+      "id": "aneto",
+      "category": "mountains",
+      "name": {
+        "cs": "Aneto (Pyreneje)",
+        "en": "Aneto (Pyrenees)"
+      },
+      "height": 3404,
+      "baseline": "ground",
+      "defaultDistance": 240000,
+      "fact": {
+        "cs": "Nejvyšší hora Pyrenejí, 3404 m. Leží ve Španělsku a nese poslední velký ledovec celého pohoří.",
+        "en": "The highest peak of the Pyrenees, 3,404 m. It lies in Spain and carries the last big glacier in the whole range."
+      },
+      "aspect": 2.1,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMTAgMTAwIj48cGF0aCBkPSJNMCAxMDAgMzYgNzAgNjAgODIgOTIgNDggMTIwIDY0IDE1MiA0MCAxODYgNzQgMjEwIDEwMFoiIGZpbGw9IiM4ZmEwOGUiLz48cGF0aCBkPSJNMTUyIDQwIDEzNiA1OHExMiA2IDI0IDR0MTYtOFoiIGZpbGw9IiNlOGYwZWUiLz48cGF0aCBkPSJNMjAgMTAwQzU2IDkyIDc4IDUyIDEwNCAyMmMyNiAzMCA0OCA3MCA4NiA3OFoiIGZpbGw9IiM2Zjg0NzQiLz48cGF0aCBkPSJNMjAgMTAwQzU2IDkyIDc4IDUyIDEwNCAyMnY3OFoiIGZpbGw9IiM3ZDk0N2YiLz48cGF0aCBkPSJNMTA0IDIyIDg2IDQycTE4IDEwIDM4IDZsLTIwLTI2WiIgZmlsbD0iI2Y0ZjlmOCIvPjxwYXRoIGQ9Ik0xMDQgMjJjOCA5IDE1IDE4IDIwIDI2IDEwIDQgMjAgNCAyOCAxLTE0LTEwLTMyLTIxLTQ4LTI3WiIgZmlsbD0iI2RmZWNlYiIvPjxnIHN0cm9rZT0iIzVjNmY2MyIgc3Ryb2tlLXdpZHRoPSIxLjQiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAuNSI+PHBhdGggZD0iTTkyIDU0IDg0IDEwME0xMTYgNTYgMTI0IDEwME0xMzggNzAgMTUwIDEwMCIvPjwvZz48L3N2Zz4="
+    },
+    {
+      "id": "maunakea",
+      "category": "mountains",
+      "name": {
+        "cs": "Mauna Kea",
+        "en": "Mauna Kea"
+      },
+      "height": 4207,
+      "baseline": "ground",
+      "defaultDistance": 255000,
+      "fact": {
+        "cs": "Nad hladinou má 4207 m, ale ode dna Tichého oceánu přes 10 200 m – od paty je to nejvyšší hora Země. Tady počítáme jen tu část nad mořem.",
+        "en": "It rises 4,207 m above the sea, but more than 10,200 m from the Pacific floor – measured from its base it is the tallest mountain on Earth. Here we count only the part above the water."
+      },
+      "aspect": 3.2,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMjAgMTAwIj48cGF0aCBkPSJNMCAxMDBDODAgOTYgMTMwIDQ0IDE2MCAxOGMzMCAyNiA4MCA3OCAxNjAgODJaIiBmaWxsPSIjN2E2YTYyIi8+PHBhdGggZD0iTTAgMTAwQzgwIDk2IDEzMCA0NCAxNjAgMTh2ODJaIiBmaWxsPSIjOGM3YjcwIi8+PHBhdGggZD0iTTE2MCAxOGMtMTAgOS0xOSAxNy0yNyAyNCAxOCA2IDM4IDYgNTQtMS05LTgtMTgtMTUtMjctMjNaIiBmaWxsPSIjYTg5NjhhIi8+PGcgZmlsbD0iI2Y0ZjhmYSI+PGNpcmNsZSBjeD0iMTQ2IiBjeT0iMjgiIHI9IjQuMiIvPjxjaXJjbGUgY3g9IjE2MCIgY3k9IjI0IiByPSI1Ii8+PGNpcmNsZSBjeD0iMTc0IiBjeT0iMjkiIHI9IjQiLz48L2c+PGcgZmlsbD0iI2Q3ZTJlOCI+PHJlY3QgeD0iMTQxLjgiIHk9IjI4IiB3aWR0aD0iOC40IiBoZWlnaHQ9IjQiLz48cmVjdCB4PSIxNTUiIHk9IjI0IiB3aWR0aD0iMTAiIGhlaWdodD0iNSIvPjxyZWN0IHg9IjE3MCIgeT0iMjkiIHdpZHRoPSI4IiBoZWlnaHQ9IjQiLz48L2c+PGcgc3Ryb2tlPSIjNjY1OTUwIiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0ibm9uZSIgb3BhY2l0eT0iMC40Ij48cGF0aCBkPSJNMTEyIDU0IDkyIDEwME0xMzggNDYgMTMyIDEwME0xODggNDggMjAwIDEwME0yMTYgNjIgMjM2IDEwMCIvPjwvZz48cGF0aCBkPSJNMCAxMDBoMzIwIiBzdHJva2U9IiM2NjU5NTAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iMC4zNSIvPjwvc3ZnPg=="
+    },
+    {
+      "id": "montblanc",
+      "category": "mountains",
+      "name": {
+        "cs": "Mont Blanc (Alpy)",
+        "en": "Mont Blanc (Alps)"
+      },
+      "height": 4806,
+      "baseline": "ground",
+      "defaultDistance": 265000,
+      "fact": {
+        "cs": "Nejvyšší hora Alp. Vrchol tvoří ledová čepice, takže naměřená výška se rok od roku o kousek liší – kolem 4806 m.",
+        "en": "The highest mountain in the Alps. Its summit is a cap of ice, so the measured height changes a little from year to year – around 4,806 m."
+      },
+      "aspect": 2.2,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMjAgMTAwIj48cGF0aCBkPSJNMCAxMDAgMjggNjYgNTAgODAgODIgNDIgMTA2IDU4IDE0MCAzMiAxNzggNzIgMjIwIDEwMFoiIGZpbGw9IiM4YmE0YjUiLz48cGF0aCBkPSJNMTQwIDMyIDEyMiA1MHExMyA3IDI3IDV0MTgtOVoiIGZpbGw9IiNlNmYwZjYiLz48cGF0aCBkPSJNODIgNDIgNjggNThxOSA2IDIwIDR0MTMtN1oiIGZpbGw9IiNlNmYwZjYiLz48cGF0aCBkPSJNMTAgMTAwQzUyIDk0IDc0IDU0IDk2IDMycTE4LTE1IDM2IDBjMjIgMjIgNDQgNjAgNzggNjhaIiBmaWxsPSIjNmQ4ZWEzIi8+PHBhdGggZD0iTTEwIDEwMEM1MiA5NCA3NCA1NCA5NiAzMnExMS05IDIwLTd2NzVaIiBmaWxsPSIjN2Q5Y2IwIi8+PHBhdGggZD0iTTk2IDMycTE4LTE1IDM2IDBjOSA5IDE3IDIwIDI0IDMxLTI1IDktNTcgOS03OS0yIDUtMTEgMTEtMjEgMTktMjlaIiBmaWxsPSIjZjVmYWZkIi8+PHBhdGggZD0iTTEwMyAyNnExMy02IDIyIDEtMTEtMS0yMiAyWiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC43NSIvPjxnIHN0cm9rZT0iIzVkN2Q5MiIgc3Ryb2tlLXdpZHRoPSIxLjYiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAuNDUiPjxwYXRoIGQ9Ik04NCA2NiA2NiAxMDBNMTE4IDY4IDExNiAxMDBNMTQ4IDcwIDE2NCAxMDAiLz48L2c+PHBhdGggZD0iTTc4IDY0cTM0IDEyIDc4IDMiIHN0cm9rZT0iI2NmZTBlYSIgc3Ryb2tlLXdpZHRoPSIyLjIiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAuNzUiLz48L3N2Zz4="
+    },
+    {
+      "id": "kilimanjaro",
+      "category": "mountains",
+      "name": {
+        "cs": "Kilimandžáro",
+        "en": "Kilimanjaro"
+      },
+      "height": 5895,
+      "baseline": "ground",
+      "defaultDistance": 290000,
+      "fact": {
+        "cs": "Nejvyšší hora Afriky, 5895 m. Je to samostatná sopka uprostřed roviny, takže je vidět opravdu z veliké dálky.",
+        "en": "The highest mountain in Africa, 5,895 m. It is a lone volcano in the middle of a plain, so it really can be seen from a great distance."
+      },
+      "aspect": 2.8,
+      "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyODAgMTAwIj48cGF0aCBkPSJNMjA0IDEwMCAyMzIgNTJsMTQgMTYgMTYtMjQgMjQgNTZaIiBmaWxsPSIjN2Y2ZjYzIi8+PHBhdGggZD0iTTI2MiA0NCAyNTIgNjBxOCA0IDE2IDJaIiBmaWxsPSIjZWVmMmYwIi8+PHBhdGggZD0iTTAgMTAwQzU4IDk2IDkyIDYwIDEyMiAzMGg0NGMzMCAzMCA2MiA2NiAxMTQgNzBaIiBmaWxsPSIjOGE3YTZiIi8+PHBhdGggZD0iTTAgMTAwQzU4IDk2IDkyIDYwIDEyMiAzMGgyMmMtMTYgMjYtNDAgNTItNjYgNzBaIiBmaWxsPSIjOWM4YjdhIi8+PHBhdGggZD0iTTEyMiAzMGg0NGM4IDggMTYgMTYgMjQgMjQtMzIgMTAtNzAgMTAtOTgtMiAxMC04IDIwLTE1IDMwLTIyWiIgZmlsbD0iI2Y0ZjhmYSIvPjxwYXRoIGQ9Ik0xMjIgMzBoNDRsNiA2aC01NloiIGZpbGw9IiNkZmU5ZWUiLz48ZyBzdHJva2U9IiM2ZjYwNTMiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIiBvcGFjaXR5PSIwLjQ1Ij48cGF0aCBkPSJNOTYgNTggODIgMTAwTTE0OCA1NiAxNDYgMTAwTTE4NiA2MiAyMDAgMTAwIi8+PC9nPjxwYXRoIGQ9Ik0wIDEwMGgyODAiIHN0cm9rZT0iIzZmNjA1MyIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIwLjM1Ii8+PC9zdmc+"
     },
     {
       "id": "everest",

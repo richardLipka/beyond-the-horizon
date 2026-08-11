@@ -63,6 +63,20 @@ Každý krok je vypsaný symbolicky, dosazený a vyčíslený – `cos α = R/(R
 `d ≈ √(2Rh)`. Úhly v obrázku jsou zvětšené, aby byl čitelný; vypsaná čísla
 jsou skutečná.
 
+Pod výpočtem se z téhož trojúhelníku **odvodí obě funkce, které kreslí zbytek
+aplikace**, a každá se vynese do obyčejných (lineárních) os:
+
+| | |
+| --- | --- |
+| *Kdy zmizí?* | `D(h₂) = d₁ + R · arccos(R / (R + h₂))` – odmocninová křivka, která začíná na obzoru pozorovatele a nakonec narazí na strop |
+| *Meze viditelnosti* | `h₂(D) = R · (1 / cos((D − d₁) / R) − 1)` – až k obzoru nula, pak parabola a nakonec svislá asymptota |
+
+Jsou **navzájem inverzní**, a proto má první vodorovný strop přesně tam, kde má
+druhá svislou asymptotu: v `d₁ + πR/2`. Výřez prvního grafu se řídí vybraným
+objektem, aby byl tvar vidět u školních výšek; druhý pokrývá celý rozsah, takže
+je vidět asymptota – a je z něj hned jasné, proč režim *Meze viditelnosti*
+potřebuje logaritmické osy.
+
 ### 🧰 Editor objektů
 
 Přidej si vlastní kostel, rozhlednu nebo loď — i s obrázkem. Nahraný obrázek se
@@ -113,15 +127,16 @@ oblohu plnou hvězd.
 
 ## Co je uvnitř
 
-Šestnáct objektů, každý s ručně kreslenou SVG grafikou, výškou a zajímavostí
+Dvacet tři objektů, každý s ručně kreslenou SVG grafikou, výškou a zajímavostí
 v obou jazycích:
 
 | | |
 | --- | --- |
 | **Lidé a domy** | člověk (1,75 m), rodinný dům (8 m) |
 | **Lodě** | plachetnice (30 m), maják (40 m), Titanic (53 m), kontejnerová loď (60 m) |
-| **Stavby a věže** | Petřínská rozhledna (63,5 m), Socha Svobody (93 m), Ještěd (94 m), katedrála sv. Bartoloměje v Plzni (102,3 m), větrná elektrárna (150 m), Eiffelova věž (330 m), Burdž Chalífa (828 m) |
-| **Hory** | Sněžka (1603 m), Mount Everest (8849 m), Olympus Mons (21 900 m) |
+| **Stavby a věže** | Petřínská rozhledna (63,5 m), Socha Svobody (93 m), Ještěd (94 m), katedrála sv. Bartoloměje v Plzni (102,3 m), Velká pyramida v Gíze (138,5 m), větrná elektrárna (150 m), Eiffelova věž (330 m), Burdž Chalífa (828 m) |
+| **Rakety** | Saturn V (110,6 m), Starship se Super Heavy (121 m) |
+| **Hory** | Sněžka (1603 m), Aneto v Pyrenejích (3404 m), Mauna Kea (4207 m), Mont Blanc (4806 m), Kilimandžáro (5895 m), Mount Everest (8849 m), Olympus Mons (21 900 m) |
 
 ---
 

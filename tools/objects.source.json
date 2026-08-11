@@ -5,6 +5,7 @@
     { "id": "people", "icon": "🧍", "name": { "cs": "Lidé a domy", "en": "People & houses" } },
     { "id": "ships", "icon": "⛵", "name": { "cs": "Lodě", "en": "Ships" } },
     { "id": "buildings", "icon": "🏗️", "name": { "cs": "Stavby a věže", "en": "Towers & buildings" } },
+    { "id": "rockets", "icon": "🚀", "name": { "cs": "Rakety", "en": "Rockets" } },
     { "id": "mountains", "icon": "⛰️", "name": { "cs": "Hory", "en": "Mountains" } }
   ],
   "objects": [
@@ -139,6 +140,45 @@
       }
     },
     {
+      "id": "saturn5",
+      "category": "rockets",
+      "name": { "cs": "Raketa Saturn V", "en": "Saturn V rocket" },
+      "height": 110.6,
+      "baseline": "ground",
+      "defaultDistance": 52000,
+      "svg": "saturn5.svg",
+      "fact": {
+        "cs": "Raketa, která vozila lidi na Měsíc. Se 110,6 m je vyšší než nejvyšší kostelní věž v Česku.",
+        "en": "The rocket that carried people to the Moon. At 110.6 m it stands taller than the tallest church tower in Czechia."
+      }
+    },
+    {
+      "id": "starship",
+      "category": "rockets",
+      "name": { "cs": "Starship se Super Heavy", "en": "Starship with Super Heavy" },
+      "height": 121,
+      "baseline": "ground",
+      "defaultDistance": 54000,
+      "svg": "starship.svg",
+      "fact": {
+        "cs": "Celá sestava Super Heavy + Starship měří 121 m – zatím nejvyšší raketa, jaká kdy odstartovala. Falcon Heavy je jiná, menší raketa SpaceX (70 m).",
+        "en": "The full Super Heavy + Starship stack is 121 m – the tallest rocket ever to fly. Falcon Heavy is a different, smaller SpaceX rocket (70 m)."
+      }
+    },
+    {
+      "id": "pyramid",
+      "category": "buildings",
+      "name": { "cs": "Velká pyramida v Gíze", "en": "Great Pyramid of Giza" },
+      "height": 138.5,
+      "baseline": "ground",
+      "defaultDistance": 58000,
+      "svg": "pyramid.svg",
+      "fact": {
+        "cs": "Dnes měří 138,5 m, původně 146,6 m – špička a hladký obklad se ztratily. Přes 3800 let byla nejvyšší stavbou světa.",
+        "en": "Today it is 138.5 m tall, originally 146.6 m – the tip and the smooth casing are gone. For over 3,800 years it was the tallest building in the world."
+      }
+    },
+    {
       "id": "windturbine",
       "category": "buildings",
       "name": { "cs": "Větrná elektrárna", "en": "Wind turbine" },
@@ -188,6 +228,58 @@
       "fact": {
         "cs": "Nejvyšší hora Česka, 1603 m nad mořem. Výška zde znamená výšku nad hladinou moře.",
         "en": "The highest mountain in Czechia, 1603 m above sea level. Here the height means height above sea level."
+      }
+    },
+    {
+      "id": "aneto",
+      "category": "mountains",
+      "name": { "cs": "Aneto (Pyreneje)", "en": "Aneto (Pyrenees)" },
+      "height": 3404,
+      "baseline": "ground",
+      "defaultDistance": 240000,
+      "svg": "aneto.svg",
+      "fact": {
+        "cs": "Nejvyšší hora Pyrenejí, 3404 m. Leží ve Španělsku a nese poslední velký ledovec celého pohoří.",
+        "en": "The highest peak of the Pyrenees, 3,404 m. It lies in Spain and carries the last big glacier in the whole range."
+      }
+    },
+    {
+      "id": "maunakea",
+      "category": "mountains",
+      "name": { "cs": "Mauna Kea", "en": "Mauna Kea" },
+      "height": 4207,
+      "baseline": "ground",
+      "defaultDistance": 255000,
+      "svg": "maunakea.svg",
+      "fact": {
+        "cs": "Nad hladinou má 4207 m, ale ode dna Tichého oceánu přes 10 200 m – od paty je to nejvyšší hora Země. Tady počítáme jen tu část nad mořem.",
+        "en": "It rises 4,207 m above the sea, but more than 10,200 m from the Pacific floor – measured from its base it is the tallest mountain on Earth. Here we count only the part above the water."
+      }
+    },
+    {
+      "id": "montblanc",
+      "category": "mountains",
+      "name": { "cs": "Mont Blanc (Alpy)", "en": "Mont Blanc (Alps)" },
+      "height": 4806,
+      "baseline": "ground",
+      "defaultDistance": 265000,
+      "svg": "montblanc.svg",
+      "fact": {
+        "cs": "Nejvyšší hora Alp. Vrchol tvoří ledová čepice, takže naměřená výška se rok od roku o kousek liší – kolem 4806 m.",
+        "en": "The highest mountain in the Alps. Its summit is a cap of ice, so the measured height changes a little from year to year – around 4,806 m."
+      }
+    },
+    {
+      "id": "kilimanjaro",
+      "category": "mountains",
+      "name": { "cs": "Kilimandžáro", "en": "Kilimanjaro" },
+      "height": 5895,
+      "baseline": "ground",
+      "defaultDistance": 290000,
+      "svg": "kilimanjaro.svg",
+      "fact": {
+        "cs": "Nejvyšší hora Afriky, 5895 m. Je to samostatná sopka uprostřed roviny, takže je vidět opravdu z veliké dálky.",
+        "en": "The highest mountain in Africa, 5,895 m. It is a lone volcano in the middle of a plain, so it really can be seen from a great distance."
       }
     },
     {
