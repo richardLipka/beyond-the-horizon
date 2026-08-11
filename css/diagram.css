@@ -412,6 +412,116 @@
   fill: var(--muted);
 }
 
+/* --- kruhove schema / the circular map ------------------------------------ */
+
+.map-svg text {
+  font-family: var(--font);
+  fill: var(--deep-800);
+}
+
+/* Barvu vyplne urcuje zvolene teleso, proto ji tady nenastavujeme. */
+.hm-globe {
+  stroke: rgba(11, 42, 58, 0.25);
+  stroke-width: 1.5;
+}
+
+.hm-inset-face {
+  opacity: 0.9;
+}
+
+.hm-inset-rim {
+  stroke: rgba(11, 42, 58, 0.3);
+  stroke-width: 2;
+}
+
+.hm-horizon-area {
+  fill: var(--sun);
+  stroke: #b57312;
+  stroke-width: 1.6;
+}
+
+.hm-vanish-area {
+  fill: rgba(232, 105, 92, 0.62);
+  stroke: var(--coral-dark);
+  stroke-width: 1.6;
+}
+
+.hm-observer {
+  fill: #fff;
+  stroke: var(--deep-900);
+  stroke-width: 2;
+}
+
+/* krouzek kolem misteczka, ktere vyrez zvetsuje */
+.hm-mark {
+  stroke: var(--deep-800);
+  stroke-width: 1.6;
+}
+
+.hm-callout {
+  stroke: var(--deep-800);
+  stroke-width: 1.2;
+  stroke-dasharray: 6 5;
+  opacity: 0.5;
+}
+
+.hm-scalebar {
+  stroke: var(--deep-900);
+  stroke-width: 2.2;
+}
+
+.hm-scale-label {
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--deep-900);
+  paint-order: stroke fill;
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 3.4px;
+  stroke-linejoin: round;
+}
+
+.hm-caption {
+  font-size: 16px;
+  font-weight: 700;
+  fill: var(--deep-800);
+}
+
+.hm-note {
+  font-size: 14px;
+  fill: var(--muted);
+}
+
+.hm-swatch {
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.hm-swatch-horizon {
+  fill: var(--sun);
+}
+
+.hm-swatch-vanish {
+  fill: rgba(232, 105, 92, 0.85);
+}
+
+.hm-legend {
+  font-size: 16px;
+  font-weight: 700;
+  fill: var(--deep-800);
+}
+
+.hm-legend-value {
+  font-size: 17px;
+  font-weight: 700;
+  fill: var(--deep-900);
+  font-variant-numeric: tabular-nums;
+}
+
+.hm-legend-detail {
+  font-size: 15px;
+  fill: var(--muted);
+}
+
 /* --- meze viditelnosti / limits of sight ---------------------------------- */
 
 .lm-dot {

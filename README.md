@@ -30,6 +30,14 @@ actually see — the hidden part drawn as a dashed ghost below the waterline.
 
 <img src="docs/preview-telescope.svg" width="330" alt="The telescope view: the top 20.1 m of the Titanic above the horizon, the rest a dashed ghost below">
 
+Below the telescope sits a circular map of the body seen from space, directly
+above you, carrying **two circles at true scale**: your horizon, and the
+distance at which the selected object vanishes. From human height both are
+essentially invisible on the sphere — which is the point — so a uniformly
+magnified inset shows the same spot with the magnification printed. Each circle
+comes with the area of its spherical cap and its share of the whole surface:
+from 1.7 m on the Earth you can see 68 km², one part in 7 495 306.
+
 ### 🌊 When does it vanish?
 
 The distance at which an object disappears completely, shown as the sum that

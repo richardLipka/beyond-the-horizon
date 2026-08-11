@@ -153,6 +153,27 @@
     return R * (1 - Math.cos(distance / (2 * R)));
   }
 
+  /**
+   * Plocha vrchliku o uhlovem polomeru `angle` (mereno ze stredu telesa).
+   * Area of the spherical cap of angular radius `angle` - the piece of the
+   * surface you can actually see. Za pulkou koule uz vrchlik roste jen na
+   * druhe strane, proto se uhel orizne na pi.
+   */
+  function capArea(angle, R) {
+    const a = Math.min(Math.max(angle, 0), Math.PI);
+    return 2 * Math.PI * R * R * (1 - Math.cos(a));
+  }
+
+  /**
+   * Podil vrchliku na celem povrchu telesa (0..1). Nezavisi na polomeru -
+   * z 1,7 m na Zemi vyjde asi 1 : 7 500 000.
+   * The cap's share of the whole surface; independent of the radius.
+   */
+  function capShare(angle) {
+    const a = Math.min(Math.max(angle, 0), Math.PI);
+    return (1 - Math.cos(a)) / 2;
+  }
+
   /** Pokles obzoru pod vodorovnou rovinu [rad]. / Dip of the horizon. */
   function dip(height, R) {
     if (!(height > 0)) return 0;
@@ -291,6 +312,8 @@
     vanishDistance,
     vanishSlope,
     bulge,
+    capArea,
+    capShare,
     dip,
     sightLineHeight,
     angularSize,

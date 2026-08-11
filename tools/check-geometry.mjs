@@ -111,6 +111,33 @@ check('solve na protilehlem bode nic nevidi', farSide.visible, 0, 0);
 const earthDefault = G.solve({ eyeHeight: 1.7, objectHeight: 30, distance: 20000 });
 check('solve bez polomeru pouzije Zemi', earthDefault.physicalRadius, G.R_MEAN, 1e-6);
 
+// --- vrchlik / the visible spherical cap -----------------------------------
+// Cely povrch, polokoule a nic.
+check('vrchlik pres celou kouli', G.capArea(Math.PI, R), 4 * Math.PI * R * R, 1);
+check('vrchlik pres polokouli', G.capArea(Math.PI / 2, R), 2 * Math.PI * R * R, 1);
+check('nulovy vrchlik', G.capArea(0, R), 0, 0);
+check('podil cele koule', G.capShare(Math.PI), 1, 1e-12);
+check('podil polokoule', G.capShare(Math.PI / 2), 0.5, 1e-12);
+// Ze stejne vysky je na mensim telese videt VETSI podil jeho povrchu - obzor
+// je sice bliz, ale teleso je jeste mensi.
+check(
+  'na Mesici je z 1,7 m videt vetsi podil nez na Zemi',
+  G.capShare(G.dip(1.7, R_MOON)) > G.capShare(G.dip(1.7, R)) ? 1 : 0,
+  1,
+  0
+);
+// Maly vrchlik je prakticky kruh o polomeru rovnem vzdalenosti k obzoru.
+const capAlpha = G.dip(1.7, R);
+check(
+  'maly vrchlik ~ kruh pi*d^2',
+  G.capArea(capAlpha, R),
+  Math.PI * Math.pow(G.horizonDistance(1.7, R), 2),
+  1000
+);
+// Z ocni vysky je videt asi 68 km2, tedy zhruba 1 : 7,5 milionu povrchu.
+check('vrchlik z 1,7 m na Zemi [km2]', G.capArea(capAlpha, R) / 1e6, 68.1, 0.2);
+check('podil povrchu z 1,7 m', 1 / G.capShare(capAlpha) / 1e6, 7.5, 0.05);
+
 // --- tvar obou funkci / the shape of the two plotted functions -------------
 // Cely zbytek aplikace kresli jen dve funkce a jsou navzajem inverzni:
 //   D(h2)  = d1 + R * arccos(R/(R+h2))       "Kdy zmizi?"

@@ -174,6 +174,12 @@
   height: auto;
 }
 
+.map-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .chart-svg {
   display: block;
   width: 100%;
@@ -401,10 +407,37 @@ textarea.text-input {
   font-size: 1.4rem;
 }
 
+/* Vyska musi byt urcena EXPLICITNE. Nase SVG maji jen viewBox, zadnou vlastni
+   sirku a vysku, takze uvnitr flexu se se samotnym max-height smrsknou na
+   nulu a kresba je neviditelna. Sirka dopocitana z pomeru stran se pak orizne
+   na max-width a object-fit ji vlozi dovnitr; object-position drzi objekt
+   dole, aby stal na zemi jako v diagramu.
+   The height has to be EXPLICIT: our SVGs carry only a viewBox, so with just
+   max-height a flex item collapses to zero width and the drawing disappears.
+   object-position keeps the object standing on the ground, as in the diagram. */
 .object-thumb img {
-  max-height: 42px;
+  width: auto;
+  height: 42px;
   max-width: 68px;
   object-fit: contain;
+  object-position: bottom;
+}
+
+/* Zastupna kresba tam, kde objekt zadny obrazek nema (a u vlastniho objektu). */
+.object-thumb svg {
+  width: auto;
+  height: 42px;
+  max-width: 68px;
+}
+
+.thumb-placeholder {
+  color: var(--sea-500);
+  opacity: 0.75;
+}
+
+.object-card.is-active .thumb-placeholder {
+  color: var(--sea-600);
+  opacity: 1;
 }
 
 .object-name {

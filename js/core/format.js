@@ -69,6 +69,24 @@
     return number(value, d, lang) + ' %';
   }
 
+  /** Plocha: pod 1 km2 ve ctverecnich metrech, jinak v kilometrech ctverecnich. */
+  function area(squareMetres, lang) {
+    if (!isFinite(squareMetres)) return '∞';
+    if (squareMetres < 1e6) return number(squareMetres, 0, lang) + ' m²';
+    const km2 = squareMetres / 1e6;
+    return number(km2, autoDecimals(km2), lang) + ' km²';
+  }
+
+  /**
+   * Velmi maly zlomek se cte lip jako "1 : 7 500 000" nez jako "0,0000134 %".
+   * A very small fraction reads better as a ratio than as a percentage.
+   */
+  function share(value, lang) {
+    if (!(value > 0)) return '0';
+    if (value >= 0.01) return percent(value, lang);
+    return '1 : ' + number(Math.round(1 / value), 0, lang);
+  }
+
   /** Uhel v obloukovych minutach nebo stupnich. */
   function angle(radians, lang) {
     const degrees = (radians * 180) / Math.PI;
@@ -76,5 +94,5 @@
     return number(degrees, 2, lang) + '°';
   }
 
-  HL.format = { number, distance, km, height, percent, angle, autoDecimals, LOCALES };
+  HL.format = { number, distance, km, height, percent, area, share, angle, autoDecimals, LOCALES };
 })((window.HorizonLab = window.HorizonLab || {}));

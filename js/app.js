@@ -287,6 +287,13 @@
     if (state.mode === 'see') {
       HL.Diagram.render(nodes.diagram, { result: result, object: object, look: look });
       HL.Telescope.render(nodes.telescope, { result: result, object: object, look: look });
+      HL.HorizonMap.render(nodes.horizonMap, {
+        result: result,
+        object: object,
+        look: look,
+        objectName: HL.i18n.pick(object.name, object.id),
+        planetName: app.planetName(state),
+      });
       HL.Results.render(nodes.verdict, nodes.stats, nodes.fact, {
         result: result,
         object: object,
@@ -317,6 +324,7 @@
     nodes.dataBadge = qs('#dataBadge');
     nodes.diagram = qs('#mainDiagram');
     nodes.telescope = qs('#telescopeView');
+    nodes.horizonMap = qs('#horizonMap');
     nodes.verdict = qs('#verdict');
     nodes.stats = qs('#stats');
     nodes.fact = qs('#fact');

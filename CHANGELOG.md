@@ -3,6 +3,32 @@
 Formát podle [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 verzování podle [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [1.4.0] — 2026-08-11
+
+### Přidáno / Added
+
+- **Kruhové schéma „Jak velký kus tělesa vlastně vidíš“** pod pohledem
+  dalekohledem. Těleso je nakreslené tak, jak by vypadalo z vesmíru přímo nad
+  pozorovatelem, a leží na něm **ve skutečném poměru** dvě kružnice: tvůj obzor
+  a vzdálenost, ve které zmizí vybraný objekt. Právě proto jsou z lidské výšky
+  obě téměř neviditelné – a to je na tom to podstatné. Vedle je proto ještě
+  rovnoměrně zvětšený výřez s vypsaným zvětšením, takže uvnitř něj poměry pořád
+  platí. Ke každé kružnici se počítá plocha vrchlíku a její podíl na celém
+  povrchu: ze 170 cm na Zemi je vidět 68 km², tedy 1 : 7 495 306 povrchu.
+- Když je vidět tak velký kus tělesa, že je znát i na samotné kouli, výřez
+  odpadne a koule se posune doprostřed. Když by objekt byl vidět až za okrajem
+  polokoule, schéma to napíše.
+
+### Opraveno / Fixed
+
+- **Kresby objektů se v postranním panelu vůbec nezobrazovaly.** Naše SVG mají
+  jen `viewBox`, žádnou vlastní šířku a výšku, takže se uvnitř flexboxu se
+  samotným `max-height` smrskly na nulovou šířku. Dlaždice tak celou dobu
+  ukazovaly jen název a výšku. Výška je teď určená explicitně a `object-position`
+  drží objekt dole, aby stál na zemi jako v diagramu.
+- Zástupné emoji na dlaždicích (❓ a ✏️) nahradila malá kresba ve stejném stylu
+  jako ostatní objekty – emoji vypadají na každé platformě jinak.
+
 ## [1.3.0] — 2026-08-11
 
 ### Přidáno / Added
@@ -152,6 +178,7 @@ První veřejné vydání. / First public release.
 - **CI** kontrolující výpočty, úplnost překladů a reprodukovatelnost
   vygenerovaného `objects.json`.
 
+[1.4.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.1.0...v1.2.0

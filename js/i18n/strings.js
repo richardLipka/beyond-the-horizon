@@ -41,6 +41,17 @@
       'geo.furtherText':
         'Pak se jeho spodek propadne pod obzor. Označíme γ úhel, o který objekt přesahuje bod dotyku, a schovanou výšku spočítáme ze stejného pravoúhlého trojúhelníku:',
 
+      'map.title': 'Jak velký kus tělesa vlastně vidíš',
+      'map.hint':
+        'Kružnice na tělese jsou ve skutečném poměru – proto jsou z lidské výšky tak malé. Výřez vedle je jen zvětšenina téhož místa, uvnitř něj poměry pořád platí.',
+      'map.trueScale': 'skutečný poměr',
+      'map.zoom': 'výřez zvětšený {n}×',
+      'map.noZoom': 'Vidíš takovou část tělesa, že je dobře vidět i na samotné kouli.',
+      'map.ringHorizon': 'Tvůj obzor',
+      'map.ringVanish': 'Kde zmizí {name}',
+      'map.areaShare': 'plocha {area} · {share} povrchu',
+      'map.overTheEdge': 'Objekt je tak vysoký, že by ho bylo vidět až za okrajem polokoule.',
+
       'geo.deriveTitle': 'Odvození obou funkcí',
       'geo.deriveIntro':
         'Z jediného pravoúhlého trojúhelníku nad tečnou vypadnou obě funkce, na kterých stojí celá aplikace. Stačí se pokaždé zeptat na něco jiného: jednou na vzdálenost, podruhé na výšku.',
@@ -324,6 +335,17 @@
       'geo.furtherTitle': 'And if the object is further still?',
       'geo.furtherText':
         'Then its base sinks below the horizon. Call γ the angle by which the object overshoots the point of contact; the hidden height comes from the very same right triangle:',
+
+      'map.title': 'How much of the body you actually see',
+      'map.hint':
+        'The circles on the body are at true scale — which is why they are so small from human height. The inset beside it is only a magnified view of the same spot; the ratios inside it still hold.',
+      'map.trueScale': 'true scale',
+      'map.zoom': 'inset magnified {n}×',
+      'map.noZoom': 'You can see so much of this body that it shows up on the sphere itself.',
+      'map.ringHorizon': 'Your horizon',
+      'map.ringVanish': 'Where {name} vanishes',
+      'map.areaShare': 'area {area} · {share} of the surface',
+      'map.overTheEdge': 'The object is so tall it would still show from beyond the edge of the hemisphere.',
 
       'geo.deriveTitle': 'Deriving the two functions',
       'geo.deriveIntro':

@@ -142,6 +142,25 @@ can measure the real `getBBox()` boxes afterwards and step colliding ones apart;
 labels are only tested against *earlier* ones, so the pass always terminates.
 If you add a label, add it via `put()` with a sensible direction.
 
+**`horizon-map.js` draws the two circles at TRUE scale, and that is the whole
+point.** From 1.7 m on the Earth the horizon is 0.12 px on a 150 px globe — it
+is *meant* to be invisible, so never "helpfully" enlarge it. Readability comes
+from the uniformly magnified inset instead, which prints its magnification. Two
+consequences to preserve: the observer dot is clamped so it can never outgrow
+the horizon circle (with a very tall object the horizon circle is ~1.5 px and a
+fixed dot would paint over it), and when the visible cap is big enough to show
+on the sphere itself the inset is dropped and the globe moves to the centre.
+Legend entries are two lines (label + right-aligned value, then the detail) and
+the label is measured and ellipsised, because object names come from the editor
+and can be any length.
+
+**Any SVG in an `<img>` needs an explicit height.** Our drawings carry only a
+`viewBox`, so they have an intrinsic ratio but no intrinsic size; inside a flex
+container with only `max-height`/`max-width` they collapse to zero width and
+vanish silently. That is exactly what happened to every object thumbnail in the
+sidebar. Set `height` explicitly and let `object-fit`/`object-position` place
+the drawing.
+
 **`derivation.js` renders the two functions on LINEAR axes on purpose.** The
 whole app plots only two curves and they are inverses of one another:
 `D(h₂) = d₁ + R·arccos(R/(R+h₂))` and `h₂(D) = R·(sec((D−d₁)/R) − 1)`. The first

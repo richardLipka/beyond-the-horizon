@@ -30,6 +30,13 @@ pod hladinou.
 
 <img src="docs/preview-telescope.svg" width="330" alt="Pohled dalekohledem: horních 20,1 m Titaniku nad obzorem, zbytek čárkovaně pod hladinou">
 
+Pod dalekohledem je kruhové schéma tělesa, jak by vypadalo z vesmíru přímo nad
+tebou, a leží na něm **dvě kružnice ve skutečném poměru**: tvůj obzor
+a vzdálenost, ve které vybraný objekt zmizí. Z lidské výšky nejsou na kouli
+prakticky vidět – a přesně o to jde – takže vedle je rovnoměrně zvětšený výřez
+s vypsaným zvětšením. Ke každé kružnici se počítá plocha vrchlíku a její podíl
+na celém povrchu: ze 170 cm na Zemi je vidět 68 km², tedy 1 : 7 495 306.
+
 ### 🌊 Kdy zmizí?
 
 Vzdálenost, ve které objekt úplně zmizí, ukázaná i jako součet, ze kterého

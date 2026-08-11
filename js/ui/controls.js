@@ -30,6 +30,27 @@
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
+  /**
+   * Zastupna kresba na dlazdici objektu. Emoji se mezi platformami lisi
+   * a nesedi k rucne kresleným objektum, tak je i tady male SVG - stejne
+   * jako u vsech ostatnich objektu.
+   * The placeholder on an object card. Emoji look different on every platform
+   * and clash with the hand-drawn objects, so this is a small SVG too.
+   *
+   * @param {boolean} dashed carkovane = vlastni objekt / dashed = custom object
+   */
+  function placeholderThumb(dashed) {
+    const shape = HL.dom.svg('path', {
+      d: 'M20 8 32 30v64H8V30Z',
+      fill: 'none',
+      stroke: 'currentColor',
+      'stroke-width': 6,
+      'stroke-linejoin': 'round',
+    });
+    if (dashed) shape.setAttribute('stroke-dasharray', '11 8');
+    return HL.dom.svg('svg', { viewBox: '0 0 40 100', class: 'thumb-placeholder', xmlns: HL.dom.SVG_NS }, [shape]);
+  }
+
   /** Logaritmicky posuvnik - male vysky potrebuji jemnejsi krok. */
   function eyeToSlider(metres) {
     const v = clamp(metres, EYE_MIN, EYE_MAX);
@@ -102,7 +123,7 @@
         },
         [
           el('span', { class: 'object-thumb' }, [
-            item.image ? el('img', { src: item.image, alt: '' }) : el('span', { text: '❓' }),
+            item.image ? el('img', { src: item.image, alt: '' }) : placeholderThumb(false),
           ]),
           el('span', { class: 'object-name', text: HL.i18n.pick(item.name, item.id) }),
           el('span', { class: 'object-height', text: HL.format.height(item.height, HL.i18n.lang()) }),
@@ -121,7 +142,7 @@
           onclick: () => app.selectObject('__custom'),
         },
         [
-          el('span', { class: 'object-thumb', text: '✏️' }),
+          el('span', { class: 'object-thumb' }, [placeholderThumb(true)]),
           el('span', { class: 'object-name', text: HL.i18n.t('ctrl.custom') }),
           el('span', { class: 'object-height', text: HL.format.height(state.customHeight, HL.i18n.lang()) }),
         ]
