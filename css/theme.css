@@ -178,3 +178,35 @@ a {
 .footer-credit a:hover {
   text-decoration: underline;
 }
+
+/* Logo fakulty je v bile variante, tak dostane tmavy podklad - upravovat
+   barvy samotne znacky se nema. / The faculty logo is the white variant, so it
+   gets a dark chip; recolouring the mark itself would not be right. */
+.footer-affiliation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 9px;
+  border-radius: 8px;
+  background: var(--deep-800);
+  line-height: 0;
+}
+
+.footer-logo img {
+  display: block;
+  width: auto;
+  height: 26px;
+}
+
+.footer-logo:hover {
+  background: var(--deep-700);
+}

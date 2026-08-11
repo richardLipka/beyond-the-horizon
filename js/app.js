@@ -202,6 +202,25 @@
       store.set({ customHeight: Math.max(0.1, metres) });
     },
 
+    /**
+     * Prenese skutecny rozhled do simulace. Vsechno se nastavi NAJEDNOU:
+     * selectObject() i setPlanet() si samy dopocitavaji vzdalenost, takze
+     * postupne volani by tu zmerenou zase prepsalo.
+     * Loads a real-world sightline into the simulation. Everything is set in
+     * ONE go: selectObject() and setPlanet() derive a distance of their own,
+     * so calling them one by one would overwrite the measured one.
+     */
+    applySightline(sightline) {
+      store.set({
+        mode: 'see',
+        planet: 'earth',
+        objectId: '__custom',
+        customHeight: Math.max(0.1, sightline.objectHeight),
+        eyeHeight: Math.min(10000, Math.max(0.1, sightline.eyeHeight)),
+        distance: Math.round(sightline.distance),
+      });
+    },
+
     setRefraction(on) {
       store.set({ refraction: !!on });
     },
@@ -288,7 +307,7 @@
       // Titulek nese nazev telesa, takze ho nelze vyplnit staticky pres
       // data-i18n. / The caption carries the body's name, so a static
       // data-i18n pass cannot fill it in.
-      nodes.diagramTitle.textContent = HL.i18n.t('diagram.title', { planet: app.planetName(state) });
+      nodes.diagramTitleText.textContent = HL.i18n.t('diagram.title', { planet: app.planetName(state) });
       HL.Diagram.render(nodes.diagram, { result: result, object: object, look: look });
       HL.Telescope.render(nodes.telescope, { result: result, object: object, look: look });
       HL.HorizonMap.render(nodes.horizonMap, {
@@ -303,6 +322,7 @@
         object: object,
         planet: app.planetName(state),
       });
+      views.sightlines.update(state, result);
     } else if (state.mode === 'vanish') {
       views.vanish.update(state, result, object);
     } else if (state.mode === 'limits') {
@@ -327,7 +347,7 @@
     nodes.langSwitch = qs('#langSwitch');
     nodes.dataBadge = qs('#dataBadge');
     nodes.diagram = qs('#mainDiagram');
-    nodes.diagramTitle = qs('#diagramTitle');
+    nodes.diagramTitleText = qs('#diagramTitleText');
     nodes.telescope = qs('#telescopeView');
     nodes.horizonMap = qs('#horizonMap');
     nodes.verdict = qs('#verdict');
@@ -344,6 +364,14 @@
     });
 
     views.controls = HL.Controls.mount(qs('#controls'), app);
+    views.sightlines = HL.Sightlines.mount(qs('#sightlines'), app);
+
+    // Tlacitka pro stazeni obrazku. Karty rezimu "Co uvidim?" jsou napevno
+    // v index.html, takze staci pripojit jednou; ostatni rezimy si je
+    // pridavaji samy pri vykresleni.
+    HL.Exporter.attach(qs('#diagramTitle'), () => nodes.diagram, 'za-obzorem-diagram');
+    HL.Exporter.attach(qs('#telescopeTitle'), () => nodes.telescope, 'za-obzorem-dalekohled');
+    HL.Exporter.attach(qs('#mapTitle'), () => nodes.horizonMap, 'za-obzorem-mapa');
     views.vanish = HL.VanishPanel.mount(qs('#vanishPanel'), app);
     views.limits = HL.LimitsPanel.mount(qs('#limitsPanel'), app);
     views.geometry = HL.GeometryPanel.mount(qs('#geometryPanel'), app);

@@ -332,7 +332,10 @@
       const chart = svg('svg', { class: 'chart-svg', xmlns: HL.dom.SVG_NS });
       container.appendChild(
         el('section', { class: 'card' }, [
-          el('h3', { class: 'card-title', text: t('limits.chartTitle') }),
+          el('h3', { class: 'card-title card-title-row' }, [
+            document.createTextNode(t('limits.chartTitle')),
+            HL.Exporter.buttons(() => chart, 'za-obzorem-meze-viditelnosti'),
+          ]),
           chart,
           el('p', { class: 'hint', text: t('limits.curveNote') }),
           el('p', { class: 'hint', text: t('limits.dotsNote') }),

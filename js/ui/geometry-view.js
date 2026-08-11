@@ -361,7 +361,15 @@
       );
 
       const figure = svg('svg', { class: 'geometry-svg', xmlns: HL.dom.SVG_NS });
-      container.appendChild(el('section', { class: 'card' }, [figure]));
+      container.appendChild(
+        el('section', { class: 'card' }, [
+          el('h3', { class: 'card-title card-title-row' }, [
+            document.createTextNode(t('geo.figureTitle')),
+            HL.Exporter.buttons(() => figure, 'za-obzorem-geometrie'),
+          ]),
+          figure,
+        ])
+      );
       renderFigure(figure, { result: result, look: HL.planetLook(state.planet) });
 
       container.appendChild(

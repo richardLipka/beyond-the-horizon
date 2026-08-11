@@ -294,10 +294,13 @@
     ]);
   }
 
-  function chartCard(title, note, draw, model) {
+  function chartCard(title, note, draw, model, fileName) {
     const node = svg('svg', { class: 'chart-svg', xmlns: HL.dom.SVG_NS });
     const card = el('section', { class: 'card' }, [
-      el('h3', { class: 'card-title', text: title }),
+      el('h3', { class: 'card-title card-title-row' }, [
+        document.createTextNode(title),
+        HL.Exporter.buttons(() => node, fileName),
+      ]),
       node,
       el('p', { class: 'hint', text: note }),
     ]);
@@ -372,10 +375,12 @@
     );
 
     container.appendChild(
-      chartCard(t('geo.chartATitle'), t('geo.chartANote', { max: maxSight }), chartVanish, model)
+      chartCard(t('geo.chartATitle'), t('geo.chartANote', { max: maxSight }), chartVanish, model,
+        'za-obzorem-graf-vzdalenost-zmizeni')
     );
     container.appendChild(
-      chartCard(t('geo.chartBTitle'), t('geo.chartBNote', { max: maxSight }), chartRequired, model)
+      chartCard(t('geo.chartBTitle'), t('geo.chartBNote', { max: maxSight }), chartRequired, model,
+        'za-obzorem-graf-potrebna-vyska')
     );
   }
 

@@ -77,14 +77,19 @@
           <div id="verdict" class="verdict"></div>
 
           <figure class="card diagram-card">
-            <!-- titulek doplnuje app.js, protoze obsahuje nazev telesa -->
-            <figcaption id="diagramTitle" class="card-title"></figcaption>
+            <!-- Text titulku doplnuje app.js (obsahuje nazev telesa) a musi
+                 jit do vlastniho <span>, jinak by prepsal tlacitka exportu. -->
+            <figcaption id="diagramTitle" class="card-title card-title-row">
+              <span id="diagramTitleText"></span>
+            </figcaption>
             <svg id="mainDiagram" class="diagram-svg" xmlns="http://www.w3.org/2000/svg"></svg>
           </figure>
 
           <div class="stage-row">
             <figure class="card telescope-card">
-              <figcaption class="card-title" data-i18n="telescope.title"></figcaption>
+              <figcaption id="telescopeTitle" class="card-title card-title-row">
+                <span data-i18n="telescope.title"></span>
+              </figcaption>
               <svg id="telescopeView" class="telescope-svg" xmlns="http://www.w3.org/2000/svg"></svg>
             </figure>
 
@@ -96,12 +101,17 @@
 
           <!-- Kruhove schema: jak velky kus telesa je vlastne videt -->
           <figure class="card map-card">
-            <figcaption class="card-title" data-i18n="map.title"></figcaption>
+            <figcaption id="mapTitle" class="card-title card-title-row">
+              <span data-i18n="map.title"></span>
+            </figcaption>
             <svg id="horizonMap" class="map-svg" xmlns="http://www.w3.org/2000/svg"></svg>
             <p class="hint" data-i18n="map.hint"></p>
           </figure>
 
           <div id="fact" class="fact"></div>
+
+          <!-- Skutecne rozhledy - samostatna sekce uplne dole -->
+          <div id="sightlines"></div>
         </section>
 
         <!-- Rezim 2: v jake vzdalenosti objekt zmizi -->
@@ -135,11 +145,24 @@
       <p data-i18n="footer.note"></p>
       <p class="muted" data-i18n="footer.made"></p>
       <p class="footer-credit">
-        © 2026 <a href="mailto:lipka@fav.zcu.cz">Richard Lipka</a>
+        © 2026 <a href="https://home.zcu.cz/~lipka/" rel="noopener">Richard Lipka</a>
+        <span aria-hidden="true">·</span>
+        <a href="mailto:lipka@fav.zcu.cz">lipka@fav.zcu.cz</a>
         <span aria-hidden="true">·</span>
         <a href="https://github.com/richardLipka/beyond-the-horizon" rel="noopener">GitHub</a>
         <span aria-hidden="true">·</span>
         <span data-i18n="footer.license"></span>
+      </p>
+      <p class="footer-affiliation">
+        <a
+          class="footer-logo"
+          href="https://www.kiv.zcu.cz/cs"
+          rel="noopener"
+          title="Katedra informatiky a výpočetní techniky, FAV ZČU"
+        >
+          <img src="assets/fav-logo.svg" alt="Fakulta aplikovaných věd ZČU" />
+        </a>
+        <span data-i18n="footer.affiliation"></span>
       </p>
     </footer>
 
@@ -158,6 +181,7 @@
     <script src="js/i18n/i18n.js"></script>
     <script src="js/data/factory-objects.js"></script>
     <script src="js/data/planets.js"></script>
+    <script src="js/data/sightlines.js"></script>
     <script src="js/data/data-source.js"></script>
     <script src="js/ui/diagram.js"></script>
     <script src="js/ui/telescope.js"></script>
@@ -167,6 +191,8 @@
     <script src="js/ui/results.js"></script>
     <script src="js/ui/vanish.js"></script>
     <script src="js/ui/limits.js"></script>
+    <script src="js/ui/export.js"></script>
+    <script src="js/ui/sightlines.js"></script>
     <script src="js/ui/derivation.js"></script>
     <script src="js/ui/geometry-view.js"></script>
     <script src="js/ui/editor.js"></script>

@@ -91,6 +91,28 @@ first chart's window follows the selected object so the shape is visible at
 school heights; the second spans the full range so the asymptote shows — and
 makes it obvious why the *Limits of sight* mode needs logarithmic axes.
 
+### 🔭 Can you really see it?
+
+At the very bottom of *What can I see?* sits a self-contained table of **real
+sightlines across Europe** — real places, their real elevations, and the
+distance measured along the surface from their coordinates (haversine, never
+typed in by hand). Eye height is 1.7 m above the ground everywhere, and one
+click loads any row into the simulation above.
+
+| | |
+| --- | --- |
+| Alps from Pilsen | 253 km, with **5 km to spare** — which is exactly why it happens only in exceptionally clear air |
+| Alps from the Bohemian Forest | 145 km against a 328 km limit — comfortable, and commonly seen |
+| Alps from Petřín in Prague | 30 km short, and refraction does not save it |
+| Corsica from the Maritime Alps | 250 km against 375 km |
+| Corsica from the beach at Nice | 2 km short — turn refraction **on** and it flips to yes |
+| Prague from Mont Blanc | 734 km against 312 km. Not a chance |
+
+The verdicts follow whatever refraction setting is active, so the switch in the
+panel visibly flips the borderline rows. The table is honest about its limits:
+it answers only whether the curve of the Earth hides the target — a hill in the
+way is another matter entirely.
+
 ### 🧰 Object editor
 
 Add your own church, tower or ship — picture included. Upload an image and it is

@@ -70,7 +70,13 @@ for (const language of languages.slice(1)) {
 // Dead translations accumulate easily - a caption is removed from a picture but
 // the key survives in both languages unnoticed. Keys composed at run time are
 // recognised by their prefix.
-const RUNTIME_PREFIXES = ['status.', 'data.source.', 'preset.', 'editor.baseline.'];
+const RUNTIME_PREFIXES = [
+  'status.',
+  'data.source.',
+  'preset.',
+  'editor.baseline.',
+  'sight.note.',
+];
 
 const sourceFiles = ['../index.html', '../js/app.js'];
 for (const dir of ['ui', 'core', 'data', 'i18n']) {

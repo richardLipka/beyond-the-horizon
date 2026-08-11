@@ -90,6 +90,27 @@ objektem, aby byl tvar vidět u školních výšek; druhý pokrývá celý rozsa
 je vidět asymptota – a je z něj hned jasné, proč režim *Meze viditelnosti*
 potřebuje logaritmické osy.
 
+### 🔭 Uvidím to doopravdy?
+
+Úplně dole v režimu *Co uvidím?* je samostatná tabulka **skutečných rozhledů po
+Evropě** – skutečná místa, jejich skutečné nadmořské výšky a vzdálenost počítaná
+po povrchu ze zeměpisných souřadnic (haversinus, nic se nepíše ručně). Výška očí
+je všude 1,7 m nad zemí a jedním kliknutím se libovolný řádek přenese do
+simulace nahoře.
+
+| | |
+| --- | --- |
+| Alpy z Plzně | 253 km, **5 km rezervy** – právě proto je odsud vidět jen za mimořádně čistého vzduchu |
+| Alpy ze Šumavy | 145 km proti mezi 328 km – s velkou rezervou a poměrně běžně |
+| Alpy z Petřína | chybí 30 km a nepomůže ani refrakce |
+| Korsika z Přímořských Alp | 250 km proti 375 km |
+| Korsika z pláže v Nice | chybí 2 km – **zapni refrakci** a překlopí se na ano |
+| Praha z Mont Blancu | 734 km proti 312 km. Ani náhodou |
+
+Verdikty se počítají s právě nastavenou refrakcí, takže přepínač v panelu
+hraniční řádky viditelně překlápí. Tabulka přiznává, kam nedosáhne: odpovídá
+jen na otázku, jestli výhled zakrývá zakřivení Země – kopec v cestě je jiná věc.
+
 ### 🧰 Editor objektů
 
 Přidej si vlastní kostel, rozhlednu nebo loď — i s obrázkem. Nahraný obrázek se

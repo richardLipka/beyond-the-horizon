@@ -1286,6 +1286,165 @@ textarea.text-input {
   grid-template-columns: 1fr;
 }
 
+/* --- export obrazku / picture export -------------------------------------- */
+
+/* Titulek karty s tlacitky vpravo. */
+.card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.export-buttons {
+  display: inline-flex;
+  gap: 4px;
+  flex: none;
+}
+
+/* Zamerne nenapadne - jsou to pomocna tlacitka, ne hlavni akce. */
+.export-btn {
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.export-btn:hover {
+  color: var(--sea-600);
+  border-color: var(--sea-400);
+  background: var(--foam-50);
+}
+
+/* --- skutecne rozhledy / real sightlines ---------------------------------- */
+
+.sightlines-card {
+  margin-top: 4px;
+}
+
+.sl-list {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sl-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: 6px 14px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--foam-50);
+  border-left: 4px solid var(--line);
+}
+
+/* Hranicni pripady jsou na tom seznamu to nejzajimavejsi. */
+.sl-row.is-close {
+  border-left-color: var(--sun);
+  background: rgba(242, 169, 59, 0.1);
+}
+
+.sl-where {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  min-width: 0;
+}
+
+.sl-from,
+.sl-to {
+  font-size: 0.92rem;
+  color: var(--deep-800);
+}
+
+.sl-arrow {
+  color: var(--muted);
+}
+
+.sl-heights {
+  flex-basis: 100%;
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+.sl-numbers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.25;
+}
+
+.sl-distance {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--deep-900);
+  font-variant-numeric: tabular-nums;
+}
+
+.sl-margin {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.sl-badge {
+  padding: 3px 11px;
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #fff;
+}
+
+.sl-badge-yes {
+  background: var(--kelp-dark);
+}
+
+.sl-badge-no {
+  background: var(--coral-dark);
+}
+
+.sl-try {
+  white-space: nowrap;
+}
+
+.sl-notes {
+  margin: 12px 0 0;
+  padding-left: 18px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.sl-notes li {
+  margin-bottom: 4px;
+}
+
+.sl-warning {
+  margin-top: 12px;
+}
+
+@media (max-width: 620px) {
+  .sl-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .sl-numbers {
+    align-items: flex-start;
+  }
+}
+
 /* --- odvozeni funkci / deriving the functions ----------------------------- */
 
 .sub-title {

@@ -50,7 +50,10 @@ check, and `check-strings`. Run all three before committing.
    title and footer credit are the deliberate exceptions.
 
 5. **No dependencies.** No npm packages, no CDN links, no web fonts, no
-   analytics. The app must work fully offline.
+   analytics. The app must work fully offline. The faculty logo is therefore a
+   local file in `assets/`, not a hotlink — and it is a trademark, so it is not
+   covered by the repository's MIT licence and must not be recoloured or
+   redrawn (see the note at the end of `LICENSE`).
 
 6. **Adding a `js/` file means adding a `<script>` tag** to `index.html` in
    dependency order (core → i18n → data → ui → app).
@@ -195,6 +198,25 @@ y-axis steps in whole radii, because a "nice" step of its own rounds two
 different gridlines to the same `2R` label. If a formula row has neither a
 substitution nor a result, `formulaRow` gives it `formula-solo` so the
 three-column grid does not break the expression mid-line.
+
+**Real sightlines use TWO different radii, and mixing them is a physics bug.**
+In `sightlines.js` the distance between two towns comes from the map and does
+not change when light bends, so `greatCircle` gets `R_MEAN`; only the visibility
+limit gets the effective radius. Computing the distance with `R·7/6` made
+refraction *shorten* the list of visible sightlines instead of lengthening it.
+The section is deliberately inert — it renders at the bottom of *see* mode,
+changes nothing on its own, and only writes to the store through
+`app.applySightline()`, which sets every field in one `store.set()` because
+`selectObject`/`setPlanet` derive a distance of their own and would overwrite
+the measured one.
+
+**Export buttons live inside the card title, so the title text needs its own
+`<span>`.** Anything that assigns `textContent` to the whole caption — the
+`data-i18n` pass on a language switch, or app.js writing the body name into the
+diagram caption — wipes the buttons out. Two of the six disappeared exactly that
+way. `HL.Exporter` inlines *computed* styles onto a clone rather than fetching a
+stylesheet, because under `file://` neither `fetch` nor `document.styleSheets`
+is available.
 
 **Breakpoints are two, and they are independent.** `.stage-row` (telescope beside
 the numbers) stacks at 1100 px because it needs more room than the panel alone;

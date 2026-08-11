@@ -174,7 +174,10 @@
       chartSvg = svg('svg', { class: 'chart-svg', xmlns: HL.dom.SVG_NS });
       container.appendChild(
         el('section', { class: 'card' }, [
-          el('h3', { class: 'card-title', text: t('vanish.chartTitle') }),
+          el('h3', { class: 'card-title card-title-row' }, [
+            document.createTextNode(t('vanish.chartTitle')),
+            HL.Exporter.buttons(() => chartSvg, 'za-obzorem-graf-zmizeni'),
+          ]),
           chartSvg,
         ])
       );

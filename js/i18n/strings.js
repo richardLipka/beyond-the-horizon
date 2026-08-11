@@ -40,6 +40,40 @@
       'geo.furtherText':
         'Pak se jeho spodek propadne pod obzor. Označíme γ úhel, o který objekt přesahuje bod dotyku, a schovanou výšku spočítáme ze stejného pravoúhlého trojúhelníku:',
 
+      'geo.figureTitle': 'Konstrukce',
+
+      'export.svgTitle': 'Stáhnout obrázek jako SVG (ostrý v jakékoli velikosti)',
+      'export.pngTitle': 'Stáhnout obrázek jako PNG (do dokumentu nebo prezentace)',
+
+      'sight.title': 'Uvidím to doopravdy? Skutečné rozhledy po Evropě',
+      'sight.intro':
+        'Skutečná místa, jejich skutečné nadmořské výšky a vzdálenost počítaná po povrchu Země ze zeměpisných souřadnic. Výška očí je všude 1,7 m nad zemí. Klikni na „Vyzkoušet“ a rozhled se přenese do simulace nahoře.',
+      'sight.yes': 'ANO',
+      'sight.no': 'NE',
+      'sight.heights': 'oči {a} n. m. · cíl {b} n. m.',
+      'sight.marginInside': 'zbývá {n} rezervy',
+      'sight.marginOutside': 'chybí {n}',
+      'sight.try': 'Vyzkoušet',
+      'sight.withRefraction':
+        'Počítáno se zapnutou refrakcí, takže vzdálenosti vycházejí asi o 8 % větší. Vypni ji v panelu a některé řádky se překlopí.',
+      'sight.withoutRefraction':
+        'Počítáno bez refrakce, tedy čistá geometrie. Zapni ji v panelu a hraniční řádky se překlopí – právě na ní totiž stojí.',
+      'sight.terrain':
+        'Pozor: výpočet neví nic o terénu mezi oběma místy. Odpovídá jen na otázku, jestli výhled zakrývá zakřivení Země – kopec v cestě je jiná věc. Skutečná viditelnost navíc závisí na počasí a průzračnosti vzduchu.',
+      'sight.note.plzenAlps':
+        'Alpy z Plzně vycházejí jen o pár kilometrů uvnitř meze – a přesně proto je odsud vidět opravdu výjimečně, za mimořádně čistého vzduchu.',
+      'sight.note.sumavaAlps': 'Ze šumavských vrcholů jsou Alpy naopak vidět s velkou rezervou a poměrně běžně.',
+      'sight.note.prahaAlps':
+        'Z Petřína to nevyjde ani zdaleka, a nepomůže ani refrakce. Praha je na Alpy prostě moc daleko.',
+      'sight.note.alpsCorsica':
+        'Korsika z Přímořských Alp je slavný dlouhý rozhled přes moře – a geometricky vychází s velkou rezervou.',
+      'sight.note.niceCorsica':
+        'Z pláže v Nice je Korsika naopak přesně na hraně: bez refrakce ne, s refrakcí těsně ano. Rozdíl je jen ve výšce očí.',
+      'sight.note.blancPraha':
+        'Praha z Mont Blancu je vzdálená přes 700 km, ale dohlédnout se dá sotva 300 km. Ani nejvyšší hora Alp na to nestačí.',
+      'sight.note.benatkyTriglav': 'Alpy z benátské laguny – od hladiny moře, a přesto to vyjde.',
+      'sight.note.maltaEtna': 'Etna z Malty je vidět přes celý Maltský průliv, když je vzduch dost čistý.',
+
       'map.title': 'Jak velký kus tělesa vlastně vidíš',
       'map.hint':
         'Kružnice na tělese jsou ve skutečném poměru – proto jsou z lidské výšky tak malé. Výřez vedle je zvětšenina téhož místa, uvnitř něj poměry pořád platí. S posuvníkem vzdálenosti se hýbe jen ta čárkovaná.',
@@ -296,6 +330,7 @@
       'footer.note':
         'Všechny výpočty počítají s dokonalou koulí a hladkým povrchem mezi tebou a objektem. Těleso i jeho průměr se dají přepnout v ovládacím panelu.',
       'footer.made': 'Za obzorem · školní pomůcka pro objevování zakřivení Země',
+      'footer.affiliation': 'Katedra informatiky a výpočetní techniky, Fakulta aplikovaných věd, Západočeská univerzita v Plzni',
       'footer.license': 'Volně k použití ve školách (licence MIT)',
     },
 
@@ -324,6 +359,41 @@
       'geo.furtherTitle': 'And if the object is further still?',
       'geo.furtherText':
         'Then its base sinks below the horizon. Call γ the angle by which the object overshoots the point of contact; the hidden height comes from the very same right triangle:',
+
+      'geo.figureTitle': 'The construction',
+
+      'export.svgTitle': 'Download as SVG (sharp at any size)',
+      'export.pngTitle': 'Download as PNG (for a document or a presentation)',
+
+      'sight.title': 'Can you really see it? Real sightlines across Europe',
+      'sight.intro':
+        'Real places, their real elevations, and the distance measured along the surface from their coordinates. Eye height is 1.7 m above the ground everywhere. Click “Try it” and the sightline is loaded into the simulation above.',
+      'sight.yes': 'YES',
+      'sight.no': 'NO',
+      'sight.heights': 'eyes {a} a.s.l. · target {b} a.s.l.',
+      'sight.marginInside': '{n} to spare',
+      'sight.marginOutside': '{n} short',
+      'sight.try': 'Try it',
+      'sight.withRefraction':
+        'Computed with refraction on, so the distances come out about 8 % longer. Switch it off in the panel and some rows flip.',
+      'sight.withoutRefraction':
+        'Computed without refraction — pure geometry. Switch it on in the panel and the borderline rows flip; they depend on it entirely.',
+      'sight.terrain':
+        'Careful: the calculation knows nothing about the terrain in between. It answers only whether the curve of the Earth hides the view — a hill in the way is another matter. Real visibility also depends on the weather and how clear the air is.',
+      'sight.note.plzenAlps':
+        'The Alps from Pilsen come out only a few kilometres inside the limit — which is exactly why they are seen from here so rarely, and only in exceptionally clear air.',
+      'sight.note.sumavaAlps':
+        'From the peaks of the Bohemian Forest the Alps are well inside the limit and fairly commonly seen.',
+      'sight.note.prahaAlps':
+        'From Petřín it does not work at all, and refraction does not save it. Prague is simply too far from the Alps.',
+      'sight.note.alpsCorsica':
+        'Corsica from the Maritime Alps is a famous long sightline across the sea — and geometrically it has plenty to spare.',
+      'sight.note.niceCorsica':
+        'From the beach at Nice, Corsica sits exactly on the edge: no without refraction, just barely yes with it. The only difference is the height of your eyes.',
+      'sight.note.blancPraha':
+        'Prague is over 700 km from Mont Blanc, but the view reaches barely 300 km. Not even the highest peak of the Alps is enough.',
+      'sight.note.benatkyTriglav': 'The Alps from the Venetian lagoon — from sea level, and it still works.',
+      'sight.note.maltaEtna': 'Etna is visible from Malta right across the channel, when the air is clear enough.',
 
       'map.title': 'How much of the body you actually see',
       'map.hint':
@@ -581,6 +651,7 @@
       'footer.note':
         'Every calculation assumes a perfect sphere with a smooth surface between you and the object. The body and its diameter can be changed in the control panel.',
       'footer.made': 'Beyond the Horizon · a classroom toy for discovering the curve of the Earth',
+      'footer.affiliation': 'Department of Computer Science and Engineering, Faculty of Applied Sciences, University of West Bohemia',
       'footer.license': 'Free to use in schools (MIT licence)',
     },
   };

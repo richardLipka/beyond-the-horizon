@@ -198,6 +198,27 @@
     return hiddenHeight(eyeHeight, distance, R);
   }
 
+  /**
+   * Vzdalenost dvou mist na kouli merena po povrchu (ortodroma).
+   * Great-circle distance between two points, along the surface.
+   *
+   * Pocita se pres haversinus, ktery je presny i pro mala odstupy - naivni
+   * vzorec s arccos u blizkych bodu ztraci presnost.
+   * Uses the haversine form, which stays accurate for short distances where
+   * the naive arccos formula loses precision.
+   *
+   * @param {number} latA zemepisna sirka ve STUPNICH / latitude in DEGREES
+   */
+  function greatCircle(latA, lonA, latB, lonB, R) {
+    const toRad = Math.PI / 180;
+    const dLat = (latB - latA) * toRad;
+    const dLon = (lonB - lonA) * toRad;
+    const h =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(latA * toRad) * Math.cos(latB * toRad) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
+  }
+
   /** Zdanlivy uhlovy rozmer predmetu vysokeho `size` ve vzdalenosti `distance`. */
   function angularSize(size, distance) {
     if (!(distance > 0) || !(size > 0)) return 0;
@@ -314,6 +335,7 @@
     bulge,
     capArea,
     capShare,
+    greatCircle,
     dip,
     sightLineHeight,
     angularSize,

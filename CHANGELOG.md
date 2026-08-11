@@ -3,6 +3,41 @@
 Formát podle [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 verzování podle [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [1.6.0] — 2026-08-11
+
+### Přidáno / Added
+
+- **„Uvidím to doopravdy?“ – skutečné rozhledy po Evropě.** Samostatná sekce
+  úplně dole v režimu „Co uvidím?“ počítá čtrnáct skutečných dvojic: skutečná
+  místa, jejich skutečné nadmořské výšky a vzdálenost počítanou po povrchu
+  ze zeměpisných souřadnic (haversinus). Výška očí je všude 1,7 m nad zemí,
+  jedním kliknutím se řádek přenese do simulace nahoře. Sekce si sama od sebe
+  nic nenastavuje.
+  - Alpy z Plzně vycházejí s rezervou pouhých **5 km** – proto jsou odsud
+    vidět jen výjimečně.
+  - Alpy z Petřína **nevyjdou** (chybí 30 km) a nepomůže ani refrakce.
+  - Korsika z pláže v Nice je přesně na hraně: **bez refrakce ne, s ní ano**.
+    Je to jediný řádek, který se přepínačem překlápí.
+  - Praha z Mont Blancu: 734 km proti dohledu 312 km.
+- **Malá tlačítka pro stažení obrázku** (SVG a PNG) u každé vizualizace –
+  bočního pohledu, dalekohledu, kruhového schématu, obou grafů i geometrické
+  konstrukce. Stažený soubor stojí sám o sobě: styly se do něj zapisují
+  natvrdo, protože při běhu z `file://` se stylopis načíst nedá.
+- Odkaz na **domovskou stránku autora** a **logo FAV ZČU** v patičce. Logo je
+  místní soubor, ne odkaz na cizí server – aplikace musí fungovat offline.
+  Značka univerzity není součástí licence MIT, což je poznamenáno v `LICENSE`.
+
+### Opraveno / Fixed
+
+- Refrakce v tabulce rozhledů fungovala **obráceně**: vzdálenost mezi dvěma
+  místy se počítala s efektivním poloměrem, takže se se zapnutou refrakcí
+  „natáhla“ o 17 % a rozhledy se místo zlepšení kazily. Zeměpisná vzdálenost
+  se nyní počítá se skutečným poloměrem Země, efektivní patří jen do výpočtu
+  dohledu.
+- Tlačítka exportu v titulku karty mizela při každém překreslení a při změně
+  jazyka – text titulku se zapisoval přes `textContent`, což smazalo i je.
+  Text má teď vlastní `<span>`.
+
 ## [1.5.0] — 2026-08-11
 
 ### Opraveno / Fixed
@@ -210,6 +245,7 @@ První veřejné vydání. / First public release.
 - **CI** kontrolující výpočty, úplnost překladů a reprodukovatelnost
   vygenerovaného `objects.json`.
 
+[1.6.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.2.1...v1.3.0
