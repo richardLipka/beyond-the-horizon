@@ -145,7 +145,25 @@
   }
 }
 
+/* Dalekohled a čísla vedle sebe potřebují širší plochu než samotný panel,
+   proto se skládají dřív než celý rozvrh. / The telescope and the numbers side
+   by side need more room than the panel alone, so they stack first. */
 @media (max-width: 1100px) {
+  .stage-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .editor-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Postranní panel zůstává vedle obsahu, dokud se vedle něj vejde i diagram.
+   Na 1000 px je tedy pořád po straně; teprve pod 820 px by byl užší než jeho
+   vlastní obsah, a tam se teprve skládá pod sebe.
+   The sidebar stays beside the content for as long as the diagram fits next to
+   it - at 1000 px it is still on the side. Only below 820 px would it be
+   narrower than its own contents, and that is where it stacks. */
+@media (max-width: 820px) {
   #main {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -153,12 +171,6 @@
     position: static;
     max-height: none;
     overflow: visible;
-  }
-  .stage-row {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .editor-body {
-    grid-template-columns: minmax(0, 1fr);
   }
 }
 

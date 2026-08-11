@@ -11,7 +11,7 @@
  * (c) 2026 Richard Lipka <lipka@fav.zcu.cz> - MIT license
  */
 
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 
 globalThis.window = {};
 const source = await readFile(new URL('../js/i18n/strings.js', import.meta.url), 'utf8');
@@ -60,6 +60,31 @@ for (const language of languages.slice(1)) {
     const a = placeholders(strings[reference][key]);
     const b = placeholders(strings[language][key]);
     if (a !== b) fail(`ruzne zastupne znacky / placeholder mismatch at ${key}: "${a}" vs "${b}"`);
+  }
+}
+
+// --- 3b. kazdy klic se nekde pouziva --------------------------------------
+// Mrtve preklady se snadno nastradaji: text se z obrazku odstrani, ale klic
+// v obou jazycich zustane a nikdo si toho nevsimne. Klice skladane za behu
+// (napr. `status.${key}.title`) se poznaji podle prefixu.
+// Dead translations accumulate easily - a caption is removed from a picture but
+// the key survives in both languages unnoticed. Keys composed at run time are
+// recognised by their prefix.
+const RUNTIME_PREFIXES = ['status.', 'data.source.', 'preset.', 'editor.baseline.'];
+
+const sourceFiles = ['../index.html', '../js/app.js'];
+for (const dir of ['ui', 'core', 'data', 'i18n']) {
+  for (const name of await readdir(new URL(`../js/${dir}/`, import.meta.url))) {
+    if (name.endsWith('.js') && name !== 'strings.js') sourceFiles.push(`../js/${dir}/${name}`);
+  }
+}
+let code = '';
+for (const file of sourceFiles) code += await readFile(new URL(file, import.meta.url), 'utf8');
+
+for (const key of referenceKeys) {
+  if (RUNTIME_PREFIXES.some((prefix) => key.startsWith(prefix))) continue;
+  if (!code.includes(`'${key}'`) && !code.includes(`"${key}"`) && !code.includes(`\`${key}\``)) {
+    fail(`klic se nikde nepouziva / key is never used: ${key}`);
   }
 }
 

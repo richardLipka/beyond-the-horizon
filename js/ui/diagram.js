@@ -133,7 +133,7 @@
     // chord's midpoint; beyond that the surface curves back and the path would
     // fold over itself.
     const quarter = (Math.PI / 2) * R;
-    const marginU = 0.06 * D;
+    const marginU = 0.04 * D;
     const uMin = Math.max(-marginU, D / 2 - quarter);
     const uMax = Math.min(D + marginU, D / 2 + quarter);
     const SAMPLES = 240;
@@ -166,11 +166,51 @@
     const yMax = yHigh + span * 0.17;
     const yMin = yLow - span * 0.1;
 
-    const sx = PLOT.w / (xMax - xMin);
     const sy = PLOT.h / (yMax - yMin);
-    const X = (wx) => PLOT.x0 + (wx - xMin) * sx;
+
+    // ---- misto pro ikony u obou kraju / room for the icons at both edges --
+    // Ikona objektu i postavicka maji sirku v PIXELECH, ktera na svetovych
+    // souradnicich nezavisi. Kdyz se s ni nepocita, siroke objekty (Titanic,
+    // hory) prelezou ramecek a clipPath je uriznе. Okraj se proto rezervuje
+    // primo v pixelech a meritko se dopocita az na zbytek sirky.
+    // The object icon and the observer figure have widths in PIXELS, which do
+    // not follow from the world coordinates. Without reserving room for them,
+    // wide objects overflow the frame and the clip path cuts them off. The
+    // margins are therefore reserved in pixels and the scale gets what is left.
+    const provisionalSx = PLOT.w / (xMax - xMin);
+    const aspect = obj.aspect > 0 ? obj.aspect : 1;
+    // Odhad je zamerne shora: skutecne sx uz bude mensi, takze skutecna ikona
+    // vyjde nanejvys stejne siroka. / Deliberately an upper bound.
+    const estObjectPx = Math.max(
+      6,
+      Math.hypot((topPoint.x - basePoint.x) * provisionalSx, (topPoint.y - basePoint.y) * sy)
+    );
+    const estObjectWidth = Math.min(Math.max(estObjectPx * aspect, 12), PLOT.w * 0.26);
+    const estEyePx = Math.abs(eyePoint.y - frame.point(0, 0).y) * sy;
+    const estFigureHeight = Math.min(92, Math.max(14, estEyePx / 0.86));
+
+    const padRight = Math.min(estObjectWidth / 2 + 8, PLOT.w * 0.2);
+    // Postavicka trci vlevo o polomer hlavy, popisek "TY" je sirsi.
+    const padLeft = Math.min(Math.max(24, 0.13 * estFigureHeight + 8), PLOT.w * 0.1);
+
+    const sx = (PLOT.w - padLeft - padRight) / (xMax - xMin);
+    const X = (wx) => PLOT.x0 + padLeft + (wx - xMin) * sx;
     const Y = (wy) => PLOT.y1 - (wy - yMin) * sy;
     const exaggeration = sy / sx;
+
+    // Povrch se kresli sirsi, nez je ramecek - prebytek orizne clipPath -
+    // aby pod vyhrazenymi okraji nezustal prazdny klin. Ctvrtina obvodu plati
+    // porad: za ni uz zadny povrch neni, tam se opravdu diva do prazdna.
+    // The surface is drawn wider than the frame (the clip path trims it) so no
+    // empty wedge is left under the reserved margins. The quarter-circumference
+    // rule still holds: past it there is no more surface to draw.
+    const overshootU = (Math.max(padLeft, padRight) / sx) * 1.3;
+    const uDrawMin = Math.max(uMin - overshootU, D / 2 - quarter);
+    const uDrawMax = Math.min(uMax + overshootU, D / 2 + quarter);
+    const drawn = [];
+    for (let i = 0; i <= SAMPLES; i++) {
+      drawn.push(frame.point(uDrawMin + ((uDrawMax - uDrawMin) * i) / SAMPLES, 0));
+    }
 
     // ---- definice / defs --------------------------------------------------
     // Barvy prichazeji ze zvoleneho telesa, takze obrazek odpovida tomu,
@@ -254,9 +294,9 @@
     }
 
     // teleso Zeme / the Earth's body
-    let d = `M ${X(surface[0].x).toFixed(2)} ${Y(surface[0].y).toFixed(2)}`;
+    let d = `M ${X(drawn[0].x).toFixed(2)} ${Y(drawn[0].y).toFixed(2)}`;
     for (let i = 1; i <= SAMPLES; i++) {
-      d += ` L ${X(surface[i].x).toFixed(2)} ${Y(surface[i].y).toFixed(2)}`;
+      d += ` L ${X(drawn[i].x).toFixed(2)} ${Y(drawn[i].y).toFixed(2)}`;
     }
     const surfacePath = d;
     scene.appendChild(
@@ -281,7 +321,7 @@
       stroke: palette.accent,
     });
     for (let i = 6; i < SAMPLES; i += 12) {
-      const p = surface[i];
+      const p = drawn[i];
       const px = X(p.x);
       const py = Y(p.y);
       let d;
@@ -355,7 +395,6 @@
     const dy = topP.y - baseP.y;
     const objectPx = Math.max(6, Math.hypot(dx, dy));
     const tilt = (Math.atan2(dx, -dy) * 180) / Math.PI;
-    const aspect = obj.aspect > 0 ? obj.aspect : 1;
     // Sirka ikony ma vlastni pomer stran, ale nesmi zabrat pul obrazku
     // (napr. Titanic je 5x delsi nez vyssi). / Icon keeps its own ratio,
     // clamped so very long objects do not swallow the picture.
@@ -471,44 +510,49 @@
     }
 
     // ---- kotovani vysek u objektu / object height dimensions -------------
-    const dimRight = baseP.x + objectWidth / 2 + 16;
-    const useRight = dimRight < PLOT.x1 - 74;
-    const dimX = useRight ? dimRight : baseP.x - objectWidth / 2 - 16;
-    const side = useRight ? 'right' : 'left';
     const hiddenTopY = Y(frame.point(D, Math.min(r.hidden, r.objectHeight)).y);
-    const dims = svg('g');
-
     const hiddenSegment = baseP.y - hiddenTopY;
     const visibleSegment = hiddenTopY - topP.y;
     const nudge = hiddenSegment < 22 || visibleSegment < 22 ? 9 : 0;
 
-    if (r.hidden > 0) {
-      dims.appendChild(
-        verticalDimension(
-          dimX,
-          hiddenTopY,
-          baseP.y,
-          'dg-dim dg-dim-hidden',
-          `${t('diagram.hidden')}: ${F.height(r.hidden, lang)}`,
-          side,
-          nudge
-        )
-      );
+    /** Postavi obe kóty na zadanou stranu objektu. */
+    function buildDims(side) {
+      const dimX =
+        side === 'right' ? baseP.x + objectWidth / 2 + 16 : baseP.x - objectWidth / 2 - 16;
+      const group = svg('g');
+      if (r.hidden > 0) {
+        group.appendChild(
+          verticalDimension(dimX, hiddenTopY, baseP.y, 'dg-dim dg-dim-hidden',
+            `${t('diagram.hidden')}: ${F.height(r.hidden, lang)}`, side, nudge)
+        );
+      }
+      if (r.visible > 0) {
+        group.appendChild(
+          verticalDimension(dimX, topP.y, hiddenTopY, 'dg-dim dg-dim-visible',
+            `${t('diagram.visible')}: ${F.height(r.visible, lang)}`, side, -nudge)
+        );
+      }
+      return group;
     }
-    if (r.visible > 0) {
-      dims.appendChild(
-        verticalDimension(
-          dimX,
-          topP.y,
-          hiddenTopY,
-          'dg-dim dg-dim-visible',
-          `${t('diagram.visible')}: ${F.height(r.visible, lang)}`,
-          side,
-          -nudge
-        )
-      );
-    }
+
+    // Popisky jsou dlouhe ("Schováno: 8 849 m") a v kazdem jazyce jinak, takze
+    // se strana nehada podle pevneho odstupu - kóty se postavi vpravo, zmeri
+    // a kdyz prelezou ramecek, prekresli se vlevo.
+    // The labels are long and differ per language, so the side is not guessed
+    // from a fixed offset: the dimensions are built on the right, measured, and
+    // rebuilt on the left if they overflow the frame.
+    let dims = buildDims('right');
     scene.appendChild(dims);
+    try {
+      const box = dims.getBBox();
+      if (box.width > 0 && box.x + box.width > PLOT.x1 - 6) {
+        scene.removeChild(dims);
+        dims = buildDims('left');
+        scene.appendChild(dims);
+      }
+    } catch (e) {
+      /* obrazek jeste neni vykresleny / not laid out yet */
+    }
 
     // upozorneni, ze uz nejde o vysku, ale o principialni mez
     // a note that this is no longer about height but about a hard limit

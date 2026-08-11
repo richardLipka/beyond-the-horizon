@@ -38,7 +38,16 @@ check, and `check-strings`. Run all three before committing.
 
 4. **All user-visible text lives in `js/i18n/strings.js`, in both `cs` and `en`.**
    Never hardcode a string in a UI module. `check-strings.mjs` enforces matching
-   key sets and matching `{placeholders}`.
+   key sets, matching `{placeholders}`, and that every key is actually
+   referenced somewhere — dead translations accumulated unnoticed until 13 of
+   them were found at once. Keys composed at run time (`status.`, `data.source.`,
+   `preset.`, `editor.baseline.`) are listed as prefixes in that check; add to
+   that list rather than deleting a key you cannot find.
+
+   Watch for wording that only holds on the Earth. Eleven bodies are selectable,
+   so "how much the Earth ate" or "distance along the Earth's surface" is wrong
+   ten times out of eleven. Say *surface*, *body*, or pass `{planet}` — the app
+   title and footer credit are the deliberate exceptions.
 
 5. **No dependencies.** No npm packages, no CDN links, no web fonts, no
    analytics. The app must work fully offline.
@@ -75,6 +84,20 @@ curvature is invisible at true scale. The factor is computed per render and
 printed into the picture. When the object is huge and close the factor drops
 below 1, so the wording switches to `diagram.compression` / `diagram.sameScale`.
 Never silently drop that note.
+
+**The diagram reserves its edge margins in PIXELS, not in distance.** The object
+icon and the observer figure have pixel widths that do not follow from the world
+coordinates, so a margin expressed as a fraction of the distance does not cover
+them — that is how 58 of 92 configurations ended up with the object sliced off
+by the clip path. `padLeft`/`padRight` are computed from an *upper bound* on the
+icon size (using the provisional scale, so the real icon can only come out
+smaller) and the horizontal scale gets what is left. Because the mapping is
+inset, the surface is sampled over a wider `uDrawMin…uDrawMax` than the frame
+shows; the clip path trims the excess. The quarter-circumference rule still caps
+that widening — past it there genuinely is no more surface, and sky at the edge
+is the correct picture. The hidden/visible dimension labels pick their side by
+being drawn, measured with `getBBox()` and rebuilt on the left if they overflow;
+a fixed offset cannot work when the label text differs per language.
 
 **Object icons are sized by height only.** Widths use the icon's own aspect
 ratio (read from the SVG `viewBox` at build time), clamped so a 269 m Titanic
@@ -172,6 +195,12 @@ y-axis steps in whole radii, because a "nice" step of its own rounds two
 different gridlines to the same `2R` label. If a formula row has neither a
 substitution nor a result, `formulaRow` gives it `formula-solo` so the
 three-column grid does not break the expression mid-line.
+
+**Breakpoints are two, and they are independent.** `.stage-row` (telescope beside
+the numbers) stacks at 1100 px because it needs more room than the panel alone;
+the whole `#main` grid only stacks at **820 px**, so the sidebar is still beside
+the content at 1000 px. Do not merge them back into one query — that is what
+made a 1000 px window stack the sidebar prematurely.
 
 **Data source priority** is localStorage → `objects.json` → built-in factory
 copy. The third exists purely for `file://`, where `fetch()` of a local file

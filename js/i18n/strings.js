@@ -17,7 +17,6 @@
     cs: {
       'app.title': 'Za obzorem',
       'app.subtitle': 'Prozkoumej, jak zakřivení Země schovává věci',
-      'app.langLabel': 'Jazyk',
 
       'mode.see': 'Co uvidím?',
       'mode.vanish': 'Kdy zmizí?',
@@ -43,12 +42,15 @@
 
       'map.title': 'Jak velký kus tělesa vlastně vidíš',
       'map.hint':
-        'Kružnice na tělese jsou ve skutečném poměru – proto jsou z lidské výšky tak malé. Výřez vedle je jen zvětšenina téhož místa, uvnitř něj poměry pořád platí.',
+        'Kružnice na tělese jsou ve skutečném poměru – proto jsou z lidské výšky tak malé. Výřez vedle je zvětšenina téhož místa, uvnitř něj poměry pořád platí. S posuvníkem vzdálenosti se hýbe jen ta čárkovaná.',
       'map.trueScale': 'skutečný poměr',
       'map.zoom': 'výřez zvětšený {n}×',
-      'map.noZoom': 'Vidíš takovou část tělesa, že je dobře vidět i na samotné kouli.',
+      'map.noZoom': 'Kružnice jsou dost velké, aby byly vidět i na samotném tělese.',
       'map.ringHorizon': 'Tvůj obzor',
       'map.ringVanish': 'Kde zmizí {name}',
+      'map.ringNow': 'Nastavená vzdálenost',
+      'map.nowInside': 'Objekt stojí ještě před obzorem – vidíš ho celý.',
+      'map.nowOutside': 'Objekt už je za obzorem – část ho schovává zakřivení povrchu.',
       'map.areaShare': 'plocha {area} · {share} povrchu',
       'map.overTheEdge': 'Objekt je tak vysoký, že by ho bylo vidět až za okrajem polokoule.',
 
@@ -91,12 +93,10 @@
       'ctrl.planetInfo': 'poloměr {r} · obvod {c}',
       'ctrl.planetGaseous':
         'U Slunce a plynných obrů se „povrchem“ myslí vrchol mraků – stát se na něm nedá.',
-      'ctrl.planetRefraction': 'Refrakce používá hodnotu pro pozemský vzduch.',
 
       'ctrl.observer': 'Kde stojíš ty',
       'ctrl.eyeHeight': 'Výška očí nad hladinou',
       'ctrl.eyeHelp': 'Čím výš máš oči, tím dál dohlédneš. Zkus si to!',
-      'ctrl.presets': 'Rychlá volba',
       'preset.lying': 'Ležím na pláži',
       'preset.child': 'Dítě',
       'preset.adult': 'Dospělý',
@@ -112,7 +112,7 @@
       'ctrl.noResults': 'Nic takového tu není.',
 
       'ctrl.distance': 'Jak daleko to je',
-      'ctrl.distanceLabel': 'Vzdálenost po povrchu Země',
+      'ctrl.distanceLabel': 'Vzdálenost po povrchu tělesa',
       'ctrl.distanceHelp': 'Táhni posuvníkem a sleduj, jak objekt klesá za obzor.',
 
       'ctrl.options': 'Nastavení',
@@ -127,11 +127,11 @@
       'res.beyond': 'Za obzorem',
       'res.beyondSub': 'o kolik je objekt dál',
       'res.hidden': 'Schováno',
-      'res.hiddenSub': 'kolik ukrojila Země',
+      'res.hiddenSub': 'kolik ukrojilo zakřivení',
       'res.visible': 'Vidíš',
       'res.visibleSub': 'z celkových {total}',
       'res.bulge': 'Vyboulení',
-      'res.bulgeSub': 'hrb vody uprostřed cesty',
+      'res.bulgeSub': 'hrb povrchu uprostřed cesty',
       'res.vanish': 'Úplně zmizí',
       'res.vanishSub': 've vzdálenosti',
       'res.apparent': 'Zdánlivá velikost',
@@ -143,22 +143,20 @@
 
       'status.full.title': 'Vidíš celý objekt! 🎉',
       'status.full.text':
-        'Z výšky {eye} dohlédneš {horizon} daleko. {object} stojí {distance} od tebe, tedy ještě před obzorem. Zakřivení Země ti zatím nic nebere.',
+        'Z výšky {eye} dohlédneš {horizon} daleko. {object} stojí {distance} od tebe, tedy ještě před obzorem. Zakřivení povrchu ti zatím nic nebere.',
       'status.partial.title': 'Spodek je schovaný 🌊',
       'status.partial.text':
-        'Z výšky {eye} dohlédneš {horizon} daleko. {object} stojí o {beyond} dál, takže spodních {hidden} je schováno za vyboulením Země. Zbývá ti horních {visible}, to je {percent} objektu.',
+        'Z výšky {eye} dohlédneš {horizon} daleko. {object} stojí o {beyond} dál, takže spodních {hidden} je schováno za vyboulením povrchu. Zbývá ti horních {visible}, to je {percent} objektu.',
       'status.hidden.title': 'Nevidíš vůbec nic 🙈',
       'status.hidden.text':
-        '{object} je {distance} daleko. Úplně zmizí už od {vanish}, takže se celý schoval za zakřivení Země. Vylez výš, nebo se přibliž!',
+        '{object} je {distance} daleko. Úplně zmizí už od {vanish}, takže se celý schoval za zakřivení povrchu. Vylez výš, nebo se přibliž!',
       'status.beyond.title': 'Za hranicí dohledu 🌑',
       'status.beyond.text':
         '{object} je {distance} daleko – to je dál než {maxSight}. Tady už nepomůže žádná výška: i nekonečně vysoká věž by musela prorůst skrz celé těleso. Ať vylezeš kamkoli, vidíš vždycky jen polovinu tělesa ({planet}) a druhá polovina zůstane schovaná.',
 
-      'diagram.title': 'Boční pohled na Zemi',
+      'diagram.title': 'Boční pohled ({planet})',
       'diagram.you': 'TY',
       'diagram.horizon': 'obzor',
-      'diagram.sightline': 'přímý pohled',
-      'diagram.chord': 'přímá spojnice',
       'diagram.bulge': 'vyboulení',
       'diagram.hidden': 'schováno',
       'diagram.visible': 'vidíš',
@@ -172,10 +170,6 @@
       'diagram.widthNote': 'Šířky objektů nejsou v měřítku – přesné jsou výšky a vzdálenosti.',
       'diagram.beyondReach': 'za hranicí dohledu – tady nepomůže žádná výška',
       'diagram.antipode': 'protilehlý bod tělesa',
-      'diagram.scalebar': 'měřítko vzdálenosti',
-      'diagram.legendSurface': 'povrch Země',
-      'diagram.legendSight': 'paprsek k tvému oku',
-      'diagram.legendChord': 'přímá spojnice',
 
       'telescope.title': 'Pohled dalekohledem',
       'telescope.caption': 'Takhle to uvidíš na vlastní oči.',
@@ -238,7 +232,6 @@
       'limits.showAntipode': 'Postavit objekt na opačnou stranu',
       'limits.impossible': 'nemožné',
       'limits.radii': '{n}× poloměr tělesa',
-      'limits.yourObject': 'tvůj objekt',
 
       'editor.heading': 'Editor objektů',
       'editor.intro':
@@ -265,13 +258,11 @@
       'editor.field.aspect': 'Poměr šířky k výšce obrázku',
       'editor.field.factCs': 'Zajímavost česky',
       'editor.field.factEn': 'Zajímavost anglicky',
-      'editor.field.image': 'Obrázek objektu',
       'editor.image.choose': 'Vybrat obrázek…',
       'editor.image.clear': 'Odebrat obrázek',
       'editor.image.hint':
         'Obrázek se uloží přímo do JSON jako base64. Nejlépe funguje SVG, kde objekt stojí přesně na spodní hraně a špička se dotýká horní hrany.',
       'editor.image.none': 'Zatím bez obrázku',
-      'editor.toolbar': 'Soubor',
       'editor.save': 'Uložit do prohlížeče',
       'editor.saved': 'Uloženo ✔',
       'editor.download': 'Stáhnout objects.json',
@@ -284,7 +275,6 @@
       'editor.invalid': 'V datech je chyba:',
       'editor.storageNote':
         'Změny se ukládají do tohoto prohlížeče. Aby je měli i ostatní, stáhni objects.json a ulož ho vedle index.html.',
-      'editor.previewTitle': 'Náhled objektu',
       'editor.previewNote': 'Takhle bude vypadat v diagramu.',
       'editor.count': 'objektů: {n}',
 
@@ -304,7 +294,7 @@
       'unit.m': 'm',
       'unit.km': 'km',
       'footer.note':
-        'Všechny výpočty počítají s dokonalou koulí a hladkým povrchem mezi tebou a objektem. Těleso i jeho průměr se dají přepnout v panelu vlevo.',
+        'Všechny výpočty počítají s dokonalou koulí a hladkým povrchem mezi tebou a objektem. Těleso i jeho průměr se dají přepnout v ovládacím panelu.',
       'footer.made': 'Za obzorem · školní pomůcka pro objevování zakřivení Země',
       'footer.license': 'Volně k použití ve školách (licence MIT)',
     },
@@ -312,7 +302,6 @@
     en: {
       'app.title': 'Beyond the Horizon',
       'app.subtitle': "Explore how the Earth's curve hides things from you",
-      'app.langLabel': 'Language',
 
       'mode.see': 'What can I see?',
       'mode.vanish': 'When does it vanish?',
@@ -338,12 +327,15 @@
 
       'map.title': 'How much of the body you actually see',
       'map.hint':
-        'The circles on the body are at true scale — which is why they are so small from human height. The inset beside it is only a magnified view of the same spot; the ratios inside it still hold.',
+        'The circles are at true scale on the body — which is why they are so small from human height. The inset beside it is a magnified view of the same spot; the ratios inside it still hold. Only the dashed circle moves with the distance slider.',
       'map.trueScale': 'true scale',
       'map.zoom': 'inset magnified {n}×',
-      'map.noZoom': 'You can see so much of this body that it shows up on the sphere itself.',
+      'map.noZoom': 'The circles are big enough to show on the body itself.',
       'map.ringHorizon': 'Your horizon',
       'map.ringVanish': 'Where {name} vanishes',
+      'map.ringNow': 'Distance you set',
+      'map.nowInside': 'The object still stands short of the horizon — you see all of it.',
+      'map.nowOutside': 'The object is past the horizon — the curve of the surface hides part of it.',
       'map.areaShare': 'area {area} · {share} of the surface',
       'map.overTheEdge': 'The object is so tall it would still show from beyond the edge of the hemisphere.',
 
@@ -386,12 +378,10 @@
       'ctrl.planetInfo': 'radius {r} · circumference {c}',
       'ctrl.planetGaseous':
         'For the Sun and the gas giants the "surface" means the cloud tops — you could not stand there.',
-      'ctrl.planetRefraction': 'Refraction uses the value for air on Earth.',
 
       'ctrl.observer': 'Where you stand',
       'ctrl.eyeHeight': 'Eye height above the surface',
       'ctrl.eyeHelp': 'The higher your eyes, the further you see. Give it a try!',
-      'ctrl.presets': 'Quick pick',
       'preset.lying': 'Lying on the beach',
       'preset.child': 'A child',
       'preset.adult': 'A grown-up',
@@ -407,7 +397,7 @@
       'ctrl.noResults': 'Nothing matches that.',
 
       'ctrl.distance': 'How far away it is',
-      'ctrl.distanceLabel': "Distance along the Earth's surface",
+      'ctrl.distanceLabel': 'Distance along the surface',
       'ctrl.distanceHelp': 'Drag the slider and watch the object sink behind the horizon.',
 
       'ctrl.options': 'Settings',
@@ -422,11 +412,11 @@
       'res.beyond': 'Beyond the horizon',
       'res.beyondSub': 'how much further the object is',
       'res.hidden': 'Hidden',
-      'res.hiddenSub': 'how much the Earth ate',
+      'res.hiddenSub': 'how much the curve ate',
       'res.visible': 'You can see',
       'res.visibleSub': 'out of {total}',
       'res.bulge': 'Bulge',
-      'res.bulgeSub': 'hump of water halfway across',
+      'res.bulgeSub': 'the hump halfway across',
       'res.vanish': 'Vanishes completely',
       'res.vanishSub': 'at a distance of',
       'res.apparent': 'Apparent size',
@@ -449,11 +439,9 @@
       'status.beyond.text':
         'The {object} is {distance} away — further than {maxSight}. No height helps here: even an infinitely tall tower would have to grow straight through the body. However high you climb you always see just one half of {planet}, and the other half stays hidden.',
 
-      'diagram.title': 'Side view of the Earth',
+      'diagram.title': 'Side view ({planet})',
       'diagram.you': 'YOU',
       'diagram.horizon': 'horizon',
-      'diagram.sightline': 'line of sight',
-      'diagram.chord': 'straight line',
       'diagram.bulge': 'bulge',
       'diagram.hidden': 'hidden',
       'diagram.visible': 'visible',
@@ -465,12 +453,8 @@
       'diagram.compression': 'Distances are stretched {n}× compared with heights.',
       'diagram.sameScale': 'Heights and distances share the same scale here.',
       'diagram.widthNote': 'Object widths are not to scale — heights and distances are.',
-      'diagram.beyondReach': 'past every line of sight — no height helps here',
+      'diagram.beyondReach': 'past the sight limit — no height helps here',
       'diagram.antipode': 'the far side of the body',
-      'diagram.scalebar': 'distance scale',
-      'diagram.legendSurface': "Earth's surface",
-      'diagram.legendSight': 'ray reaching your eye',
-      'diagram.legendChord': 'straight line',
 
       'telescope.title': 'Through the telescope',
       'telescope.caption': 'This is what your eyes actually see.',
@@ -533,7 +517,6 @@
       'limits.showAntipode': 'Put the object on the far side',
       'limits.impossible': 'impossible',
       'limits.radii': "{n}× the body's radius",
-      'limits.yourObject': 'your object',
 
       'editor.heading': 'Object editor',
       'editor.intro':
@@ -560,13 +543,11 @@
       'editor.field.aspect': 'Picture width-to-height ratio',
       'editor.field.factCs': 'Czech fun fact',
       'editor.field.factEn': 'English fun fact',
-      'editor.field.image': 'Object picture',
       'editor.image.choose': 'Choose a picture…',
       'editor.image.clear': 'Remove picture',
       'editor.image.hint':
         'The picture is stored straight inside the JSON as base64. SVG works best, with the object resting exactly on the bottom edge and its tip touching the top edge.',
       'editor.image.none': 'No picture yet',
-      'editor.toolbar': 'File',
       'editor.save': 'Save into this browser',
       'editor.saved': 'Saved ✔',
       'editor.download': 'Download objects.json',
@@ -579,7 +560,6 @@
       'editor.invalid': 'Something is wrong in the data:',
       'editor.storageNote':
         'Changes are stored in this browser only. To share them, download objects.json and put it next to index.html.',
-      'editor.previewTitle': 'Object preview',
       'editor.previewNote': 'This is how it will look in the diagram.',
       'editor.count': 'objects: {n}',
 
@@ -599,7 +579,7 @@
       'unit.m': 'm',
       'unit.km': 'km',
       'footer.note':
-        'Every calculation assumes a perfect sphere with a smooth surface between you and the object. The body and its diameter can be changed in the panel on the left.',
+        'Every calculation assumes a perfect sphere with a smooth surface between you and the object. The body and its diameter can be changed in the control panel.',
       'footer.made': 'Beyond the Horizon · a classroom toy for discovering the curve of the Earth',
       'footer.license': 'Free to use in schools (MIT licence)',
     },

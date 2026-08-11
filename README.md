@@ -31,12 +31,18 @@ actually see — the hidden part drawn as a dashed ghost below the waterline.
 <img src="docs/preview-telescope.svg" width="330" alt="The telescope view: the top 20.1 m of the Titanic above the horizon, the rest a dashed ghost below">
 
 Below the telescope sits a circular map of the body seen from space, directly
-above you, carrying **two circles at true scale**: your horizon, and the
-distance at which the selected object vanishes. From human height both are
-essentially invisible on the sphere — which is the point — so a uniformly
-magnified inset shows the same spot with the magnification printed. Each circle
-comes with the area of its spherical cap and its share of the whole surface:
-from 1.7 m on the Earth you can see 68 km², one part in 7 495 306.
+above you, carrying **three circles at true scale**: your horizon, the distance
+at which the selected object vanishes, and — dashed — the distance you have set.
+From human height the first two are essentially invisible on the sphere, which
+is the point, so a uniformly magnified inset shows the same spot with the
+magnification printed. Each circle comes with the area of its spherical cap and
+its share of the whole surface: from 1.7 m on the Earth you can see 68 km², one
+part in 7 495 306.
+
+The side view always frames both actors: room for the object icon and the
+observer figure is reserved **in pixels**, because their widths do not follow
+from the world coordinates, and the surface is drawn wider than the frame so no
+empty wedge appears under the reserved margins.
 
 ### 🌊 When does it vanish?
 

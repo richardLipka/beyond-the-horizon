@@ -3,6 +3,38 @@
 Formát podle [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 verzování podle [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [1.5.0] — 2026-08-11
+
+### Opraveno / Fixed
+
+- **Objekt v bočním pohledu se ořezával o rámeček.** Okraje se rezervovaly
+  procentem ze vzdálenosti, jenže ikona objektu i postavička mají šířku
+  v pixelech, která ze světových souřadnic neplyne. U širokých objektů (hory,
+  lodě) tak zmizelo až 70 px kresby – ve **58 z 92** zkoušených nastavení.
+  Okraje se teď počítají v pixelech z horního odhadu velikosti ikony a měřítko
+  dostane, co zbyde; povrch se kreslí širší než rámeček, aby pod nimi nezůstal
+  prázdný klín. Ověřeno na 345 nastaveních: **nic mimo rámeček**.
+- Kóty „schováno“ a „vidíš“ si stranu vybíraly podle pevného odstupu 74 px,
+  jenže popisky jsou delší a v každém jazyce jinak dlouhé. Nově se vykreslí,
+  změří a v případě přetečení překreslí na druhou stranu.
+- **Postranní panel se skládal pod obsah předčasně.** Zlom byl na 1100 px,
+  takže okno široké 1000 px panel zbytečně odsunulo dolů. Rozvrh se teď skládá
+  až pod 820 px; dalekohled a čísla vedle sebe mají vlastní zlom na 1100 px.
+- **Texty, které platily jen na Zemi.** „Kolik ukrojila Země“, „Vzdálenost po
+  povrchu Země“, „za vyboulením Země“ nebo „Boční pohled na Zemi“ jsou na
+  ostatních deseti tělesech nepravdivé – nově mluví o povrchu, tělese, nebo
+  doplňují název vybraného tělesa. Poznámka v patičce také už netvrdí, že je
+  ovládací panel „vlevo“ (při úzkém okně je nahoře).
+- Odstraněno 13 překladových klíčů, které se nikde nepoužívaly. `check-strings`
+  nově hlídá i to, aby se každý klíč někde volal.
+
+### Přidáno / Added
+
+- Do kruhového schématu přibyla **čárkovaná kružnice nastavené vzdálenosti** –
+  jediná, která se hýbe s posuvníkem. Je z ní hned vidět, jestli objekt stojí
+  ještě před obzorem, nebo už za ním. Měřítko výřezu ji bere v potaz až do
+  dvojnásobku bodu zmizení; dál by oba zajímavé kruhy sklouzly do středu.
+
 ## [1.4.0] — 2026-08-11
 
 ### Přidáno / Added
@@ -178,6 +210,7 @@ První veřejné vydání. / First public release.
 - **CI** kontrolující výpočty, úplnost překladů a reprodukovatelnost
   vygenerovaného `objects.json`.
 
+[1.5.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.2.0...v1.2.1

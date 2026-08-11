@@ -31,11 +31,17 @@ pod hladinou.
 <img src="docs/preview-telescope.svg" width="330" alt="Pohled dalekohledem: horních 20,1 m Titaniku nad obzorem, zbytek čárkovaně pod hladinou">
 
 Pod dalekohledem je kruhové schéma tělesa, jak by vypadalo z vesmíru přímo nad
-tebou, a leží na něm **dvě kružnice ve skutečném poměru**: tvůj obzor
-a vzdálenost, ve které vybraný objekt zmizí. Z lidské výšky nejsou na kouli
-prakticky vidět – a přesně o to jde – takže vedle je rovnoměrně zvětšený výřez
-s vypsaným zvětšením. Ke každé kružnici se počítá plocha vrchlíku a její podíl
-na celém povrchu: ze 170 cm na Zemi je vidět 68 km², tedy 1 : 7 495 306.
+tebou, a leží na něm **tři kružnice ve skutečném poměru**: tvůj obzor,
+vzdálenost, ve které vybraný objekt zmizí, a čárkovaně nastavená vzdálenost.
+První dvě nejsou z lidské výšky na kouli prakticky vidět – a přesně o to jde –
+takže vedle je rovnoměrně zvětšený výřez s vypsaným zvětšením. Ke každé
+kružnici se počítá plocha vrchlíku a její podíl na celém povrchu: ze 170 cm na
+Zemi je vidět 68 km², tedy 1 : 7 495 306.
+
+Boční pohled má vždycky v záběru oba aktéry: místo pro ikonu objektu
+i postavičku se rezervuje **v pixelech**, protože jejich šířky ze světových
+souřadnic neplynou, a povrch se kreslí širší než rámeček, aby pod rezervovanými
+okraji nezůstal prázdný klín.
 
 ### 🌊 Kdy zmizí?
 

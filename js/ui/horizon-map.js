@@ -28,7 +28,7 @@
   const svg = HL.dom.svg;
   const G = HL.geometry;
 
-  const VIEW = { w: 900, h: 530 };
+  const VIEW = { w: 900, h: 580 };
   const GLOBE = { cx: 208, cy: 186, r: 150 };
   const INSET = { cx: 642, cy: 186, r: 145 };
   const CAPTION_DY = 30; // pod spodkem koule / below the bottom of the globe
@@ -128,12 +128,18 @@
     // ---- teleso ve skutecnem pomeru / the body at true scale ---------------
     const horizonR = projected(alpha, GLOBE.r);
     const vanishR = projected(vanishAngle, GLOBE.r);
+    // Kde objekt prave stoji - jediny kruh, ktery se hybe s posuvnikem
+    // vzdalenosti. / Where the object currently stands: the one circle that
+    // moves with the distance slider.
+    const nowAngle = Math.min(r.distance / R, Math.PI);
+    const nowR = projected(nowAngle, GLOBE.r);
 
-    // Zvetsuje se jen tehdy, kdyz je co zvetsovat. Kdyz vyrez odpadne, koule
-    // se posune doprostred, aby po nem nezbyla prazdna pulka obrazku.
-    // The inset only appears when there is something to magnify; without it
-    // the globe moves to the middle so no empty half is left behind.
-    const showInset = vanishR < GLOBE.r * 0.5;
+    // Vyrez ma smysl, jen kdyz je co zvetsovat - tedy kdyz je maly i ten
+    // nejvetsi z kruhu. Kdyz odpadne, koule se posune doprostred, aby po nem
+    // nezbyla prazdna pulka obrazku.
+    // The inset is only worth having when even the largest circle is small.
+    // Without it the globe moves to the middle so no empty half is left behind.
+    const showInset = Math.max(vanishR, nowR) < GLOBE.r * 0.5;
     const globe = { cx: showInset ? GLOBE.cx : VIEW.w / 2, cy: GLOBE.cy, r: GLOBE.r };
 
     root.appendChild(
@@ -141,6 +147,9 @@
     );
     root.appendChild(svg('circle', { cx: globe.cx, cy: globe.cy, r: vanishR, class: 'hm-vanish-area' }));
     root.appendChild(svg('circle', { cx: globe.cx, cy: globe.cy, r: horizonR, class: 'hm-horizon-area' }));
+    root.appendChild(
+      svg('circle', { cx: globe.cx, cy: globe.cy, r: nowR, class: 'hm-now-ring', fill: 'none' })
+    );
     root.appendChild(svg('circle', { cx: globe.cx, cy: globe.cy, r: 2.6, class: 'hm-observer' }));
 
     root.appendChild(
@@ -153,9 +162,18 @@
 
     // ---- vyrez / the magnified inset ---------------------------------------
     if (showInset) {
-      // Vetsi z obou kruhu se roztahne na 72 % polomeru vyrezu, mensi se
-      // dopocita ve stejnem meritku - pomer mezi nimi tedy zustava pravdivy.
-      const spanMetres = Math.max(R * Math.sin(vanishAngle), 1e-6);
+      // Nejvetsi z kruhu se roztahne na 72 % polomeru vyrezu, ostatni se
+      // dopocitaji ve stejnem meritku - pomery mezi nimi tedy zustavaji
+      // pravdive. Nastavena vzdalenost se do meritka pocita jen po dvojnasobek
+      // bodu zmizeni; dal uz by oba zajimave kruhy sklouzly do stredu, a na
+      // kouli vedle je ten kruh videt tak jako tak.
+      // The largest circle is stretched to 72 % of the inset radius and the
+      // rest follow at the same scale, so their ratios stay true. The distance
+      // you set counts towards the scale only up to twice the vanishing point;
+      // further out both interesting circles would collapse into the centre,
+      // and the globe beside it shows that ring anyway.
+      const spanAngle = Math.min(Math.max(vanishAngle, Math.min(nowAngle, vanishAngle * 2)), HALF_PI);
+      const spanMetres = Math.max(R * Math.sin(spanAngle), 1e-6);
       const scale = (INSET.r * 0.72) / spanMetres; // px na metr
       const magnification = scale / (GLOBE.r / R);
 
@@ -169,6 +187,15 @@
       );
       group.appendChild(
         svg('circle', { cx: INSET.cx, cy: INSET.cy, r: R * Math.sin(alpha) * scale, class: 'hm-horizon-area' })
+      );
+      group.appendChild(
+        svg('circle', {
+          cx: INSET.cx,
+          cy: INSET.cy,
+          r: R * Math.sin(nowAngle) * scale,
+          class: 'hm-now-ring',
+          fill: 'none',
+        })
       );
 
       // meritko / a scale bar, so the inset is readable on its own
@@ -249,6 +276,13 @@
               area: F.area(G.capArea(vanishAngle, R), lang),
               share: F.share(G.capShare(vanishAngle), lang),
             }),
+      },
+      {
+        cls: 'hm-swatch-now',
+        label: t('map.ringNow'),
+        value: F.distance(r.distance, lang),
+        detail:
+          r.distance <= r.horizon ? t('map.nowInside') : t('map.nowOutside'),
       },
     ];
 

@@ -452,6 +452,20 @@
   stroke-width: 2;
 }
 
+/* Kruh aktualni vzdalenosti - jediny, ktery se hybe s posuvnikem. */
+.hm-now-ring {
+  stroke: var(--deep-900);
+  stroke-width: 2.2;
+  stroke-dasharray: 7 5;
+}
+
+.hm-swatch-now {
+  fill: none;
+  stroke: var(--deep-900);
+  stroke-width: 2.6;
+  stroke-dasharray: 5 3.5;
+}
+
 /* krouzek kolem misteczka, ktere vyrez zvetsuje */
 .hm-mark {
   stroke: var(--deep-800);

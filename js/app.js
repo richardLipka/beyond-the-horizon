@@ -285,6 +285,10 @@
     const look = HL.planetLook(state.planet);
 
     if (state.mode === 'see') {
+      // Titulek nese nazev telesa, takze ho nelze vyplnit staticky pres
+      // data-i18n. / The caption carries the body's name, so a static
+      // data-i18n pass cannot fill it in.
+      nodes.diagramTitle.textContent = HL.i18n.t('diagram.title', { planet: app.planetName(state) });
       HL.Diagram.render(nodes.diagram, { result: result, object: object, look: look });
       HL.Telescope.render(nodes.telescope, { result: result, object: object, look: look });
       HL.HorizonMap.render(nodes.horizonMap, {
@@ -323,6 +327,7 @@
     nodes.langSwitch = qs('#langSwitch');
     nodes.dataBadge = qs('#dataBadge');
     nodes.diagram = qs('#mainDiagram');
+    nodes.diagramTitle = qs('#diagramTitle');
     nodes.telescope = qs('#telescopeView');
     nodes.horizonMap = qs('#horizonMap');
     nodes.verdict = qs('#verdict');
