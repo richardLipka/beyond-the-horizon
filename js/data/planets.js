@@ -21,6 +21,17 @@
  *   accent  barva vlnek / textury povrchu
  *   decor   'waves' | 'rocks' | 'bands' | 'grass'
  *   airless bez atmosfery -> tmava obloha s hvezdami
+ *   gm      gravitacni parametr GM [m^3/s^2]
+ *   day     hvezdna (sidericka) doba otocky [s]; zaporna = otaci se pozpatku
+ *
+ * gm a day slouzi jen k vypoctu obeznych drah pozorovatele. Stacionarni draha
+ * neni u kazdeho telesa stejne vysoko - zavisi prave na hmotnosti a na tom,
+ * jak rychle se teleso toci. Venuse se otoci jednou za 243 dni, takze jeji
+ * stacionarni draha je pres pul druheho milionu kilometru vysoko.
+ * gm and day exist only to place the observer's orbits. A stationary orbit is
+ * not at the same height on every body: it depends on the mass and on how fast
+ * the body spins. Venus turns once in 243 days, so its stationary orbit is over
+ * a million and a half kilometres up.
  *
  * (c) 2026 Richard Lipka <lipka@fav.zcu.cz> - MIT license
  */
@@ -32,6 +43,8 @@
       id: 'sun',
       icon: '☀️',
       radius: 695700000,
+      gm: 1.32712440018e20,
+      day: 2192832,
       gaseous: true,
       name: { cs: 'Slunce', en: 'The Sun' },
       swatch: '#ffb03a',
@@ -46,6 +59,8 @@
       id: 'mercury',
       icon: '🟤',
       radius: 2439700,
+      gm: 2.2032e13,
+      day: 5067031.7,
       airless: true,
       name: { cs: 'Merkur', en: 'Mercury' },
       swatch: '#7b7168',
@@ -60,6 +75,8 @@
       id: 'venus',
       icon: '🟡',
       radius: 6051800,
+      gm: 3.24859e14,
+      day: -20997152.6,
       name: { cs: 'Venuše', en: 'Venus' },
       swatch: '#c9a24d',
       decor: 'rocks',
@@ -73,6 +90,8 @@
       id: 'earth',
       icon: '🌍',
       radius: 6371008.8,
+      gm: 3.986004418e14,
+      day: 86164.0905,
       name: { cs: 'Země', en: 'Earth' },
       swatch: '#2e9fbd',
       decor: 'grass',
@@ -87,6 +106,8 @@
       id: 'moon',
       icon: '🌕',
       radius: 1737400,
+      gm: 4.9048695e12,
+      day: 2360591.5,
       airless: true,
       name: { cs: 'Měsíc', en: 'The Moon' },
       swatch: '#9a958d',
@@ -101,6 +122,8 @@
       id: 'mars',
       icon: '🔴',
       radius: 3389500,
+      gm: 4.282837e13,
+      day: 88642.663,
       name: { cs: 'Mars', en: 'Mars' },
       swatch: '#a1502f',
       decor: 'rocks',
@@ -114,6 +137,8 @@
       id: 'jupiter',
       icon: '🟠',
       radius: 69911000,
+      gm: 1.26686534e17,
+      day: 35729.7,
       gaseous: true,
       name: { cs: 'Jupiter', en: 'Jupiter' },
       swatch: '#c98f5e',
@@ -128,6 +153,8 @@
       id: 'saturn',
       icon: '🪐',
       radius: 58232000,
+      gm: 3.7931187e16,
+      day: 38018,
       gaseous: true,
       name: { cs: 'Saturn', en: 'Saturn' },
       swatch: '#c9b273',
@@ -142,6 +169,8 @@
       id: 'uranus',
       icon: '🔵',
       radius: 25362000,
+      gm: 5.793939e15,
+      day: -62064,
       gaseous: true,
       name: { cs: 'Uran', en: 'Uranus' },
       swatch: '#6fbecb',
@@ -156,6 +185,8 @@
       id: 'neptune',
       icon: '🔷',
       radius: 24622000,
+      gm: 6.836529e15,
+      day: 57996,
       gaseous: true,
       name: { cs: 'Neptun', en: 'Neptune' },
       swatch: '#3557a8',
@@ -170,6 +201,8 @@
       id: 'pluto',
       icon: '⚪',
       radius: 1188300,
+      gm: 8.71e11,
+      day: -551856.7,
       airless: true,
       name: { cs: 'Pluto', en: 'Pluto' },
       swatch: '#a89681',
@@ -204,6 +237,84 @@
     if (id === 'custom') return customRadius > 0 ? customRadius : HL.geometry.R_MEAN;
     const planet = HL.findPlanet(id);
     return planet ? planet.radius : HL.geometry.R_MEAN;
+  };
+
+  /**
+   * Stredni hustota Zeme [kg/m^3] a delka hvezdneho dne [s]. Pouzije se u
+   * "vlastniho telesa", o kterem uzivatel zadava jen prumer - pri pozemskem
+   * prumeru tak vyjdou presne pozemska cisla.
+   * Earth's mean density and sidereal day, used for the custom body, of which
+   * the user gives only the diameter; at the Earth's diameter the orbits then
+   * come out exactly as the Earth's.
+   */
+  const EARTH_DENSITY = 5513.6;
+  const EARTH_DAY = 86164.0905;
+
+  /**
+   * Ctyri stanoviste pozorovatele na obezne draze.
+   *
+   * Nizka draha je dana zlomkem polomeru: zdola ji omezuje atmosfera, ne
+   * obezna doba. Sestnactina polomeru vychazi u Zeme na 398 km (tam lita ISS)
+   * a u Jupiteru na 4 369 km (tam ma perijovium sonda Juno).
+   * Ostatni tri jsou dane obeznou DOBOU, tedy tim, jak rychle se teleso toci:
+   * pul dne (u Zeme presne draha GPS), jeden den (stacionarni) a ctyri dny.
+   *
+   * The low orbit is a fraction of the radius, because what limits it from
+   * below is the atmosphere, not the period; a sixteenth of the radius is
+   * 398 km on the Earth (where the ISS flies) and 4 369 km at Jupiter (where
+   * Juno's perijove is). The other three are defined by the PERIOD - half a
+   * day (exactly the GPS orbit on the Earth), one day (stationary) and four.
+   */
+  const ORBITS = [
+    { key: 'orbit.low', icon: '🛰️', fraction: 1 / 16 },
+    { key: 'orbit.medium', icon: '📡', laps: 0.5 },
+    { key: 'orbit.geo', icon: '📺', laps: 1 },
+    { key: 'orbit.high', icon: '🌌', laps: 4 },
+  ];
+
+  /**
+   * Vysky obeznych drah nad povrchem daneho telesa, serazene odspodu.
+   * Orbit altitudes above the surface of the given body, lowest first.
+   *
+   * @param {string} id     identifikator telesa ('custom' = vlastni)
+   * @param {number} radius polomer telesa [m]
+   * @returns {{key: string, icon: string, value: number, period: number}[]}
+   */
+  HL.orbitPresets = function (id, radius) {
+    const R = radius > 0 ? radius : HL.geometry.R_MEAN;
+    const planet = HL.findPlanet(id);
+    const gm = planet && planet.gm > 0 ? planet.gm : HL.geometry.gmFromDensity(R, EARTH_DENSITY);
+    // Venuse, Uran i Pluto se otaci pozpatku; na vysku drahy ma vliv jen
+    // delka otocky. / Retrograde spin only changes the direction, not the
+    // height of the orbit.
+    const day = planet && planet.day ? Math.abs(planet.day) : EARTH_DAY;
+
+    const out = [];
+    for (const orbit of ORBITS) {
+      const r = orbit.fraction
+        ? R * (1 + orbit.fraction)
+        : HL.geometry.orbitRadius(gm, day * orbit.laps);
+      // Male a rychle rotujici teleso muze mit stacionarni drahu pod povrchem;
+      // takovou nabizet nelze. / A small, fast-spinning body can have its
+      // stationary orbit below the surface, and that one cannot be offered.
+      if (!(r > R)) continue;
+      const altitude = r - R;
+      out.push({
+        key: orbit.key,
+        icon: orbit.icon,
+        // Nad sto kilometru se zaokrouhluje na cele kilometry. Presna vyska
+        // vychazi na 35 793 160,82 m a takove cislo se do policka nevejde ani
+        // necte, pritom uz volba stredniho polomeru misto rovnikoveho s nim
+        // pohne o sedm kilometru. / Above a hundred kilometres this rounds to
+        // whole kilometres: the exact figure is 35,793,160.82 m, which neither
+        // fits the input nor reads, while the choice of mean over equatorial
+        // radius already moves it by seven kilometres.
+        value: altitude >= 100000 ? Math.round(altitude / 1000) * 1000 : Math.round(altitude),
+        // Doba obehu patri k presne draze, ne k zaokrouhlene vysce.
+        period: HL.geometry.orbitPeriod(gm, r),
+      });
+    }
+    return out.sort((a, b) => a.value - b.value);
   };
 
   /**

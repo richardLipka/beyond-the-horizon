@@ -200,5 +200,72 @@ for (const h2 of [1, 100, 8849]) {
 check('smernice u nuly je nekonecna', isFinite(G.vanishSlope(0, R)) ? 0 : 1, 1, 0);
 check('smernice ve velke vysce klesa k nule', G.vanishSlope(1e9, R), 0, 0.01);
 
+// --- obezne drahy pozorovatele / the observer's orbits --------------------
+// Vysky drah se nezadavaji rucne, pocitaji se z hmotnosti a doby otocky
+// telesa - musi tedy vyjit skutecne drahy skutecnych druzic.
+const planetsSource = await readFile(new URL('../js/data/planets.js', import.meta.url), 'utf8');
+new Function(planetsSource)();
+const HL = globalThis.window.HorizonLab;
+
+// Treti Kepleruv zakon tam a zpatky.
+const GM_EARTH = 3.986004418e14;
+check(
+  'obezna doba a polomer jsou navzajem inverzni',
+  G.orbitPeriod(GM_EARTH, G.orbitRadius(GM_EARTH, 86164.0905)),
+  86164.0905,
+  1e-6
+);
+// Nizka draha Zeme = 400 km, jeden oblet za 92 minut (ISS).
+check('nizka draha obehne Zemi za 92 minut', G.orbitPeriod(GM_EARTH, 6371008.8 + 398188) / 60, 92.4, 0.3);
+
+const orbitOf = (id, key) => {
+  const radius = HL.planetRadius(id);
+  return HL.orbitPresets(id, radius).find((o) => o.key === key);
+};
+
+// Geostacionarni draha: 35 786 km nad rovnikem (tady nad strednim polomerem).
+check('geostacionarni draha Zeme', orbitOf('earth', 'orbit.geo').value, 35793e3, 20e3);
+// Draha GPS je presne puldenni, tedy "stredni draha".
+check('stredni draha Zeme je draha GPS', orbitOf('earth', 'orbit.medium').value, 20191e3, 60e3);
+// Areostacionarni draha Marsu je 17 032 km - Mars se toci o neco pomaleji.
+check('areostacionarni draha Marsu', orbitOf('mars', 'orbit.geo').value, 17038e3, 20e3);
+// Jupiter se toci za necelych 10 hodin, presto je jeho draha vys nez zemska.
+check('stacionarni draha Jupiteru', orbitOf('jupiter', 'orbit.geo').value, 90098e3, 200e3);
+// Venuse se otoci jednou za 243 dni - draha je pres milion a pul kilometru.
+check('stacionarni draha Venuse', orbitOf('venus', 'orbit.geo').value / 1e6, 1530.5, 5);
+
+// Kazda stacionarni draha musi mit obeznou dobu presne rovnou dni telesa.
+let wrongPeriod = 0;
+let wrongOrder = 0;
+for (const planet of HL.PLANETS) {
+  const orbits = HL.orbitPresets(planet.id, planet.radius);
+  if (orbits.length !== 4) wrongOrder++;
+  const geo = orbits.find((o) => o.key === 'orbit.geo');
+  if (!geo || Math.abs(geo.period - Math.abs(planet.day)) > 1e-3) wrongPeriod++;
+  for (let i = 1; i < orbits.length; i++) {
+    if (!(orbits[i].value > orbits[i - 1].value)) wrongOrder++;
+  }
+  // Ani z nejvyssi drahy neni videt vic nez polokoule.
+  const top = orbits[orbits.length - 1].value;
+  if (G.horizonDistance(top, planet.radius) >= (Math.PI / 2) * planet.radius) wrongOrder++;
+}
+check('stacionarni draha obehne za jeden den telesa', wrongPeriod, 0, 0);
+check('drahy jdou vzdy vzestupne a jsou ctyri', wrongOrder, 0, 0);
+
+// Vlastni teleso: bez hmotnosti se odhaduje ze stredni hustoty Zeme, takze
+// pri pozemskem polomeru musi vyjit pozemska cisla.
+check(
+  'vlastni teleso velikosti Zeme ma zemske drahy',
+  orbitOf('custom', 'orbit.geo') ? 0 : 1,
+  0,
+  0
+);
+check(
+  'vlastni teleso: stacionarni draha jako u Zeme',
+  HL.orbitPresets('custom', 6371008.8).find((o) => o.key === 'orbit.geo').value,
+  35793e3,
+  20e3
+);
+
 console.log(failures === 0 ? '\nVsechny kontroly prosly / all checks passed' : `\n${failures} chyb / failures`);
 process.exit(failures === 0 ? 0 : 1);

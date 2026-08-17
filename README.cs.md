@@ -43,6 +43,33 @@ i postavičku se rezervuje **v pixelech**, protože jejich šířky ze světový
 souřadnic neplynou, a povrch se kreslí širší než rámeček, aby pod rezervovanými
 okraji nezůstal prázdný klín.
 
+#### Až na oběžnou dráhu
+
+Kromě sedmi pozemských stanovišť — leh na pláži, dítě, dospělý, balkon,
+rozhledna, útes, letadlo — jsou k dispozici **čtyři oběžné dráhy**, a nejsou
+zadané ručně. Nízká leží šestnáctinu poloměru nad povrchem, protože zdola ji
+omezuje atmosféra, ne oběžná doba; zbylé tři jsou dané tím, jak dlouho trvá
+jeden oblet, takže vycházejí z hmotnosti a rychlosti otáčení tělesa:
+
+| Ze Země | Výška | Jeden oblet | Vidíš |
+| --- | --- | --- | --- |
+| Nízká dráha | 398 km | 92 minut | 2,9 % povrchu |
+| Střední dráha | 20 191 km | půl dne | 38,0 % |
+| Stacionární dráha | 35 793 km | jeden den | 42,4 % |
+| Vysoká dráha | 99 876 km | čtyři dny | 47,0 % |
+
+Jsou to skutečné dráhy: šestnáctina zemského poloměru je přesně tam, kde lítá
+ISS, půldenní dráha je dráha družic GPS a jednodenní je geostacionární. Stejná
+pravidla na jiném tělese dají jeho vlastní odpovědi — areostacionární dráha je
+17 038 km nad Marsem, 90 098 km nad Jupiterem a 1 530 517 km nad Venuší, která
+se otočí jednou za 243 dní. U Jupiteru je šestnáctina poloměru 4 369 km, a
+právě tam má perijovium sonda Juno.
+
+Vylez po žebříku nahoru a poslední sloupec vypráví přesně to, o čem je celá
+aplikace: podíl viditelného povrchu nejdřív rychle roste, pak se plazí a
+**nikdy nedosáhne poloviny**. Z nejvyšší nabízené dráhy je obzor 9 625 km
+daleko, pořád méně než mez 10 008 km, tedy čtvrtina obvodu.
+
 ### 🌊 Kdy zmizí?
 
 Vzdálenost, ve které objekt úplně zmizí, ukázaná i jako součet, ze kterého
@@ -188,6 +215,7 @@ vzdálenosti se měří **po povrchu**, výšky **kolmo k němu**.
 | nejdál, kam obzor dosáhne | `πR / 2` – čtvrtina obvodu, dosažená až v nekonečné výšce |
 | absolutní mez dohledu | `tvůj obzor + πR / 2`; za ní nestačí žádná výška |
 | protilehlý bod | `πR` – polovina obvodu, odnikud není vidět |
+| poloměr dráhy s oběžnou dobou `T` | `∛(GM · T² / 4π²)` – třetí Keplerův zákon |
 
 Protože `arccos(R / (R + h)) → π/2`, když výška roste, **vidíš vždycky přesně
 jednu polokouli a ani metr navíc**. Dvě nekonečně vysoké věže by se právě tak

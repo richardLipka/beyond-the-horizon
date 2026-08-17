@@ -44,6 +44,34 @@ observer figure is reserved **in pixels**, because their widths do not follow
 from the world coordinates, and the surface is drawn wider than the frame so no
 empty wedge appears under the reserved margins.
 
+#### Climbing all the way to orbit
+
+Besides the seven everyday viewpoints — lying on the beach, a child, a grown-up,
+a balcony, a lookout tower, a cliff, an aeroplane — there are **four orbits**,
+and they are *not* typed in. The low one sits a sixteenth of the radius above
+the surface, because what limits it from below is the atmosphere rather than the
+period; the other three are defined by how long one lap takes, so they follow
+the body's mass and spin:
+
+| From the Earth | Altitude | One lap | You can see |
+| --- | --- | --- | --- |
+| Low orbit | 398 km | 92 min | 2.9 % of the surface |
+| Medium orbit | 20 191 km | half a day | 38.0 % |
+| Stationary orbit | 35 793 km | one day | 42.4 % |
+| High orbit | 99 876 km | four days | 47.0 % |
+
+Those are the real orbits: a sixteenth of the Earth's radius is where the ISS
+flies, the half-day orbit is where GPS satellites are, and the one-day orbit is
+geostationary. The same rules on another body give that body's own answers —
+areostationary at 17 038 km around Mars, 90 098 km around Jupiter, and 1 530 517
+km around Venus, which turns once in 243 days. At Jupiter a sixteenth of the
+radius is 4 369 km, which is where Juno's perijove is.
+
+Climb the ladder and the last column tells the story the whole app is about:
+the share you can see rises steeply and then crawls, **never reaching a half**.
+From the highest orbit offered the horizon is 9 625 km, still short of the
+quarter-circumference limit of 10 008 km.
+
 ### 🌊 When does it vanish?
 
 The distance at which an object disappears completely, shown as the sum that
@@ -191,6 +219,7 @@ it**.
 | furthest the horizon can reach | `πR / 2` — a quarter of the circumference, approached only as `h → ∞` |
 | absolute limit of sight | `your horizon + πR / 2`; past it no height is enough |
 | the antipode | `πR` — half the circumference, never visible from anywhere |
+| radius of an orbit of period `T` | `∛(GM · T² / 4π²)` — Kepler's third law |
 
 Because `arccos(R / (R + h)) → π/2` as the height grows, **you always see
 exactly one hemisphere and never a metre more**. Two infinitely tall towers

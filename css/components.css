@@ -344,6 +344,40 @@ textarea.text-input {
   color: #fff;
 }
 
+/* --- obezne drahy / the observer's orbits -------------------------------- */
+
+.chips-group {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+}
+
+.chips-title {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--deep-700);
+  opacity: 0.72;
+}
+
+.chips-orbit {
+  margin-top: 8px;
+}
+
+/* Vyska drahy patri k nazvu - u kazdeho telesa je jina, a prave to je pointa.
+   The altitude belongs with the name: it differs per body, which is the point. */
+.chip-value {
+  opacity: 0.68;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.chip.is-active .chip-value {
+  opacity: 0.85;
+}
+
 /* --- vyber objektu / object picker --------------------------------------- */
 
 .search-input {

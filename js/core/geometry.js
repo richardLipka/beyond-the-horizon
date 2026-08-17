@@ -30,6 +30,9 @@
   /** Zdanlivy prumer Mesice na obloze [rad] - hodi se pro porovnani. */
   const MOON_ANGULAR_DIAMETER = 0.0090757; // ~0.52 stupne
 
+  /** Gravitacni konstanta [m^3 kg^-1 s^-2]. / Gravitational constant. */
+  const GRAVITY = 6.6743e-11;
+
   /**
    * Uhlova rezerva u meze dohledu.
    *
@@ -199,6 +202,34 @@
   }
 
   /**
+   * Polomer kruhove drahy, po ktere teleso obehne za dobu `period`.
+   * Treti Kepleruv zakon: GM * T^2 = 4 * pi^2 * r^3.
+   *
+   * Radius of the circular orbit whose period is `period`. This is what makes
+   * a "stationary" orbit body-specific: it sits where one lap takes exactly as
+   * long as the body's own day, and both the mass and the day differ.
+   *
+   * @param {number} gm     gravitacni parametr GM [m^3/s^2]
+   * @param {number} period obezna doba [s]
+   */
+  function orbitRadius(gm, period) {
+    if (!(gm > 0) || !(period > 0)) return 0;
+    return Math.cbrt((gm * period * period) / (4 * Math.PI * Math.PI));
+  }
+
+  /** Obezna doba kruhove drahy o polomeru `radius` [s]. */
+  function orbitPeriod(gm, radius) {
+    if (!(gm > 0) || !(radius > 0)) return Infinity;
+    return 2 * Math.PI * Math.sqrt((radius * radius * radius) / gm);
+  }
+
+  /** Gravitacni parametr koule o polomeru R a stredni hustote rho. */
+  function gmFromDensity(radius, density) {
+    if (!(radius > 0) || !(density > 0)) return 0;
+    return GRAVITY * (4 / 3) * Math.PI * radius * radius * radius * density;
+  }
+
+  /**
    * Vzdalenost dvou mist na kouli merena po povrchu (ortodroma).
    * Great-circle distance between two points, along the surface.
    *
@@ -321,6 +352,10 @@
     R_MEAN,
     K_REFRACTION,
     MOON_ANGULAR_DIAMETER,
+    GRAVITY,
+    orbitRadius,
+    orbitPeriod,
+    gmFromDensity,
     effectiveRadius,
     horizonDistance,
     maxHorizonDistance,

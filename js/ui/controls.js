@@ -25,7 +25,24 @@
   ];
 
   const EYE_MIN = 0.1;
-  const EYE_MAX = 10000;
+  /** Konec "pozemskych" vysek - dal uz zacinaji obezne drahy. */
+  const GROUND_MAX = 10000;
+  /**
+   * Podil drahy posuvniku, ktery pripada na pozemske vysky.
+   *
+   * Cely rozsah az k nejvyssi obezne draze je u Zeme devet radu (0,1 m az
+   * 100 000 km) a u Slunce dvanact. Jednim logaritmem pres celou dratku by na
+   * lidske vysky - to hlavni, s cim se tu hraje - zbyla treti a mensi cast.
+   * Posuvnik je proto zlomeny na dve casti: prvnich 62 % je presne to, co mel
+   * driv (0,1 m az 10 km), zbytek dojede na obeznou drahu.
+   *
+   * The full range up to the highest orbit is nine decades on the Earth and
+   * twelve on the Sun. One logarithm across the whole track would leave human
+   * heights - the thing this app is actually about - a third of it or less. The
+   * slider is therefore in two pieces: the first 62 % is exactly what it used
+   * to be, and the rest reaches orbit.
+   */
+  const GROUND_SHARE = 0.62;
   const SLIDER_STEPS = 1000;
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
@@ -51,24 +68,42 @@
     return HL.dom.svg('svg', { viewBox: '0 0 40 100', class: 'thumb-placeholder', xmlns: HL.dom.SVG_NS }, [shape]);
   }
 
-  /** Logaritmicky posuvnik - male vysky potrebuji jemnejsi krok. */
-  function eyeToSlider(metres) {
-    const v = clamp(metres, EYE_MIN, EYE_MAX);
-    return Math.round((Math.log10(v / EYE_MIN) / Math.log10(EYE_MAX / EYE_MIN)) * SLIDER_STEPS);
+  /** Horni konec druhe casti posuvniku; nikdy nesmi splynout s prvni. */
+  const orbitTop = (max) => Math.max(max, GROUND_MAX * 1.0001);
+
+  /** Logaritmicky posuvnik ve dvou usecich - male vysky potrebuji jemnejsi krok. */
+  function eyeToSlider(metres, max) {
+    const v = clamp(metres, EYE_MIN, orbitTop(max));
+    if (v <= GROUND_MAX) {
+      const f = Math.log10(v / EYE_MIN) / Math.log10(GROUND_MAX / EYE_MIN);
+      return Math.round(f * GROUND_SHARE * SLIDER_STEPS);
+    }
+    const f = Math.log10(v / GROUND_MAX) / Math.log10(orbitTop(max) / GROUND_MAX);
+    return Math.round((GROUND_SHARE + f * (1 - GROUND_SHARE)) * SLIDER_STEPS);
   }
 
-  function sliderToEye(slider) {
-    const raw = EYE_MIN * Math.pow(EYE_MAX / EYE_MIN, slider / SLIDER_STEPS);
+  function sliderToEye(slider, max) {
+    const f = slider / SLIDER_STEPS;
+    const raw =
+      f <= GROUND_SHARE
+        ? EYE_MIN * Math.pow(GROUND_MAX / EYE_MIN, f / GROUND_SHARE)
+        : GROUND_MAX * Math.pow(orbitTop(max) / GROUND_MAX, (f - GROUND_SHARE) / (1 - GROUND_SHARE));
     if (raw < 1) return Math.round(raw * 100) / 100;
     if (raw < 10) return Math.round(raw * 10) / 10;
     if (raw < 100) return Math.round(raw);
     if (raw < 1000) return Math.round(raw / 5) * 5;
-    return Math.round(raw / 50) * 50;
+    if (raw < 100000) return Math.round(raw / 50) * 50;
+    // Na obezne draze uz je metr smesne jemny - zaokrouhli se na kilometry.
+    return Math.round(raw / 1000) * 1000;
   }
 
   function mount(container, app) {
     const refs = {};
     let listSignature = null;
+    let orbitSignature = null;
+
+    /** Horni konec posuvniku vysky oci pro aktualni stav. */
+    const eyeCeiling = (state) => Math.max(app.maxEyeHeight(state), state.eyeHeight);
 
     function field(labelKey, inputRow, hintKey) {
       return el('div', { class: 'field' }, [
@@ -214,11 +249,11 @@
         type: 'number',
         class: 'num-input',
         min: EYE_MIN,
-        max: EYE_MAX,
         step: 0.1,
         oninput: (e) => {
           const value = parseFloat(e.target.value);
-          if (isFinite(value)) app.setEyeHeight(clamp(value, EYE_MIN, EYE_MAX));
+          // Horni mez zna app - lisi se teleso od telesa.
+          if (isFinite(value)) app.setEyeHeight(Math.max(EYE_MIN, value));
         },
       });
       refs.eyeRange = el('input', {
@@ -227,7 +262,7 @@
         min: 0,
         max: SLIDER_STEPS,
         step: 1,
-        oninput: (e) => app.setEyeHeight(sliderToEye(Number(e.target.value))),
+        oninput: (e) => app.setEyeHeight(sliderToEye(Number(e.target.value), eyeCeiling(app.state()))),
       });
       refs.eyeChips = el('div', { class: 'chips' });
       for (const preset of EYE_PRESETS) {
@@ -241,6 +276,12 @@
           })
         );
       }
+
+      // Obezne drahy se stavi az v sync() - jejich vysky patri telesu, a to se
+      // meni casteji nez jazyk nebo data.
+      // The orbits are built in sync(): their altitudes belong to the body,
+      // which changes more often than the language or the data do.
+      refs.orbitChips = el('div', { class: 'chips chips-orbit' });
 
       container.appendChild(
         el('section', { class: 'control-group' }, [
@@ -259,6 +300,11 @@
           refs.eyeRange,
           el('p', { class: 'hint', text: HL.i18n.t('ctrl.eyeHelp') }),
           refs.eyeChips,
+          el('div', { class: 'chips-group' }, [
+            el('span', { class: 'chips-title', text: HL.i18n.t('ctrl.orbit') }),
+            refs.orbitChips,
+            el('p', { class: 'hint', text: HL.i18n.t('ctrl.orbitHelp') }),
+          ]),
         ])
       );
 
@@ -385,6 +431,44 @@
       refs.noResults.style.display = visible ? 'none' : '';
     }
 
+    /**
+     * Dlazdice obeznych drah. Prestavi se, jen kdyz se zmeni teleso (a s nim
+     * vysky drah) nebo jazyk - jinak by kazde tahnuti posuvnikem zahodilo
+     * tlacitko prave pod kurzorem.
+     * Rebuilt only when the body (and with it the altitudes) or the language
+     * changes; otherwise every drag of a slider would throw away the button
+     * under the cursor.
+     */
+    function syncOrbits(state, lang) {
+      const radius = app.planetRadius(state);
+      const signature = `${state.planet}|${radius}|${lang}`;
+      if (signature !== orbitSignature) {
+        orbitSignature = signature;
+        HL.dom.clear(refs.orbitChips);
+        for (const orbit of HL.orbitPresets(state.planet, radius)) {
+          refs.orbitChips.appendChild(
+            el(
+              'button',
+              {
+                type: 'button',
+                class: 'chip chip-orbit',
+                dataset: { value: String(orbit.value) },
+                onclick: () => app.setEyeHeight(orbit.value),
+              },
+              [
+                el('span', { 'aria-hidden': 'true', text: orbit.icon }),
+                document.createTextNode(' ' + HL.i18n.t(orbit.key) + ' '),
+                el('span', { class: 'chip-value', text: HL.format.height(orbit.value, lang) }),
+              ]
+            )
+          );
+        }
+      }
+      for (const chip of HL.dom.qsa('.chip', refs.orbitChips)) {
+        chip.classList.toggle('is-active', Math.abs(Number(chip.dataset.value) - state.eyeHeight) < 1e-9);
+      }
+    }
+
     function sync(state) {
       const active = document.activeElement;
       const lang = HL.i18n.lang();
@@ -404,11 +488,18 @@
       refs.planetGaseous.style.display = planet && planet.gaseous ? '' : 'none';
       refs.distanceGroup.style.display = state.mode === 'geometry' ? 'none' : '';
 
+      // Strop vysky oci je u kazdeho telesa jinde; kdyz uzivatel prijde z jineho
+      // telesa vys, nez kam tohle dosahne, posuvnik se natahne za nim.
+      // The ceiling differs per body; if the user arrives from another body
+      // higher than this one reaches, the slider stretches to follow.
+      const eyeMax = eyeCeiling(state);
+      refs.eyeNumber.max = String(eyeMax);
       if (active !== refs.eyeNumber) refs.eyeNumber.value = String(state.eyeHeight);
-      refs.eyeRange.value = String(eyeToSlider(state.eyeHeight));
+      refs.eyeRange.value = String(eyeToSlider(state.eyeHeight, eyeMax));
       for (const chip of HL.dom.qsa('.chip', refs.eyeChips)) {
         chip.classList.toggle('is-active', Math.abs(Number(chip.dataset.value) - state.eyeHeight) < 1e-9);
       }
+      syncOrbits(state, lang);
 
       for (const card of HL.dom.qsa('.object-card', refs.listHost)) {
         card.classList.toggle('is-active', card.dataset.objectId === state.objectId);

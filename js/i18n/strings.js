@@ -117,8 +117,6 @@
         'Tentýž typ os, ale celý rozsah až k mezi dohledu {max}, aby byla vidět svislá asymptota. Všechno školní – Sněžka, Everest, plavba přes moře – se vejde do levého dolního rohu u nuly. Přesně proto kreslí režim „Meze viditelnosti“ tutéž křivku v logaritmických osách: jinak by na ní nebylo nic vidět.',
       'geo.markAsymptote': 'mez dohledu',
 
-      'ctrl.observer': 'Kde stojíš ty',
-
       'ctrl.planet': 'Na jakém tělese jsi',
       'ctrl.planetHelp':
         'Menší těleso je zakřivené víc, takže obzor je mnohem blíž. Zkus Měsíc a pak Jupiter!',
@@ -129,7 +127,7 @@
         'U Slunce a plynných obrů se „povrchem“ myslí vrchol mraků – stát se na něm nedá.',
 
       'ctrl.observer': 'Kde stojíš ty',
-      'ctrl.eyeHeight': 'Výška očí nad hladinou',
+      'ctrl.eyeHeight': 'Výška očí nad povrchem',
       'ctrl.eyeHelp': 'Čím výš máš oči, tím dál dohlédneš. Zkus si to!',
       'preset.lying': 'Ležím na pláži',
       'preset.child': 'Dítě',
@@ -138,6 +136,14 @@
       'preset.tower': 'Rozhledna',
       'preset.cliff': 'Útes',
       'preset.plane': 'Letadlo',
+
+      'ctrl.orbit': 'Na oběžné dráze',
+      'ctrl.orbitHelp':
+        'Nízká dráha je šestnáctina poloměru nad povrchem – u Země přesně tam, kde lítá ISS. Střední oblétne těleso za půl dne (u Země je to dráha družic GPS), stacionární přesně za jeden den, a proto na ní družice visí pořád nad stejným místem – u Země se jí říká geostacionární. Vysoká dráha obletí těleso za čtyři dny. Všechny tři poslední závisí na tom, jak rychle se těleso otáčí, takže u každého vycházejí jinde: Venuše se otočí jednou za 243 dní, a tak má stacionární dráhu půldruhého milionu kilometrů vysoko.',
+      'orbit.low': 'Nízká dráha',
+      'orbit.medium': 'Střední dráha',
+      'orbit.geo': 'Stacionární dráha',
+      'orbit.high': 'Vysoká dráha',
 
       'ctrl.object': 'Na co se díváš',
       'ctrl.search': 'Hledat objekt…',
@@ -438,8 +444,6 @@
         'The same kind of axes, but the full range out to the sight limit {max}, so the vertical asymptote shows. Everything from school — a mountain, Everest, a voyage across the sea — fits into the bottom-left corner near zero. That is exactly why the “Limits of sight” mode plots this same curve on logarithmic axes: otherwise there would be nothing to see.',
       'geo.markAsymptote': 'sight limit',
 
-      'ctrl.observer': 'Where you stand',
-
       'ctrl.planet': 'Which body you are on',
       'ctrl.planetHelp':
         'A smaller body curves away faster, so its horizon is much closer. Try the Moon, then Jupiter!',
@@ -459,6 +463,14 @@
       'preset.tower': 'Lookout tower',
       'preset.cliff': 'Cliff top',
       'preset.plane': 'Airplane',
+
+      'ctrl.orbit': 'In orbit',
+      'ctrl.orbitHelp':
+        'The low orbit sits a sixteenth of the radius above the surface — on the Earth that is exactly where the ISS flies. The medium one laps the body in half a day (on the Earth that is the GPS orbit) and the stationary one in exactly one day, which is why a satellite there hangs over the same spot; on the Earth it is called geostationary. The high orbit takes four days. The last three depend on how fast the body spins, so they land at a different height on each one: Venus turns once in 243 days, which puts its stationary orbit a million and a half kilometres up.',
+      'orbit.low': 'Low orbit',
+      'orbit.medium': 'Medium orbit',
+      'orbit.geo': 'Stationary orbit',
+      'orbit.high': 'High orbit',
 
       'ctrl.object': 'What you are looking at',
       'ctrl.search': 'Search objects…',

@@ -41,8 +41,8 @@ check, and `check-strings`. Run all three before committing.
    key sets, matching `{placeholders}`, and that every key is actually
    referenced somewhere — dead translations accumulated unnoticed until 13 of
    them were found at once. Keys composed at run time (`status.`, `data.source.`,
-   `preset.`, `editor.baseline.`) are listed as prefixes in that check; add to
-   that list rather than deleting a key you cannot find.
+   `preset.`, `orbit.`, `editor.baseline.`) are listed as prefixes in that check;
+   add to that list rather than deleting a key you cannot find.
 
    Watch for wording that only holds on the Earth. Eleven bodies are selectable,
    so "how much the Earth ate" or "distance along the Earth's surface" is wrong
@@ -117,6 +117,10 @@ invariant or typing will lose focus.
 state changes just sync input values, and inputs that currently have focus are
 skipped so typing is not fought.
 
+**Heights switch to kilometres at the Kármán line** (100 km) in
+`format.height`. Everything earthbound stays in metres exactly as before; only
+an observer in orbit crosses it, and "35 793 000 m" cannot be read.
+
 **Nothing is hardcoded to the Earth.** Every calculation takes the radius of the
 selected body. `effectiveRadius(refraction, baseRadius)` and `solve({planetRadius,
 …})` must always be given one; they only fall back to the Earth when it is
@@ -138,6 +142,45 @@ body/eye-height combinations. Comparing arc lengths instead of angles only fixes
 Earth) and numerically decisive (the required height there would be 6 × 10¹² km).
 Do not remove it, and keep treating "at or past `maxSight`" as impossible in the
 UI as well.
+
+**The diagram's frame must contain the actors, not just the surface between
+them.** At the end of the chord the local vertical tilts by half the central
+angle, so an eye at height `h` sits `h · sin(D/2R)` to the *side* of its own
+feet. Below about `0.08 R` that is nothing next to the width of the arc, which
+is why bounding the frame by the surface alone worked for years — but from
+orbit it dominates. From the Moon's medium orbit the eye lands 30 570 km left
+of an arc only 2 108 km wide, fourteen and a half arc-widths outside the old
+frame, and the observer was clipped away completely. `xMin`/`xMax` therefore
+take the minimum and maximum over the surface *and* `eyePoint`, `basePoint`,
+`topPoint`. Two labels follow from the same tilt: the "YOU" caption is placed
+under the figure's real position (it rides the mast, so the caption must too),
+and the eye-height dimension falls back to a plain label whenever the mast
+leans more than 26 px sideways, because a vertical line beside a leaning mast
+measures something other than what is drawn.
+
+**The observer's orbits are computed, never typed in** (`HL.orbitPresets`).
+Only the low one is a fraction of the radius — a sixteenth, because what limits
+it from below is the atmosphere, not the period; that lands on the ISS for the
+Earth and on Juno's perijove for Jupiter. The other three are defined by the
+*period* (half a day, one day, four days) via `orbitRadius(gm, T)`, so they
+follow each body's `gm` and `day` and come out at a different height on every
+one — 35 793 km at the Earth, 17 038 km at Mars, 1 530 517 km at Venus, which
+turns once in 243 days. Do not replace them with fixed altitudes: "geostationary
+at 35 786 km" is wrong on ten of the eleven bodies. A custom body has neither
+mass nor day, so its `gm` is estimated from the Earth's mean density and its
+day taken as the Earth's; that is deliberate, because it makes an Earth-sized
+custom body reproduce the Earth's orbits exactly. Retrograde spin (Venus,
+Uranus, Pluto) is stored as a negative `day` and only its magnitude matters
+here. `app.maxEyeHeight` is the topmost orbit, so the eye-height ceiling is
+per-body — from 46 thousand km at Pluto to 63 million at the Sun.
+
+**The eye-height slider is deliberately in two pieces.** The first 62 % of the
+track is exactly the old mapping (0.1 m to 10 km) and the rest reaches orbit.
+One logarithm across the whole range would be nine decades at the Earth and
+twelve at the Sun, leaving human heights — the thing the app is actually about
+— a third of the track or less. `eyeToSlider`/`sliderToEye` must always be given
+the same ceiling, or the knob jumps on the first drag; `eyeCeiling(state)`
+exists for exactly that.
 
 **The diagram may only span a quarter of the circumference either side of the
 chord midpoint.** Past that the arc curves back on itself and the surface path

@@ -78,6 +78,20 @@
     return HL.planetRadius(state.planet, state.customDiameter / 2);
   }
 
+  /**
+   * Nejvyse, kam se pozorovatel smi dostat: nejvyssi nabizena obezna draha
+   * daneho telesa. Pevna mez by tu byla spatne - Slunce ma nejvyssi drahu
+   * pres 63 milionu kilometru, Pluto 46 tisic.
+   * The highest the observer may go: the topmost orbit offered for this body.
+   * A fixed ceiling would be wrong - the Sun's highest orbit is over 63 million
+   * kilometres up, Pluto's is 46 thousand.
+   */
+  function maxEyeHeight(state) {
+    const orbits = HL.orbitPresets(state.planet, planetRadius(state));
+    const top = orbits.length ? orbits[orbits.length - 1].value : 0;
+    return Math.max(10000, top);
+  }
+
   function currentResult(state) {
     const object = currentObject(state);
     return HL.geometry.solve({
@@ -151,6 +165,7 @@
 
   const app = {
     sliderMaxDistance: sliderMaxDistance,
+    maxEyeHeight: maxEyeHeight,
 
     /** Aktualni stav - pouziva editor, aby vedel o vlastnich zmenach. */
     state() {
@@ -158,7 +173,8 @@
     },
 
     setEyeHeight(metres) {
-      store.set({ eyeHeight: Math.min(10000, Math.max(0.1, metres)) });
+      const state = store.get();
+      store.set({ eyeHeight: Math.min(maxEyeHeight(state), Math.max(0.1, metres)) });
     },
 
     setDistance(metres) {
@@ -216,7 +232,7 @@
         planet: 'earth',
         objectId: '__custom',
         customHeight: Math.max(0.1, sightline.objectHeight),
-        eyeHeight: Math.min(10000, Math.max(0.1, sightline.eyeHeight)),
+        eyeHeight: Math.max(0.1, sightline.eyeHeight),
         distance: Math.round(sightline.distance),
       });
     },

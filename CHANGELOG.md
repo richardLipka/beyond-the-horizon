@@ -3,6 +3,53 @@
 Formát podle [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 verzování podle [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [1.7.0] — 2026-08-17
+
+### Přidáno / Added
+
+- **Čtyři oběžné dráhy jako stanoviště pozorovatele** – nízká, střední,
+  stacionární a vysoká. Nejsou zadané ručně: nízká leží šestnáctinu poloměru
+  nad povrchem (zdola ji omezuje atmosféra, ne oběžná doba), zbylé tři jsou
+  dané oběžnou **dobou** a počítají se ze třetího Keplerova zákona
+  `∛(GM · T² / 4π²)`, takže vycházejí z hmotnosti a rychlosti otáčení tělesa.
+  U Země padnou přesně na skutečné dráhy: 398 km a 92 minut je ISS, půldenní
+  dráha ve 20 191 km je GPS a jednodenní ve 35 793 km je geostacionární.
+  U Marsu vyjde areostacionárních 17 038 km, u Jupiteru 90 098 km a u Venuše,
+  která se otočí jednou za 243 dní, 1 530 517 km.
+  - Žebřík vypráví přesně to, o čem je celá aplikace: vidíš 2,9 % → 38,0 % →
+    42,4 % → 47,0 % povrchu, a **nikdy ne polovinu**.
+  - Tělesa proto nesou `gm` a `day`; u vlastního tělesa se hmotnost odhaduje
+    ze střední hustoty Země, takže při pozemském průměru vyjdou zemská čísla.
+- Posuvník výšky očí dosáhne až k nejvyšší nabízené dráze daného tělesa – od
+  46 tisíc km u Pluta po 63 milionů km u Slunce.
+
+### Změněno / Changed
+
+- Posuvník výšky očí je **zlomený na dvě části**: prvních 62 % dráhy je přesně
+  to, co měl dřív (0,1 m až 10 km), zbytek dojede na oběžnou dráhu. Jedním
+  logaritmem přes celý rozsah – u Země devět řádů, u Slunce dvanáct – by na
+  lidské výšky zbyla třetina dráhy a méně.
+- Výšky nad sto kilometrů (Kármánova hranice) se vypisují v kilometrech.
+  Pozemské výšky zůstávají v metrech; „35 793 000 m“ se nedá přečíst.
+- „Výška očí nad hladinou“ → „nad povrchem“: hladina je na deseti z jedenácti
+  těles nesmysl.
+
+### Opraveno / Fixed
+
+- **Pozorovatel na oběžné dráze vypadl z bočního pohledu.** Rámeček se počítal
+  jen z oblouku povrchu, jenže místní svislice se na kraji tětivy odklání
+  o polovinu středového úhlu, takže oko ve výšce `h` leží `h · sin(D/2R)`
+  stranou od paty. Do výšky asi 0,08 R je to proti šířce oblouku nic, na
+  oběžné dráze to všechno převálcuje: ze střední dráhy Měsíce leželo oko
+  30 570 km vlevo od oblouku širokého 2 108 km, tedy čtrnáct a půl jeho šířky
+  za okrajem. Meze rámečku teď počítají i s oběma aktéry.
+- Popisek „TY“ zůstával na povrchu, i když postavička vyjela na stozár. Teď
+  jede s ní.
+- Kóta výšky očí byla svislá i tehdy, když stožár mířil silně šikmo – měřila
+  tedy něco jiného, než co bylo nakreslené. V takovém případě se místo ní píše
+  popisek u oka.
+- Klíč `ctrl.observer` byl v obou jazycích uvedený dvakrát.
+
 ## [1.6.0] — 2026-08-11
 
 ### Přidáno / Added
@@ -245,6 +292,7 @@ První veřejné vydání. / First public release.
 - **CI** kontrolující výpočty, úplnost překladů a reprodukovatelnost
   vygenerovaného `objects.json`.
 
+[1.7.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.3.0...v1.4.0

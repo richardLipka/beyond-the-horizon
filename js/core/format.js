@@ -57,9 +57,24 @@
     return number(value, d, lang) + ' km';
   }
 
-  /** Vyska vzdy v metrech. */
+  /**
+   * Vyska: do sta kilometru v metrech, vys uz v kilometrech.
+   *
+   * Sto kilometru je Karmanova hranice, tedy zacatek vesmiru - vsechno pozemske
+   * (Everest, letadlo, mrakodrap) zustava v metrech, kdezto pozorovatel na
+   * obezne draze by jinak dostal necitelnych "35 793 000 m".
+   * A hundred kilometres is the Karman line, the start of space: everything
+   * earthbound stays in metres, while an observer in orbit would otherwise be
+   * given an unreadable "35 793 000 m".
+   */
+  const HEIGHT_IN_KM_FROM = 100000;
+
   function height(metres, lang) {
     if (!isFinite(metres)) return '∞';
+    if (Math.abs(metres) >= HEIGHT_IN_KM_FROM) {
+      const km = metres / 1000;
+      return number(km, autoDecimals(km), lang) + ' km';
+    }
     return number(metres, autoDecimals(metres), lang) + ' m';
   }
 

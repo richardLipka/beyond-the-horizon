@@ -56,6 +56,8 @@
   const line = (x1, y1, x2, y2, cls, extra) =>
     svg('line', Object.assign({ x1, y1, x2, y2, class: cls }, extra || {}));
 
+  const clampTo = (value, min, max) => Math.min(max, Math.max(min, value));
+
   const text = (x, y, content, cls, anchor) =>
     svg('text', { x, y, class: cls, 'text-anchor': anchor || 'middle', text: content });
 
@@ -152,8 +154,24 @@
     );
     const sightPoint = frame.point(D, sightCap);
 
-    const xMin = surface[0].x;
-    const xMax = surface[SAMPLES].x;
+    // Ramecek musi obsahnout oba aktery, ne jen povrch mezi nimi.
+    //
+    // Mistni svislice se na kraji tetivy odklani o polovinu stredoveho uhlu,
+    // takze oko ve vysce h lezi o h*sin(D/2R) stranou od paty. Do vysky
+    // zhruba 0,08 R je to proti sirce oblouku nic, ale na obezne draze uz to
+    // vsechno prevalcuje: ze stacionarni drahy Zeme lezi oko pri sedmitisicove
+    // vzdalenosti asi 22 000 km vlevo od oblouku, ktery je sam siroky 6 700 km.
+    // Bez teto opravy postavicka vypadne z obrazku uplne.
+    //
+    // The frame has to contain both actors, not just the surface between them.
+    // The local vertical tilts by half the central angle at the end of the
+    // chord, so an eye at height h sits h*sin(D/2R) to the side of its own
+    // feet. Up to about 0.08 R that is nothing next to the width of the arc,
+    // but from orbit it dominates: from the Earth's stationary orbit, at a
+    // distance of 7 000 km, the eye is some 22 000 km left of an arc only
+    // 6 700 km wide, and without this the figure falls out of the picture.
+    const xMin = Math.min(surface[0].x, eyePoint.x, basePoint.x, topPoint.x);
+    const xMax = Math.max(surface[SAMPLES].x, eyePoint.x, basePoint.x, topPoint.x);
     let yLow = 0;
     let yHigh = 0;
     for (const p of surface) {
@@ -497,7 +515,22 @@
       )
     );
     scene.appendChild(svg('circle', { cx: eyeP.x, cy: eyeP.y, r: 5.5, class: 'dg-eye' }));
-    scene.appendChild(text(obsBaseP.x, obsBaseP.y + 26, t('diagram.you'), 'dg-you dg-halo'));
+
+    // Popisek patri k postavicce, ne k mistu na povrchu. Dokud postavicka stoji
+    // na zemi, je to totez misto; jakmile vyjede na stozar - utes, letadlo,
+    // obezna draha - musi jet s ni, jinak zustane "TY" nekde uplne jinde nez ty.
+    // The label belongs to the figure, not to the spot on the ground. While the
+    // figure stands on the surface these are the same place; once it rides up
+    // the mast the label has to follow it.
+    const feetT = eyePixelHeight > 0 ? Math.min(1, figureLift / eyePixelHeight) : 0;
+    scene.appendChild(
+      text(
+        clampTo(obsBaseP.x + (eyeP.x - obsBaseP.x) * feetT, PLOT.x0 + 22, PLOT.x1 - 22),
+        clampTo(obsBaseP.y + (eyeP.y - obsBaseP.y) * feetT + 26, PLOT.y0 + 14, PLOT.y1 - 8),
+        t('diagram.you'),
+        'dg-you dg-halo'
+      )
+    );
 
     // ---- bod obzoru / the horizon point -----------------------------------
     if (r.horizon > 0 && r.horizon <= uMax) {
@@ -574,24 +607,23 @@
       );
     }
 
-    // vyska oci / eye height
-    if (eyePixelHeight > 14) {
+    // Vyska oci. Svisla kota ji meri poctive jen tehdy, kdyz stozar stoji
+    // skoro svisle; na obezne draze miri silne sikmo a svisla cara vedle nej
+    // by merila neco jineho, tak se misto ni napise jen popisek u oka.
+    // The vertical dimension measures the eye height honestly only while the
+    // mast stands nearly upright; from orbit it leans hard and a vertical line
+    // beside it would measure something else, so the eye just gets a label.
+    const eyeLabel = `${t('diagram.eye')}: ${F.height(r.eyeHeight, lang)}`;
+    if (eyePixelHeight > 14 && Math.abs(eyeP.x - obsBaseP.x) < 26) {
       scene.appendChild(
-        verticalDimension(
-          obsBaseP.x + 30,
-          eyeP.y,
-          obsBaseP.y,
-          'dg-dim dg-dim-eye',
-          `${t('diagram.eye')}: ${F.height(r.eyeHeight, lang)}`,
-          'right'
-        )
+        verticalDimension(obsBaseP.x + 30, eyeP.y, obsBaseP.y, 'dg-dim dg-dim-eye', eyeLabel, 'right')
       );
     } else {
       scene.appendChild(
         text(
-          obsBaseP.x + 16,
-          eyeP.y - 10,
-          `${t('diagram.eye')}: ${F.height(r.eyeHeight, lang)}`,
+          eyeP.x + 16,
+          clampTo(eyeP.y - 10, PLOT.y0 + 14, PLOT.y1 - 8),
+          eyeLabel,
           'dg-dim-label dg-halo',
           'start'
         )
