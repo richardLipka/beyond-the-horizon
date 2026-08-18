@@ -82,9 +82,9 @@ bulges *upwards* between them. That is why `frame.point(0, 0).y` and
 The `y` formula uses the `cos A − cos B` product identity because the naive
 version subtracts two numbers near 6.4 × 10⁶ and loses precision.
 
-**Horizontal and vertical scales differ** in the diagram, by design — real
-curvature is invisible at true scale. The factor is computed per render and
-printed into the picture. When the object is huge and close the factor drops
+**Horizontal and vertical scales differ** in the diagram below orbital heights,
+by design — real curvature is invisible at true scale. The factor is computed
+per render and printed into the picture. When the object is huge and close the factor drops
 below 1, so the wording switches to `diagram.compression` / `diagram.sameScale`.
 Never silently drop that note.
 
@@ -142,6 +142,47 @@ body/eye-height combinations. Comparing arc lengths instead of angles only fixes
 Earth) and numerically decisive (the required height there would be 6 × 10¹² km).
 Do not remove it, and keep treating "at or past `maxSight`" as impossible in the
 UI as well.
+
+**Above a thirty-second of the radius the side view stops exaggerating and
+draws a ball.** Stretching heights against distances is honest only where the
+curvature is otherwise invisible; from orbit the same stretch would squash the
+body exactly where it is most obviously round. `globeMode` therefore locks
+`sx = sy`, samples the *whole* circle (the centre sits at `(0, −R·cos(D/2R))`
+in the chord frame, so the surface really is a circle there), fills it with a
+radial gradient, and paints a black starry sky whenever the *observer* is that
+high. Do not re-introduce a linear gradient for the disc — it reads as a flat
+coin. The threshold is 1/32 and not the 1/16 that defines the low orbit,
+because the low orbit's altitude is rounded to whole kilometres and landed
+just under it.
+
+Framing in globe mode: include the eye while the picture stays within
+`MAX_SPAN_RADII` (9) of the body, otherwise drop it from the bounds entirely
+and close in on the body — Venus's stationary orbit is 253 radii up and framing
+the eye would leave the planet smaller than a pixel. When the eye falls outside,
+the figure is clamped to where its mast crosses the frame and gets a break mark,
+the eye dot is not drawn, but **the line of sight is still built from the eye's
+true position**: shift it and it stops being a tangent, which is the whole point
+of the picture. At the heights where this happens the mast and the ray are only
+a few degrees apart, so they enter the frame together anyway.
+
+The ruler's labels are skipped when they come within 58 px of the previous one.
+The horizontal scale in globe mode is a projection, not a linear axis, so the
+ticks crowd towards the limb and the whole chord can land in a few dozen pixels.
+Ticks are still drawn for every step; only the text is thinned.
+
+**The geometry figure enlarges angles but never shrinks them below true.**
+`layout()` scales small angles up to `DRAW_MAX` and lifts the tiniest to
+`DRAW_MIN`, but `scale` is `Math.max(1, …)`: from orbit α is over eighty
+degrees and squeezing it back to 0.72 rad made the figure claim something other
+than what was being computed. The drawn radius gives way instead — A′ sits
+`R·tan α` from T, so `R_DRAW` is whatever makes the figure fit the width, down
+to `R_MIN`; only past that does the angle itself get compressed. `O`, `TOP_Y`,
+`R_DRAW` and `point()` are therefore per-render, not module constants, and at
+full size they still evaluate to exactly the old 450/216/236. Arc radii and
+label insets scale with `k = R_DRAW / R_MAX`; below `k = 0.7` the three long
+dimensions (d₁, d₂, R) move out of the ball and stack under the tangent on the
+left, where a small ball has left room. The caption distinguishes all three
+cases — enlarged, true, squeezed — and must keep doing so.
 
 **The diagram's frame must contain the actors, not just the surface between
 them.** At the end of the chord the local vertical tilts by half the central

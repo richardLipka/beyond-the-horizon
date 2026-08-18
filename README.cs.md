@@ -70,6 +70,28 @@ aplikace: podíl viditelného povrchu nejdřív rychle roste, pak se plazí a
 **nikdy nedosáhne poloviny**. Z nejvyšší nabízené dráhy je obzor 9 625 km
 daleko, pořád méně než mez 10 008 km, tedy čtvrtina obvodu.
 
+#### Z obrázku se stane koule
+
+Zvětšovat výšky proti vzdálenostem je poctivé jen tam, kde je zakřivení jinak
+neviditelné – člověku na pláži je vyboulení na 22 km vysoké devět metrů. Jakmile
+je ale pozorovatel (nebo objekt) výš než **třicetdvojina poloměru**, mění se to
+zvětšení ve lež: svět by vyšel zploštělý přesně tam, kde je nejzřetelněji kulatý.
+Od té výšky proto boční pohled přepne na **jedno měřítko pro obě osy**, nakreslí
+**celé těleso jako kouli** na černé obloze plné hvězd a napíše to do popisku.
+
+Těleso pak s rostoucí výškou zmenšuje, jak se sluší: 348 px z nízké dráhy,
+151 ze střední, 108 ze stacionární. Nad devět poloměrů se pozorovatel do záběru
+už nebere, obrázek se sevře na samotné těleso a stožár vede pryč přes horní
+okraj se značkou přerušené čáry – držet pozorovatele v záběru by u Venuše, jejíž
+stacionární dráha je 253 poloměrů vysoko, znamenalo těleso menší než pixel.
+Přímka pohledu se ale pořád kreslí ze skutečné polohy oka: posunout ji znamená
+přestat být tečnou, a na tom celý obrázek stojí.
+
+Režim Geometrie se řídí týmž pravidlem. Úhly zvětšuje, jen dokud jsou malé;
+z oběžné dráhy je **α přes osmdesát stupňů a kreslí se ve skutečné velikosti**,
+zatímco se místo něj zmenší koule – místo aby se úhel stlačil zpátky na 41°, jak
+to bylo dřív. Popisek pod obrázkem pokaždé řekne, která z těch dvou věcí platí.
+
 ### 🌊 Kdy zmizí?
 
 Vzdálenost, ve které objekt úplně zmizí, ukázaná i jako součet, ze kterého

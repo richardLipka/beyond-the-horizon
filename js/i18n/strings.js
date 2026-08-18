@@ -31,6 +31,11 @@
       'geo.objectLabel': 'objekt',
       'geo.exaggerated':
         'Úhly jsou zvětšené (menší z nich víc), aby byly vidět. Čísla jsou skutečná.',
+      'geo.trueLargeAngle':
+        'Velký úhel je ve skutečné velikosti, menší je zvětšený. Čísla jsou skutečná.',
+      'geo.trueFigure': 'Celá konstrukce je ve skutečném poměru – úhly i koule.',
+      'geo.squeezed':
+        'Velký úhel je zmenšený, aby se vešel, menší zvětšený. Čísla jsou skutečná.',
       'geo.tangentTitle': 'Klíčová myšlenka',
       'geo.tangentText':
         'Přímka pohledu se dotýká povrchu v jediném bodě T. Tečna je vždy kolmá na poloměr vedený do bodu dotyku, takže úhel u T je pravý. Tím vzniknou dva pravoúhlé trojúhelníky – O T A′ pro pozorovatele a O T B′ pro objekt – a v nich už stačí kosinus a Pythagorova věta.',
@@ -207,6 +212,8 @@
       'diagram.exaggeration': 'Výšky jsou {n}× zvětšené, jinak by zakřivení nebylo vidět.',
       'diagram.compression': 'Vzdálenosti jsou {n}× zvětšené oproti výškám.',
       'diagram.sameScale': 'Výšky i vzdálenosti mají tady stejné měřítko.',
+      'diagram.trueShape':
+        'Skutečný tvar i poměr: výšky a vzdálenosti mají stejné měřítko a těleso je opravdu takhle kulaté.',
       'diagram.widthNote': 'Šířky objektů nejsou v měřítku – přesné jsou výšky a vzdálenosti.',
       'diagram.beyondReach': 'za hranicí dohledu – tady nepomůže žádná výška',
       'diagram.antipode': 'protilehlý bod tělesa',
@@ -357,6 +364,11 @@
       'geo.objectLabel': 'object',
       'geo.exaggerated':
         'Angles are enlarged (the smaller one more) so they can be seen. The numbers are real.',
+      'geo.trueLargeAngle':
+        'The large angle is at its real size, the smaller one enlarged. Numbers are real.',
+      'geo.trueFigure': 'The whole construction is at true proportions — angles and ball.',
+      'geo.squeezed':
+        'The large angle is reduced to fit, the smaller one enlarged. Numbers are real.',
       'geo.tangentTitle': 'The key idea',
       'geo.tangentText':
         'The line of sight touches the surface at a single point T. A tangent is always perpendicular to the radius drawn to the point of contact, so the angle at T is a right angle. That gives two right triangles — O T A′ for the observer and O T B′ for the object — and cosine plus Pythagoras finish the job.',
@@ -534,6 +546,8 @@
       'diagram.exaggeration': 'Heights are stretched {n}× — otherwise the curve would be invisible.',
       'diagram.compression': 'Distances are stretched {n}× compared with heights.',
       'diagram.sameScale': 'Heights and distances share the same scale here.',
+      'diagram.trueShape':
+        'True shape, true proportions: heights and distances share one scale, and the body really is that round.',
       'diagram.widthNote': 'Object widths are not to scale — heights and distances are.',
       'diagram.beyondReach': 'past the sight limit — no height helps here',
       'diagram.antipode': 'the far side of the body',

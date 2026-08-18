@@ -699,3 +699,12 @@
   font-size: 14px;
   fill: var(--muted);
 }
+
+/* Znacka prerusene cary na stozaru: skutecna vyska je vetsi nez obrazek.
+   The break mark on the mast: the real height exceeds the picture. */
+.dg-break line {
+  stroke: var(--deep-700, #124a63);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  opacity: 0.75;
+}

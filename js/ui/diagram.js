@@ -40,6 +40,58 @@
     notes: PLOT.y1 + 132,
   };
 
+  /**
+   * Od jake vysky se teleso kresli jako koule ve skutecnem pomeru.
+   *
+   * Zvetsovat vysky proti vzdalenostem ma smysl jen tam, kde je zakriveni
+   * jinak neviditelne - u cloveka na plazi je vyduti na 22 km vysoke devet
+   * metru. Jakmile je ale pozorovatel (nebo objekt) vys nez tricetdvojina
+   * polomeru, je zakriveni obrovske a kazde zvetseni uz jen lze: koule by
+   * vysla zplostela. Od te vysky se proto kresli cele teleso ve SKUTECNEM
+   * POMERU (sx = sy).
+   *
+   * Na Zemi je to 199 km, tedy pohodlne pod nejnizsi obeznou drahou (398 km)
+   * a stejne pohodlne nad vsim pozemskym - letadlo leti v deseti kilometrech,
+   * coz je sotva 0,0016 polomeru. Sestnactina by byla prilis natesno: nizka
+   * draha je definovana prave jako sestnactina a po zaokrouhleni na kilometry
+   * padla pod mez.
+   * On the Earth that is 199 km, comfortably below the lowest orbit (398 km)
+   * and just as comfortably above everything earthbound - an aeroplane flies
+   * at ten kilometres, barely 0.0016 of the radius. A sixteenth would be too
+   * tight: the low orbit is defined as exactly a sixteenth and, once rounded
+   * to whole kilometres, fell below the threshold.
+   *
+   * Where the body starts being drawn as a ball at true proportions.
+   * Stretching heights against distances only helps where the curvature is
+   * otherwise invisible - for a person on the beach the bulge over 22 km is
+   * nine metres. Once the observer (or the object) is higher than a
+   * thirty-second of the radius the curvature is enormous and any stretch
+   * becomes a lie: the ball would come out squashed. From there up the whole
+   * body is drawn at TRUE proportions (sx = sy).
+   */
+  const GLOBE_FROM = 1 / 32;
+
+  /**
+   * Nejvetsi vyska obrazku v polomerech telesa.
+   *
+   * Ze stacionarni drahy Venuse (253 polomeru) by teleso ve skutecnem pomeru
+   * vyslo mensi nez pixel. Nad devet polomeru uz se proto pozorovatel do
+   * zaberu nebere: obrazek se sevre na samotne teleso a pozorovatel zustane
+   * NAD nim. Jeho stozar i primka pohledu tam vedou dal a jsou porad
+   * pravdive, jen orezane - a koule se tim naopak zvetsi.
+   *
+   * The tallest the picture may be, in radii of the body. From the stationary
+   * orbit of Venus (253 radii) a true-scale body would come out smaller than
+   * a pixel, so past nine radii the observer is no longer framed: the picture
+   * closes in on the body itself and the observer stays ABOVE it. Their mast
+   * and line of sight run on out of the frame, still true and merely clipped
+   * - and the ball gets bigger for it.
+   */
+  const MAX_SPAN_RADII = 9;
+
+  /** Misto nahore pro postavicku a popisek vysky oci [px]. */
+  const GLOBE_TOP_ROOM = 34;
+
   let uidCounter = 0;
   const uid = (name) => `dg-${name}-${++uidCounter}`;
 
@@ -170,21 +222,60 @@
     // but from orbit it dominates: from the Earth's stationary orbit, at a
     // distance of 7 000 km, the eye is some 22 000 km left of an arc only
     // 6 700 km wide, and without this the figure falls out of the picture.
-    const xMin = Math.min(surface[0].x, eyePoint.x, basePoint.x, topPoint.x);
-    const xMax = Math.max(surface[SAMPLES].x, eyePoint.x, basePoint.x, topPoint.x);
-    let yLow = 0;
-    let yHigh = 0;
-    for (const p of surface) {
-      if (p.y < yLow) yLow = p.y;
-      if (p.y > yHigh) yHigh = p.y;
-    }
-    yHigh = Math.max(yHigh, eyePoint.y, topPoint.y, sightPoint.y);
-    let span = yHigh - yLow;
-    if (!(span > 0)) span = 1;
-    const yMax = yHigh + span * 0.17;
-    const yMin = yLow - span * 0.1;
+    // V soustave tetivy lezi stred telesa na svisle ose ve vysce -R*cos(D/2R)
+    // a povrch je kruznice o polomeru R kolem nej - v rezimu koule se kresli
+    // cela. / In the chord frame the centre of the body sits on the vertical
+    // axis at -R*cos(D/2R) and the surface is a circle of radius R about it;
+    // in globe mode the whole of that circle is drawn.
+    const globeMode = Math.max(r.eyeHeight, r.objectHeight) >= R * GLOBE_FROM;
+    const inSpace = r.eyeHeight >= R * GLOBE_FROM;
+    const centreY = -R * Math.cos(frame.half);
 
-    const sy = PLOT.h / (yMax - yMin);
+    let xMin;
+    let xMax;
+    let yMin;
+    let yMax;
+    let eyeFits = true;
+    if (globeMode) {
+      const bottom = centreY - R;
+      const wanted = Math.max(centreY + R, eyePoint.y, topPoint.y) - bottom;
+      eyeFits = wanted <= MAX_SPAN_RADII * R;
+      // Kdyz se oko do obrazku vejde, je v nem - to je porad ta nejlepsi
+      // varianta. Kdyz ne, nema smysl kvuli nemu drzet prazdne nebe: zabere se
+      // samo teleso a pozorovatel zustane nad obrazkem. Prave proto se koule
+      // v tu chvili naopak zvetsi.
+      // If the eye fits it stays in the picture, which is always the better
+      // one. If it does not, there is no sense keeping empty sky for it: the
+      // frame closes in on the body itself and the observer stays above the
+      // picture - which is exactly why the ball gets bigger at that point.
+      yMin = bottom;
+      yMax = eyeFits ? bottom + wanted : centreY + R * 1.35;
+      xMin = Math.min(-R, topPoint.x, eyeFits ? eyePoint.x : 0);
+      xMax = Math.max(R, topPoint.x, eyeFits ? eyePoint.x : 0);
+      const pad = 0.03 * Math.max(xMax - xMin, yMax - yMin);
+      xMin -= pad;
+      xMax += pad;
+      yMin -= pad;
+      yMax += pad;
+    } else {
+      xMin = Math.min(surface[0].x, eyePoint.x, basePoint.x, topPoint.x);
+      xMax = Math.max(surface[SAMPLES].x, eyePoint.x, basePoint.x, topPoint.x);
+      let yLow = 0;
+      let yHigh = 0;
+      for (const p of surface) {
+        if (p.y < yLow) yLow = p.y;
+        if (p.y > yHigh) yHigh = p.y;
+      }
+      yHigh = Math.max(yHigh, eyePoint.y, topPoint.y, sightPoint.y);
+      let span = yHigh - yLow;
+      if (!(span > 0)) span = 1;
+      yMax = yHigh + span * 0.17;
+      yMin = yLow - span * 0.1;
+    }
+
+    const spanX = Math.max(xMax - xMin, 1e-9);
+    const spanY = Math.max(yMax - yMin, 1e-9);
+    const plotH = PLOT.h - (globeMode ? GLOBE_TOP_ROOM : 0);
 
     // ---- misto pro ikony u obou kraju / room for the icons at both edges --
     // Ikona objektu i postavicka maji sirku v PIXELECH, ktera na svetovych
@@ -195,25 +286,39 @@
     // not follow from the world coordinates. Without reserving room for them,
     // wide objects overflow the frame and the clip path cuts them off. The
     // margins are therefore reserved in pixels and the scale gets what is left.
-    const provisionalSx = PLOT.w / (xMax - xMin);
+    const provisionalSx = globeMode ? Math.min(PLOT.w / spanX, plotH / spanY) : PLOT.w / spanX;
+    const provisionalSy = globeMode ? provisionalSx : PLOT.h / spanY;
     const aspect = obj.aspect > 0 ? obj.aspect : 1;
     // Odhad je zamerne shora: skutecne sx uz bude mensi, takze skutecna ikona
     // vyjde nanejvys stejne siroka. / Deliberately an upper bound.
     const estObjectPx = Math.max(
       6,
-      Math.hypot((topPoint.x - basePoint.x) * provisionalSx, (topPoint.y - basePoint.y) * sy)
+      Math.hypot(
+        (topPoint.x - basePoint.x) * provisionalSx,
+        (topPoint.y - basePoint.y) * provisionalSy
+      )
     );
     const estObjectWidth = Math.min(Math.max(estObjectPx * aspect, 12), PLOT.w * 0.26);
-    const estEyePx = Math.abs(eyePoint.y - frame.point(0, 0).y) * sy;
+    const estEyePx = Math.abs(eyePoint.y - frame.point(0, 0).y) * provisionalSy;
     const estFigureHeight = Math.min(92, Math.max(14, estEyePx / 0.86));
 
     const padRight = Math.min(estObjectWidth / 2 + 8, PLOT.w * 0.2);
     // Postavicka trci vlevo o polomer hlavy, popisek "TY" je sirsi.
     const padLeft = Math.min(Math.max(24, 0.13 * estFigureHeight + 8), PLOT.w * 0.1);
 
-    const sx = (PLOT.w - padLeft - padRight) / (xMax - xMin);
-    const X = (wx) => PLOT.x0 + padLeft + (wx - xMin) * sx;
-    const Y = (wy) => PLOT.y1 - (wy - yMin) * sy;
+    // V rezimu koule je meritko v obou smerech STEJNE, jinak by teleso nevyslo
+    // kulate - a prave o to tu jde. Zbytek plochy se rozdeli na obe strany, aby
+    // koule sedela uprostred.
+    // In globe mode both scales are THE SAME, otherwise the body would not come
+    // out round, which is the whole point; the slack is split evenly so the
+    // ball sits in the middle.
+    const innerW = PLOT.w - padLeft - padRight;
+    const sx = globeMode ? Math.min(innerW / spanX, plotH / spanY) : innerW / spanX;
+    const sy = globeMode ? sx : PLOT.h / spanY;
+    const offsetX = padLeft + (globeMode ? (innerW - spanX * sx) / 2 : 0);
+    const offsetY = globeMode ? (plotH - spanY * sy) / 2 : 0;
+    const X = (wx) => PLOT.x0 + offsetX + (wx - xMin) * sx;
+    const Y = (wy) => PLOT.y1 - offsetY - (wy - yMin) * sy;
     const exaggeration = sy / sx;
 
     // Povrch se kresli sirsi, nez je ramecek - prebytek orizne clipPath -
@@ -222,12 +327,23 @@
     // The surface is drawn wider than the frame (the clip path trims it) so no
     // empty wedge is left under the reserved margins. The quarter-circumference
     // rule still holds: past it there is no more surface to draw.
-    const overshootU = (Math.max(padLeft, padRight) / sx) * 1.3;
-    const uDrawMin = Math.max(uMin - overshootU, D / 2 - quarter);
-    const uDrawMax = Math.min(uMax + overshootU, D / 2 + quarter);
     const drawn = [];
-    for (let i = 0; i <= SAMPLES; i++) {
-      drawn.push(frame.point(uDrawMin + ((uDrawMax - uDrawMin) * i) / SAMPLES, 0));
+    if (globeMode) {
+      // Cela kruznice telesa. Uhel probehne od -pi do pi, takze vznikne
+      // uzavreny obrys - a protoze je meritko izotropni, je z nej opravdu kruh.
+      // The whole circle of the body: the angle runs from -pi to pi, giving a
+      // closed outline which, the scale being isotropic, really is a circle.
+      for (let i = 0; i <= SAMPLES; i++) {
+        const phi = -Math.PI + (2 * Math.PI * i) / SAMPLES;
+        drawn.push({ x: R * Math.sin(phi), y: R * Math.cos(phi) + centreY });
+      }
+    } else {
+      const overshootU = (Math.max(padLeft, padRight) / sx) * 1.3;
+      const uDrawMin = Math.max(uMin - overshootU, D / 2 - quarter);
+      const uDrawMax = Math.min(uMax + overshootU, D / 2 + quarter);
+      for (let i = 0; i <= SAMPLES; i++) {
+        drawn.push(frame.point(uDrawMin + ((uDrawMax - uDrawMin) * i) / SAMPLES, 0));
+      }
     }
 
     // ---- definice / defs --------------------------------------------------
@@ -245,18 +361,31 @@
     const hatchId = uid('hatch');
     const arrowId = uid('arrow');
 
+    // Nad atmosferou je obloha cerna, at je teleso jakekoli - pozorovatel na
+    // obezne draze uz je ve vesmiru. / Above the atmosphere the sky is black
+    // whatever the body: an observer in orbit is in space.
+    const skyStops = inSpace ? ['#04060e', '#080d1a', '#111a2c'] : palette.sky;
+
     root.appendChild(
       svg('defs', null, [
         svg('linearGradient', { id: skyId, x1: 0, y1: 0, x2: 0, y2: 1 }, [
-          svg('stop', { offset: '0%', 'stop-color': palette.sky[0] }),
-          svg('stop', { offset: '62%', 'stop-color': palette.sky[1] }),
-          svg('stop', { offset: '100%', 'stop-color': palette.sky[2] }),
+          svg('stop', { offset: '0%', 'stop-color': skyStops[0] }),
+          svg('stop', { offset: '62%', 'stop-color': skyStops[1] }),
+          svg('stop', { offset: '100%', 'stop-color': skyStops[2] }),
         ]),
-        svg('linearGradient', { id: bodyId, x1: 0, y1: 0, x2: 0, y2: 1 }, [
-          svg('stop', { offset: '0%', 'stop-color': surfaceColors[0] }),
-          svg('stop', { offset: '55%', 'stop-color': surfaceColors[1] }),
-          svg('stop', { offset: '100%', 'stop-color': surfaceColors[2] }),
-        ]),
+        // Koule potrebuje radialni prechod, jinak vypada jako plocny kotouc.
+        // A ball needs a radial gradient or it reads as a flat disc.
+        globeMode
+          ? svg('radialGradient', { id: bodyId, cx: '35%', cy: '30%', r: '78%' }, [
+              svg('stop', { offset: '0%', 'stop-color': surfaceColors[0] }),
+              svg('stop', { offset: '58%', 'stop-color': surfaceColors[1] }),
+              svg('stop', { offset: '100%', 'stop-color': surfaceColors[2] }),
+            ])
+          : svg('linearGradient', { id: bodyId, x1: 0, y1: 0, x2: 0, y2: 1 }, [
+              svg('stop', { offset: '0%', 'stop-color': surfaceColors[0] }),
+              svg('stop', { offset: '55%', 'stop-color': surfaceColors[1] }),
+              svg('stop', { offset: '100%', 'stop-color': surfaceColors[2] }),
+            ]),
         svg('clipPath', { id: clipId }, [
           svg('rect', { x: PLOT.x0, y: PLOT.y0, width: PLOT.w, height: PLOT.h, rx: 14 }),
         ]),
@@ -292,7 +421,9 @@
     // Telesa bez atmosfery maji cernou oblohu s hvezdami. Pozice jsou
     // odvozene z pevneho semene, aby pri prekresleni neposkakovaly.
     // Airless bodies get a black sky with stars, seeded so they stay put.
-    if (look.airless) {
+    // Nad atmosferou plati totez i pro telesa, ktera ji maji.
+    // Above the atmosphere the same holds for bodies that have one.
+    if (look.airless || inSpace) {
       const stars = svg('g', { class: 'dg-stars' });
       let seed = 20260810;
       const random = () => {
@@ -319,13 +450,16 @@
     const surfacePath = d;
     scene.appendChild(
       svg('path', {
-        d: `${d} L ${PLOT.x1} ${PLOT.y1 + 20} L ${PLOT.x0} ${PLOT.y1 + 20} Z`,
+        // V rezimu koule je obrys uzavreny sam v sobe; jinak se dopusti
+        // dolu pod ramecek. / In globe mode the outline closes on itself;
+        // otherwise it is filled down past the bottom of the frame.
+        d: globeMode ? `${d} Z` : `${d} L ${PLOT.x1} ${PLOT.y1 + 20} L ${PLOT.x0} ${PLOT.y1 + 20} Z`,
         fill: `url(#${bodyId})`,
       })
     );
     scene.appendChild(
       svg('path', {
-        d: surfacePath,
+        d: globeMode ? `${surfacePath} Z` : surfacePath,
         class: 'dg-surface-line',
         fill: 'none',
         stroke: surfaceColors[2],
@@ -334,11 +468,19 @@
 
     // Textura povrchu podle telesa: vlnky, tráva, kameny nebo oblacne pasy.
     // Surface texture per body: waves, grass, rocks or cloud bands.
+    //
+    // Na kouli se nekresli: znacky jsou v pevnych pixelech a smeruji "dolu" po
+    // obrazovce, coz je smerem dovnitr telesa jen na jeho horni polovine - na
+    // spodni by trcely do vesmiru. Radialni prechod udela kouli sam.
+    // Not drawn in globe mode: the marks are a fixed pixel size and point
+    // "down" the screen, which is into the body only on its upper half; on the
+    // lower half they would stick out into space. The radial gradient does the
+    // work of making it look round instead.
     const decor = svg('g', {
       class: 'dg-decor dg-decor-' + decorStyle,
       stroke: palette.accent,
     });
-    for (let i = 6; i < SAMPLES; i += 12) {
+    for (let i = 6; i < SAMPLES && !globeMode; i += 12) {
       const p = drawn[i];
       const px = X(p.x);
       const py = Y(p.y);
@@ -500,6 +642,38 @@
     } else if (idealFigure < 14) {
       figureHeight = 14;
     }
+
+    // Kdyz oko lezi nad obrazkem (velmi vysoka draha), postavicka se zastavi
+    // u horniho okraje a stozar pod ni dostane znacku prerusene cary. Primka
+    // pohledu se ale porad kresli ze SKUTECNE polohy oka - jinak by prestala
+    // byt tecnou a s tim padne cely smysl obrazku. Ve vyskach, kde k tomu
+    // dochazi, sviraji stozar a paprsek uz jen par stupnu, takze obe cary
+    // vchazeji do obrazku prakticky spolecne.
+    // When the eye lies above the picture (a very high orbit) the figure stops
+    // at the top edge and the mast below it gets a break mark. The line of
+    // sight is still drawn from the eye's TRUE position: shift it and it stops
+    // being a tangent, which is the whole point of the picture. At the heights
+    // where this happens the mast and the ray are only a few degrees apart, so
+    // both enter the frame together anyway.
+    const mastDx = eyeP.x - obsBaseP.x;
+    const mastDy = eyeP.y - obsBaseP.y;
+    let mastReach = 1;
+    if (eyePixelHeight > 0) {
+      // Kde stozar opousti bezpecnou cast ramecku - shora nebo do strany.
+      // Where the mast leaves the safe part of the frame, upwards or sideways.
+      const hit = (limit, delta, from) => {
+        if (Math.abs(delta) < 1e-9) return 1;
+        const t = (limit - from) / delta;
+        return t > 0 ? t : 1;
+      };
+      if (mastDy < 0) mastReach = Math.min(mastReach, hit(PLOT.y0 + GLOBE_TOP_ROOM, mastDy, obsBaseP.y));
+      if (mastDx < 0) mastReach = Math.min(mastReach, hit(PLOT.x0 + 20, mastDx, obsBaseP.x));
+      if (mastDx > 0) mastReach = Math.min(mastReach, hit(PLOT.x1 - 20, mastDx, obsBaseP.x));
+      mastReach = clampTo(mastReach, 0, 1);
+      figureLift = Math.min(figureLift, mastReach * eyePixelHeight);
+    }
+    const eyeOffPicture = mastReach < 1 - 1e-9;
+
     if (figureLift > 0 || figureHeight > idealFigure + 1) {
       scene.appendChild(line(obsBaseP.x, obsBaseP.y, eyeP.x, eyeP.y, 'dg-pole'));
     }
@@ -514,7 +688,11 @@
         [observerFigure(figureHeight)]
       )
     );
-    scene.appendChild(svg('circle', { cx: eyeP.x, cy: eyeP.y, r: 5.5, class: 'dg-eye' }));
+    // Tecka oka jen tam, kde oko opravdu je. / The eye dot only where the eye
+    // actually is - never at the place the figure was stopped.
+    if (!eyeOffPicture) {
+      scene.appendChild(svg('circle', { cx: eyeP.x, cy: eyeP.y, r: 5.5, class: 'dg-eye' }));
+    }
 
     // Popisek patri k postavicce, ne k mistu na povrchu. Dokud postavicka stoji
     // na zemi, je to totez misto; jakmile vyjede na stozar - utes, letadlo,
@@ -523,17 +701,40 @@
     // figure stands on the surface these are the same place; once it rides up
     // the mast the label has to follow it.
     const feetT = eyePixelHeight > 0 ? Math.min(1, figureLift / eyePixelHeight) : 0;
+    const feetX = obsBaseP.x + (eyeP.x - obsBaseP.x) * feetT;
+    const feetY = obsBaseP.y + (eyeP.y - obsBaseP.y) * feetT;
     scene.appendChild(
       text(
-        clampTo(obsBaseP.x + (eyeP.x - obsBaseP.x) * feetT, PLOT.x0 + 22, PLOT.x1 - 22),
-        clampTo(obsBaseP.y + (eyeP.y - obsBaseP.y) * feetT + 26, PLOT.y0 + 14, PLOT.y1 - 8),
+        clampTo(feetX, PLOT.x0 + 22, PLOT.x1 - 22),
+        clampTo(feetY + 26, PLOT.y0 + 14, PLOT.y1 - 8),
         t('diagram.you'),
         'dg-you dg-halo'
       )
     );
 
+    // Znacka prerusene cary na stozaru: rika, ze skutecna vyska je vetsi, nez
+    // se do obrazku vejde. / The break mark on the mast says the real height is
+    // greater than the picture can hold.
+    if (eyeOffPicture && eyePixelHeight > 0) {
+      const ux = mastDx / eyePixelHeight;
+      const uy = mastDy / eyePixelHeight;
+      const breakGroup = svg('g', { class: 'dg-break' });
+      for (const offset of [10, 19]) {
+        const cx = feetX - ux * offset;
+        const cy = feetY - uy * offset;
+        breakGroup.appendChild(
+          line(cx - uy * 9 - ux * 4, cy + ux * 9 - uy * 4, cx + uy * 9 + ux * 4, cy - ux * 9 + uy * 4)
+        );
+      }
+      scene.appendChild(breakGroup);
+    }
+
     // ---- bod obzoru / the horizon point -----------------------------------
-    if (r.horizon > 0 && r.horizon <= uMax) {
+    // V rezimu koule je nakreslena cela kruznice, takze bod dotyku na ni lezi
+    // vzdy - obzor uz nemusi byt mezi pozorovatelem a objektem.
+    // In globe mode the whole circle is drawn, so the tangency point is always
+    // on it and the horizon no longer has to fall between the two actors.
+    if (r.horizon > 0 && (globeMode || r.horizon <= uMax)) {
       const hp = frame.point(r.horizon, 0);
       const hx = X(hp.x);
       const hy = Y(hp.y);
@@ -648,10 +849,22 @@
 
     const step = niceStep(D / 6);
     const tickDecimals = step >= 10000 ? 0 : step >= 1000 ? 1 : 2;
+    // Vodorovne meritko neni rovnomerne: kresli se prumet koule, takze u kraje
+    // se rysky sbihaji. V rezimu koule se navic cela tetiva promitne do par
+    // desitek pixelu a popisky by se slezly na hromadu, tak se vypisuji jen
+    // ty, ktere maji od predchoziho dost mista. Rysky zustavaji vsechny.
+    // The horizontal scale is not uniform - this is the projection of a ball,
+    // so the ticks crowd towards the limb. In globe mode the whole chord can
+    // project into a few dozen pixels and the labels would pile up, so only
+    // those with room to spare are printed. Every tick still gets its mark.
+    const LABEL_GAP = 58;
+    let lastLabelX = -Infinity;
     for (let u = 0; u <= uMax + step * 0.01; u += step) {
       const tx = X(frame.point(u, 0).x);
       if (tx < PLOT.x0 - 1 || tx > PLOT.x1 + 1) continue;
       axis.appendChild(line(tx, ROW.ruler - 6, tx, ROW.ruler + 6, 'dg-axis-tick'));
+      if (tx - lastLabelX < LABEL_GAP) continue;
+      lastLabelX = tx;
       axis.appendChild(text(tx, ROW.rulerLabels, F.km(u, lang, tickDecimals), 'dg-small'));
     }
     root.appendChild(axis);
@@ -716,7 +929,9 @@
     // Pri velkych objektech zblizka je naopak stlaceny svisly smer,
     // takze poznamku o meritku formulujeme podle situace.
     let scaleNote;
-    if (exaggeration >= 1.05) {
+    if (globeMode) {
+      scaleNote = t('diagram.trueShape');
+    } else if (exaggeration >= 1.05) {
       scaleNote = t('diagram.exaggeration', {
         n: F.number(exaggeration, exaggeration < 20 ? 1 : 0, lang),
       });

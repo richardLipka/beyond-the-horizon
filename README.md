@@ -72,6 +72,29 @@ the share you can see rises steeply and then crawls, **never reaching a half**.
 From the highest orbit offered the horizon is 9 625 km, still short of the
 quarter-circumference limit of 10 008 km.
 
+#### The picture becomes a ball
+
+Stretching heights against distances is only honest where the curvature is
+otherwise invisible — for a person on a beach the bulge over 22 km is nine
+metres. Once the observer (or the object) is more than **a thirty-second of the
+radius** up, that stretch turns into a lie: the world would come out squashed
+just where it is most obviously round. So from there the side view switches to
+**one scale for both axes**, draws the **whole body as a ball** against a black,
+star-filled sky, and says so in the caption.
+
+The body then shrinks as you climb, exactly as it should — 348 px across from
+low orbit, 151 from the medium one, 108 from geostationary. Past nine radii the
+observer is no longer framed at all: the picture closes in on the body instead
+and the observer's mast runs off the top with a break mark, because keeping them
+in shot would leave Venus, whose stationary orbit is 253 radii up, smaller than
+a pixel. Their line of sight is still drawn from where the eye really is — move
+it and it stops being a tangent, which is the whole point of the picture.
+
+The geometry mode follows the same rule. Its angles are enlarged only while they
+are small; from orbit **α is over eighty degrees and is now drawn at its real
+size**, with the ball scaled down to make room, instead of being squeezed back
+to 41° as it used to be. The caption says which of the two is happening.
+
 ### 🌊 When does it vanish?
 
 The distance at which an object disappears completely, shown as the sum that

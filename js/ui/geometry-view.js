@@ -28,9 +28,24 @@
   const G = HL.geometry;
 
   const VIEW = { w: 900, h: 560 };
-  const O = { x: 450, y: 452 };
-  const R_DRAW = 236;
-  const TOP_Y = O.y - R_DRAW;
+
+  /** Nejvetsi kresleny polomer telesa. / The largest drawn radius. */
+  const R_MAX = 236;
+  /**
+   * Nejmensi kresleny polomer. Pri velmi vysokem pozorovateli utika bod A'
+   * po tecne pryc (vzdalenost od T je R*tg alfa) a koule by se scvrkla na
+   * nic; pod touto mezi se proto zacne stlacovat uhel misto koule.
+   * The smallest drawn radius: with a very high observer the point A' runs
+   * away along the tangent (its distance from T is R*tan alpha) and the ball
+   * would shrink to nothing, so below this the angle is compressed instead.
+   */
+  const R_MIN = 62;
+  /** Vodorovny okraj na popisky. / Side margin left for labels. */
+  const SIDE_ROOM = 96;
+  /** Kde lezi tecna, kdyz je koule nakreslena v plne velikosti. */
+  const TOP_Y_BASE = 216;
+  /** Nejnize, kam smi sahnout spodek koule. */
+  const BOTTOM_ROOM = 530;
 
   /**
    * Nejvetsi a nejmensi kresleny uhel [rad].
@@ -52,10 +67,75 @@
   let uidCounter = 0;
   const uid = (name) => `gm-${name}-${++uidCounter}`;
 
-  const point = (angle, radius) => ({
-    x: O.x + radius * Math.sin(angle),
-    y: O.y - radius * Math.cos(angle),
-  });
+  /**
+   * Rozvrh figury pro dane uhly.
+   *
+   * Uhly se zvetsuji jen tehdy, kdyz jsou male; NIKDY se nezmensuji pod
+   * skutecnou velikost. Z obezne drahy je alfa pres osmdesat stupnu a dosud
+   * se stlacovala zpet na 0,72 rad, cimz obrazek tvrdil neco jineho, nez co
+   * se pocita. Ted se misto toho zmensi koule: bod A' lezi od T ve vzdalenosti
+   * R*tg alfa, takze polomer se voli tak, aby se cela figura vesla na sirku.
+   * Uplne stlacit uhel je nutne az tam, kde by koule klesla pod R_MIN.
+   *
+   * The layout of the figure for the given angles. Angles are only ever
+   * enlarged, NEVER shrunk below their true size: from orbit alpha is over
+   * eighty degrees and used to be squeezed back to 0.72 rad, so the picture
+   * claimed something other than what was being computed. The ball is scaled
+   * instead - A' sits R*tan(alpha) from T, so the radius is chosen to make the
+   * whole figure fit the width. Only where the ball would drop below R_MIN
+   * does the angle itself have to give.
+   */
+  function layout(alpha, beta) {
+    const largest = Math.max(alpha, beta, 1e-12);
+    const scale = Math.max(1, DRAW_MAX / largest);
+    let aDraw = Math.max(alpha * scale, DRAW_MIN);
+    let bDraw = Math.max(beta * scale, DRAW_MIN);
+
+    const availW = VIEW.w - 2 * SIDE_ROOM;
+    // Kolik polomeru zabere figura vlevo a vpravo od stredu. Pod jeden polomer
+    // to nikdy neklesne - tolik zabere sama koule.
+    let left = Math.max(1, Math.tan(aDraw));
+    let right = Math.max(1, Math.tan(bDraw));
+    const room = availW / R_MIN;
+    if (left + right > room) {
+      if (left >= right) {
+        left = Math.max(1, room - right);
+        aDraw = Math.atan(left);
+      } else {
+        right = Math.max(1, room - left);
+        bDraw = Math.atan(right);
+      }
+      if (left + right > room) {
+        left = room / 2;
+        right = room / 2;
+        aDraw = Math.atan(left);
+        bDraw = Math.atan(right);
+      }
+    }
+
+    const radius = Math.min(R_MAX, availW / (left + right));
+    const topY = TOP_Y_BASE + Math.max(0, (BOTTOM_ROOM - TOP_Y_BASE - 2 * radius) / 2);
+    return {
+      aDraw,
+      bDraw,
+      radius,
+      topY,
+      // Mala koule potrebuje mensi obloucky i odstupy, jinak by z ni vylezly.
+      // A small ball needs smaller arcs and insets or they would stick out.
+      k: radius / R_MAX,
+      // Uhly odpovidaji skutecnosti? / Are the angles the real ones?
+      trueAngles: Math.abs(aDraw - alpha) < 1e-9 && Math.abs(bDraw - beta) < 1e-9,
+      trueLarger: Math.abs(Math.max(aDraw, bDraw) - largest) < 1e-9,
+      // Velky uhel se musel stlacit - to uz neni zvetseni, ale opak.
+      // The large angle had to be squeezed, which is the opposite of
+      // enlarging and has to be said differently.
+      squeezed: Math.max(aDraw, bDraw) < largest - 1e-9,
+      O: {
+        x: SIDE_ROOM + radius * left + (availW - radius * (left + right)) / 2,
+        y: topY + radius,
+      },
+    };
+  }
 
   const text = (x, y, content, cls, anchor) =>
     svg('text', { x, y, class: cls, 'text-anchor': anchor || 'middle', text: content });
@@ -127,12 +207,23 @@
       const alpha = G.dip(r.eyeHeight, R);
       const beta = G.dip(r.objectHeight, R);
 
-      // Uhly pro kresleni: vetsi z nich se roztahne na DRAW_MAX, pomer obou
-      // zustane zachovany. Uplne male se jen zvedne na DRAW_MIN, aby nezmizel.
-      const largest = Math.max(alpha, beta, 1e-12);
-      const scale = DRAW_MAX / largest;
-      const aDraw = Math.max(alpha * scale, DRAW_MIN);
-      const bDraw = Math.max(beta * scale, DRAW_MIN);
+      // Uhly pro kresleni: male se roztahnou na DRAW_MAX se zachovanim pomeru,
+      // uplne male se zvednou na DRAW_MIN, aby nezmizely - ale velke se uz
+      // nestlacuji a misto nich se zmensi koule.
+      // Small angles are stretched to DRAW_MAX keeping their ratio and the
+      // tiniest are lifted to DRAW_MIN so they do not vanish; large ones are no
+      // longer squeezed - the ball is scaled down instead.
+      const plan = layout(alpha, beta);
+      const aDraw = plan.aDraw;
+      const bDraw = plan.bDraw;
+      const R_DRAW = plan.radius;
+      const TOP_Y = plan.topY;
+      const O = plan.O;
+      const k = plan.k;
+      const point = (angle, radius) => ({
+        x: O.x + radius * Math.sin(angle),
+        y: O.y - radius * Math.cos(angle),
+      });
 
       const T = { x: O.x, y: TOP_Y };
       const A = point(-aDraw, R_DRAW);
@@ -197,15 +288,16 @@
       );
 
       // pravy uhel u bodu dotyku / the right angle at the tangency point
+      const rightAngle = Math.max(9, 15 * k);
       root.appendChild(
         svg('path', {
-          d: `M ${T.x + 15} ${T.y} L ${T.x + 15} ${T.y + 15} L ${T.x} ${T.y + 15}`,
+          d: `M ${T.x + rightAngle} ${T.y} L ${T.x + rightAngle} ${T.y + rightAngle} L ${T.x} ${T.y + rightAngle}`,
           class: 'gm-right-angle',
           fill: 'none',
         })
       );
       // --- uhly u stredu / the angles at the centre -------------------------
-      const arcR = 74;
+      const arcR = 74 * k;
       const upper = point(0, arcR);
       const leftArc = point(-aDraw, arcR);
       const rightArc = point(bDraw, arcR);
@@ -269,8 +361,8 @@
       put((T.x + top.x) / 2, TOP_Y - 12, 't₂', 'gm-symbol gm-object-fill', 'middle', -1);
 
       // --- uhly u stredu / the angles at the centre -------------------------
-      const alphaAt = point(-aDraw / 2, arcR + 24);
-      const betaAt = point(bDraw / 2, arcR + 24);
+      const alphaAt = point(-aDraw / 2, arcR + 24 * k);
+      const betaAt = point(bDraw / 2, arcR + 24 * k);
       put(alphaAt.x, alphaAt.y, 'α', 'gm-symbol gm-observer-fill', 'middle', -1);
       put(betaAt.x, betaAt.y, 'β', 'gm-symbol gm-object-fill', 'middle', -1);
 
@@ -281,10 +373,21 @@
       put(top.x, TOP_Y - 60, t('geo.objectLabel'), 'gm-role gm-object-fill', 'middle', -1);
 
       // --- kóty uvnitr kruhu a u vysek / dimensions inside the circle -------
-      const d1At = point(-aDraw / 2, R_DRAW - 34);
-      const d2At = point(bDraw / 2, R_DRAW - 34);
-      put(d1At.x, d1At.y, `d₁ = ${F.distance(r.horizon, lang)}`, 'gm-label gm-observer-fill', 'middle', 1);
-      put(d2At.x, d2At.y, `d₂ = ${F.distance(r.objectHorizon, lang)}`, 'gm-label gm-object-fill', 'middle', 1);
+      // Do male koule se tri dlouhe kotovaci popisky (d1, d2, R) uz nevejdou -
+      // u Neptunu z vysoke drahy se prekryvaly. Kdyz je koule mala, je zato
+      // volno vlevo pod tecnou (koule se odsunula doprava), tak se srovnaji
+      // tam pod sebe.
+      // Three long dimensions (d1, d2, R) do not fit inside a small ball -
+      // at Neptune from its high orbit they overlapped. A small ball has
+      // been pushed to the right, though, which leaves the area under the
+      // tangent free, so the dimensions line up there instead.
+      const roomInside = k > 0.7;
+      const stacked = (row) => ({ x: SIDE_ROOM, y: TOP_Y + 70 + row * 22 });
+      const d1At = roomInside ? point(-aDraw / 2, R_DRAW - 34 * k) : stacked(0);
+      const d2At = roomInside ? point(bDraw / 2, R_DRAW - 34 * k) : stacked(1);
+      const dimAnchor = roomInside ? 'middle' : 'start';
+      put(d1At.x, d1At.y, `d₁ = ${F.distance(r.horizon, lang)}`, 'gm-label gm-observer-fill', dimAnchor, 1);
+      put(d2At.x, d2At.y, `d₂ = ${F.distance(r.objectHorizon, lang)}`, 'gm-label gm-object-fill', dimAnchor, 1);
 
       put(
         A.x - 24,
@@ -303,9 +406,19 @@
         -1
       );
 
-      put(O.x - 14, O.y - 46, `R = ${F.distance(r.physicalRadius, lang)}`, 'gm-label', 'end', 1);
+      const rAt = roomInside ? { x: O.x - 14, y: O.y - 46 } : stacked(2);
+      put(rAt.x, rAt.y, `R = ${F.distance(r.physicalRadius, lang)}`, 'gm-label', roomInside ? 'end' : 'start', 1);
 
-      put(VIEW.w / 2, VIEW.h - 12, t('geo.exaggerated'), 'gm-note', 'middle', 0);
+      // Kdyz uz se velky uhel nezvetsuje ani nestlacuje, rika to obrazek.
+      // When the large angle is neither enlarged nor squeezed, say so.
+      const note = plan.trueAngles
+        ? 'geo.trueFigure'
+        : plan.trueLarger
+          ? 'geo.trueLargeAngle'
+          : plan.squeezed
+            ? 'geo.squeezed'
+            : 'geo.exaggerated';
+      put(VIEW.w / 2, VIEW.h - 12, t(note), 'gm-note', 'middle', 0);
 
       spreadLabels(labels);
     }

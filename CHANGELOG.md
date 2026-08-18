@@ -3,6 +3,41 @@
 Formát podle [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 verzování podle [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [1.8.0] — 2026-08-18
+
+### Změněno / Changed
+
+- **Z výšky se kreslí koule, ve skutečném poměru.** Zvětšovat výšky proti
+  vzdálenostem je poctivé jen tam, kde je zakřivení jinak neviditelné. Jakmile
+  je pozorovatel (nebo objekt) výš než **třicetdvojina poloměru** – na Zemi
+  199 km, tedy pohodlně pod nejnižší oběžnou dráhou a stejně pohodlně nad
+  letadlem – přepne boční pohled na **jedno měřítko pro obě osy** a nakreslí
+  **celé těleso jako kouli** na černé obloze plné hvězd. Koule dostane
+  radiální přechod, aby nevypadala jako plochý kotouč, a v popisku se to řekne.
+  - Těleso se s rostoucí výškou zmenšuje, jak se sluší: 348 px z nízké dráhy,
+    151 ze střední, 108 ze stacionární.
+  - Nad devět poloměrů se pozorovatel do záběru nebere – obrázek se sevře na
+    samotné těleso a stožár vede pryč přes horní okraj se značkou přerušené
+    čáry. Držet ho v záběru by u Venuše, jejíž stacionární dráha je 253
+    poloměrů vysoko, znamenalo těleso menší než pixel. Přímka pohledu se ale
+    kreslí ze **skutečné** polohy oka: posunout ji znamená přestat být tečnou.
+- **Geometrie kreslí velký úhel ve skutečné velikosti.** Úhly se zvětšují, jen
+  dokud jsou malé; z oběžné dráhy je α přes osmdesát stupňů a dosud se
+  stlačovala zpátky na 41°, takže obrázek tvrdil něco jiného, než co se počítá.
+  Teď se místo úhlu zmenší koule a poloměr se dopočítá tak, aby se celá figura
+  vešla na šířku. Popisek pod obrázkem rozlišuje tři případy: úhly zvětšené,
+  velký úhel skutečný, nebo velký úhel naopak zmenšený, aby se vešel.
+- Výšky nad sto kilometrů se v celém obrázku vypisují v kilometrech.
+
+### Opraveno / Fixed
+
+- Rysky měřítka vzdálenosti se v režimu koule slévaly: celá tětiva se promítne
+  do několika desítek pixelů. Rysky zůstávají všechny, popisky se vypisují jen
+  tam, kde je od předchozího dost místa.
+- Tři dlouhé kóty (d₁, d₂, R) se do malé koule nevešly a u Neptunu z vysoké
+  dráhy se překrývaly. Když je koule malá, srovnají se vlevo pod tečnu, kde je
+  volno.
+
 ## [1.7.0] — 2026-08-17
 
 ### Přidáno / Added
@@ -292,6 +327,7 @@ První veřejné vydání. / First public release.
 - **CI** kontrolující výpočty, úplnost překladů a reprodukovatelnost
   vygenerovaného `objects.json`.
 
+[1.8.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.7.0...v1.8.0
 [1.7.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.4.0...v1.5.0
