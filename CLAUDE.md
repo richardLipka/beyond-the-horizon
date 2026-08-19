@@ -298,6 +298,44 @@ vanish silently. That is exactly what happened to every object thumbnail in the
 sidebar. Set `height` explicitly and let `object-fit`/`object-position` place
 the drawing.
 
+**The limits chart reads itself out under the pointer, and that read-out is
+the accurate one.** Both axes are logarithmic, so the shape carries no values
+and near the asymptote a few pixels are several orders of magnitude — the
+numbers have to be computed, not eyeballed. `readOut()` inverts the log-x
+mapping, calls `heightToBeSeen` and lays the pair on both axes. Three things
+are load-bearing:
+
+- `Y()` already clamps at the bottom, so only the top needs clamping; that one
+  line makes `Infinity` past the sight limit land on the frame's top edge with
+  no special case, and `F.distance` prints it as ∞.
+- A **hollow** dot means "the true point is off this scale" and covers three
+  different situations at once: zero before the horizon, below the bottom
+  decade, and finite but above the top one. On the Earth that last band is real
+  — between 9 630 and 10 012 km the required height is finite and larger than
+  the chart's top decade — so it must not be collapsed into the infinite case.
+- The two axis values carry an opaque plate, and both are drawn, measured and
+  only then pushed inside: a value can be any length in either language, and
+  the plate reaches `PLATE_PAD` past the text, so the margin has to hold the
+  plate rather than the text. Where the pointer sits at the far left with the
+  height at zero, the two plates collide; `lift()` moves the vertical axis's
+  one up, because the horizontal axis's tick row is at a fixed y.
+
+The handlers are assigned (`root.onpointermove = …`), not added, so a second
+render of the same node replaces them instead of stacking another one. The
+layer is `pointer-events: none` — otherwise the crosshair sits in the pointer's
+own way — and it is emptied on `pointerleave`, which is also why an exported
+picture never contains a stale read-out.
+
+**The required-height curve starts at the horizon, not at the first sample past
+it.** Just beyond the horizon the height grows quadratically from zero, which
+on a log axis is a near-vertical rise, and sampling in equal steps of the
+logarithm cut off however much of it fell between two samples. It went
+unnoticed until the read-out could be compared against the drawn line: at
+Uranus from 400 km the correct value sat 23 px below where the line began.
+Seeding the path at `X(horizon)` on the bottom axis brings that to 0.4 px, and
+the curve now visibly grows out of the axis exactly where the observer's
+horizon is.
+
 **`derivation.js` renders the two functions on LINEAR axes on purpose.** The
 whole app plots only two curves and they are inverses of one another:
 `D(h₂) = d₁ + R·arccos(R/(R+h₂))` and `h₂(D) = R·(sec((D−d₁)/R) − 1)`. The first

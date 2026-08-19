@@ -36,6 +36,9 @@
   AREA.w = AREA.x1 - AREA.x0;
   AREA.h = AREA.y1 - AREA.y0;
 
+  /** O kolik podklad odecitaneho popisku presahuje text do stran. */
+  const PLATE_PAD = 7;
+
   const decadeBelow = (value) => Math.pow(10, Math.floor(Math.log10(value)));
   const decadeAbove = (value) => Math.pow(10, Math.ceil(Math.log10(value)));
 
@@ -122,7 +125,18 @@
 
       // --- krivka potrebne vysky / the required-height curve ----------------
       const STEPS = 520;
-      let path = '';
+      // Krivka zacina presne na obzoru pozorovatele, ne az u prvniho vzorku za
+      // nim. Tesne za obzorem roste potrebna vyska od nuly kvadraticky, takze
+      // na logaritmicke ose miri skoro svisle vzhuru; vzorkovani po stejnych
+      // dilech logaritmu z toho uselo tolik, ze odectena hodnota lezela az
+      // 23 px pod zacatkem nakreslene cary.
+      //
+      // The curve starts exactly at the observer's horizon rather than at the
+      // first sample beyond it. Just past the horizon the required height
+      // grows quadratically from zero, which on a log axis is a near-vertical
+      // rise; sampling in equal steps of the logarithm cut off enough of it
+      // that the read-out sat as much as 23 px below the drawn line's start.
+      let path = horizon > xMin ? 'M ' + X(horizon).toFixed(2) + ' ' + AREA.y1.toFixed(2) : '';
       for (let i = 0; i <= STEPS; i++) {
         const distance = xMin * Math.pow(xMax / xMin, i / STEPS);
         const required = G.heightToBeSeen(result.eyeHeight, distance, R);
@@ -218,6 +232,119 @@
           text: t('limits.chartY'),
         })
       );
+
+      // --- odecitani ukazovatkem / the pointer read-out ---------------------
+      //
+      // Obe osy jsou logaritmicke, takze z tvaru krivky se cisla precist
+      // nedaji: u asymptoty odpovida par pixelu nekolika radum. Ukazovatko
+      // proto dopocita presnou dvojici k mistu, na ktere se ukazuje, a polozi
+      // ji na obe osy.
+      //
+      // Both axes are logarithmic, so the shape alone does not give the
+      // numbers away - near the asymptote a few pixels are several orders of
+      // magnitude. The pointer therefore computes the exact pair for the spot
+      // being pointed at and lays it on both axes.
+      const hover = svg('g', { class: 'lm-hover' });
+      root.appendChild(hover);
+
+      /**
+       * Hodnota na ose s vlastnim podkladem, aby prekryla rysku pod sebou.
+       * Sirka popisku zavisi na jazyku i na poctu cislic, takze se text
+       * nejdriv vykresli, pak zmeri a teprve potom zasune do obrazku.
+       *
+       * An axis value on its own plate so it covers the decade tick beneath.
+       * The width depends on the language and on how many digits the value
+       * has, so the text is drawn, measured and only then pushed inside.
+       */
+      function plate(x, y, anchor, value) {
+        const label = svg('text', { x: x, y: y, class: 'lm-hover-value', 'text-anchor': anchor, text: value });
+        hover.appendChild(label);
+        let box = label.getBBox();
+        if (!(box.width > 0)) return null;
+        // Do okraje se musi vejit i podklad, ktery text presahuje o PLATE_PAD.
+        // The margin has to hold the plate too, not just the text it wraps.
+        const edge = PLATE_PAD + 4;
+        const shift = Math.max(0, edge - box.x) + Math.min(0, VIEW.w - edge - (box.x + box.width));
+        if (shift) {
+          label.setAttribute('x', x + shift);
+          box = label.getBBox();
+        }
+        const back = svg('rect', {
+          x: box.x - PLATE_PAD,
+          y: box.y - 3,
+          width: box.width + 2 * PLATE_PAD,
+          height: box.height + 6,
+          rx: 5,
+          class: 'lm-hover-plate',
+        });
+        hover.insertBefore(back, label);
+        return { label: label, back: back };
+      }
+
+      /**
+       * U spodniho okraje si oba popisky lezou do cesty. Uhyba ten na svisle
+       * ose, protoze rysky vodorovne osy maji pevny radek. Meri se skutecne
+       * obalky, takze to plati v obou jazycich i pro libovolne dlouhe cislo.
+       *
+       * Near the bottom edge the two labels get in each other's way. The one
+       * on the vertical axis gives way, because the horizontal axis's tick row
+       * is fixed. Measured from the real boxes, so it holds in both languages
+       * and for a value of any length.
+       */
+      function lift(target, other) {
+        if (!target || !other) return;
+        const a = target.back.getBBox();
+        const b = other.back.getBBox();
+        if (a.x + a.width < b.x || b.x + b.width < a.x) return;
+        if (a.y + a.height < b.y || b.y + b.height < a.y) return;
+        const by = a.y + a.height - b.y + 3;
+        target.label.setAttribute('y', Number(target.label.getAttribute('y')) - by);
+        target.back.setAttribute('y', a.y - by);
+      }
+
+      function readOut(px) {
+        HL.dom.clear(hover);
+
+        const distance = Math.min(xMax, Math.max(xMin, xMin * Math.pow(10, ((px - AREA.x0) / AREA.w) * logX)));
+        const required = G.heightToBeSeen(result.eyeHeight, distance, R);
+        const x = X(distance);
+        // Y() si spodni mez orizne sam, horni se orezava tady: za mezi dohledu
+        // vyjde nekonecno a bod ma sednout na horni okraj ramecku.
+        // Y() clamps at the bottom itself; the top is clamped here, so past
+        // the sight limit the infinite value lands on the frame's top edge.
+        const y = Math.max(AREA.y0, Y(required));
+        // Prazdny krouzek znamena "skutecny bod lezi az za okrajem meritka" -
+        // plati pred obzorem (nula), pod spodni dekadou i nad horni.
+        // A hollow dot means the true point is off this scale: before the
+        // horizon (zero), below the bottom decade, and above the top one.
+        const onScale = required >= yMin && required <= yMax;
+
+        hover.appendChild(svg('line', { x1: x, y1: AREA.y0, x2: x, y2: AREA.y1, class: 'lm-hover-line' }));
+        if (onScale) {
+          hover.appendChild(svg('line', { x1: AREA.x0, y1: y, x2: x, y2: y, class: 'lm-hover-line' }));
+        }
+        hover.appendChild(
+          svg('circle', { cx: x, cy: y, r: 5.5, class: onScale ? 'lm-hover-dot' : 'lm-hover-dot lm-hover-out' })
+        );
+
+        const onX = plate(x, AREA.y1 + 24, 'middle', F.distance(distance, lang));
+        lift(plate(AREA.x0 - 10, y + 5, 'end', F.distance(required, lang)), onX);
+      }
+
+      // Prirazenim, ne addEventListener: pri pripadnem druhem vykresleni tehoz
+      // uzlu se posluchac nahradi, misto aby se nabaloval dalsi.
+      // Assigned rather than added, so a second render of the same node
+      // replaces the handler instead of stacking another one on top of it.
+      root.onpointermove = (event) => {
+        const rect = root.getBoundingClientRect();
+        if (!(rect.width > 0) || !(rect.height > 0)) return;
+        const px = ((event.clientX - rect.left) / rect.width) * VIEW.w;
+        const py = ((event.clientY - rect.top) / rect.height) * VIEW.h;
+        if (px < AREA.x0 || px > AREA.x1 || py < AREA.y0 || py > AREA.y1) HL.dom.clear(hover);
+        else readOut(px);
+      };
+      root.onpointerleave = () => HL.dom.clear(hover);
+      root.onpointercancel = () => HL.dom.clear(hover);
     }
 
     function buildTable(state, result) {
@@ -329,7 +456,7 @@
         ])
       );
 
-      const chart = svg('svg', { class: 'chart-svg', xmlns: HL.dom.SVG_NS });
+      const chart = svg('svg', { class: 'chart-svg lm-chart', xmlns: HL.dom.SVG_NS });
       container.appendChild(
         el('section', { class: 'card' }, [
           el('h3', { class: 'card-title card-title-row' }, [
@@ -339,6 +466,7 @@
           chart,
           el('p', { class: 'hint', text: t('limits.curveNote') }),
           el('p', { class: 'hint', text: t('limits.dotsNote') }),
+          el('p', { class: 'hint', text: t('limits.hoverNote') }),
         ])
       );
       renderChart(chart, state, result, object);

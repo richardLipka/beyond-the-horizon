@@ -120,6 +120,15 @@ tělesa není vidět odnikud.
 Obě osy jdou po řádech, objekty z tvého seznamu leží přesně na křivce
 a tabulka vede výšku od člověka až po „nemožné“.
 
+**Najeď do grafu a graf se přečte sám.** Ke sloupci pod ukazovátkem se dopočítá
+přesná dvojice čísel a položí se rovnou na obě osy – vzdálenost dole, potřebná
+výška vlevo – a nitkový kříž s bodem na křivce ukazují, odkud se čte. Není to
+pohodlí navíc: obě osy jsou logaritmické, takže z tvaru křivky se nedá odhadnout
+nic, a u asymptoty odpovídá pár pixelů několika řádům. Prázdný kroužek říká, že
+skutečný bod leží až za okrajem měřítka – před obzorem (nula), nebo nad nejvyšší
+dekádou, kde je potřebná výška pořád konečná, ale do grafu se už nevejde. Za mezí
+dohledu se vypíše ∞.
+
 ### 📐 Geometrie
 
 Totéž pro střední školu, obnažené na konstrukci: tečna se dotýká koule

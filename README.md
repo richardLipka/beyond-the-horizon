@@ -123,6 +123,15 @@ antipode is never visible from anywhere.
 Both axes step by decades, the objects from your list sit exactly on the curve,
 and the table walks the height up from a person to "impossible".
 
+**Point at the chart and it reads itself out.** The exact pair of numbers for
+the column under the pointer is computed and laid straight onto both axes —
+distance along the bottom, required height up the left — with a crosshair and a
+dot on the curve to show where it is taken from. That is not a convenience: both
+axes are logarithmic, so the shape gives nothing away, and near the asymptote a
+few pixels are several orders of magnitude. A hollow dot says the true point
+lies off the scale — before the horizon (zero), or above the top decade, where
+the height is still finite but no longer fits. Past the sight limit it reads ∞.
+
 ### 📐 The geometry
 
 The same thing for high school, stripped to a construction: the tangent touches

@@ -267,6 +267,8 @@
       'limits.curveNote':
         'Obě osy mají násobné měřítko – každý dílek je 10× větší než předchozí. Jinak by se křivka do obrázku nevešla.',
       'limits.dotsNote': 'Tečky jsou objekty z tvého seznamu. Leží přesně na křivce.',
+      'limits.hoverNote':
+        'Najeď myší do grafu a na obou osách se ukáže přesná dvojice čísel: vzdálenost a výška, kterou tam objekt potřebuje. Prázdný kroužek znamená, že skutečná hodnota leží až za okrajem měřítka.',
       'limits.tableTitle': 'Kolik je potřeba',
       'limits.colDistance': 'Vzdálenost',
       'limits.colHeight': 'Potřebná výška',
@@ -601,6 +603,8 @@
       'limits.curveNote':
         'Both axes step by multiples — every division is 10× the one before. Otherwise the curve would not fit on the page.',
       'limits.dotsNote': 'The dots are the objects from your list. They sit exactly on the curve.',
+      'limits.hoverNote':
+        'Point the mouse at the chart and both axes show the exact pair of numbers: the distance, and the height an object needs there. A hollow circle means the true value lies beyond the edge of the scale.',
       'limits.tableTitle': 'What it takes',
       'limits.colDistance': 'Distance',
       'limits.colHeight': 'Required height',

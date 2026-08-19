@@ -3,6 +3,34 @@
 Formát podle [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 verzování podle [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [1.10.0] — 2026-08-19
+
+### Přidáno / Added
+
+- **Odečítání hodnot myší v grafu „Meze viditelnosti“.** Najetím do grafu se
+  ke sloupci pod ukazovátkem dopočítá přesná dvojice čísel a položí se rovnou
+  na obě osy: vzdálenost dole, potřebná výška vlevo. Bod na křivce a nitkový
+  kříž ukazují, odkud se čte. Obě osy jsou logaritmické, takže z tvaru křivky
+  se hodnoty odhadnout nedají – u asymptoty odpovídá pár pixelů několika
+  řádům, a právě tam je odečítání nejvíc potřeba.
+  - Prázdný kroužek říká, že skutečný bod leží až za okrajem měřítka: před
+    obzorem (nula), pod nejnižší dekádou i nad nejvyšší. Číslo se vypíše
+    správně i tehdy – mezi 9 630 a 10 012 km je ze Země potřebná výška
+    konečná, ale nad horní dekádou grafu.
+  - Za mezí dohledu se vypíše ∞.
+  - Popisky mají vlastní podklad, aby přebily rysku pod sebou. Vykreslí se,
+    změří a teprve pak zasunou do obrázku a uhnou si navzájem – délka čísla
+    ani jazyk se dopředu vědět nedají.
+
+### Opraveno / Fixed
+
+- **Křivka potřebné výšky nezačínala na obzoru**, ale až u prvního vzorku za
+  ním. Těsně za obzorem roste potřebná výška od nuly kvadraticky, což je na
+  logaritmické ose skoro svislý start, a vzorkování po stejných dílech
+  logaritmu z něj ukrojilo znatelný kus – u Uranu z výšky 400 km ležela
+  správná hodnota **23 px** pod začátkem nakreslené čáry. Křivka teď vyrůstá
+  ze spodní osy přesně na obzoru pozorovatele; odchylka klesla na 0,4 px.
+
 ## [1.9.0] — 2026-08-19
 
 ### Opraveno / Fixed
@@ -363,6 +391,7 @@ První veřejné vydání. / First public release.
 - **CI** kontrolující výpočty, úplnost překladů a reprodukovatelnost
   vygenerovaného `objects.json`.
 
+[1.10.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.9.0...v1.10.0
 [1.9.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.7.0...v1.8.0
 [1.7.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.6.0...v1.7.0
