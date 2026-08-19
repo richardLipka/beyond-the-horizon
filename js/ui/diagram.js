@@ -72,6 +72,38 @@
   const GLOBE_FROM = 1 / 32;
 
   /**
+   * Od jake vzdalenosti se kresli koule kvuli VZDALENOSTI, ne kvuli vysce.
+   *
+   * Zvetseni vysek proti vzdalenostem neni volne cislo - vychazi z toho, jak
+   * se obsah vejde do ramecku, a s rostouci vzdalenosti samo klesa. Jenze
+   * neklesa k jednicce: na Zemi je pri 1000 km jeste 17,8, pri 6371 km 2,73,
+   * kolem 15 000 km projde jednickou a dal pokracuje pod ni - na protilehlem
+   * bode je obrazek naopak o tretinu STLACENY. Nakreslena krivka je pak vzdy
+   * elipsa, nikdy kruh, prave tam, kde uz je zakriveni samo o sobe zjevne.
+   *
+   * Mez je jeden radian, tedy D = R: vzdalenost po povrchu je stejne dlouha
+   * jako polomer telesa. To uz je "srovnatelne s velikosti telesa" a od te
+   * chvile se kresli cela koule ve skutecnem pomeru. Tetiva mezi obema aktery
+   * pak zabira 171 z 357 pixelu prumeru, takze oba jsou od sebe dobre videt.
+   *
+   * Where the ball is drawn because of the DISTANCE rather than the height.
+   * The stretch of heights against distances is not a free parameter - it
+   * follows from fitting the content into the frame, and it does fall as the
+   * distance grows. It does not fall to one, though: on the Earth it is still
+   * 17.8 at 1000 km and 2.73 at 6371 km, passes one near 15 000 km and keeps
+   * going, so at the antipode the picture is a third SQUASHED instead. The
+   * drawn curve is therefore always an ellipse and never a circle, exactly
+   * where the curvature is obvious on its own.
+   *
+   * The threshold is one radian, that is D = R: the distance along the
+   * surface equals the radius of the body. That is "comparable with the size
+   * of the body", and from there the whole ball is drawn at true proportions.
+   * The chord between the two actors then spans 171 px of the 357 px
+   * diameter, so both are still comfortably apart.
+   */
+  const GLOBE_FROM_ANGLE = 1;
+
+  /**
    * Nejvetsi vyska obrazku v polomerech telesa.
    *
    * Ze stacionarni drahy Venuse (253 polomeru) by teleso ve skutecnem pomeru
@@ -227,8 +259,12 @@
     // cela. / In the chord frame the centre of the body sits on the vertical
     // axis at -R*cos(D/2R) and the surface is a circle of radius R about it;
     // in globe mode the whole of that circle is drawn.
-    const globeMode = Math.max(r.eyeHeight, r.objectHeight) >= R * GLOBE_FROM;
-    const inSpace = r.eyeHeight >= R * GLOBE_FROM;
+    const globeMode =
+      Math.max(r.eyeHeight, r.objectHeight) >= R * GLOBE_FROM || D >= R * GLOBE_FROM_ANGLE;
+    // Kdyz je videt cele teleso, divame se na nej zvenku - pozadi je vesmir.
+    // Once the whole body is in the picture we are looking at it from
+    // outside, so the background is space.
+    const inSpace = globeMode;
     const centreY = -R * Math.cos(frame.half);
 
     let xMin;
@@ -507,19 +543,34 @@
     const bulgeTopY = Y(r.bulge);
     if (chordY - bulgeTopY > 18) {
       const bulgeX = X(0);
+      // Stred tetivy nelezi vzdy uprostred obrazku: kdyz oko odskoci daleko
+      // stranou, posune se az k pravemu okraji a popisek vpravo od nej by
+      // vylezl z ramecku. V tom pripade se popisek prehodi doleva.
+      // The middle of the chord is not always the middle of the picture: with
+      // the eye swung far to the side it ends up near the right edge, where a
+      // label to its right would run out of the frame, so it flips to the left.
+      const bulgeLeft = bulgeX > PLOT.x1 - 150;
+      const bulgeLabelX = bulgeX + (bulgeLeft ? -10 : 10);
+      const bulgeAnchor = bulgeLeft ? 'end' : 'start';
       scene.appendChild(
         verticalDimension(bulgeX, bulgeTopY, chordY, 'dg-dim dg-dim-bulge', null)
       );
       scene.appendChild(
-        text(bulgeX + 10, (bulgeTopY + chordY) / 2 - 4, t('diagram.bulge'), 'dg-small dg-halo', 'start')
+        text(
+          bulgeLabelX,
+          (bulgeTopY + chordY) / 2 - 4,
+          t('diagram.bulge'),
+          'dg-small dg-halo',
+          bulgeAnchor
+        )
       );
       scene.appendChild(
         text(
-          bulgeX + 10,
+          bulgeLabelX,
           (bulgeTopY + chordY) / 2 + 14,
           F.height(r.bulge, lang),
           'dg-dim-label dg-halo',
-          'start'
+          bulgeAnchor
         )
       );
     }
@@ -657,22 +708,37 @@
     // both enter the frame together anyway.
     const mastDx = eyeP.x - obsBaseP.x;
     const mastDy = eyeP.y - obsBaseP.y;
-    let mastReach = 1;
-    if (eyePixelHeight > 0) {
-      // Kde stozar opousti bezpecnou cast ramecku - shora nebo do strany.
-      // Where the mast leaves the safe part of the frame, upwards or sideways.
+    // Lezi oko vubec v obrazku? Prosty test bodu - odvozovat to az z orezani
+    // postavicky by falesne chytalo i bezne pripady, kde je postavicka velka
+    // a jen se dotyka okraje.
+    // Is the eye in the picture at all? A plain point test: deriving it from
+    // the clamping below would also catch ordinary cases where the figure is
+    // simply large and grazes the edge.
+    const eyeOffPicture =
+      eyeP.x < PLOT.x0 || eyeP.x > PLOT.x1 || eyeP.y < PLOT.y0 || eyeP.y > PLOT.y1;
+    if (eyeOffPicture && eyePixelHeight > 0) {
+      // Postavicka se zastavi tam, kde stozar opousti ramecek. Odstup musi
+      // pocitat s jeji velikosti: rozkroci se od nohou po smeru stozaru, a ten
+      // v techto pripadech miri skoro vodorovne - u vysoke drahy Mesice ve
+      // trech polomerech vzdalenosti utikalo oko doleva a postavicka lezela.
+      // The figure stops where the mast leaves the frame. The margin has to
+      // allow for its size: it stands away from its feet along the mast, and
+      // in these cases the mast runs almost horizontally - from the Moon's
+      // high orbit at three radii of distance the eye ran off to the left and
+      // the figure lay on its side over the edge.
+      const room = figureHeight + 12;
       const hit = (limit, delta, from) => {
         if (Math.abs(delta) < 1e-9) return 1;
         const t = (limit - from) / delta;
         return t > 0 ? t : 1;
       };
-      if (mastDy < 0) mastReach = Math.min(mastReach, hit(PLOT.y0 + GLOBE_TOP_ROOM, mastDy, obsBaseP.y));
-      if (mastDx < 0) mastReach = Math.min(mastReach, hit(PLOT.x0 + 20, mastDx, obsBaseP.x));
-      if (mastDx > 0) mastReach = Math.min(mastReach, hit(PLOT.x1 - 20, mastDx, obsBaseP.x));
-      mastReach = clampTo(mastReach, 0, 1);
-      figureLift = Math.min(figureLift, mastReach * eyePixelHeight);
+      let reach = 1;
+      if (mastDy < 0) reach = Math.min(reach, hit(PLOT.y0 + room, mastDy, obsBaseP.y));
+      if (mastDy > 0) reach = Math.min(reach, hit(PLOT.y1 - room, mastDy, obsBaseP.y));
+      if (mastDx < 0) reach = Math.min(reach, hit(PLOT.x0 + room, mastDx, obsBaseP.x));
+      if (mastDx > 0) reach = Math.min(reach, hit(PLOT.x1 - room, mastDx, obsBaseP.x));
+      figureLift = Math.min(figureLift, clampTo(reach, 0, 1) * eyePixelHeight);
     }
-    const eyeOffPicture = mastReach < 1 - 1e-9;
 
     if (figureLift > 0 || figureHeight > idealFigure + 1) {
       scene.appendChild(line(obsBaseP.x, obsBaseP.y, eyeP.x, eyeP.y, 'dg-pole'));
@@ -706,7 +772,7 @@
     scene.appendChild(
       text(
         clampTo(feetX, PLOT.x0 + 22, PLOT.x1 - 22),
-        clampTo(feetY + 26, PLOT.y0 + 14, PLOT.y1 - 8),
+        clampTo(feetY + 26, PLOT.y0 + 22, PLOT.y1 - 8),
         t('diagram.you'),
         'dg-you dg-halo'
       )
@@ -738,9 +804,33 @@
       const hp = frame.point(r.horizon, 0);
       const hx = X(hp.x);
       const hy = Y(hp.y);
+      // Ryska ma trcet VEN z povrchu. Na kouli je to smer od stredu - bod
+      // dotyku muze lezet kdekoli po obvodu, treba na boku nebo skoro na
+      // vrcholu, a ryska mirici vzdy vzhuru by z obrazku vylezla. U ploche
+      // krivky vyjde tentyz smer nahoru jako driv.
+      // The tick should stick OUT of the surface: away from the centre on the
+      // ball, where the tangency point can sit anywhere round the limb and a
+      // tick pointing always upwards would leave the frame. On a flat curve
+      // that same direction comes out as up, exactly as before.
+      let outX = 0;
+      let outY = -1;
+      if (globeMode) {
+        const dx = hx - X(0);
+        const dy = hy - Y(centreY);
+        const len = Math.hypot(dx, dy) || 1;
+        outX = dx / len;
+        outY = dy / len;
+      }
       scene.appendChild(svg('circle', { cx: hx, cy: hy, r: 6, class: 'dg-horizon-dot' }));
-      scene.appendChild(line(hx, hy, hx, hy - 34, 'dg-horizon-tick'));
-      scene.appendChild(text(hx, hy - 42, t('diagram.horizon'), 'dg-label dg-halo'));
+      scene.appendChild(line(hx, hy, hx + outX * 34, hy + outY * 34, 'dg-horizon-tick'));
+      scene.appendChild(
+        text(
+          clampTo(hx + outX * 42, PLOT.x0 + 30, PLOT.x1 - 30),
+          clampTo(hy + outY * 42, PLOT.y0 + 22, PLOT.y1 - 8),
+          t('diagram.horizon'),
+          'dg-label dg-halo'
+        )
+      );
     }
 
     // ---- kotovani vysek u objektu / object height dimensions -------------
@@ -791,16 +881,30 @@
     // upozorneni, ze uz nejde o vysku, ale o principialni mez
     // a note that this is no longer about height but about a hard limit
     if (r.beyondReach) {
-      const warnRight = baseP.x > PLOT.x1 - 150;
-      scene.appendChild(
-        text(
-          warnRight ? PLOT.x1 - 10 : baseP.x,
-          Math.max(PLOT.y0 + 22, Math.min(topP.y, baseP.y) - 30),
-          t('diagram.beyondReach'),
-          'dg-warn dg-halo',
-          warnRight ? 'end' : 'middle'
-        )
+      // Varovani je dlouha veta a v kazdem jazyce jinak dlouha, takze se
+      // nejdrive vykresli na stred objektu, zmeri a teprve pak zasune do
+      // ramecku. Pevny odstup 150 px nestacil: objekt muze stat kdekoli.
+      // The warning is a long sentence, of a different length in each
+      // language, so it is drawn over the object first, measured, and only
+      // then pushed inside the frame; a fixed 150 px offset was not enough
+      // because the object can stand anywhere.
+      const warn = text(
+        baseP.x,
+        Math.max(PLOT.y0 + 22, Math.min(topP.y, baseP.y) - 30),
+        t('diagram.beyondReach'),
+        'dg-warn dg-halo',
+        'middle'
       );
+      scene.appendChild(warn);
+      try {
+        const box = warn.getBBox();
+        if (box.width > 0) {
+          const half = box.width / 2;
+          warn.setAttribute('x', clampTo(baseP.x, PLOT.x0 + half + 6, PLOT.x1 - half - 6));
+        }
+      } catch (e) {
+        /* obrazek jeste neni vykresleny / not laid out yet */
+      }
     }
     if (r.distance >= r.antipode * 0.999) {
       scene.appendChild(
@@ -815,15 +919,27 @@
     // mast stands nearly upright; from orbit it leans hard and a vertical line
     // beside it would measure something else, so the eye just gets a label.
     const eyeLabel = `${t('diagram.eye')}: ${F.height(r.eyeHeight, lang)}`;
-    if (eyePixelHeight > 14 && Math.abs(eyeP.x - obsBaseP.x) < 26) {
+    // Kota nesmi vzniknout ani tehdy, kdyz oko lezi mimo obrazek: cara by
+    // vedla od neceho, co neni videt, a popisek uprostred by skoncil stovky
+    // pixelu nad rameckem.
+    // Nor may the dimension be drawn when the eye lies outside the picture:
+    // the line would start from something invisible and its middle label would
+    // land hundreds of pixels above the frame.
+    if (eyePixelHeight > 14 && Math.abs(eyeP.x - obsBaseP.x) < 26 && !eyeOffPicture) {
       scene.appendChild(
         verticalDimension(obsBaseP.x + 30, eyeP.y, obsBaseP.y, 'dg-dim dg-dim-eye', eyeLabel, 'right')
       );
     } else {
+      // Popisek patri k oku, ale oko muze lezet daleko mimo obrazek - pri
+      // vysoke draze a velke vzdalenosti az sestnact polomeru vlevo. Drzi se
+      // proto uvnitr ramecku v obou smerech, ne jen svisle.
+      // The label belongs to the eye, but the eye can lie far outside the
+      // picture - sixteen radii to the left with a high orbit and a large
+      // distance - so it is kept inside the frame in both directions.
       scene.appendChild(
         text(
-          eyeP.x + 16,
-          clampTo(eyeP.y - 10, PLOT.y0 + 14, PLOT.y1 - 8),
+          clampTo(eyeP.x + 16, PLOT.x0 + 10, PLOT.x1 - 150),
+          clampTo(eyeP.y - 10, PLOT.y0 + 22, PLOT.y1 - 8),
           eyeLabel,
           'dg-dim-label dg-halo',
           'start'

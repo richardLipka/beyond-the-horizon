@@ -92,6 +92,14 @@ z oběžné dráhy je **α přes osmdesát stupňů a kreslí se ve skutečné v
 zatímco se místo něj zmenší koule – místo aby se úhel stlačil zpátky na 41°, jak
 to bylo dřív. Popisek pod obrázkem pokaždé řekne, která z těch dvou věcí platí.
 
+Velikost není jen výška, ale i vzdálenost. Zvětšení s rostoucí vzdáleností sice
+klesá, ale ne k jedničce – na Zemi je při 6371 km pořád 2,7×, kolem 15 000 km
+projde jedničkou a pokračuje dál, takže na protilehlém bodě vycházel obrázek
+o třetinu *stlačený*. Nakreslená křivka byla elipsa na obě strany a nikdy kruh.
+Koule se proto kreslí i tehdy, když **vzdálenost po povrchu dosáhne jednoho
+poloměru** – přesně to znamená „srovnatelné s velikostí tělesa“. Proložením
+nejlepší kružnicí vychází nakreslená cesta jako kruh s odchylkou do 0,01 px.
+
 ### 🌊 Kdy zmizí?
 
 Vzdálenost, ve které objekt úplně zmizí, ukázaná i jako součet, ze kterého

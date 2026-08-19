@@ -155,6 +155,21 @@ coin. The threshold is 1/32 and not the 1/16 that defines the low orbit,
 because the low orbit's altitude is rounded to whole kilometres and landed
 just under it.
 
+**The ball is drawn for a long DISTANCE as well as for a high observer.** The
+stretch between the two axes is not a free parameter — it comes from fitting the
+content into the frame — and it does fall as the distance grows, but it does not
+fall *to* one. On the Earth it is still 17.8 at 1000 km and 2.73 at 6371 km,
+passes one near 15 000 km and keeps going, so at the antipode the picture is a
+third *squashed* instead. The drawn curve was therefore always an ellipse and
+never a circle, precisely where the curvature is obvious on its own. The second
+trigger is `D >= R` (`GLOBE_FROM_ANGLE`, one radian of arc): the distance along
+the surface equals the radius, which is what "comparable with the size of the
+body" means. Measured with a least-squares circle fit, the drawn path is then a
+circle to within 0.01 px; below the threshold it deviates by 28–37 px.
+
+`inSpace` follows `globeMode`, not the eye height: once the whole body is in
+the picture we are looking at it from outside, so the background is space.
+
 Framing in globe mode: include the eye while the picture stays within
 `MAX_SPAN_RADII` (9) of the body, otherwise drop it from the bounds entirely
 and close in on the body — Venus's stationary orbit is 253 radii up and framing
@@ -164,6 +179,18 @@ the eye dot is not drawn, but **the line of sight is still built from the eye's
 true position**: shift it and it stops being a tangent, which is the whole point
 of the picture. At the heights where this happens the mast and the ray are only
 a few degrees apart, so they enter the frame together anyway.
+
+Everything that hangs off a point of the geometry needs a bounds check once the
+frame can be dominated by an off-picture eye: the horizon tick points *outward*
+from the centre rather than always up (the tangency point can sit anywhere round
+the limb), the bulge label flips to the left of its dimension when the chord's
+midpoint drifts near the right edge, the eye-height dimension is skipped
+entirely when the eye is off-picture (its middle label landed a thousand pixels
+above the frame), and the beyond-reach warning is drawn, measured and *then*
+pushed inside — a fixed offset cannot work when the object may stand anywhere
+and the sentence differs per language. Clamps that hold a text baseline inside
+the frame need about 22 px of headroom, not 14: the glyph box reaches roughly
+20 px above the baseline.
 
 The ruler's labels are skipped when they come within 58 px of the previous one.
 The horizontal scale in globe mode is a projection, not a linear axis, so the

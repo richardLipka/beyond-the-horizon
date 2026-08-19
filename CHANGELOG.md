@@ -3,6 +3,42 @@
 Formát podle [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 verzování podle [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [1.9.0] — 2026-08-19
+
+### Opraveno / Fixed
+
+- **Nakreslená křivka nikdy nebyla kruh, ani když měla být.** Kouli spouštěla
+  jen VÝŠKA pozorovatele, ne vzdálenost. Zvětšení výšek proti vzdálenostem sice
+  s rostoucí vzdáleností klesá, ale ne k jedničce: na Zemi je při 1000 km ještě
+  17,8×, při 6371 km 2,73×, kolem 15 000 km projde jedničkou a pokračuje dál –
+  na protilehlém bodě vycházel obrázek o třetinu **stlačený**. Tvar byl tedy
+  vždycky elipsa, a to právě tam, kde už je zakřivení samo o sobě zjevné.
+  Koule se nově kreslí i tehdy, když **vzdálenost po povrchu dosáhne jednoho
+  poloměru tělesa** (jeden radián oblouku) – přesně to znamená „srovnatelné
+  s velikostí tělesa“. Proložením nejlepší kružnice vychází nakreslená cesta
+  jako kruh s odchylkou do **0,01 px**; pod mezí se od kruhu lišila o 28 až
+  37 px.
+- Pozadí je vesmír vždy, když je v obrázku celé těleso: díváme se na ně zvenku.
+  Dřív se řídilo jen výškou pozorovatele.
+
+Popisky, které visely na bodech konstrukce, potřebovaly kontrolu mezí, jakmile
+rámečku začalo vládnout oko mimo obrázek:
+
+- Ryska obzoru mířila vždy vzhůru, jenže na kouli může bod dotyku ležet kdekoli
+  po obvodu – teď trčí **ven z povrchu**, tedy směrem od středu.
+- Popisek vyboulení se překlopí doleva, když střed tětivy dojede k pravému
+  okraji.
+- Kóta výšky očí se vůbec nekreslí, když je oko mimo obrázek; její popisek
+  uprostřed končil tisíc pixelů nad rámečkem.
+- Varování „za hranicí dohledu“ se vykreslí, změří a **teprve pak** zasune do
+  rámečku: pevný odstup nemohl stačit, když objekt může stát kdekoli a věta je
+  v každém jazyce jinak dlouhá.
+- Postavička se u okraje zastavuje s odstupem podle **své vlastní velikosti** –
+  u vysoké dráhy Měsíce míří stožár skoro vodorovně a postavička ležela přes
+  okraj.
+- Ořezání popisků k hornímu okraji potřebuje 22 px, ne 14: obálka písma sahá
+  asi 20 px nad účaří.
+
 ## [1.8.0] — 2026-08-18
 
 ### Změněno / Changed
@@ -327,6 +363,7 @@ První veřejné vydání. / First public release.
 - **CI** kontrolující výpočty, úplnost překladů a reprodukovatelnost
   vygenerovaného `objects.json`.
 
+[1.9.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.7.0...v1.8.0
 [1.7.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.5.0...v1.6.0

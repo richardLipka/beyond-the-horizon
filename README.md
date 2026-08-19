@@ -95,6 +95,14 @@ are small; from orbit **α is over eighty degrees and is now drawn at its real
 size**, with the ball scaled down to make room, instead of being squeezed back
 to 41° as it used to be. The caption says which of the two is happening.
 
+Distance counts as a size too. The stretch does fall as the object moves away,
+but it does not fall *to* one — on the Earth it is still 2.7× at 6371 km, passes
+one near 15 000 km and keeps going, so at the antipode the picture came out a
+third *squashed*. The drawn curve was an ellipse in both directions and never a
+circle. So the ball is also drawn once **the distance along the surface reaches
+one radius**, which is what "comparable with the size of the body" means. Fitted
+with a least-squares circle, the drawn path is then a circle to within 0.01 px.
+
 ### 🌊 When does it vanish?
 
 The distance at which an object disappears completely, shown as the sum that
