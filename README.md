@@ -110,6 +110,12 @@ produces it (`your horizon + horizon from the object's top`), a chart of visible
 height against distance with three coloured bands, a step-by-step table, and a
 clickable comparison of every object in the data file.
 
+The chart reads itself out under the pointer, the same way the *Limits of sight*
+one does: distance along the bottom, how much of the object still shows up the
+left. The reason differs — here the axes are linear, but everything interesting
+happens between your horizon and the vanishing point, and with a tall observer
+that is a couple of per cent of the chart's width.
+
 ### ♾️ Limits of sight
 
 However high you climb you only ever see **one half of the body** — a quarter of
@@ -346,6 +352,7 @@ js/core/            geometry · format · store · dom
 js/i18n/            strings (cs + en) · language switching
 js/data/            factory fallback (generated) · loading & validation · planet presets
 js/ui/              diagram · telescope · chart · controls · results · vanish · limits · editor
+                    shared by several views: export · readout
 js/app.js           wires state to views
 
 tools/svg/          editable source drawings

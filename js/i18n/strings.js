@@ -242,6 +242,8 @@
       'vanish.bandFull': 'celý vidět',
       'vanish.bandPartial': 'část schovaná',
       'vanish.bandHidden': 'neviditelný',
+      'vanish.hoverNote':
+        'Najeď myší do grafu a na obou osách se ukáže přesná dvojice čísel: vzdálenost a kolik z objektu je v ní ještě vidět.',
       'vanish.tableTitle': 'Tabulka po krocích',
       'vanish.colDistance': 'Vzdálenost',
       'vanish.colHidden': 'Schováno',
@@ -578,6 +580,8 @@
       'vanish.bandFull': 'fully visible',
       'vanish.bandPartial': 'partly hidden',
       'vanish.bandHidden': 'invisible',
+      'vanish.hoverNote':
+        'Point the mouse at the chart and both axes show the exact pair of numbers: the distance, and how much of the object still shows at it.',
       'vanish.tableTitle': 'Step by step',
       'vanish.colDistance': 'Distance',
       'vanish.colHidden': 'Hidden',

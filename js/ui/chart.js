@@ -207,6 +207,33 @@
         text: t('vanish.chartY'),
       })
     );
+
+    // ---- odecitani ukazovatkem / the pointer read-out ----------------------
+    // Zajimavy usek lezi mezi obzorem a zmizenim a pri vysokem pozorovateli je
+    // to jen par procent sirky grafu - odtud se vzdalenost okem neodhadne.
+    // The interesting stretch lies between the horizon and the vanishing
+    // point, and with a tall observer that is a couple of per cent of the
+    // chart's width: no eye reads a distance off that.
+    HL.ReadOut.attach(root, {
+      view: VIEW,
+      area: AREA,
+      sample: (px) => {
+        const distance = Math.min(maxDistance, Math.max(0, ((px - AREA.x0) / AREA.w) * maxDistance));
+        const hidden = G.hiddenHeight(r.eyeHeight, distance, r.R);
+        const visible = Math.max(0, objectHeight - (isFinite(hidden) ? hidden : Infinity));
+        return {
+          x: X(distance),
+          y: Y(visible),
+          // Viditelna vyska nikdy nevypadne z rozsahu: lezi vzdy mezi nulou
+          // a vyskou objektu, tedy presne mezi spodni a horni hranou ramecku.
+          // The visible height never leaves the range: it always lies between
+          // zero and the object's height, which is exactly the frame.
+          onScale: true,
+          xLabel: F.distance(distance, lang),
+          yLabel: F.height(visible, lang),
+        };
+      },
+    });
   }
 
   HL.Chart = { render, VIEW };

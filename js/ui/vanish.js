@@ -171,7 +171,7 @@
       );
 
       // graf / chart
-      chartSvg = svg('svg', { class: 'chart-svg', xmlns: HL.dom.SVG_NS });
+      chartSvg = svg('svg', { class: 'chart-svg rd-chart', xmlns: HL.dom.SVG_NS });
       container.appendChild(
         el('section', { class: 'card' }, [
           el('h3', { class: 'card-title card-title-row' }, [
@@ -179,6 +179,7 @@
             HL.Exporter.buttons(() => chartSvg, 'za-obzorem-graf-zmizeni'),
           ]),
           chartSvg,
+          el('p', { class: 'hint', text: t('vanish.hoverNote') }),
         ])
       );
       HL.Chart.render(chartSvg, { result: result, object: object });

@@ -65,7 +65,7 @@ core/     geometry, format, store, dom   — no DOM knowledge above geometry, no
 i18n/     strings + language switching
 data/     load / validate / save objects.json (+ factory fallback), planet presets
 ui/       diagram, telescope, chart, controls, results, vanish, limits,
-          geometry-view, editor
+          geometry-view, editor, and two shared utilities (export, readout)
 app.js    the only place that wires state to views
 ```
 
@@ -298,27 +298,39 @@ vanish silently. That is exactly what happened to every object thumbnail in the
 sidebar. Set `height` explicitly and let `object-fit`/`object-position` place
 the drawing.
 
-**The limits chart reads itself out under the pointer, and that read-out is
-the accurate one.** Both axes are logarithmic, so the shape carries no values
-and near the asymptote a few pixels are several orders of magnitude — the
-numbers have to be computed, not eyeballed. `readOut()` inverts the log-x
-mapping, calls `heightToBeSeen` and lays the pair on both axes. Three things
-are load-bearing:
+**Both charts read themselves out under the pointer, through one shared
+module.** `readout.js` is a ui-level utility consumed by sibling ui modules,
+the same arrangement `export.js` already uses — it is the one exception to
+"UI modules never talk to each other", and it earns it: the drawing, the label
+bounds and the listeners are identical for both charts, only the maths differs.
+The caller passes `sample(px)` returning `{x, y, onScale, xLabel, yLabel}` and
+nothing else. Neither chart may reach past it to draw its own crosshair.
 
-- `Y()` already clamps at the bottom, so only the top needs clamping; that one
-  line makes `Infinity` past the sight limit land on the frame's top edge with
-  no special case, and `F.distance` prints it as ∞.
+Why each chart needs it differs, and both reasons are real. In *limits* both
+axes are logarithmic, so the shape carries no values at all and near the
+asymptote a few pixels are several orders of magnitude. In *vanish* the axes
+are linear, but everything interesting happens between the horizon and the
+vanishing point, which with a tall observer is a couple of per cent of the
+width.
+
+Load-bearing details:
+
+- In *limits*, `Y()` already clamps at the bottom, so `sample` clamps only the
+  top; that one line makes `Infinity` past the sight limit land on the frame's
+  top edge with no special case, and `F.distance` prints it as ∞.
 - A **hollow** dot means "the true point is off this scale" and covers three
-  different situations at once: zero before the horizon, below the bottom
-  decade, and finite but above the top one. On the Earth that last band is real
-  — between 9 630 and 10 012 km the required height is finite and larger than
-  the chart's top decade — so it must not be collapsed into the infinite case.
-- The two axis values carry an opaque plate, and both are drawn, measured and
-  only then pushed inside: a value can be any length in either language, and
-  the plate reaches `PLATE_PAD` past the text, so the margin has to hold the
-  plate rather than the text. Where the pointer sits at the far left with the
-  height at zero, the two plates collide; `lift()` moves the vertical axis's
-  one up, because the horizontal axis's tick row is at a fixed y.
+  situations at once: zero before the horizon, below the bottom decade, and
+  finite but above the top one. On the Earth that last band is real — between
+  9 630 and 10 012 km the required height is finite and larger than the chart's
+  top decade — so it must not be collapsed into the infinite case. The vanish
+  chart never shows it: its visible height is always between zero and the
+  object's height, which is exactly the frame.
+- Both axis values carry an opaque plate, drawn, measured and only then pushed
+  inside: a value can be any length in either language, and the plate reaches
+  `PLATE_PAD` past the text, so the margin has to hold the plate rather than
+  the text. Where the two plates collide near the bottom-left corner, `lift()`
+  moves the vertical axis's one up, because the horizontal axis's tick row is
+  at a fixed y.
 
 The handlers are assigned (`root.onpointermove = …`), not added, so a second
 render of the same node replaces them instead of stacking another one. The

@@ -560,43 +560,45 @@
   stroke-linejoin: round;
 }
 
-/* Odecitani ukazovatkem. Vrstva nesmi chytat udalosti, jinak by si nitkovy
-   kriz stal sam sobe v ceste. / The read-out layer must not catch events,
-   or the crosshair would sit in the pointer's own way. */
-.lm-chart {
+/* --- odecitani ukazovatkem / the pointer read-out -------------------------- */
+
+/* Vrstva nesmi chytat udalosti, jinak by si nitkovy kriz stal sam sobe
+   v ceste. / The layer must not catch events, or the crosshair would sit in
+   the pointer's own way. */
+.rd-chart {
   cursor: crosshair;
 }
 
-.lm-hover {
+.rd-layer {
   pointer-events: none;
 }
 
-.lm-hover-line {
+.rd-line {
   stroke: var(--deep-800);
   stroke-width: 1.5;
   stroke-dasharray: 5 4;
   opacity: 0.7;
 }
 
-.lm-hover-dot {
+.rd-dot {
   fill: var(--deep-800);
   stroke: #fff;
   stroke-width: 2.5;
 }
 
 /* Prazdny krouzek: skutecny bod lezi za okrajem meritka. */
-.lm-hover-out {
+.rd-dot-out {
   fill: #fff;
   stroke: var(--deep-800);
 }
 
-.lm-hover-plate {
+.rd-plate {
   fill: var(--paper);
   stroke: var(--deep-800);
   stroke-width: 1.2;
 }
 
-.lm-hover-value {
+.rd-value {
   font-size: 14px;
   font-weight: 700;
   fill: var(--deep-900);

@@ -3,6 +3,28 @@
 Formát podle [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 verzování podle [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [1.11.0] — 2026-08-19
+
+### Přidáno / Added
+
+- **Odečítání hodnot myší i v grafu „Kdy zmizí?“.** Stejné jako v mezích
+  viditelnosti: najetím do grafu se ke sloupci pod ukazovátkem dopočítá přesná
+  dvojice a položí se na obě osy – vzdálenost dole, kolik z objektu je v ní
+  ještě vidět vlevo. Tady to není kvůli logaritmickým osám, ale kvůli tomu, že
+  zajímavý úsek leží mezi obzorem a zmizením a při vysokém pozorovateli je to
+  jen pár procent šířky grafu.
+  - Viditelná výška z rozsahu nikdy nevypadne (leží mezi nulou a výškou
+    objektu, tedy přesně mezi spodní a horní hranou rámečku), takže se tu
+    prázdný kroužek nikdy neobjeví.
+
+### Změněno / Changed
+
+- Odečítání se přestěhovalo do vlastního modulu `js/ui/readout.js`, který si
+  oba grafy sdílejí – stejně, jako už sdílejí `export.js`. Volající dodává
+  jedinou funkci `sample(px)`, která ze sloupce udělá bod a jeho dva popisky;
+  kreslení, meze popisků i posluchače řeší modul. Kdyby se odečítání někdy
+  hodilo i do grafů v režimu Geometrie, je to jedno volání.
+
 ## [1.10.0] — 2026-08-19
 
 ### Přidáno / Added
@@ -391,6 +413,7 @@ První veřejné vydání. / First public release.
 - **CI** kontrolující výpočty, úplnost překladů a reprodukovatelnost
   vygenerovaného `objects.json`.
 
+[1.11.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.10.0...v1.11.0
 [1.10.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.9.0...v1.10.0
 [1.9.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.7.0...v1.8.0

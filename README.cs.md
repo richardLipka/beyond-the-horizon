@@ -107,6 +107,11 @@ vzniká (`tvůj obzor + obzor od špičky objektu`), graf viditelné výšky pod
 vzdálenosti se třemi barevnými pásmy, tabulka po krocích a klikací srovnání
 všech objektů v datovém souboru.
 
+I tenhle graf se dá číst ukazovátkem, stejně jako ten v *Mezích viditelnosti*:
+vzdálenost dole, kolik z objektu je v ní ještě vidět vlevo. Důvod je jiný – osy
+jsou tu lineární, jenže všechno zajímavé se děje mezi obzorem a zmizením, a při
+vysokém pozorovateli je to jen pár procent šířky grafu.
+
 ### ♾️ Meze viditelnosti
 
 Ať vylezeš jakkoli vysoko, uvidíš vždycky jen **polovinu tělesa** – čtvrtinu
@@ -341,6 +346,7 @@ js/core/            geometry · format · store · dom
 js/i18n/            texty (cs + en) · přepínání jazyka
 js/data/            tovární záloha (generováno) · načítání a kontrola · předvolby těles
 js/ui/              diagram · telescope · chart · controls · results · vanish · limits · editor
+                    sdílené více pohledy: export · readout
 js/app.js           propojení stavu s pohledy
 
 tools/svg/          zdrojové kresby k úpravám
