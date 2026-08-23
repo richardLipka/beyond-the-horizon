@@ -3,6 +3,36 @@
 Formát podle [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 verzování podle [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [1.11.1] — 2026-08-19
+
+### Opraveno / Fixed
+
+- **Poznámka pod tabulkou rozhledů tvrdila něco, co v aplikaci neplatí.** Stálo
+  v ní, že se zapnutou refrakcí „vzdálenosti vycházejí asi o 8 % větší“. To
+  popisovalo chybu opravenou už ve verzi 1.6.0: vzdálenost mezi dvěma místy se
+  počítá ze zeměpisných souřadnic se skutečným poloměrem Země a přepínačem se
+  nehne ani o metr. O 8 % se prodlouží **dohled**, ne vzdálenost. Proměřeno:
+  ze čtrnácti řádků nezměnila vzdálenost ani jedna, dohled narostl přesně
+  o 8,0 % a překlopil se jeden verdikt.
+
+### Změněno / Changed
+
+- **Přepsané texty v obou jazycích.** Kratší věty vedle delších, činný rod
+  místo trpného, žádné výplňové trojice.
+  - „o kolik je obzor níž než vodorovno“ → „o kolik obzor klesá pod vodorovnou
+    rovinu“; „Všechny výpočty počítají…“ → „Všechny výpočty berou těleso jako…“
+    (výpočty nepočítají, počítá se v nich).
+  - „Ležím na pláži“ → „Vleže na pláži“, aby stanoviště byla jednotná.
+  - Anglicky: `A child`/`A grown-up` → `Child`/`Grown-up`, `Airplane` →
+    `Aeroplane` (zbytek textů je v britské angličtině), rovné apostrofy
+    nahradily typografické, `a.s.l.` se rozepsalo na `above sea level`.
+  - Zajímavosti u objektů: „Ze základny vidí západ slunce…“ dostalo podmět,
+    „Měříme ke špičce vrtule nahoru“ dává smysl, u Sněžky zmizelo „výška
+    znamená výšku“, u Olympu Mons „planetu → planetě“ (Mars je planeta, ale
+    deset z jedenácti těles v nabídce ne).
+  - `Mount Sněžka` → `Sněžka` a `the Matterhorn` → `Matterhorn`: ostatní vrcholy
+    v tabulce člen ani „Mount“ nemají.
+
 ## [1.11.0] — 2026-08-19
 
 ### Přidáno / Added
@@ -413,6 +443,7 @@ První veřejné vydání. / First public release.
 - **CI** kontrolující výpočty, úplnost překladů a reprodukovatelnost
   vygenerovaného `objects.json`.
 
+[1.11.1]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.11.0...v1.11.1
 [1.11.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.10.0...v1.11.0
 [1.10.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.9.0...v1.10.0
 [1.9.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.8.0...v1.9.0

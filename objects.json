@@ -147,7 +147,7 @@
       "baseline": "sea",
       "defaultDistance": 40000,
       "fact": {
-        "cs": "Největší kontejnerové lodě uvezou přes 20 000 kontejnerů a s naskládaným nákladem měří přes 60 metrů.",
+        "cs": "Největší kontejnerové lodě uvezou přes 20 000 kontejnerů. S naskládaným nákladem čnějí přes 60 metrů nad hladinu.",
         "en": "The biggest container ships carry over 20,000 containers and stand more than 60 metres above the water."
       },
       "aspect": 3.2,
@@ -165,7 +165,7 @@
       "defaultDistance": 35000,
       "fact": {
         "cs": "Petřínská rozhledna v Praze je menší sestra Eiffelovky – měří 63,5 m a stojí na kopci.",
-        "en": "Prague's Petřín tower is the Eiffel Tower's little sister – 63.5 m tall, standing on a hill."
+        "en": "Prague’s Petřín tower is the Eiffel Tower’s little sister – 63.5 m tall, standing on a hill."
       },
       "aspect": 0.5,
       "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCAxMDAiPjxjbGlwUGF0aCBpZD0icHRTaGFwZSI+PHBhdGggZD0iTTUgMTAwIDE3IDI0aDE2bDEyIDc2WiIvPjwvY2xpcFBhdGg+PGcgY2xpcC1wYXRoPSJ1cmwoI3B0U2hhcGUpIiBzdHJva2U9IiMyYjZkOGMiIHN0cm9rZS13aWR0aD0iMS44IiBmaWxsPSJub25lIj48cGF0aCBkPSJNMCAyNiA1MCA0ME01MCAyNiAwIDQwTTAgNDAgNTAgNTRNNTAgNDAgMCA1NE0wIDU0IDUwIDY4TTUwIDU0IDAgNjhNMCA2OCA1MCA4Mk01MCA2OCAwIDgyTTAgODIgNTAgOTZNNTAgODIgMCA5NiIvPjxwYXRoIGQ9Ik0wIDQwaDUwTTAgNTRoNTBNMCA2OGg1ME0wIDgyaDUwTTAgOTZoNTAiIHN0cm9rZS13aWR0aD0iMS40Ii8+PC9nPjxwYXRoIGQ9Ik01IDEwMCAxNyAyNGgxNmwxMiA3NloiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE0NDI1YyIgc3Ryb2tlLXdpZHRoPSIzIi8+PHJlY3QgeD0iOSIgeT0iMTgiIHdpZHRoPSIzMiIgaGVpZ2h0PSI2IiByeD0iMS41IiBmaWxsPSIjMTQ0MjVjIi8+PHJlY3QgeD0iMTYiIHk9IjEwIiB3aWR0aD0iMTgiIGhlaWdodD0iOCIgZmlsbD0iI2Y3ZjJlNiIvPjxwYXRoIGQ9Ik0xNCAxMCAyNSAzIDM2IDEwWiIgZmlsbD0iI2UyNzI1YiIvPjxyZWN0IHg9IjI0IiB5PSIwIiB3aWR0aD0iMiIgaGVpZ2h0PSI0IiBmaWxsPSIjMTQ0MjVjIi8+PC9zdmc+"
@@ -181,7 +181,7 @@
       "baseline": "ground",
       "defaultDistance": 45000,
       "fact": {
-        "cs": "I s podstavcem měří 93 metrů. Ze samotné sochy je to 46 metrů od pat k pochodni.",
+        "cs": "I s podstavcem měří 93 metrů. Samotná socha má 46 metrů od pat k pochodni.",
         "en": "With its pedestal it reaches 93 metres. The statue alone is 46 metres from heel to torch."
       },
       "aspect": 0.45,
@@ -283,7 +283,7 @@
       "baseline": "ground",
       "defaultDistance": 60000,
       "fact": {
-        "cs": "Měříme ke špičce vrtule nahoru. Proto jsou větrné elektrárny vidět hodně zdaleka.",
+        "cs": "Měří se ke špičce vrtule, když míří vzhůru. Proto jsou větrné elektrárny vidět hodně zdaleka.",
         "en": "We measure to the blade tip pointing up. That is why wind turbines are visible from far away."
       },
       "aspect": 0.55,
@@ -317,8 +317,8 @@
       "baseline": "ground",
       "defaultDistance": 130000,
       "fact": {
-        "cs": "Nejvyšší budova světa (828 m). Ze základny vidí západ slunce dříve než lidé na střeše.",
-        "en": "The world's tallest building (828 m). People at the base see the sunset earlier than those on the roof."
+        "cs": "Nejvyšší budova světa (828 m). Lidé dole u paty vidí západ slunce dřív než ti na střeše.",
+        "en": "The world’s tallest building (828 m). People at the base see the sunset earlier than those on the roof."
       },
       "aspect": 0.28,
       "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyOCAxMDAiPjxnIGZpbGw9IiNhOWM5ZDgiPjxwYXRoIGQ9Ik0zIDEwMCA1IDc0aDE4bDIgMjZaIi8+PHBhdGggZD0iTTUgNzQgNi42IDU0aDE0LjhMMjMgNzRaIi8+PHBhdGggZD0iTTYuNiA1NCA4IDM4aDEybDEuNCAxNloiLz48cGF0aCBkPSJNOCAzOCA5LjIgMjRoOS42TDIwIDM4WiIvPjxwYXRoIGQ9Ik05LjIgMjQgMTAuNCAxM2g3LjJMMTguOCAyNFoiLz48L2c+PHBhdGggZD0iTTEyLjggMTNoMi40bC0wLjUgLTloLTEuNFoiIGZpbGw9IiM4ZmIyYzQiLz48cmVjdCB4PSIxMy42IiB5PSIwIiB3aWR0aD0iMC44IiBoZWlnaHQ9IjUiIGZpbGw9IiMxNDQyNWMiLz48ZyBzdHJva2U9IiM3ZmE4YmQiIHN0cm9rZS13aWR0aD0iMC43IiBvcGFjaXR5PSIwLjg1Ij48cGF0aCBkPSJNOSA5OFYyNk0xNCAxMDBWMTNNMTkgOThWMjYiLz48L2c+PGcgc3Ryb2tlPSIjYzdkZGU4IiBzdHJva2Utd2lkdGg9IjAuNiI+PHBhdGggZD0iTTQgODhoMjBNNC42IDgwaDE4LjhNNS42IDY2aDE2LjhNNiA2MGgxNk03IDQ4aDE0TTcuNCA0NGgxMy4yTTguNCAzMmgxMS4yTTkuNiAxOWg4LjgiLz48L2c+PC9zdmc+"
@@ -334,8 +334,8 @@
       "baseline": "ground",
       "defaultDistance": 180000,
       "fact": {
-        "cs": "Nejvyšší hora Česka, 1603 m nad mořem. Výška zde znamená výšku nad hladinou moře.",
-        "en": "The highest mountain in Czechia, 1603 m above sea level. Here the height means height above sea level."
+        "cs": "Nejvyšší hora Česka, 1603 m nad mořem. Výška se tu počítá od hladiny moře.",
+        "en": "The highest mountain in Czechia, 1,603 m above sea level. Here we measure from sea level."
       },
       "aspect": 2.2,
       "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMjAgMTAwIj48cGF0aCBkPSJNMCAxMDBDNDYgOTQgNzQgNzIgMTE4IDM0YzI2IDMwIDU0IDU4IDEwMiA2NloiIGZpbGw9IiM0ZjcxODMiLz48cGF0aCBkPSJNMCAxMDBDNDYgOTQgNzQgNzIgMTE4IDM0djY2WiIgZmlsbD0iIzVkODI5NiIvPjxwYXRoIGQ9Ik0xMTggMzRjLTExIDEwLTIwIDE5LTI4IDI2IDE3IDcgMzggNyA1Ni0xLTktOC0xOC0xNi0yOC0yNVoiIGZpbGw9IiNmMmY4ZmIiLz48cGF0aCBkPSJNMTA0IDIwaDI4djZoLTI4WiIgZmlsbD0ibm9uZSIvPjxlbGxpcHNlIGN4PSIxMTgiIGN5PSIyNyIgcng9IjE1IiByeT0iNS4yIiBmaWxsPSIjZDk0ZjQ1Ii8+PGVsbGlwc2UgY3g9IjExOCIgY3k9IjI0LjUiIHJ4PSI5IiByeT0iNCIgZmlsbD0iI2YwZjVmOCIvPjxyZWN0IHg9IjEyOSIgeT0iMTQiIHdpZHRoPSIyLjQiIGhlaWdodD0iMTEiIGZpbGw9IiM3ZDhlYTMiLz48cGF0aCBkPSJNMTA0IDMwaDV2LTZsLTIuNS0zLTIuNSAzWiIgZmlsbD0iI2VmZTRjZCIvPjwvc3ZnPg=="
@@ -420,7 +420,7 @@
       "defaultDistance": 340000,
       "fact": {
         "cs": "8849 m nad mořem. I tak obrovská hora se schová za zakřivení Země, když je dost daleko.",
-        "en": "8849 m above sea level. Even a mountain this huge hides behind Earth's curve if it is far enough away."
+        "en": "8,849 m above sea level. Even a mountain this huge hides behind the Earth’s curve if it is far enough away."
       },
       "aspect": 2.6,
       "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNjAgMTAwIj48cGF0aCBkPSJNMCAxMDAgNDAgNTggNzAgNzYgMTA0IDQwIDEzMiA2MiAxNjggMjYgMjA2IDY2IDI2MCAxMDBaIiBmaWxsPSIjN2Q5OWFiIi8+PHBhdGggZD0iTTEwNCA0MCA4OCA1OHE5IDUgMjAgNHQxNi02WiIgZmlsbD0iI2UzZWRmMyIvPjxwYXRoIGQ9Ik0xNjggMjYgMTUyIDQ2cTEwIDYgMjIgNHQxNC04WiIgZmlsbD0iI2UzZWRmMyIvPjxwYXRoIGQ9Ik0yOCAxMDAgOTYgNDAgMTI4IDYyIDE1OCA0IDE5NiA1NCAyNDAgMTAwWiIgZmlsbD0iIzVkN2Q5MCIvPjxwYXRoIGQ9Ik0yOCAxMDAgOTYgNDAgMTI4IDYyIDE1OCA0djk2WiIgZmlsbD0iIzZiOGI5ZSIvPjxwYXRoIGQ9Ik0xNTggNCAxMzIgNDRxMTIgOSAzMCA4dDI4LTEwWiIgZmlsbD0iI2Y0ZjlmYyIvPjxwYXRoIGQ9Ik0xMjYgNjYgMTA4IDUyIDk2IDYybDE0IDEyWiIgZmlsbD0iI2Y0ZjlmYyIgb3BhY2l0eT0iLjg1Ii8+PHBhdGggZD0iTTE1OCA0cTIyIDMgNDAtMi0xOCAxMC0zMyAxMloiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9Ii43NSIvPjwvc3ZnPg=="
@@ -436,7 +436,7 @@
       "baseline": "ground",
       "defaultDistance": 600000,
       "fact": {
-        "cs": "Nejvyšší sopka sluneční soustavy, skoro 22 km. Přepni planetu na Mars a uvidíš, že na menší planetě zmizí za obzorem mnohem dřív.",
+        "cs": "Nejvyšší sopka sluneční soustavy, skoro 22 km. Přepni těleso na Mars a uvidíš, že na menším světě zmizí za obzorem mnohem dřív.",
         "en": "The tallest volcano in the solar system, almost 22 km. Switch the planet to Mars and see how a smaller world hides it far sooner."
       },
       "aspect": 3,

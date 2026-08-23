@@ -30,7 +30,7 @@
       'geo.observerLabel': 'pozorovatel',
       'geo.objectLabel': 'objekt',
       'geo.exaggerated':
-        'Úhly jsou zvětšené (menší z nich víc), aby byly vidět. Čísla jsou skutečná.',
+        'Úhly jsou zvětšené, ten menší ještě víc, aby byly vidět. Čísla jsou skutečná.',
       'geo.trueLargeAngle':
         'Velký úhel je ve skutečné velikosti, menší je zvětšený. Čísla jsou skutečná.',
       'geo.trueFigure': 'Celá konstrukce je ve skutečném poměru – úhly i koule.',
@@ -60,13 +60,13 @@
       'sight.marginOutside': 'chybí {n}',
       'sight.try': 'Vyzkoušet',
       'sight.withRefraction':
-        'Počítáno se zapnutou refrakcí, takže vzdálenosti vycházejí asi o 8 % větší. Vypni ji v panelu a některé řádky se překlopí.',
+        'Počítáno se zapnutou refrakcí. Dohled je díky ní asi o 8 % delší. Vzdálenosti mezi místy se nemění, ty jsou dané mapou. Vypni refrakci v panelu a některé řádky se překlopí.',
       'sight.withoutRefraction':
-        'Počítáno bez refrakce, tedy čistá geometrie. Zapni ji v panelu a hraniční řádky se překlopí – právě na ní totiž stojí.',
+        'Počítáno bez refrakce, tedy čistá geometrie. Zapni ji v panelu a hraniční řádky se překlopí. Stojí a padají právě na ní.',
       'sight.terrain':
         'Pozor: výpočet neví nic o terénu mezi oběma místy. Odpovídá jen na otázku, jestli výhled zakrývá zakřivení Země – kopec v cestě je jiná věc. Skutečná viditelnost navíc závisí na počasí a průzračnosti vzduchu.',
       'sight.note.plzenAlps':
-        'Alpy z Plzně vycházejí jen o pár kilometrů uvnitř meze – a přesně proto je odsud vidět opravdu výjimečně, za mimořádně čistého vzduchu.',
+        'Alpy z Plzně se vejdou do meze o pouhých pár kilometrů. Přesně proto jsou odsud vidět jen výjimečně, za mimořádně čistého vzduchu.',
       'sight.note.sumavaAlps': 'Ze šumavských vrcholů jsou Alpy naopak vidět s velkou rezervou a poměrně běžně.',
       'sight.note.prahaAlps':
         'Z Petřína to nevyjde ani zdaleka, a nepomůže ani refrakce. Praha je na Alpy prostě moc daleko.',
@@ -119,7 +119,7 @@
       'geo.chartBX': 'vzdálenost D',
       'geo.chartBY': 'potřebná výška h₂ (v násobcích R = {r})',
       'geo.chartBNote':
-        'Tentýž typ os, ale celý rozsah až k mezi dohledu {max}, aby byla vidět svislá asymptota. Všechno školní – Sněžka, Everest, plavba přes moře – se vejde do levého dolního rohu u nuly. Přesně proto kreslí režim „Meze viditelnosti“ tutéž křivku v logaritmických osách: jinak by na ní nebylo nic vidět.',
+        'Tentýž typ os, ale celý rozsah až k mezi dohledu {max}, aby byla vidět svislá asymptota. Sněžka i Everest se vejdou do levého dolního rohu u nuly. Přesně proto kreslí režim „Meze viditelnosti“ tutéž křivku v logaritmických osách: jinak by na ní nebylo nic vidět.',
       'geo.markAsymptote': 'mez dohledu',
 
       'ctrl.planet': 'Na jakém tělese jsi',
@@ -134,7 +134,7 @@
       'ctrl.observer': 'Kde stojíš ty',
       'ctrl.eyeHeight': 'Výška očí nad povrchem',
       'ctrl.eyeHelp': 'Čím výš máš oči, tím dál dohlédneš. Zkus si to!',
-      'preset.lying': 'Ležím na pláži',
+      'preset.lying': 'Vleže na pláži',
       'preset.child': 'Dítě',
       'preset.adult': 'Dospělý',
       'preset.balcony': 'Balkon',
@@ -144,7 +144,7 @@
 
       'ctrl.orbit': 'Na oběžné dráze',
       'ctrl.orbitHelp':
-        'Nízká dráha je šestnáctina poloměru nad povrchem – u Země přesně tam, kde lítá ISS. Střední oblétne těleso za půl dne (u Země je to dráha družic GPS), stacionární přesně za jeden den, a proto na ní družice visí pořád nad stejným místem – u Země se jí říká geostacionární. Vysoká dráha obletí těleso za čtyři dny. Všechny tři poslední závisí na tom, jak rychle se těleso otáčí, takže u každého vycházejí jinde: Venuše se otočí jednou za 243 dní, a tak má stacionární dráhu půldruhého milionu kilometrů vysoko.',
+        'Nízká dráha leží šestnáctinu poloměru nad povrchem – u Země přesně tam, kde lítá ISS. Střední oblétne těleso za půl dne; u Země je to dráha družic GPS. Stacionární to stihne za jeden den, a proto na ní družice visí pořád nad stejným místem – u Země se jí říká geostacionární. Vysoká obletí těleso za čtyři dny. Poslední tři závisí na tom, jak rychle se těleso otáčí, takže u každého vyjdou jinde: Venuše se otočí jednou za 243 dní, a tak má stacionární dráhu půldruhého milionu kilometrů vysoko.',
       'orbit.low': 'Nízká dráha',
       'orbit.medium': 'Střední dráha',
       'orbit.geo': 'Stacionární dráha',
@@ -182,7 +182,7 @@
       'res.apparent': 'Zdánlivá velikost',
       'res.apparentSub': '{n}× Měsíc v úplňku',
       'res.dip': 'Pokles obzoru',
-      'res.dipSub': 'o kolik je obzor níž než vodorovno',
+      'res.dipSub': 'o kolik obzor klesá pod vodorovnou rovinu',
       'res.planet': 'Těleso',
       'res.planetSub': 'poloměr {r}',
 
@@ -197,7 +197,7 @@
         '{object} je {distance} daleko. Úplně zmizí už od {vanish}, takže se celý schoval za zakřivení povrchu. Vylez výš, nebo se přibliž!',
       'status.beyond.title': 'Za hranicí dohledu 🌑',
       'status.beyond.text':
-        '{object} je {distance} daleko – to je dál než {maxSight}. Tady už nepomůže žádná výška: i nekonečně vysoká věž by musela prorůst skrz celé těleso. Ať vylezeš kamkoli, vidíš vždycky jen polovinu tělesa ({planet}) a druhá polovina zůstane schovaná.',
+        '{object} je {distance} daleko – to je dál než {maxSight}. Tady už nepomůže žádná výška: i nekonečně vysoká věž by musela prorůst skrz celé těleso ({planet}). Ať vylezeš kamkoli, uvidíš vždycky jen jednu polovinu. Ta druhá zůstane schovaná.',
 
       'diagram.title': 'Boční pohled ({planet})',
       'diagram.you': 'TY',
@@ -236,21 +236,21 @@
         'Se zapnutou refrakcí se místo {k0} počítá s {k1} – vzduch ohýbá světlo a vidíš o kousek dál.',
       'vanish.explainPlanet':
         'Číslo {k} platí pro těleso {planet}. Na menším tělese je menší, na větším větší.',
-      'vanish.chartTitle': 'Kolik zůstane vidět podle vzdálenosti',
+      'vanish.chartTitle': 'Kolik z objektu zůstane vidět',
       'vanish.chartX': 'vzdálenost',
       'vanish.chartY': 'viditelná výška',
       'vanish.bandFull': 'celý vidět',
       'vanish.bandPartial': 'část schovaná',
       'vanish.bandHidden': 'neviditelný',
       'vanish.hoverNote':
-        'Najeď myší do grafu a na obou osách se ukáže přesná dvojice čísel: vzdálenost a kolik z objektu je v ní ještě vidět.',
+        'Najeď myší do grafu. Na obou osách se ukáže přesná dvojice: vzdálenost a kolik z objektu je v ní ještě vidět.',
       'vanish.tableTitle': 'Tabulka po krocích',
       'vanish.colDistance': 'Vzdálenost',
       'vanish.colHidden': 'Schováno',
       'vanish.colVisible': 'Vidíš',
       'vanish.colPercent': 'Podíl',
       'vanish.tryIt': 'Ukaž mi to na obrázku',
-      'vanish.compare': 'Porovnání: kdy zmizí ostatní objekty',
+      'vanish.compare': 'Porovnání: kdy zmizí ostatní objekty?',
       'vanish.compareHint': 'Klikni na sloupec a objekt se rovnou nastaví.',
 
       'limits.heading': 'Jak vysoké to musí být, aby to bylo vidět?',
@@ -270,7 +270,7 @@
         'Obě osy mají násobné měřítko – každý dílek je 10× větší než předchozí. Jinak by se křivka do obrázku nevešla.',
       'limits.dotsNote': 'Tečky jsou objekty z tvého seznamu. Leží přesně na křivce.',
       'limits.hoverNote':
-        'Najeď myší do grafu a na obou osách se ukáže přesná dvojice čísel: vzdálenost a výška, kterou tam objekt potřebuje. Prázdný kroužek znamená, že skutečná hodnota leží až za okrajem měřítka.',
+        'Najeď myší do grafu. Na obou osách se ukáže přesná dvojice: vzdálenost a výška, kterou tam objekt potřebuje. Prázdný kroužek říká, že skutečná hodnota leží až za okrajem měřítka.',
       'limits.tableTitle': 'Kolik je potřeba',
       'limits.colDistance': 'Vzdálenost',
       'limits.colHeight': 'Potřebná výška',
@@ -286,7 +286,7 @@
 
       'editor.heading': 'Editor objektů',
       'editor.intro':
-        'Tady vzniká soubor objects.json. Přidej si vlastní kostel, rozhlednu nebo loď – i s obrázkem.',
+        'Tady vzniká soubor objects.json. Přidej si vlastní rozhlednu nebo loď – i s obrázkem.',
       'editor.list': 'Objekty',
       'editor.add': '+ Nový objekt',
       'editor.duplicate': 'Duplikovat',
@@ -333,7 +333,7 @@
       'data.source.local': 'Data z tvých úprav v prohlížeči',
       'data.source.factory': 'Výchozí data zabudovaná v aplikaci',
       'data.source.fileFailed':
-        'Soubor objects.json se nepodařilo načíst (stránka běží přímo z disku), použila se zabudovaná sada.',
+        'Soubor objects.json se nepodařilo načíst (stránka běží přímo z disku), takže se použila zabudovaná sada.',
       'data.readError': 'Soubor se nepodařilo přečíst: {error}',
 
       'err.notObject': 'Data musí být objekt JSON.',
@@ -345,7 +345,7 @@
       'unit.m': 'm',
       'unit.km': 'km',
       'footer.note':
-        'Všechny výpočty počítají s dokonalou koulí a hladkým povrchem mezi tebou a objektem. Těleso i jeho průměr se dají přepnout v ovládacím panelu.',
+        'Všechny výpočty berou těleso jako dokonalou kouli s hladkým povrchem mezi tebou a objektem. Těleso i jeho průměr přepneš v ovládacím panelu.',
       'footer.made': 'Za obzorem · školní pomůcka pro objevování zakřivení Země',
       'footer.affiliation': 'Katedra informatiky a výpočetní techniky, Fakulta aplikovaných věd, Západočeská univerzita v Plzni',
       'footer.license': 'Volně k použití ve školách (licence MIT)',
@@ -353,7 +353,7 @@
 
     en: {
       'app.title': 'Beyond the Horizon',
-      'app.subtitle': "Explore how the Earth's curve hides things from you",
+      'app.subtitle': 'Explore how the Earth’s curve hides things from you',
 
       'mode.see': 'What can I see?',
       'mode.vanish': 'When does it vanish?',
@@ -367,7 +367,7 @@
       'geo.observerLabel': 'observer',
       'geo.objectLabel': 'object',
       'geo.exaggerated':
-        'Angles are enlarged (the smaller one more) so they can be seen. The numbers are real.',
+        'Angles are enlarged, the smaller one even more, so they can be seen. The numbers are real.',
       'geo.trueLargeAngle':
         'The large angle is at its real size, the smaller one enlarged. Numbers are real.',
       'geo.trueFigure': 'The whole construction is at true proportions — angles and ball.',
@@ -389,21 +389,21 @@
 
       'sight.title': 'Can you really see it? Real sightlines across Europe',
       'sight.intro':
-        'Real places, their real elevations, and the distance measured along the surface from their coordinates. Eye height is 1.7 m above the ground everywhere. Click “Try it” and the sightline is loaded into the simulation above.',
+        'Real places, their real elevations, and the distance measured along the surface from their coordinates. Eye height is 1.7 m above the ground everywhere. Click “Try it” to load a sightline into the simulation above.',
       'sight.yes': 'YES',
       'sight.no': 'NO',
-      'sight.heights': 'eyes {a} a.s.l. · target {b} a.s.l.',
+      'sight.heights': 'eyes {a} · target {b} (above sea level)',
       'sight.marginInside': '{n} to spare',
       'sight.marginOutside': '{n} short',
       'sight.try': 'Try it',
       'sight.withRefraction':
-        'Computed with refraction on, so the distances come out about 8 % longer. Switch it off in the panel and some rows flip.',
+        'Computed with refraction on. It stretches the reach by about 8 %. The distances between the places do not move — those come from the map. Switch refraction off in the panel and some rows flip.',
       'sight.withoutRefraction':
-        'Computed without refraction — pure geometry. Switch it on in the panel and the borderline rows flip; they depend on it entirely.',
+        'Computed without refraction — pure geometry. Switch it on in the panel and the borderline rows flip. They live or die on it.',
       'sight.terrain':
         'Careful: the calculation knows nothing about the terrain in between. It answers only whether the curve of the Earth hides the view — a hill in the way is another matter. Real visibility also depends on the weather and how clear the air is.',
       'sight.note.plzenAlps':
-        'The Alps from Pilsen come out only a few kilometres inside the limit — which is exactly why they are seen from here so rarely, and only in exceptionally clear air.',
+        'The Alps from Pilsen clear the limit by a few kilometres, no more. That is exactly why they show from here so rarely, and only in exceptionally clear air.',
       'sight.note.sumavaAlps':
         'From the peaks of the Bohemian Forest the Alps are well inside the limit and fairly commonly seen.',
       'sight.note.prahaAlps':
@@ -429,7 +429,7 @@
       'map.nowInside': 'The object still stands short of the horizon — you see all of it.',
       'map.nowOutside': 'The object is past the horizon — the curve of the surface hides part of it.',
       'map.areaShare': 'area {area} · {share} of the surface',
-      'map.overTheEdge': 'The object is so tall it would still show from beyond the edge of the hemisphere.',
+      'map.overTheEdge': 'The object is so tall it would still show past the edge of the hemisphere.',
 
       'geo.deriveTitle': 'Deriving the two functions',
       'geo.deriveIntro':
@@ -452,12 +452,12 @@
       'geo.chartAX': 'height of the object h₂',
       'geo.chartAY': 'vanishing distance D',
       'geo.chartANote':
-        'Plain linear axes, no logarithms. The window follows the selected object so the shape is visible at the heights actually used. The green band at the bottom is the observer’s own contribution — it stays the same however tall the object gets. The ceiling D_max = {max} lies far above this window.',
+        'Plain linear axes, no logarithms. The window follows the selected object, so you can see the shape at the heights that actually come up. The green band at the bottom is the observer’s own contribution — it stays the same however tall the object gets. The ceiling D_max = {max} lies far above this window.',
       'geo.chartBTitle': 'Chart 2: required height against distance',
       'geo.chartBX': 'distance D',
       'geo.chartBY': 'required height h₂ (in multiples of R = {r})',
       'geo.chartBNote':
-        'The same kind of axes, but the full range out to the sight limit {max}, so the vertical asymptote shows. Everything from school — a mountain, Everest, a voyage across the sea — fits into the bottom-left corner near zero. That is exactly why the “Limits of sight” mode plots this same curve on logarithmic axes: otherwise there would be nothing to see.',
+        'The same kind of axes, but the full range out to the sight limit {max}, so the vertical asymptote shows. Everest and a voyage across the sea both fit into the bottom-left corner near zero. That is exactly why the “Limits of sight” mode plots this same curve on logarithmic axes: otherwise there would be nothing to see.',
       'geo.markAsymptote': 'sight limit',
 
       'ctrl.planet': 'Which body you are on',
@@ -467,22 +467,22 @@
       'ctrl.planetDiameter': 'Diameter of the body (km)',
       'ctrl.planetInfo': 'radius {r} · circumference {c}',
       'ctrl.planetGaseous':
-        'For the Sun and the gas giants the "surface" means the cloud tops — you could not stand there.',
+        'For the Sun and the gas giants the “surface” means the cloud tops — you could not stand there.',
 
       'ctrl.observer': 'Where you stand',
       'ctrl.eyeHeight': 'Eye height above the surface',
       'ctrl.eyeHelp': 'The higher your eyes, the further you see. Give it a try!',
       'preset.lying': 'Lying on the beach',
-      'preset.child': 'A child',
-      'preset.adult': 'A grown-up',
+      'preset.child': 'Child',
+      'preset.adult': 'Grown-up',
       'preset.balcony': 'Balcony',
       'preset.tower': 'Lookout tower',
       'preset.cliff': 'Cliff top',
-      'preset.plane': 'Airplane',
+      'preset.plane': 'Aeroplane',
 
       'ctrl.orbit': 'In orbit',
       'ctrl.orbitHelp':
-        'The low orbit sits a sixteenth of the radius above the surface — on the Earth that is exactly where the ISS flies. The medium one laps the body in half a day (on the Earth that is the GPS orbit) and the stationary one in exactly one day, which is why a satellite there hangs over the same spot; on the Earth it is called geostationary. The high orbit takes four days. The last three depend on how fast the body spins, so they land at a different height on each one: Venus turns once in 243 days, which puts its stationary orbit a million and a half kilometres up.',
+        'The low orbit sits a sixteenth of the radius above the surface — on the Earth that is exactly where the ISS flies. The medium one laps the body in half a day; on the Earth that is the GPS orbit. The stationary one takes exactly one day, which is why a satellite up there hangs over the same spot — on the Earth we call it geostationary. The high orbit takes four days. The last three follow how fast the body spins, so they land at a different height on each one: Venus turns once in 243 days, which puts its stationary orbit a million and a half kilometres up.',
       'orbit.low': 'Low orbit',
       'orbit.medium': 'Medium orbit',
       'orbit.geo': 'Stationary orbit',
@@ -499,7 +499,7 @@
       'ctrl.distanceHelp': 'Drag the slider and watch the object sink behind the horizon.',
 
       'ctrl.options': 'Settings',
-      'ctrl.refraction': 'Include light bending (refraction)',
+      'ctrl.refraction': 'Allow for the bending of light (refraction)',
       'ctrl.refractionHelp':
         'Air bends light rays slightly downwards, so in reality you see about 8 % further than pure geometry says.',
       'ctrl.reset': 'Start over',
@@ -520,22 +520,22 @@
       'res.apparent': 'Apparent size',
       'res.apparentSub': '{n}× the full Moon',
       'res.dip': 'Horizon dip',
-      'res.dipSub': 'how far the horizon sits below level',
+      'res.dipSub': 'how far the horizon drops below the horizontal',
       'res.planet': 'Body',
       'res.planetSub': 'radius {r}',
 
       'status.full.title': 'You can see all of it! 🎉',
       'status.full.text':
-        'From a height of {eye} you can see {horizon} away. The {object} stands {distance} from you, still inside your horizon, so the curve takes nothing away yet.',
+        'From a height of {eye} you can see {horizon} away. The {object} stands {distance} from you, still short of your horizon, so the curve takes nothing away yet.',
       'status.partial.title': 'The bottom is hidden 🌊',
       'status.partial.text':
         'From a height of {eye} you can see {horizon} away. The {object} stands {beyond} further, so the bottom {hidden} is hidden behind the bulge. You still see the top {visible}, which is {percent} of it.',
       'status.hidden.title': 'You see nothing at all 🙈',
       'status.hidden.text':
         'The {object} is {distance} away. It disappears completely beyond {vanish}, so the whole thing is behind the curve. Climb higher or come closer!',
-      'status.beyond.title': 'Past every line of sight 🌑',
+      'status.beyond.title': 'Past the sight limit 🌑',
       'status.beyond.text':
-        'The {object} is {distance} away — further than {maxSight}. No height helps here: even an infinitely tall tower would have to grow straight through the body. However high you climb you always see just one half of {planet}, and the other half stays hidden.',
+        'The {object} is {distance} away — further than {maxSight}. No height helps here: even an infinitely tall tower would have to grow straight through the body ({planet}). However high you climb, you always see just one half. The other half stays hidden.',
 
       'diagram.title': 'Side view ({planet})',
       'diagram.you': 'YOU',
@@ -566,28 +566,28 @@
       'vanish.starts': 'It starts to hide from',
       'vanish.startsSub': 'up to here you see all of it',
       'vanish.yourHorizon': 'Your horizon',
-      'vanish.objectHorizon': 'Horizon from the object top',
-      'vanish.explainTitle': 'How is it calculated?',
+      'vanish.objectHorizon': 'Horizon from the object’s top',
+      'vanish.explainTitle': 'How do you work it out?',
       'vanish.explain':
         'Distance to the horizon is {k} × the square root of the height (height in metres, answer in kilometres). The object vanishes when your horizon and the horizon from its top add up: {a} + {b} = {c}.',
       'vanish.explainRefraction':
         'With refraction switched on we use {k1} instead of {k0} — bent light lets you see a little further.',
       'vanish.explainPlanet':
         'The number {k} belongs to {planet}. It is smaller on a smaller body and larger on a bigger one.',
-      'vanish.chartTitle': 'How much stays visible with distance',
+      'vanish.chartTitle': 'How much of the object stays visible',
       'vanish.chartX': 'distance',
       'vanish.chartY': 'visible height',
       'vanish.bandFull': 'fully visible',
       'vanish.bandPartial': 'partly hidden',
       'vanish.bandHidden': 'invisible',
       'vanish.hoverNote':
-        'Point the mouse at the chart and both axes show the exact pair of numbers: the distance, and how much of the object still shows at it.',
+        'Point the mouse at the chart. Both axes then show the exact pair: the distance, and how much of the object still shows at it.',
       'vanish.tableTitle': 'Step by step',
       'vanish.colDistance': 'Distance',
       'vanish.colHidden': 'Hidden',
       'vanish.colVisible': 'Visible',
       'vanish.colPercent': 'Share',
-      'vanish.tryIt': 'Show me the picture',
+      'vanish.tryIt': 'Show me in the picture',
       'vanish.compare': 'Compare: when do the others vanish?',
       'vanish.compareHint': 'Click a bar to switch to that object.',
 
@@ -608,7 +608,7 @@
         'Both axes step by multiples — every division is 10× the one before. Otherwise the curve would not fit on the page.',
       'limits.dotsNote': 'The dots are the objects from your list. They sit exactly on the curve.',
       'limits.hoverNote':
-        'Point the mouse at the chart and both axes show the exact pair of numbers: the distance, and the height an object needs there. A hollow circle means the true value lies beyond the edge of the scale.',
+        'Point the mouse at the chart. Both axes then show the exact pair: the distance, and the height an object needs there. A hollow circle means the true value sits past the edge of the scale.',
       'limits.tableTitle': 'What it takes',
       'limits.colDistance': 'Distance',
       'limits.colHeight': 'Required height',
@@ -620,11 +620,11 @@
         'However high you climb, you see at most one half of the body — exactly a quarter of the circumference in each direction. So the horizon never reaches further than {quarter}. Add your own horizon ({horizon}) and you get the limit {max}. Beyond it an object would have to grow straight through the whole body ({planet}), and that cannot happen.',
       'limits.showAntipode': 'Put the object on the far side',
       'limits.impossible': 'impossible',
-      'limits.radii': "{n}× the body's radius",
+      'limits.radii': '{n}× the body’s radius',
 
       'editor.heading': 'Object editor',
       'editor.intro':
-        'This is where objects.json is made. Add your own church, tower or ship — picture included.',
+        'This is where objects.json is made. Add your own tower or ship — picture included.',
       'editor.list': 'Objects',
       'editor.add': '+ New object',
       'editor.duplicate': 'Duplicate',
@@ -650,7 +650,7 @@
       'editor.image.choose': 'Choose a picture…',
       'editor.image.clear': 'Remove picture',
       'editor.image.hint':
-        'The picture is stored straight inside the JSON as base64. SVG works best, with the object resting exactly on the bottom edge and its tip touching the top edge.',
+        'The picture goes straight into the JSON as base64. SVG works best, with the object resting exactly on the bottom edge and its tip touching the top edge.',
       'editor.image.none': 'No picture yet',
       'editor.save': 'Save into this browser',
       'editor.saved': 'Saved ✔',
@@ -663,7 +663,7 @@
       'editor.rawApply': 'Use this JSON',
       'editor.invalid': 'Something is wrong in the data:',
       'editor.storageNote':
-        'Changes are stored in this browser only. To share them, download objects.json and put it next to index.html.',
+        'Changes stay in this browser. To share them, download objects.json and put it next to index.html.',
       'editor.previewNote': 'This is how it will look in the diagram.',
       'editor.count': 'objects: {n}',
 
@@ -671,7 +671,7 @@
       'data.source.local': 'Data from your edits in this browser',
       'data.source.factory': 'Default data built into the app',
       'data.source.fileFailed':
-        'objects.json could not be loaded (the page runs straight from disk), so the built-in set is used.',
+        'objects.json could not be loaded (the page runs straight from disk), so the app fell back to the built-in set.',
       'data.readError': 'The file could not be read: {error}',
 
       'err.notObject': 'The data must be a JSON object.',
@@ -683,8 +683,8 @@
       'unit.m': 'm',
       'unit.km': 'km',
       'footer.note':
-        'Every calculation assumes a perfect sphere with a smooth surface between you and the object. The body and its diameter can be changed in the control panel.',
-      'footer.made': 'Beyond the Horizon · a classroom toy for discovering the curve of the Earth',
+        'Every calculation treats the body as a perfect sphere with a smooth surface between you and the object. Change the body and its diameter in the control panel.',
+      'footer.made': 'Beyond the Horizon · a classroom aid for discovering the curve of the Earth',
       'footer.affiliation': 'Department of Computer Science and Engineering, Faculty of Applied Sciences, University of West Bohemia',
       'footer.license': 'Free to use in schools (MIT licence)',
     },

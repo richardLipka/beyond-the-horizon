@@ -74,7 +74,7 @@
       name: { cs: 'Grossglockner (Alpy)', en: 'Grossglockner (the Alps)' },
     },
     zugspitze: { lat: 47.4211, lon: 10.9853, elevation: 2962, name: { cs: 'Zugspitze', en: 'Zugspitze' } },
-    matterhorn: { lat: 45.9766, lon: 7.6585, elevation: 4478, name: { cs: 'Matterhorn', en: 'the Matterhorn' } },
+    matterhorn: { lat: 45.9766, lon: 7.6585, elevation: 4478, name: { cs: 'Matterhorn', en: 'Matterhorn' } },
     montblanc: { lat: 45.8326, lon: 6.8652, elevation: 4806, name: { cs: 'Mont Blanc', en: 'Mont Blanc' } },
     mounier: {
       lat: 44.1236,
@@ -84,7 +84,7 @@
     },
     cinto: { lat: 42.3797, lon: 8.9224, elevation: 2706, name: { cs: 'Monte Cinto (Korsika)', en: 'Monte Cinto (Corsica)' } },
     triglav: { lat: 46.3783, lon: 13.8367, elevation: 2864, name: { cs: 'Triglav', en: 'Triglav' } },
-    snezka: { lat: 50.7359, lon: 15.74, elevation: 1603, name: { cs: 'Sněžka', en: 'Mount Sněžka' } },
+    snezka: { lat: 50.7359, lon: 15.74, elevation: 1603, name: { cs: 'Sněžka', en: 'Sněžka' } },
     praded: { lat: 50.0831, lon: 17.2306, elevation: 1491, name: { cs: 'Praděd', en: 'Praděd' } },
     etna: { lat: 37.751, lon: 14.9934, elevation: 3357, name: { cs: 'Etna', en: 'Mount Etna' } },
   };

@@ -83,7 +83,7 @@
       "defaultDistance": 40000,
       "svg": "containership.svg",
       "fact": {
-        "cs": "Největší kontejnerové lodě uvezou přes 20 000 kontejnerů a s naskládaným nákladem měří přes 60 metrů.",
+        "cs": "Největší kontejnerové lodě uvezou přes 20 000 kontejnerů. S naskládaným nákladem čnějí přes 60 metrů nad hladinu.",
         "en": "The biggest container ships carry over 20,000 containers and stand more than 60 metres above the water."
       }
     },
@@ -97,7 +97,7 @@
       "svg": "petrin.svg",
       "fact": {
         "cs": "Petřínská rozhledna v Praze je menší sestra Eiffelovky – měří 63,5 m a stojí na kopci.",
-        "en": "Prague's Petřín tower is the Eiffel Tower's little sister – 63.5 m tall, standing on a hill."
+        "en": "Prague’s Petřín tower is the Eiffel Tower’s little sister – 63.5 m tall, standing on a hill."
       }
     },
     {
@@ -109,7 +109,7 @@
       "defaultDistance": 45000,
       "svg": "liberty.svg",
       "fact": {
-        "cs": "I s podstavcem měří 93 metrů. Ze samotné sochy je to 46 metrů od pat k pochodni.",
+        "cs": "I s podstavcem měří 93 metrů. Samotná socha má 46 metrů od pat k pochodni.",
         "en": "With its pedestal it reaches 93 metres. The statue alone is 46 metres from heel to torch."
       }
     },
@@ -187,7 +187,7 @@
       "defaultDistance": 60000,
       "svg": "windturbine.svg",
       "fact": {
-        "cs": "Měříme ke špičce vrtule nahoru. Proto jsou větrné elektrárny vidět hodně zdaleka.",
+        "cs": "Měří se ke špičce vrtule, když míří vzhůru. Proto jsou větrné elektrárny vidět hodně zdaleka.",
         "en": "We measure to the blade tip pointing up. That is why wind turbines are visible from far away."
       }
     },
@@ -213,8 +213,8 @@
       "defaultDistance": 130000,
       "svg": "burj.svg",
       "fact": {
-        "cs": "Nejvyšší budova světa (828 m). Ze základny vidí západ slunce dříve než lidé na střeše.",
-        "en": "The world's tallest building (828 m). People at the base see the sunset earlier than those on the roof."
+        "cs": "Nejvyšší budova světa (828 m). Lidé dole u paty vidí západ slunce dřív než ti na střeše.",
+        "en": "The world’s tallest building (828 m). People at the base see the sunset earlier than those on the roof."
       }
     },
     {
@@ -226,8 +226,8 @@
       "defaultDistance": 180000,
       "svg": "snezka.svg",
       "fact": {
-        "cs": "Nejvyšší hora Česka, 1603 m nad mořem. Výška zde znamená výšku nad hladinou moře.",
-        "en": "The highest mountain in Czechia, 1603 m above sea level. Here the height means height above sea level."
+        "cs": "Nejvyšší hora Česka, 1603 m nad mořem. Výška se tu počítá od hladiny moře.",
+        "en": "The highest mountain in Czechia, 1,603 m above sea level. Here we measure from sea level."
       }
     },
     {
@@ -292,7 +292,7 @@
       "svg": "everest.svg",
       "fact": {
         "cs": "8849 m nad mořem. I tak obrovská hora se schová za zakřivení Země, když je dost daleko.",
-        "en": "8849 m above sea level. Even a mountain this huge hides behind Earth's curve if it is far enough away."
+        "en": "8,849 m above sea level. Even a mountain this huge hides behind the Earth’s curve if it is far enough away."
       }
     },
     {
@@ -304,7 +304,7 @@
       "defaultDistance": 600000,
       "svg": "olympus.svg",
       "fact": {
-        "cs": "Nejvyšší sopka sluneční soustavy, skoro 22 km. Přepni planetu na Mars a uvidíš, že na menší planetě zmizí za obzorem mnohem dřív.",
+        "cs": "Nejvyšší sopka sluneční soustavy, skoro 22 km. Přepni těleso na Mars a uvidíš, že na menším světě zmizí za obzorem mnohem dřív.",
         "en": "The tallest volcano in the solar system, almost 22 km. Switch the planet to Mars and see how a smaller world hides it far sooner."
       }
     }
