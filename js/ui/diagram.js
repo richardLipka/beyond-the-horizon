@@ -324,7 +324,10 @@
     // margins are therefore reserved in pixels and the scale gets what is left.
     const provisionalSx = globeMode ? Math.min(PLOT.w / spanX, plotH / spanY) : PLOT.w / spanX;
     const provisionalSy = globeMode ? provisionalSx : PLOT.h / spanY;
-    const aspect = obj.aspect > 0 ? obj.aspect : 1;
+    // Objekt bez kresby dostane vytycku i s jejim pomerem stran.
+    // An object without a drawing gets the ranging pole, aspect and all.
+    const art = HL.objectArt(obj);
+    const aspect = art.aspect;
     // Odhad je zamerne shora: skutecne sx uz bude mensi, takze skutecna ikona
     // vyjde nanejvys stejne siroka. / Deliberately an upper bound.
     const estObjectPx = Math.max(
@@ -534,6 +537,38 @@
     }
     scene.appendChild(decor);
 
+    // Opar u povrchu. Bocni pohled je schema, tak ho jen naznaci pruhem, ktery
+    // houstne k zemi; poctive prolnuti objektu s oparem patri dalekohledu.
+    // Ve vesmiru opar neni, na tele bez atmosfery taky ne (tam je haze 0).
+    // Haze near the surface. The side view is a schematic, so a band that
+    // thickens towards the ground merely suggests it; the honest blend of the
+    // object into the haze belongs to the telescope. There is none in space,
+    // nor on an airless body (haze is 0 there).
+    if (r.haze > 0 && !inSpace) {
+      const strength = Math.min(0.75, 1 - HL.geometry.hazeTransmission(r.haze, 40000));
+      if (strength > 0.005) {
+        const hazeId = uid('haze');
+        const fog = HL.hazeColor(look);
+        root.querySelector('defs').appendChild(
+          svg('linearGradient', { id: hazeId, x1: 0, y1: 0, x2: 0, y2: 1 }, [
+            svg('stop', { offset: '0%', 'stop-color': fog, 'stop-opacity': 0 }),
+            svg('stop', { offset: '55%', 'stop-color': fog, 'stop-opacity': (strength * 0.45).toFixed(3) }),
+            svg('stop', { offset: '100%', 'stop-color': fog, 'stop-opacity': strength.toFixed(3) }),
+          ])
+        );
+        scene.appendChild(
+          svg('rect', {
+            x: PLOT.x0,
+            y: PLOT.y0,
+            width: PLOT.w,
+            height: PLOT.h,
+            fill: `url(#${hazeId})`,
+            class: 'dg-haze',
+          })
+        );
+      }
+    }
+
     // primá spojnice (tetiva) a vyboulení / chord and bulge
     const chordY = Y(0);
     scene.appendChild(
@@ -627,23 +662,13 @@
     );
 
     function objectArt() {
-      if (obj.image) {
-        return svg('image', {
-          href: obj.image,
-          x: 0,
-          y: 0,
-          width: objectWidth,
-          height: objectPx,
-          preserveAspectRatio: 'none',
-        });
-      }
-      return svg('rect', {
+      return svg('image', {
+        href: art.image,
         x: 0,
         y: 0,
         width: objectWidth,
         height: objectPx,
-        rx: Math.min(6, objectWidth / 4),
-        class: 'dg-object-fallback',
+        preserveAspectRatio: 'none',
       });
     }
 
@@ -666,7 +691,13 @@
       );
     }
     if (objectPx - hiddenPx > 0.5) {
-      objectGroup.appendChild(svg('g', { 'clip-path': `url(#${visibleClipId})` }, [objectArt()]));
+      // V oparu objekt bledne, ale ve schematu nikdy nezmizi uplne - porad
+      // musi byt videt, kde stoji. / In haze the object pales, but in a
+      // schematic it never vanishes completely: where it stands must show.
+      const fade = r.haze > 0 && !inSpace ? (0.3 + 0.7 * r.clarity).toFixed(3) : null;
+      objectGroup.appendChild(
+        svg('g', { 'clip-path': `url(#${visibleClipId})`, opacity: fade }, [objectArt()])
+      );
     }
     scene.appendChild(objectGroup);
 

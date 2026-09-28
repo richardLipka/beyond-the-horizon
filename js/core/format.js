@@ -84,6 +84,19 @@
     return number(value, d, lang) + ' %';
   }
 
+  /**
+   * Procento, ktere se nesmi zaokrouhlit na nulu: "zbyva 0 % kontrastu" vedle
+   * "zakriveni by nechalo 2 937 m" zni jako protimluv. Pod desetinou procenta
+   * se pise "< 0,1 %".
+   * A percentage that must not round to zero: "0 % of the contrast left" next
+   * to "the curve would leave 2,937 m" reads as a contradiction. Below a tenth
+   * of a per cent it says "< 0.1 %".
+   */
+  function percentAbove(fraction, lang) {
+    if (fraction > 0 && fraction < 0.001) return '< ' + number(0.1, 1, lang) + ' %';
+    return percent(fraction, lang);
+  }
+
   /** Plocha: pod 1 km2 ve ctverecnich metrech, jinak v kilometrech ctverecnich. */
   function area(squareMetres, lang) {
     if (!isFinite(squareMetres)) return '∞';
@@ -109,5 +122,5 @@
     return number(degrees, 2, lang) + '°';
   }
 
-  HL.format = { number, distance, km, height, percent, area, share, angle, autoDecimals, LOCALES };
+  HL.format = { number, distance, km, height, percent, percentAbove, area, share, angle, autoDecimals, LOCALES };
 })((window.HorizonLab = window.HorizonLab || {}));

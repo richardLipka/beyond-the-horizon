@@ -48,25 +48,30 @@
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
   /**
-   * Zastupna kresba na dlazdici objektu. Emoji se mezi platformami lisi
-   * a nesedi k rucne kresleným objektum, tak je i tady male SVG - stejne
-   * jako u vsech ostatnich objektu.
-   * The placeholder on an object card. Emoji look different on every platform
-   * and clash with the hand-drawn objects, so this is a small SVG too.
-   *
-   * @param {boolean} dashed carkovane = vlastni objekt / dashed = custom object
+   * Nahled na dlazdici. Objekt bez vlastni kresby (i "vlastni objekt") ma
+   * vytycku - tu samou, kterou pak uvidi v obrazcich.
+   * The card thumbnail. An object without a drawing of its own (and the custom
+   * object) shows the ranging pole - the same one the pictures will draw.
    */
-  function placeholderThumb(dashed) {
-    const shape = HL.dom.svg('path', {
-      d: 'M20 8 32 30v64H8V30Z',
-      fill: 'none',
-      stroke: 'currentColor',
-      'stroke-width': 6,
-      'stroke-linejoin': 'round',
-    });
-    if (dashed) shape.setAttribute('stroke-dasharray', '11 8');
-    return HL.dom.svg('svg', { viewBox: '0 0 40 100', class: 'thumb-placeholder', xmlns: HL.dom.SVG_NS }, [shape]);
+  function thumb(item) {
+    return el('img', { src: HL.objectArt(item).image, alt: '' });
   }
+
+  /**
+   * Opar na posuvniku roste s druhou mocninou: prvni ctvrtina drahy pokryje
+   * 0 az 3 % na kilometr, kde se lisi bezny opar od cisteho vzduchu, a zbytek
+   * dojede k mlze (50 %).
+   * Haze grows with the square of the slider: the first quarter of the track
+   * covers 0 to 3 % per km, where ordinary haze differs from clear air, and the
+   * rest reaches fog (50 %).
+   */
+  const HAZE_MAX = 0.5;
+  const HAZE_STEPS = 100;
+  const hazeToSlider = (perKm) => Math.round(HAZE_STEPS * Math.sqrt(clamp(perKm, 0, HAZE_MAX) / HAZE_MAX));
+  const sliderToHaze = (slider) => {
+    const raw = HAZE_MAX * Math.pow(slider / HAZE_STEPS, 2);
+    return Math.round(raw * 1000) / 1000;
+  };
 
   /** Horni konec druhe casti posuvniku; nikdy nesmi splynout s prvni. */
   const orbitTop = (max) => Math.max(max, GROUND_MAX * 1.0001);
@@ -157,9 +162,7 @@
           onclick: () => app.selectObject(item.id),
         },
         [
-          el('span', { class: 'object-thumb' }, [
-            item.image ? el('img', { src: item.image, alt: '' }) : placeholderThumb(false),
-          ]),
+          el('span', { class: 'object-thumb' }, [thumb(item)]),
           el('span', { class: 'object-name', text: HL.i18n.pick(item.name, item.id) }),
           el('span', { class: 'object-height', text: HL.format.height(item.height, HL.i18n.lang()) }),
         ]
@@ -177,7 +180,7 @@
           onclick: () => app.selectObject('__custom'),
         },
         [
-          el('span', { class: 'object-thumb' }, [placeholderThumb(true)]),
+          el('span', { class: 'object-thumb' }, [thumb(null)]),
           el('span', { class: 'object-name', text: HL.i18n.t('ctrl.custom') }),
           el('span', { class: 'object-height', text: HL.format.height(state.customHeight, HL.i18n.lang()) }),
         ]
@@ -394,6 +397,16 @@
         type: 'checkbox',
         onchange: (e) => app.setRefraction(e.target.checked),
       });
+      refs.hazeRange = el('input', {
+        type: 'range',
+        class: 'range-input range-haze',
+        min: 0,
+        max: HAZE_STEPS,
+        step: 1,
+        'aria-label': HL.i18n.t('ctrl.haze'),
+        oninput: (e) => app.setHaze(sliderToHaze(Number(e.target.value))),
+      });
+      refs.hazeValue = el('p', { class: 'haze-value' });
       container.appendChild(
         el('section', { class: 'control-group' }, [
           el('h3', { class: 'control-title control-title-plain', text: HL.i18n.t('ctrl.options') }),
@@ -403,6 +416,12 @@
             el('span', { class: 'switch-text', text: HL.i18n.t('ctrl.refraction') }),
           ]),
           el('p', { class: 'hint', text: HL.i18n.t('ctrl.refractionHelp') }),
+          el('div', { class: 'field field-haze' }, [
+            el('span', { class: 'field-label', text: HL.i18n.t('ctrl.haze') }),
+            refs.hazeRange,
+            refs.hazeValue,
+            el('p', { class: 'hint', text: HL.i18n.t('ctrl.hazeHelp') }),
+          ]),
           el('button', {
             type: 'button',
             class: 'btn btn-ghost btn-block',
@@ -510,6 +529,19 @@
       if (customCardNode) {
         customCardNode.textContent = HL.format.height(state.customHeight, HL.i18n.lang());
       }
+      // Nacteny rozhled prejmenuje dlazdici a pujci ji svou kresbu, aby panel
+      // ukazoval totez co obrazek. / A loaded sightline renames the card and
+      // lends it its drawing, so the panel shows what the picture shows.
+      const customName = HL.dom.qs('.object-card-custom .object-name', refs.listHost);
+      if (customName) {
+        customName.textContent = state.customName ? HL.i18n.pick(state.customName, '') : HL.i18n.t('ctrl.custom');
+      }
+      const customImg = HL.dom.qs('.object-card-custom img', refs.listHost);
+      if (customImg) {
+        const shape = state.customShape && state.data.objects.find((o) => o.id === state.customShape);
+        const src = HL.objectArt(shape || null).image;
+        if (customImg.getAttribute('src') !== src) customImg.setAttribute('src', src);
+      }
 
       const maxDistance = app.sliderMaxDistance(state);
       refs.distanceRange.max = String(maxDistance);
@@ -520,6 +552,16 @@
       }
 
       refs.refraction.checked = !!state.refraction;
+      if (active !== refs.hazeRange) refs.hazeRange.value = String(hazeToSlider(state.haze));
+      const airless = HL.planetLook(state.planet).airless;
+      refs.hazeValue.textContent = airless
+        ? HL.i18n.t('ctrl.hazeAirless')
+        : state.haze > 0
+          ? HL.i18n.t('ctrl.hazeValue', {
+              p: HL.format.percent(state.haze, lang),
+              range: HL.format.distance(HL.geometry.hazeRange(state.haze), lang),
+            })
+          : HL.i18n.t('ctrl.hazeNone');
     }
 
     function update(state) {

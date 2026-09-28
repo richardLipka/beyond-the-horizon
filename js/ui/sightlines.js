@@ -37,12 +37,20 @@
    * only to the sight calculation - it describes the ray, not the geography.
    * Mixing them up makes refraction ruin sightlines instead of helping them.
    */
-  function solvePair(pair, R) {
+  function solvePair(pair, R, haze) {
     const from = HL.SIGHTLINE_PLACES[pair.from];
     const to = HL.SIGHTLINE_PLACES[pair.to];
     const eyeHeight = from.elevation + (from.lift || 0) + HL.SIGHTLINE_EYE;
     const distance = G.greatCircle(from.lat, from.lon, to.lat, to.lon, G.R_MEAN);
     const vanish = G.vanishDistance(eyeHeight, to.elevation, R);
+    const visible = distance <= vanish;
+    // Bez ohybu svetla by mez lezela tady - cokoli mezi ni a `vanish` je
+    // videt jen jako prelud. / Without bending the limit would sit here;
+    // anything between it and `vanish` shows only as a mirage.
+    const vanishPlain = G.vanishDistance(eyeHeight, to.elevation, G.R_MEAN);
+    // stejny podil cesty v oparu jako v simulaci / the same hazy share as the simulation
+    const hazeShare = Math.min(1, G.HAZE_LAYER / Math.max(eyeHeight, G.HAZE_LAYER));
+    const clarity = G.hazeTransmission(haze, distance * hazeShare);
     return {
       pair: pair,
       from: from,
@@ -51,7 +59,9 @@
       objectHeight: to.elevation,
       distance: distance,
       vanish: vanish,
-      visible: distance <= vanish,
+      visible: visible,
+      mirage: visible && distance > vanishPlain,
+      lostInHaze: visible && clarity < G.CONTRAST_THRESHOLD,
       // O kolik je rozhled uvnitr meze (kladne) nebo za ni (zaporne).
       margin: vanish - distance,
     };
@@ -63,16 +73,21 @@
       const F = HL.format;
       const name = (place) => HL.i18n.pick(place.name, '');
 
+      // Tri verdikty: zakriveni to nepusti, opar to schova, nebo je to videt.
+      // Three verdicts: the curve blocks it, the haze hides it, or it shows.
+      const verdict = !model.visible ? 'no' : model.lostInHaze ? 'haze' : 'yes';
       const badge = el('span', {
-        class: 'sl-badge sl-badge-' + (model.visible ? 'yes' : 'no'),
-        text: model.visible ? t('sight.yes') : t('sight.no'),
+        class: 'sl-badge sl-badge-' + verdict,
+        text: t('sight.verdict.' + verdict),
       });
 
       // Tesne pripady stoji za zvlastni zminku - jsou nejzajimavejsi.
       const closeness = Math.abs(model.margin) / model.vanish;
-      const marginText = t(model.visible ? 'sight.marginInside' : 'sight.marginOutside', {
+      let marginText = t(model.visible ? 'sight.marginInside' : 'sight.marginOutside', {
         n: F.distance(Math.abs(model.margin), lang),
       });
+      if (model.mirage) marginText += ' · ' + t('sight.mirage');
+      if (model.lostInHaze) marginText += ' · ' + t('sight.hazeHides');
 
       return el('li', { class: 'sl-row' + (closeness < 0.05 ? ' is-close' : '') }, [
         el('div', { class: 'sl-where' }, [
@@ -101,6 +116,8 @@
               eyeHeight: model.eyeHeight,
               objectHeight: model.objectHeight,
               distance: model.distance,
+              shape: model.to.shape || null,
+              name: model.to.name,
             }),
         }),
       ]);
@@ -117,7 +134,7 @@
       // These are terrestrial sightlines, so they always use the Earth's
       // radius; a different body would only confuse this table.
       const R = G.effectiveRadius(result.refraction, G.R_MEAN);
-      const models = HL.SIGHTLINE_PAIRS.map((pair) => solvePair(pair, R));
+      const models = HL.SIGHTLINE_PAIRS.map((pair) => solvePair(pair, R, state.haze));
 
       const list = el('ul', { class: 'sl-list' });
       for (const model of models) list.appendChild(row(model, lang));
@@ -137,6 +154,15 @@
             class: 'hint sl-warning',
             text: t(result.refraction ? 'sight.withRefraction' : 'sight.withoutRefraction'),
           }),
+          state.haze > 0
+            ? el('p', {
+                class: 'hint sl-warning',
+                text: t('sight.withHaze', {
+                  p: HL.format.percent(state.haze, lang),
+                  range: HL.format.distance(G.hazeRange(state.haze), lang),
+                }),
+              })
+            : null,
           notes,
           el('p', { class: 'hint sl-warning', text: t('sight.terrain') }),
         ])

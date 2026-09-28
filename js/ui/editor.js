@@ -109,7 +109,7 @@
             },
             [
               el('span', { class: 'editor-item-thumb' }, [
-                item.image ? el('img', { src: item.image, alt: '' }) : el('span', { text: '❓' }),
+                el('img', { src: HL.objectArt(item).image, alt: '' }),
               ]),
               el('span', { class: 'editor-item-text' }, [
                 el('strong', { text: HL.i18n.pick(item.name, item.id) }),
@@ -396,6 +396,15 @@
           })
         );
       } else {
+        // Bez obrazku se v obrazcich kresli vytycka - nahled ma ukazat totez.
+        // Without a picture the views draw the ranging pole; so does the preview.
+        refs.preview.appendChild(
+          el('img', {
+            src: HL.MEASURING_ROD.image,
+            alt: '',
+            style: { height: height + 'px', width: height * HL.MEASURING_ROD.aspect + 'px' },
+          })
+        );
         refs.preview.appendChild(el('span', { class: 'hint', text: HL.i18n.t('editor.image.none') }));
       }
       refs.preview.appendChild(

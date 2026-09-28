@@ -267,5 +267,41 @@ check(
   20e3
 );
 
+// --- Opar / haze -----------------------------------------------------------
+// Kazdy kilometr ubere stejny podil kontrastu: po D km zbyva (1 - p)^D.
+// Each kilometre takes the same share of contrast: (1 - p)^D is left.
+check('cisty vzduch nic neubira', G.hazeTransmission(0, 50000), 1, 0);
+check('opar 10 %/km: po 1 km zbyva 90 %', G.hazeTransmission(0.1, 1000), 0.9, 1e-12);
+check('opar 10 %/km: po 10 km zbyva 0,9^10', G.hazeTransmission(0.1, 10000), Math.pow(0.9, 10), 1e-12);
+// Koschmieder: kontrast klesne na 2 % po ln(0,02) / ln(0,9) = 37,13 km.
+check('opar 10 %/km prohlednes na 37,13 km', G.hazeRange(0.1), 37129.8, 0.5);
+check('na hranici oparu zbyvaji presne 2 %', G.hazeTransmission(0.05, G.hazeRange(0.05)), 0.02, 1e-9);
+check('cisty vzduch jde prohlednout nekonecne daleko', isFinite(G.hazeRange(0)) ? 1 : 0, 0, 0);
+
+const ship = { planetRadius: R, eyeHeight: 1.7, objectHeight: 53, distance: 25000 };
+check('Titanic ve 25 km pri 20 %/km zmizi v oparu', G.solve({ ...ship, haze: 0.2 }).lostInHaze ? 1 : 0, 1, 0);
+check('Titanic ve 25 km pri 1 %/km zustane videt', G.solve({ ...ship, haze: 0.01 }).lostInHaze ? 1 : 0, 0, 0);
+// Opar lezi ve spodnich 2 km: z letadla v 10 km se prochazi jen petinou cesty.
+// Haze sits in the lowest 2 km: from a plane at 10 km only a fifth of the path is hazy.
+check(
+  'z letadla v 10 km je v oparu petina cesty',
+  G.solve({ planetRadius: R, eyeHeight: 10000, objectHeight: 53, distance: 100000, haze: 0.05 }).clarity,
+  Math.pow(0.95, 20),
+  1e-9
+);
+
+// --- Prelud / mirage --------------------------------------------------------
+// 30 m stezen z 1,7 m: bez ohybu zmizi ve 24,2 km, s ohybem az ve 26,2 km.
+// Ve 25 km je tedy videt jen diky ohybu svetla.
+// A 30 m mast from 1.7 m vanishes at 24.2 km without bending and 26.2 km with
+// it, so at 25 km it shows only because the light bends.
+const mast = { planetRadius: R, eyeHeight: 1.7, objectHeight: 30 };
+const mirage = G.solve({ ...mast, distance: 25000, refraction: true });
+check('ve 25 km je stezen jen prelud', mirage.mirage ? 1 : 0, 1, 0);
+check('prelud: bez ohybu by nebylo videt nic', mirage.visibleGeometric, 0, 0);
+check('prelud: s ohybem je kus videt', mirage.visible > 0 ? 1 : 0, 1, 0);
+check('ve 15 km je stezen videt i bez ohybu', G.solve({ ...mast, distance: 15000, refraction: true }).mirage ? 1 : 0, 0, 0);
+check('bez refrakce prelud nevznikne', G.solve({ ...mast, distance: 25000, refraction: false }).mirage ? 1 : 0, 0, 0);
+
 console.log(failures === 0 ? '\nVsechny kontroly prosly / all checks passed' : `\n${failures} chyb / failures`);
 process.exit(failures === 0 ? 0 : 1);

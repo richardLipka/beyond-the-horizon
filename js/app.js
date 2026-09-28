@@ -25,7 +25,16 @@
     distance: 22000,
     objectId: 'sailboat',
     customHeight: 50,
+    // Vlastni objekt si muze pujcit kresbu z knihovny (nacteny rozhled na
+    // horu nebo mesto); jinak je to vytycka. / A custom object may borrow a
+    // library drawing (a loaded sightline to a peak or a city); otherwise it
+    // is the ranging pole.
+    customShape: null,
+    customName: null,
     refraction: false,
+    // podil kontrastu, ktery ubere kazdy kilometr vzduchu (0 = cisty vzduch)
+    // share of contrast each kilometre of air takes away (0 = clear air)
+    haze: 0,
   };
 
   const store = HL.createStore(
@@ -37,31 +46,29 @@
 
   // ---- pomocne vypocty / derived values ---------------------------------
 
-  /** Neutralni ikonka pro vlastni objekt - merici tyc s praporkem. */
-  const CUSTOM_IMAGE =
-    'data:image/svg+xml,' +
-    encodeURIComponent(
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 100">' +
-        '<rect x="19" y="16" width="13" height="84" rx="3" fill="#1f8fa8"/>' +
-        '<rect x="19" y="30" width="13" height="11" fill="#e4f6fa"/>' +
-        '<rect x="19" y="56" width="13" height="11" fill="#e4f6fa"/>' +
-        '<rect x="19" y="82" width="13" height="11" fill="#e4f6fa"/>' +
-        '<rect x="23.5" y="2" width="4" height="16" rx="2" fill="#0b3549"/>' +
-        '<path d="M27 3h17l-5 6 5 6H27z" fill="#f2a93b"/>' +
-        '</svg>'
-    );
-
+  /**
+   * Vlastni objekt. Bez pujcene kresby nema obrazek, takze ho vsechny pohledy
+   * nakresli jako vytycku (HL.objectArt). S pujcenou kresbou (hora, mesto
+   * z tabulky rozhledu) prevezme jeji obrazek i pomer stran, ale vysku
+   * a jmeno ma vlastni.
+   * The custom object. Without a borrowed drawing it has no picture, so every
+   * view draws it as the ranging pole. With one (a peak or a city from the
+   * sightlines table) it takes that picture and aspect ratio but keeps its own
+   * height and name.
+   */
   function customObject(state) {
+    const shape =
+      state.customShape && state.data ? state.data.objects.find((o) => o.id === state.customShape) : null;
     return {
       id: '__custom',
       category: 'custom',
-      name: { cs: HL.strings.cs['ctrl.custom'], en: HL.strings.en['ctrl.custom'] },
+      name: state.customName || { cs: HL.strings.cs['ctrl.custom'], en: HL.strings.en['ctrl.custom'] },
       height: state.customHeight,
-      aspect: 0.5,
+      aspect: shape ? shape.aspect : HL.MEASURING_ROD.aspect,
       baseline: 'ground',
       defaultDistance: null,
       fact: null,
-      image: CUSTOM_IMAGE,
+      image: shape ? shape.image : null,
     };
   }
 
@@ -100,6 +107,8 @@
       objectHeight: object.height,
       distance: state.distance,
       refraction: state.refraction,
+      // Bez atmosfery neni ani opar. / No atmosphere, no haze.
+      haze: HL.planetLook(state.planet).airless ? 0 : state.haze,
     });
   }
 
@@ -142,7 +151,10 @@
           distance: state.distance,
           objectId: state.objectId,
           customHeight: state.customHeight,
+          customShape: state.customShape,
+          customName: state.customName,
           refraction: state.refraction,
+          haze: state.haze,
         })
       );
     } catch (e) {
@@ -214,8 +226,19 @@
       return planetRadius(state || store.get());
     },
 
+    /**
+     * Nova vyska uz neni ta hora z rozhledu, takze se pujcena kresba i jmeno
+     * zahodi a zbyde vytycka.
+     * A new height is no longer that peak from the sightline, so the borrowed
+     * drawing and name go and the pole is left.
+     */
     setCustomHeight(metres) {
-      store.set({ customHeight: Math.max(0.1, metres) });
+      store.set({ customHeight: Math.max(0.1, metres), customShape: null, customName: null });
+    },
+
+    /** Podil kontrastu ztraceny na kilometr, 0..1. */
+    setHaze(perKm) {
+      store.set({ haze: Math.min(1, Math.max(0, Number(perKm) || 0)) });
     },
 
     /**
@@ -232,6 +255,8 @@
         planet: 'earth',
         objectId: '__custom',
         customHeight: Math.max(0.1, sightline.objectHeight),
+        customShape: sightline.shape || null,
+        customName: sightline.name || null,
         eyeHeight: Math.max(0.1, sightline.eyeHeight),
         distance: Math.round(sightline.distance),
       });
@@ -248,8 +273,12 @@
     selectObject(id) {
       const state = store.get();
       const patch = { objectId: id };
+      // Klik na dlazdici "Vlastni objekt" znamena vytycku, ne naposledy
+      // nacteny rozhled. / Clicking the custom tile means the pole, not the
+      // sightline loaded last.
+      if (id === '__custom') Object.assign(patch, { customShape: null, customName: null });
       const object =
-        id === '__custom' ? customObject(state) : state.data.objects.find((o) => o.id === id);
+        id === '__custom' ? customObject(Object.assign({}, state, patch)) : state.data.objects.find((o) => o.id === id);
       if (object) patch.distance = suggestedDistance(state, object);
       store.set(patch);
     },

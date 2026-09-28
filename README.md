@@ -103,6 +103,21 @@ circle. So the ball is also drawn once **the distance along the surface reaches
 one radius**, which is what "comparable with the size of the body" means. Fitted
 with a least-squares circle, the drawn path is then a circle to within 0.01 px.
 
+#### Haze, and mirages
+
+Air is never perfectly clear. A slider in the settings sets how much contrast
+each kilometre takes away, and the telescope blends the object into the haze by
+exactly that much: after *D* kilometres, `(1 − p)^D` is left. Below 2 % the eye
+cannot pick it out. Then the eyepiece shows nothing, and the verdict says the
+haze won, not the curve. At 2 % per kilometre you see through about 190 km of
+air. Haze hugs the ground, so from an aeroplane you look through it for only
+part of the way.
+
+Refraction gets a picture of its own. When an object shows **only** because light
+bends — hidden by pure geometry, lifted into view by the air — the telescope
+draws it the way a real Fata Morgana looks over the sea. A shimmering image
+floats above the horizon, with a gap between the two.
+
 ### 🌊 When does it vanish?
 
 The distance at which an object disappears completely, shown as the sum that
@@ -146,24 +161,33 @@ whole problem into two right triangles.
 
 ![Geometric construction: a circle with centre O, the tangent touching at T with a right angle to the radius, angles alpha and beta at the centre, and the heights h1 and h2 marked on the radii](docs/preview-geometry.svg)
 
-Every step is written out symbolically, substituted and evaluated — `cos α =
-R/(R+h₁)`, `t = √(h(2R+h))`, `d = R·α`, `D = R(α+β)` — down to the small-height
-approximation `d ≈ √(2Rh)`. The drawn angles are enlarged so the figure is
-readable; the printed numbers are the real ones.
+Every step is written out symbolically, substituted and evaluated, using only
+what the first year of high school knows: Pythagoras, cosine, arccosine, and an
+arc as a share of the circumference. `cos α = R/(R+h₁)`, `t² = (R+h₁)² − R²`,
+`d = 2πR · α / 360°`, `D = d₁ + d₂`. Angles are in degrees, not radians. Every
+substitution reproduces its own result on a calculator — with refraction on as
+well, where the effective radius is used throughout. The drawn angles are
+enlarged so the figure is readable; the printed numbers are the real ones.
 
 Below the calculation the same triangle is used to **derive both functions the
 rest of the app plots**, and each is drawn on plain linear axes:
 
 | | |
 | --- | --- |
-| *When does it vanish?* | `D(h₂) = d₁ + R · arccos(R / (R + h₂))` — a square-root curve that starts at the observer's own horizon and flattens against a ceiling |
-| *Limits of sight* | `h₂(D) = R · (1 / cos((D − d₁) / R) − 1)` — flat zero out to the horizon, then a parabola, then a vertical asymptote |
+| *When does it vanish?* | `D(h₂) = d₁ + 2πR · β / 360°`, with `cos β = R / (R + h₂)` — a square-root curve that starts at the observer's own horizon and flattens against a ceiling |
+| *Limits of sight* | `h₂(D) = R / cos β − R`, with `β = 360° · (D − d₁) / 2πR` — flat zero out to the horizon, then a parabola, then a vertical asymptote |
 
 They are **inverses of one another**, which is why the first has its horizontal
 ceiling exactly where the second has its vertical asymptote: at `d₁ + πR/2`. The
 first chart's window follows the selected object so the shape is visible at
 school heights; the second spans the full range so the asymptote shows — and
 makes it obvious why the *Limits of sight* mode needs logarithmic axes.
+
+No derivatives, no series expansions. Both approximations come from Pythagoras,
+because just past the horizon the arc is almost as long as the tangent. That
+turns the two shapes into sentences a pupil can check: a four times taller
+object shows only twice as far past the horizon, and twice as far past the
+horizon needs an object four times taller.
 
 ### 🔭 Can you really see it?
 
@@ -183,16 +207,25 @@ click loads any row into the simulation above.
 | Prague from Mont Blanc | 734 km against 312 km. Not a chance |
 
 The verdicts follow whatever refraction setting is active, so the switch in the
-panel visibly flips the borderline rows. The table is honest about its limits:
-it answers only whether the curve of the Earth hides the target — a hill in the
-way is another matter entirely.
+panel visibly flips the borderline rows. A row visible only thanks to refraction
+says so. With haze on, a row the curve allows but the air does not gets a badge
+of its own: at 2 % per kilometre the Alps from Pilsen drop out. *Try it* loads
+the target with the closest drawing in the library — a peak gets a peak, Prague
+gets the Petřín tower.
+
+The table is honest about its limits: it answers only whether the curve of the
+Earth hides the target. A hill in the way is another matter entirely.
 
 ### 🧰 Object editor
 
-Add your own church, tower or ship — picture included. Upload an image and it is
-stored straight into the JSON as base64, with the aspect ratio detected
-automatically. Edits preview live in the diagram. Save into the browser or
-download a fresh `objects.json`.
+Add your own tower or ship — picture included. Upload an image and it goes
+straight into the JSON as base64, with the aspect ratio detected automatically.
+Edits preview live in the diagram. Save into the browser or download a fresh
+`objects.json`.
+
+An object without a picture shows as a red-and-white surveyor's ranging pole —
+the same one the *custom object* uses. It carries a height and nothing else, so
+it cannot be mistaken for a real building.
 
 ---
 
@@ -266,6 +299,9 @@ it**.
 | absolute limit of sight | `your horizon + πR / 2`; past it no height is enough |
 | the antipode | `πR` — half the circumference, never visible from anywhere |
 | radius of an orbit of period `T` | `∛(GM · T² / 4π²)` — Kepler's third law |
+| contrast left after `D` km of haze | `(1 − p)^D`, where `p` is the share one kilometre takes |
+| how far you see through the haze | where that falls to 2 %: `ln 0.02 / ln(1 − p)` km |
+| a mirage | visible with the effective radius `7/6 · R`, hidden with the real one |
 
 Because `arccos(R / (R + h)) → π/2` as the height grows, **you always see
 exactly one hemisphere and never a metre more**. Two infinitely tall towers
@@ -289,6 +325,12 @@ horizontal and vertical scales**. The factor is never hidden — it is computed 
 render and printed into the image ("Heights are stretched 182×"). Object widths
 are not to scale; **heights and distances are**. The model assumes a perfect
 sphere with a smooth surface between observer and object.
+
+Every drawing spans exactly its object's height: the tip touches the top of the
+picture and the base the bottom. Five mountains did not. Kilimanjaro's top 30 %
+was empty sky, so every view drew it 30 % too short, and a Kilimanjaro with its
+top third showing could show nothing at all. They are cropped now. The side view
+only hints at haze; the telescope blends it in honestly.
 
 ---
 
@@ -351,6 +393,7 @@ css/                theme · layout · components · diagram
 js/core/            geometry · format · store · dom
 js/i18n/            strings (cs + en) · language switching
 js/data/            factory fallback (generated) · loading & validation · planet presets
+                    · ranging pole · real sightlines
 js/ui/              diagram · telescope · chart · controls · results · vanish · limits · editor
                     shared by several views: export · readout
 js/app.js           wires state to views
@@ -381,7 +424,7 @@ reports anything you forgot.
 ```bash
 npm start                       # dev server
 npm run build                   # regenerate the data file
-npm test                        # geometry self-test (13 checks)
+npm test                        # geometry self-test (75 checks)
 node tools/check-strings.mjs    # translation completeness
 ```
 

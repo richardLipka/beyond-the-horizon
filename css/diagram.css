@@ -121,12 +121,6 @@
   stroke-width: 2.4;
 }
 
-.dg-object-fallback {
-  fill: #6f93a5;
-  stroke: #38596b;
-  stroke-width: 2;
-}
-
 /* kotovaci cary / dimension lines */
 
 .dg-dim-line,
@@ -283,10 +277,28 @@
   stroke-dasharray: 8 6;
 }
 
-.ts-fallback {
-  fill: #6f93a5;
-  stroke: #38596b;
-  stroke-width: 2;
+/* Opar a prelud. Barvu oparu urcuje obloha telesa, proto ji nastavuje kod.
+   Haze and mirage. The haze colour comes from the body's sky, set in code. */
+.ts-haze {
+  pointer-events: none;
+}
+
+.ts-mirage {
+  opacity: 0.82;
+}
+
+.ts-mirage-gap {
+  opacity: 0.55;
+}
+
+.ts-note {
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--muted);
+}
+
+.ts-note-mirage {
+  fill: var(--coral-dark);
 }
 
 .ts-dim-line,

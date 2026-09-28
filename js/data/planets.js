@@ -326,4 +326,28 @@
     if (!planet) return HL.CUSTOM_PALETTE;
     return { swatch: planet.swatch, decor: planet.decor, colors: planet.colors, airless: !!planet.airless };
   };
+
+  /** '#abc' nebo '#aabbcc' -> [r, g, b]; cokoli jineho -> null. */
+  function rgb(hex) {
+    const m = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(hex || '').trim());
+    if (!m) return null;
+    const h = m[1].length === 3 ? m[1].replace(/(.)/g, '$1$1') : m[1];
+    return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
+  }
+
+  /**
+   * Barva oparu: obloha u obzoru promichana s belavou mlhou. Opar ma barvu
+   * rozptyleneho svetla, ne sedou - na Marsu je proto do ruzova. Patri telesu
+   * stejne jako ostatni barvy, takze ji bocni pohled i dalekohled berou odsud.
+   * The haze colour: the horizon sky mixed with a whitish mist. Haze takes the
+   * colour of scattered light rather than grey, so on Mars it turns pinkish.
+   * It belongs to the body like every other colour, so both views take it here.
+   */
+  HL.hazeColor = function (look) {
+    const sky = rgb(((look || HL.CUSTOM_PALETTE).colors.sky || [])[2]);
+    const mist = [238, 242, 244];
+    if (!sky) return '#eef2f4';
+    const c = sky.map((v, i) => Math.round(v * 0.45 + mist[i] * 0.55));
+    return '#' + c.map((v) => v.toString(16).padStart(2, '0')).join('');
+  };
 })((window.HorizonLab = window.HorizonLab || {}));

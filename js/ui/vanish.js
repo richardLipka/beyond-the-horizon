@@ -95,7 +95,7 @@
             },
             [
               el('span', { class: 'compare-thumb' }, [
-                entry.item.image ? el('img', { src: entry.item.image, alt: '' }) : null,
+                el('img', { src: HL.objectArt(entry.item).image, alt: '' }),
               ]),
               el('span', { class: 'compare-name', text: HL.i18n.pick(entry.item.name, entry.item.id) }),
               el('span', { class: 'compare-track' }, [

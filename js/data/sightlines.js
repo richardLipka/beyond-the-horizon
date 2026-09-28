@@ -24,7 +24,11 @@
 
   /**
    * Mista. `lift` je vyska vyhlidky nad zemi (rozhledna), jinak 0.
+   * `shape` je id kresby z knihovny objektu, ktera se pouzije, kdyz se cil
+   * nacte do simulace - hora dostane horu, Praha Petrinskou rozhlednu.
    * Places. `lift` is the height of a viewing platform above the ground.
+   * `shape` is the id of a library drawing used when the target is loaded into
+   * the simulation: a peak gets a peak, Prague gets the Petrin tower.
    */
   const PLACES = {
     plzen: { lat: 49.7475, lon: 13.3776, elevation: 310, name: { cs: 'Plzeň', en: 'Pilsen' } },
@@ -39,6 +43,7 @@
       lat: 50.0875,
       lon: 14.4213,
       elevation: 200,
+      shape: 'petrin',
       name: { cs: 'Praha – Staré Město', en: 'Prague – Old Town' },
     },
     plechy: {
@@ -66,27 +71,28 @@
     },
 
     // --- cile / targets ---
-    dachstein: { lat: 47.4756, lon: 13.6062, elevation: 2995, name: { cs: 'Dachstein (Alpy)', en: 'Dachstein (the Alps)' } },
+    dachstein: { lat: 47.4756, lon: 13.6062, elevation: 2995, shape: 'aneto', name: { cs: 'Dachstein (Alpy)', en: 'Dachstein (the Alps)' } },
     glockner: {
       lat: 47.0745,
       lon: 12.6939,
       elevation: 3798,
+      shape: 'everest',
       name: { cs: 'Grossglockner (Alpy)', en: 'Grossglockner (the Alps)' },
     },
-    zugspitze: { lat: 47.4211, lon: 10.9853, elevation: 2962, name: { cs: 'Zugspitze', en: 'Zugspitze' } },
-    matterhorn: { lat: 45.9766, lon: 7.6585, elevation: 4478, name: { cs: 'Matterhorn', en: 'Matterhorn' } },
-    montblanc: { lat: 45.8326, lon: 6.8652, elevation: 4806, name: { cs: 'Mont Blanc', en: 'Mont Blanc' } },
+    zugspitze: { lat: 47.4211, lon: 10.9853, elevation: 2962, shape: 'aneto', name: { cs: 'Zugspitze', en: 'Zugspitze' } },
+    matterhorn: { lat: 45.9766, lon: 7.6585, elevation: 4478, shape: 'everest', name: { cs: 'Matterhorn', en: 'Matterhorn' } },
+    montblanc: { lat: 45.8326, lon: 6.8652, elevation: 4806, shape: 'montblanc', name: { cs: 'Mont Blanc', en: 'Mont Blanc' } },
     mounier: {
       lat: 44.1236,
       lon: 6.9722,
       elevation: 2817,
       name: { cs: 'Mont Mounier (Přímořské Alpy)', en: 'Mont Mounier (Maritime Alps)' },
     },
-    cinto: { lat: 42.3797, lon: 8.9224, elevation: 2706, name: { cs: 'Monte Cinto (Korsika)', en: 'Monte Cinto (Corsica)' } },
-    triglav: { lat: 46.3783, lon: 13.8367, elevation: 2864, name: { cs: 'Triglav', en: 'Triglav' } },
-    snezka: { lat: 50.7359, lon: 15.74, elevation: 1603, name: { cs: 'Sněžka', en: 'Sněžka' } },
-    praded: { lat: 50.0831, lon: 17.2306, elevation: 1491, name: { cs: 'Praděd', en: 'Praděd' } },
-    etna: { lat: 37.751, lon: 14.9934, elevation: 3357, name: { cs: 'Etna', en: 'Mount Etna' } },
+    cinto: { lat: 42.3797, lon: 8.9224, elevation: 2706, shape: 'aneto', name: { cs: 'Monte Cinto (Korsika)', en: 'Monte Cinto (Corsica)' } },
+    triglav: { lat: 46.3783, lon: 13.8367, elevation: 2864, shape: 'aneto', name: { cs: 'Triglav', en: 'Triglav' } },
+    snezka: { lat: 50.7359, lon: 15.74, elevation: 1603, shape: 'snezka', name: { cs: 'Sněžka', en: 'Sněžka' } },
+    praded: { lat: 50.0831, lon: 17.2306, elevation: 1491, shape: 'snezka', name: { cs: 'Praděd', en: 'Praděd' } },
+    etna: { lat: 37.751, lon: 14.9934, elevation: 3357, shape: 'kilimanjaro', name: { cs: 'Etna', en: 'Mount Etna' } },
   };
 
   /**

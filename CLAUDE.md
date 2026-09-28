@@ -41,8 +41,9 @@ check, and `check-strings`. Run all three before committing.
    key sets, matching `{placeholders}`, and that every key is actually
    referenced somewhere — dead translations accumulated unnoticed until 13 of
    them were found at once. Keys composed at run time (`status.`, `data.source.`,
-   `preset.`, `orbit.`, `editor.baseline.`) are listed as prefixes in that check;
-   add to that list rather than deleting a key you cannot find.
+   `preset.`, `orbit.`, `editor.baseline.`, `sight.note.`, `sight.verdict.`) are
+   listed as prefixes in that check; add to that list rather than deleting a
+   key you cannot find.
 
    Watch for wording that only holds on the Earth. Eleven bodies are selectable,
    so "how much the Earth ate" or "distance along the Earth's surface" is wrong
@@ -63,7 +64,8 @@ check, and `check-strings`. Run all three before committing.
 ```
 core/     geometry, format, store, dom   — no DOM knowledge above geometry, no language
 i18n/     strings + language switching
-data/     load / validate / save objects.json (+ factory fallback), planet presets
+data/     load / validate / save objects.json (+ factory fallback), planet presets,
+          the ranging pole for objects without a picture, real sightlines
 ui/       diagram, telescope, chart, controls, results, vanish, limits,
           geometry-view, editor, and two shared utilities (export, readout)
 app.js    the only place that wires state to views
@@ -384,6 +386,67 @@ the numbers) stacks at 1100 px because it needs more room than the panel alone;
 the whole `#main` grid only stacks at **820 px**, so the sidebar is still beside
 the content at 1000 px. Do not merge them back into one query — that is what
 made a 1000 px window stack the sidebar prematurely.
+
+**The geometry mode is written for the first year of high school.** That means
+Pythagoras, cosine, arccosine and an arc as a share of the circumference
+(`d = 2πR · α / 360°`) — and nothing else. No radians, no derivatives, no series
+expansions. The derivative row (`D′(h₂)`) and the Taylor step
+`1/cos β − 1 ≈ β²/2` are gone; both approximations now come from Pythagoras,
+because just past the horizon the arc is almost as long as the tangent.
+`vanishSlope` stays in `geometry.js` only because `check-geometry` uses it to
+verify the shape claims in the text ("steep at first, then slower"). Keep new
+explanations inside that toolbox.
+
+The substitutions use ONE radius, `result.R` — the effective one when refraction
+is on. They used to print the physical radius into `cos α = R/(R+h₁)` while α
+came from the effective one, so the row disagreed with its own result by 7.4 %.
+Angles in substitutions carry six significant digits (`degreesExact`): with four
+decimals a pupil recomputing the arc on a calculator was 5 m off.
+
+**Haze is contrast lost per kilometre**, `T = (1 − p)^D`, and below 2 %
+(Koschmieder's threshold, `CONTRAST_THRESHOLD`) the object is gone —
+`lostInHaze`, which gets its own verdict. Three rules keep it honest. Haze sits
+in the lowest `HAZE_LAYER` (2 km) of air, so an observer higher up looks through
+it for only the share `2 km / h₁` of the path; without that an orbit view came
+out fogged by thousands of kilometres of vacuum. An airless body has no haze —
+`app.currentResult` passes 0 there. And the two views treat it differently on
+purpose: the telescope blends the object into the haze by exactly `T` (it is
+"what you see"), while the side view is a schematic and never fades the object
+below 30 %, because where it stands must stay visible. The haze colour comes
+from `HL.hazeColor(look)`: colours belong to the body, and haze over Mars is pink.
+
+**A mirage is an object visible only because light bends**: `solve` recomputes
+the hidden height with the physical radius, and `mirage` is true when that leaves
+nothing while the effective radius leaves something. The telescope lifts the
+visible slice `MIRAGE_GAP` px above the horizon, shimmers it with an
+`feTurbulence` filter and fills the gap with a haze-coloured strip. The clip that
+cuts the slice at the horizon must sit INSIDE the translated group — outside it,
+the cut follows the real horizon and an extra `gap` of the hidden part shows.
+For the same reason the hidden ghost is clipped to below the horizon.
+
+**An object without a picture is drawn as the red-and-white ranging pole**, via
+`HL.objectArt(obj)` (`js/data/rod.js`) — in the diagram, the telescope, the
+sidebar, the compare list and the editor. Never fall back to a coloured rect
+again, and always take the aspect from `objectArt`: the object's own aspect would
+stretch the pole into a fat column. The custom object can borrow a library
+drawing (`customShape`, `customName`) when a sightline is loaded — a peak gets a
+peak, Prague gets the Petřín tower. `setCustomHeight` and clicking the custom
+card drop the borrowed drawing, because a new height is no longer that peak.
+
+**Every drawing must span its viewBox exactly: tip on the top edge, base on the
+bottom.** Views scale the whole image to the object's height, so empty space at
+the top makes the object short. Five mountains had it — Kilimanjaro's top 30 %
+was sky, so it was drawn 30 % too short, and with its top third showing it
+showed nothing. The fix is to crop the `viewBox` (the build then derives the new
+aspect). The build cannot check this without a renderer; measure new drawings
+with `getBBox()` in the browser.
+
+**Object and place names have no fixed grammar, so sentences must not depend on
+it.** English names come with an article ("A person") or without ("Mount
+Everest"), so "The {object} stands…" produced "The A person stands". The English
+status texts therefore open with `{object}:`. Czech names carry a gender, so a
+past participle next to `{object}` or `{name}` ("se celý schoval", "stačil by")
+breaks on Sněžka or Plachetnice — use present tense or rephrase around a noun.
 
 **Data source priority** is localStorage → `objects.json` → built-in factory
 copy. The third exists purely for `file://`, where `fetch()` of a local file

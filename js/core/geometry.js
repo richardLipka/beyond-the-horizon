@@ -141,6 +141,13 @@
    * seen for each extra metre of its height. Derivative of R*arccos(R/(R+h)).
    * V nule je nekonecna (arccos ma v jednicce svislou tecnu) a s rostouci
    * vyskou klesa k nule - proto ma krivka odmocninovy tvar se stropem.
+   *
+   * V aplikaci se uz nezobrazuje - derivace na zacatek stredni skoly nepatri.
+   * Zustava kvuli check-geometry, ktery z ni overuje, ze popis tvaru krivky
+   * ("nejdriv prudce, pak cim dal pomaleji") opravdu plati.
+   * No longer shown in the app - derivatives do not belong at the start of
+   * high school. It stays for check-geometry, which uses it to verify that the
+   * description of the curve ("steep at first, then slower and slower") holds.
    */
   function vanishSlope(objectHeight, R) {
     const h = objectHeight;
@@ -250,6 +257,47 @@
     return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
   }
 
+  /**
+   * Nejmensi kontrast, ktery oko jeste rozezna (Koschmieder). Pod nim objekt
+   * v opare splyne s oblohou za nim.
+   * The smallest contrast the eye can still tell apart (Koschmieder). Below it
+   * the object merges with the sky behind it.
+   */
+  const CONTRAST_THRESHOLD = 0.02;
+
+  /** Tloustka prizemni vrstvy, ve ktere se drzi opar [m]. / Haze layer depth. */
+  const HAZE_LAYER = 2000;
+
+  /**
+   * Kolik kontrastu zbyde po pruchodu vzduchem. Kazdy kilometr ubere stejny
+   * podil `perKm`, takze po D kilometrech zbyva (1 - perKm)^D - obycejna
+   * mocnina, zadna dalsi matematika.
+   * How much contrast survives the air. Every kilometre takes the same share
+   * `perKm`, so after D kilometres (1 - perKm)^D is left - a plain power.
+   *
+   * @param {number} perKm podil kontrastu ztraceny na kilometr (0..1)
+   * @param {number} distance vzdalenost v metrech
+   */
+  function hazeTransmission(perKm, distance) {
+    const p = Math.min(Math.max(Number(perKm) || 0, 0), 1);
+    if (p <= 0 || !(distance > 0)) return 1;
+    if (p >= 1) return 0;
+    return Math.pow(1 - p, distance / 1000);
+  }
+
+  /**
+   * Jak daleko jde opar prohlednout: vzdalenost, na ktere kontrast klesne
+   * na CONTRAST_THRESHOLD. Bez oparu nekonecno.
+   * How far you can see through the haze: where the contrast drops to the
+   * threshold. Infinite in clear air.
+   */
+  function hazeRange(perKm) {
+    const p = Math.min(Math.max(Number(perKm) || 0, 0), 1);
+    if (p <= 0) return Infinity;
+    if (p >= 1) return 0;
+    return (1000 * Math.log(CONTRAST_THRESHOLD)) / Math.log(1 - p);
+  }
+
   /** Zdanlivy uhlovy rozmer predmetu vysokeho `size` ve vzdalenosti `distance`. */
   function angularSize(size, distance) {
     if (!(distance > 0) || !(size > 0)) return 0;
@@ -318,6 +366,26 @@
 
     const apparent = angularSize(visible, distance);
 
+    // Kolik by bylo videt bez ohybu svetla. Kdyz nic a s ohybem neco, je to
+    // prelud: obraz existuje jen diky zahnutemu paprsku.
+    // What would show without bending. Nothing without it and something with
+    // it means a mirage: the image exists only because the ray curves.
+    const hiddenGeometric = input.refraction ? hiddenHeight(eyeHeight, distance, physicalRadius) : hiddenRaw;
+    const visibleGeometric = Math.max(0, objectHeight - hiddenGeometric);
+    const mirage = !!input.refraction && visible > 0 && visibleGeometric <= 0;
+
+    // Opar se drzi u zeme, ve spodnich HAZE_LAYER metrech vzduchu. Kdo je
+    // vys, diva se pres nej jen po casti cesty - zhruba po podilu
+    // HAZE_LAYER / h1. Pro vsechny pozemske vysky je podil 1, takze plati
+    // presne "tolik procent na kazdy kilometr".
+    // Haze hugs the ground, in the lowest HAZE_LAYER metres of air. From
+    // higher up you look through it for only part of the way - roughly the
+    // share HAZE_LAYER / h1. For every earthbound height the share is 1, so
+    // it is exactly "this many per cent for each kilometre".
+    const haze = Math.min(Math.max(Number(input.haze) || 0, 0), 1);
+    const hazeShare = Math.min(1, HAZE_LAYER / Math.max(eyeHeight, HAZE_LAYER));
+    const clarity = hazeTransmission(haze, distance * hazeShare);
+
     return {
       R: R,
       physicalRadius: physicalRadius,
@@ -345,6 +413,15 @@
       apparentAngle: apparent,
       apparentAngleFull: angularSize(objectHeight, distance),
       moonRatio: apparent / MOON_ANGULAR_DIAMETER,
+      visibleGeometric: visibleGeometric,
+      mirage: mirage,
+      haze: haze,
+      hazeShare: hazeShare,
+      clarity: clarity,
+      hazeRange: hazeRange(haze),
+      // zakriveni by ho pustilo, ale opar ho schova
+      // the curve would let it through, the haze hides it
+      lostInHaze: visible > 0 && clarity < CONTRAST_THRESHOLD,
     };
   }
 
@@ -353,6 +430,10 @@
     K_REFRACTION,
     MOON_ANGULAR_DIAMETER,
     GRAVITY,
+    CONTRAST_THRESHOLD,
+    HAZE_LAYER,
+    hazeTransmission,
+    hazeRange,
     orbitRadius,
     orbitPeriod,
     gmFromDensity,

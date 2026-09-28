@@ -317,10 +317,19 @@
     const lang = HL.i18n.lang();
     const F = HL.format;
     const r = model.result;
-    const R = r.R;
-    const num = (value, decimals) => F.number(value, decimals, lang);
 
     const maxSight = F.distance(r.maxSight, lang);
+
+    // Jen to, co zna zacatek stredni skoly: Pythagorova veta, kosinus,
+    // arkuskosinus a oblouk jako cast obvodu. Derivace (smernice krivky)
+    // i Tayloruv rozvoj 1/cos b - 1 ~ b^2/2 odtud zmizely; obe priblizeni se
+    // daji ziskat z Pythagorovy vety, protoze pro male uhly je oblouk skoro
+    // stejne dlouhy jako tecna.
+    // Only what the start of high school knows: Pythagoras, cosine,
+    // arccosine and an arc as a share of the circumference. The derivative
+    // (the slope of the curve) and the Taylor expansion are gone; both
+    // approximations follow from Pythagoras instead, because for small angles
+    // the arc is nearly as long as the tangent.
 
     // --- 1. vzdalenost zmizeni jako funkce vysky --------------------------
     const one = el('div', { class: 'formula-list' });
@@ -328,37 +337,26 @@
     one.appendChild(formulaRow('β = arccos( R / (R + h₂) )', null, null, 'row-object'));
     one.appendChild(
       formulaRow(
-        'D(h₂) = d₁ + R · β',
-        `= ${F.distance(r.horizon, lang)} + R · arccos( R / (R + h₂) )`,
+        'D(h₂) = d₁ + 2π · R · β / 360°',
+        `= ${F.distance(r.horizon, lang)} + 2π · R · β / 360°`,
         null,
         'row-total'
       )
     );
-    one.appendChild(
-      formulaRow(
-        'D′(h₂) = R² / ( (R + h₂) · √( h₂ (2R + h₂) ) )',
-        t('geo.deriveSlope'),
-        `${num(G.vanishSlope(r.objectHeight, R), 0)} m / m`,
-        'row-approx'
-      )
-    );
+    one.appendChild(el('div', { class: 'formula-note', text: t('geo.deriveOneApprox') }));
+    one.appendChild(formulaRow('h₂ ≪ R   ⇒   D ≈ d₁ + √( 2R · h₂ )', null, null, 'row-approx'));
 
     // --- 2. potrebna vyska jako funkce vzdalenosti ------------------------
     const two = el('div', { class: 'formula-list' });
     two.appendChild(el('div', { class: 'formula-note', text: t('geo.deriveTwoText') }));
-    two.appendChild(formulaRow('D = d₁ + R · β   ⇒   β = (D − d₁) / R', null, null, 'row-object'));
+    two.appendChild(
+      formulaRow('D = d₁ + 2π · R · β / 360°   ⇒   β = 360° · (D − d₁) / (2π · R)', null, null, 'row-object')
+    );
     two.appendChild(formulaRow('cos β = R / (R + h₂)   ⇒   R + h₂ = R / cos β', null, null, 'row-object'));
-    two.appendChild(
-      formulaRow('h₂(D) = R · ( 1 / cos((D − d₁) / R) − 1 )', null, null, 'row-total')
-    );
-    two.appendChild(
-      formulaRow(
-        'β ≪ 1  ⇒  1/cos β − 1 ≈ β²/2  ⇒  h₂ ≈ (D − d₁)² / (2R)',
-        null,
-        null,
-        'row-approx'
-      )
-    );
+    two.appendChild(formulaRow('h₂(D) = R / cos β − R', null, null, 'row-total'));
+    two.appendChild(el('div', { class: 'formula-note', text: t('geo.deriveTwoApprox') }));
+    two.appendChild(formulaRow('t₂² = (R + h₂)² − R² = h₂ · (2R + h₂) ≈ 2R · h₂', null, null, 'row-approx'));
+    two.appendChild(formulaRow('t₂ ≈ D − d₁   ⇒   h₂ ≈ (D − d₁)² / (2R)', null, null, 'row-approx'));
 
     container.appendChild(
       el('section', { class: 'card explain-card' }, [

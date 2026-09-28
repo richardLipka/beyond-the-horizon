@@ -3,6 +3,68 @@
 Formát podle [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 verzování podle [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [1.12.0] — 2026-09-28
+
+### Přidáno / Added
+
+- **Opar.** Nový posuvník v nastavení určí, kolik kontrastu ubere každý
+  kilometr vzduchu. Po *D* kilometrech zbývá `(1 − p)^D` a pod 2 % oko objekt
+  nerozezná. Dalekohled objekt přesně o tolik prolne s oparem, obloha u obzoru
+  zbělá a verdikt řekne, že vyhrál opar, ne zakřivení. Posuvník ukazuje i to,
+  jak daleko opar prohlédneš: při 2 % na kilometr asi 190 km.
+  - Opar se drží u země, ve spodních 2 km vzduchu. Když jsi výš, díváš se přes
+    něj jen po části cesty – jinak by pohled z oběžné dráhy zamlžily tisíce
+    kilometrů vzduchoprázdna.
+  - Na tělese bez atmosféry opar není.
+  - V tabulce rozhledů dostal vlastní štítek OPAR řádek, který by zakřivení
+    pustilo, ale vzduch ne. Při 2 % na kilometr vypadnou Alpy z Plzně, Sněžka
+    z Plzně a Etna z Malty.
+- **Přelud.** Objekt, který je vidět jen díky ohybu světla, nakreslí
+  dalekohled jako fatu morganu: chvějící se obraz visí nad obzorem a mezi nimi
+  zůstane mezera. Verdikt i tabulka rozhledů to řeknou slovy.
+- **Výtyčka pro neznámé objekty.** Vlastní objekt i objekt z editoru bez
+  obrázku se kreslí jako červenobílá zeměměřičská výtyčka. Dřívější modrobílý
+  sloupek s praporkem vypadal jako maják.
+- **Rozhledy si půjčí kresbu z knihovny.** *Vyzkoušet* nahraje cíl i se
+  jménem a s nejpodobnější kresbou – Dachstein dostane Aneto, Matterhorn
+  Everest, Etna Kilimandžáro, Praha Petřínskou rozhlednu.
+
+### Změněno / Changed
+
+- **Režim Geometrie mluví jazykem prvního ročníku.** Jen Pythagorova věta,
+  kosinus, arkuskosinus a oblouk jako část obvodu. Úhly jsou ve stupních
+  (`d = 2πR · α / 360°`), ne v radiánech; řádek s derivací a Taylorův rozvoj
+  zmizely. Obě přiblížení teď dá Pythagorova věta, protože kousek za obzorem je
+  oblouk skoro stejně dlouhý jako tečna. Tvar křivek se dá říct větou:
+  čtyřikrát vyšší objekt je vidět jen dvakrát dál za obzor. Asymptota se
+  vysvětlí tím, že cos 90° je nula a nulou dělit nejde.
+- Řádek s tečnou ukazuje Pythagorovu větu celou:
+  `t² = (R + h)² − R² = h · (2R + h)`.
+- Dalekohled smí širokou horu oříznout, když by z ní jinak koukalo méně než
+  30 px. Měřítko zůstává rovnoměrné, poměr vidět / schováno se nemění.
+- Popisek výšky v dalekohledu uhne na druhou stranu, když by ležel přes úzký
+  objekt.
+
+### Opraveno / Fixed
+
+- **Pět hor bylo nakreslených nižších, než jsou.** Kresby Sněžky, Mauna Kea,
+  Aneta, Mont Blancu a Kilimandžára měly nad vrcholem prázdné nebe – 14 až
+  30 % výšky obrázku. Každý pohled je proto kreslil o tolik nižší, a
+  Kilimandžáro, ze kterého kouká horní třetina, neukázalo nic. Kresby jsou
+  oříznuté a změřené: všech 23 teď sahá přesně od spodního okraje k hornímu.
+  Eiffelova věž se vznášela 2 % nad zemí.
+- **Se zapnutou refrakcí nesedělo dosazení v Geometrii.** Do
+  `cos α = R / (R + h₁)` se dosazoval skutečný poloměr, ale úhel se počítal
+  z efektivního – řádek se se svým výsledkem rozcházel o 7,4 %. Teď se všude
+  počítá s efektivním poloměrem a u R stojí proč. Úhly v dosazení mají šest
+  platných číslic, takže oblouk vyjde na kalkulačce přesně.
+- **Anglické věty rozbíjely jména.** „The {object} stands…“ dalo „The A person
+  stands“ a „The Mount Everest is“. Věty teď začínají jménem s dvojtečkou.
+- **České věty rozbíjely rod.** „…se celý schoval“ a „stačil by {name}“
+  nesedělo na Sněžku ani Plachetnici. Přepsáno bez rodu.
+- „Zbývá 0 % kontrastu“ vedle „zakřivení by nechalo 2 937 m“ znělo jako
+  protimluv; pod desetinou procenta se píše „< 0,1 %“.
+
 ## [1.11.1] — 2026-08-19
 
 ### Opraveno / Fixed
@@ -443,6 +505,7 @@ První veřejné vydání. / First public release.
 - **CI** kontrolující výpočty, úplnost překladů a reprodukovatelnost
   vygenerovaného `objects.json`.
 
+[1.12.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.11.1...v1.12.0
 [1.11.1]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.11.0...v1.11.1
 [1.11.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.10.0...v1.11.0
 [1.10.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.9.0...v1.10.0

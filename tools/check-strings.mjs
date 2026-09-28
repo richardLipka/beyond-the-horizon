@@ -77,6 +77,7 @@ const RUNTIME_PREFIXES = [
   'orbit.',
   'editor.baseline.',
   'sight.note.',
+  'sight.verdict.',
 ];
 
 const sourceFiles = ['../index.html', '../js/app.js'];

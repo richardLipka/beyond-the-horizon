@@ -100,6 +100,20 @@ Koule se proto kreslí i tehdy, když **vzdálenost po povrchu dosáhne jednoho
 poloměru** – přesně to znamená „srovnatelné s velikostí tělesa“. Proložením
 nejlepší kružnicí vychází nakreslená cesta jako kruh s odchylkou do 0,01 px.
 
+#### Opar a přeludy
+
+Vzduch není nikdy dokonale čistý. Posuvník v nastavení určí, kolik kontrastu
+ubere každý kilometr, a dalekohled přesně o tolik prolne objekt s oparem: po *D*
+kilometrech zbývá `(1 − p)^D`. Pod 2 % ho oko nerozezná. Okénko pak neukáže nic
+a verdikt řekne, že vyhrál opar, ne zakřivení. Při 2 % na kilometr prohlédneš
+zhruba 190 km vzduchu. Opar se drží u země, takže z letadla se přes něj díváš
+jen po části cesty.
+
+Refrakce dostala vlastní obrázek. Když je objekt vidět **jen** díky ohybu
+světla – čistá geometrie ho schová, vzduch ho zvedne do výhledu – nakreslí ho
+dalekohled tak, jak vypadá skutečná fata morgana nad mořem. Chvějící se obraz
+visí nad obzorem a mezi nimi zůstane mezera.
+
 ### 🌊 Kdy zmizí?
 
 Vzdálenost, ve které objekt úplně zmizí, ukázaná i jako součet, ze kterého
@@ -142,24 +156,32 @@ pravoúhlé trojúhelníky.
 
 ![Geometrická konstrukce: kružnice se středem O, tečna dotýkající se v bodě T pod pravým úhlem k poloměru, úhly alfa a beta u středu a výšky h1 a h2 vyznačené na poloměrech](docs/preview-geometry-cs.svg)
 
-Každý krok je vypsaný symbolicky, dosazený a vyčíslený – `cos α = R/(R+h₁)`,
-`t = √(h(2R+h))`, `d = R·α`, `D = R(α+β)` – až po přiblížení pro malé výšky
-`d ≈ √(2Rh)`. Úhly v obrázku jsou zvětšené, aby byl čitelný; vypsaná čísla
-jsou skutečná.
+Každý krok je vypsaný symbolicky, dosazený a vyčíslený, a to jen tím, co zná
+první ročník střední školy: Pythagorova věta, kosinus, arkuskosinus a oblouk
+jako část obvodu. `cos α = R/(R+h₁)`, `t² = (R+h₁)² − R²`, `d = 2πR · α / 360°`,
+`D = d₁ + d₂`. Úhly jsou ve stupních, ne v radiánech. Každé dosazení dá na
+kalkulačce přesně vypsaný výsledek – i se zapnutou refrakcí, kdy se všude
+počítá s efektivním poloměrem. Úhly v obrázku jsou zvětšené, aby byl čitelný;
+vypsaná čísla jsou skutečná.
 
 Pod výpočtem se z téhož trojúhelníku **odvodí obě funkce, které kreslí zbytek
 aplikace**, a každá se vynese do obyčejných (lineárních) os:
 
 | | |
 | --- | --- |
-| *Kdy zmizí?* | `D(h₂) = d₁ + R · arccos(R / (R + h₂))` – odmocninová křivka, která začíná na obzoru pozorovatele a nakonec narazí na strop |
-| *Meze viditelnosti* | `h₂(D) = R · (1 / cos((D − d₁) / R) − 1)` – až k obzoru nula, pak parabola a nakonec svislá asymptota |
+| *Kdy zmizí?* | `D(h₂) = d₁ + 2πR · β / 360°`, kde `cos β = R / (R + h₂)` – odmocninová křivka, která začíná na obzoru pozorovatele a nakonec narazí na strop |
+| *Meze viditelnosti* | `h₂(D) = R / cos β − R`, kde `β = 360° · (D − d₁) / 2πR` – až k obzoru nula, pak parabola a nakonec svislá asymptota |
 
 Jsou **navzájem inverzní**, a proto má první vodorovný strop přesně tam, kde má
 druhá svislou asymptotu: v `d₁ + πR/2`. Výřez prvního grafu se řídí vybraným
 objektem, aby byl tvar vidět u školních výšek; druhý pokrývá celý rozsah, takže
 je vidět asymptota – a je z něj hned jasné, proč režim *Meze viditelnosti*
 potřebuje logaritmické osy.
+
+Žádné derivace ani rozvoje do řad. Obě přiblížení dá Pythagorova věta, protože
+kousek za obzorem je oblouk skoro stejně dlouhý jako tečna. Tvary křivek se pak
+dají říct větou, kterou si žák ověří sám: čtyřikrát vyšší objekt je vidět jen
+dvakrát dál za obzor a dvakrát dál za obzor potřebuje objekt čtyřikrát vyšší.
 
 ### 🔭 Uvidím to doopravdy?
 
@@ -179,15 +201,24 @@ simulace nahoře.
 | Praha z Mont Blancu | 734 km proti 312 km. Ani náhodou |
 
 Verdikty se počítají s právě nastavenou refrakcí, takže přepínač v panelu
-hraniční řádky viditelně překlápí. Tabulka přiznává, kam nedosáhne: odpovídá
-jen na otázku, jestli výhled zakrývá zakřivení Země – kopec v cestě je jiná věc.
+hraniční řádky viditelně překlápí. Řádek, který vyjde jen díky ohybu světla, to
+přizná. Se zapnutým oparem dostane vlastní štítek řádek, který by zakřivení
+pustilo, ale vzduch ne: při 2 % na kilometr vypadnou Alpy z Plzně. *Vyzkoušet*
+nahraje cíl s nejpodobnější kresbou z knihovny – hora dostane horu, Praha
+Petřínskou rozhlednu.
+
+Tabulka přiznává, kam nedosáhne: odpovídá jen na otázku, jestli výhled zakrývá
+zakřivení Země. Kopec v cestě je jiná věc.
 
 ### 🧰 Editor objektů
 
-Přidej si vlastní kostel, rozhlednu nebo loď — i s obrázkem. Nahraný obrázek se
-uloží přímo do JSONu jako base64 a poměr stran se zjistí sám. Změny se hned
-promítají do diagramu. Ukládá se do prohlížeče nebo se stáhne nový
-`objects.json`.
+Přidej si vlastní rozhlednu nebo loď — i s obrázkem. Nahraný obrázek se uloží
+přímo do JSONu jako base64 a poměr stran se zjistí sám. Změny se hned promítají
+do diagramu. Ukládá se do prohlížeče nebo se stáhne nový `objects.json`.
+
+Objekt bez obrázku se kreslí jako červenobílá zeměměřičská výtyčka – stejná,
+jakou má *vlastní objekt*. Nese jen výšku a nic víc, takže si ho nikdo nesplete
+se skutečnou stavbou.
 
 ---
 
@@ -260,6 +291,9 @@ vzdálenosti se měří **po povrchu**, výšky **kolmo k němu**.
 | absolutní mez dohledu | `tvůj obzor + πR / 2`; za ní nestačí žádná výška |
 | protilehlý bod | `πR` – polovina obvodu, odnikud není vidět |
 | poloměr dráhy s oběžnou dobou `T` | `∛(GM · T² / 4π²)` – třetí Keplerův zákon |
+| kontrast po `D` km oparu | `(1 − p)^D`, kde `p` je podíl, který ubere jeden kilometr |
+| jak daleko prohlédneš opar | kde kontrast klesne na 2 %: `ln 0,02 / ln(1 − p)` km |
+| přelud | vidět s efektivním poloměrem `7/6 · R`, schovaný se skutečným |
 
 Protože `arccos(R / (R + h)) → π/2`, když výška roste, **vidíš vždycky přesně
 jednu polokouli a ani metr navíc**. Dvě nekonečně vysoké věže by se právě tak
@@ -283,6 +317,12 @@ měřítko vodorovně a svisle**. Násobek se nikdy neskrývá — počítá se 
 překreslení a vypisuje se přímo do obrázku („Výšky jsou 182× zvětšené"). Šířky
 objektů v měřítku nejsou, **výšky a vzdálenosti ano**. Model počítá s dokonalou
 koulí a hladkým povrchem mezi pozorovatelem a objektem.
+
+Každá kresba má přesně výšku svého objektu: špička se dotýká horního okraje
+obrázku a pata spodního. Pět hor to nesplňovalo. Horních 30 % Kilimandžára bylo
+prázdné nebe, takže ho všechny pohledy kreslily o 30 % nižší, a Kilimandžáro,
+ze kterého kouká horní třetina, nemuselo ukázat vůbec nic. Teď jsou oříznuté.
+Boční pohled opar jen naznačí; poctivě ho prolne dalekohled.
 
 ---
 
@@ -345,6 +385,7 @@ css/                theme · layout · components · diagram
 js/core/            geometry · format · store · dom
 js/i18n/            texty (cs + en) · přepínání jazyka
 js/data/            tovární záloha (generováno) · načítání a kontrola · předvolby těles
+                    · výtyčka · skutečné rozhledy
 js/ui/              diagram · telescope · chart · controls · results · vanish · limits · editor
                     sdílené více pohledy: export · readout
 js/app.js           propojení stavu s pohledy
@@ -375,7 +416,7 @@ vypíše, na co se zapomnělo.
 ```bash
 npm start                       # vývojový server
 npm run build                   # přegenerování datového souboru
-npm test                        # kontrola výpočtů (13 testů)
+npm test                        # kontrola výpočtů (75 testů)
 node tools/check-strings.mjs    # úplnost překladů
 ```
 

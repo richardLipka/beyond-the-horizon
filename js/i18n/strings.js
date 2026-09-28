@@ -41,9 +41,15 @@
         'Přímka pohledu se dotýká povrchu v jediném bodě T. Tečna je vždy kolmá na poloměr vedený do bodu dotyku, takže úhel u T je pravý. Tím vzniknou dva pravoúhlé trojúhelníky – O T A′ pro pozorovatele a O T B′ pro objekt – a v nich už stačí kosinus a Pythagorova věta.',
       'geo.stepsTitle': 'Postup výpočtu',
       'geo.rowRight': 'Trojúhelník O T A′ má u vrcholu T pravý úhel, protože tečna ⟂ poloměr.',
+      'geo.rowPythagoras':
+        'Odvěsny jsou R a t₁, přepona je R + h₁. Kosinus úhlu α je přilehlá odvěsna lomená přeponou. Oblouk d₁ je taková část obvodu 2πR, jakou část z 360° tvoří úhel α.',
+      'geo.rowObject': 'Totéž pro objekt, v trojúhelníku O T B′.',
+      'geo.rowApprox':
+        'Pro malé výšky jsou oblouk d a tečna t skoro stejně dlouhé a h je proti 2R zanedbatelné. Odtud pravidlo palce: d v kilometrech je asi k × odmocnina z výšky v metrech.',
+      'geo.refractionR': '{planet} · s refrakcí 7/6 × {r}',
       'geo.furtherTitle': 'A když je objekt ještě dál?',
       'geo.furtherText':
-        'Pak se jeho spodek propadne pod obzor. Označíme γ úhel, o který objekt přesahuje bod dotyku, a schovanou výšku spočítáme ze stejného pravoúhlého trojúhelníku:',
+        'Pak se jeho spodek propadne pod obzor. Objekt stojí o úhel γ dál než bod dotyku T. Schovanou výšku x dá stejný pravoúhlý trojúhelník, jen s úhlem γ:',
 
       'geo.figureTitle': 'Konstrukce',
 
@@ -53,16 +59,21 @@
       'sight.title': 'Uvidím to doopravdy? Skutečné rozhledy po Evropě',
       'sight.intro':
         'Skutečná místa, jejich skutečné nadmořské výšky a vzdálenost počítaná po povrchu Země ze zeměpisných souřadnic. Výška očí je všude 1,7 m nad zemí. Klikni na „Vyzkoušet“ a rozhled se přenese do simulace nahoře.',
-      'sight.yes': 'ANO',
-      'sight.no': 'NE',
+      'sight.verdict.yes': 'ANO',
+      'sight.verdict.no': 'NE',
+      'sight.verdict.haze': 'OPAR',
       'sight.heights': 'oči {a} n. m. · cíl {b} n. m.',
       'sight.marginInside': 'zbývá {n} rezervy',
       'sight.marginOutside': 'chybí {n}',
       'sight.try': 'Vyzkoušet',
+      'sight.mirage': 'jen díky ohybu světla',
+      'sight.hazeHides': 'opar to schová',
       'sight.withRefraction':
         'Počítáno se zapnutou refrakcí. Dohled je díky ní asi o 8 % delší. Vzdálenosti mezi místy se nemění, ty jsou dané mapou. Vypni refrakci v panelu a některé řádky se překlopí.',
       'sight.withoutRefraction':
         'Počítáno bez refrakce, tedy čistá geometrie. Zapni ji v panelu a hraniční řádky se překlopí. Stojí a padají právě na ní.',
+      'sight.withHaze':
+        'Opar {p} na kilometr: přes něj dohlédneš asi {range}. Řádky označené OPAR by zakřivení pustilo, ale vzduch ne.',
       'sight.terrain':
         'Pozor: výpočet neví nic o terénu mezi oběma místy. Odpovídá jen na otázku, jestli výhled zakrývá zakřivení Země – kopec v cestě je jiná věc. Skutečná viditelnost navíc závisí na počasí a průzračnosti vzduchu.',
       'sight.note.plzenAlps':
@@ -99,27 +110,30 @@
       'geo.deriveOneTitle': '1. Vzdálenost zmizení jako funkce výšky objektu',
       'geo.deriveOneText':
         'Otázka režimu „Kdy zmizí?“: jak daleko dohlédnu na objekt vysoký h₂? Objekt zmizí přesně ve chvíli, kdy jeho špička leží na tečně. Vzdálenost po povrchu je pak součet obou oblouků.',
-      'geo.deriveSlope': 'o kolik metrů se posune zmizení na každý další metr výšky',
+      'geo.deriveOneApprox':
+        'Pro malé výšky je oblouk skoro stejně dlouhý jako tečna t₂ a h₂ je proti 2R zanedbatelné. Z Pythagorovy věty pak zbude:',
       'geo.deriveOneShape':
-        'Tvar křivky: v nule začíná na d₁, tedy na obzoru samotného pozorovatele, a hned vystřelí vzhůru – směrnice je tam nekonečná, protože arkuskosinus má v jedničce svislou tečnu. Pak se křivka stále víc ohýbá a nad hodnotu D_max = d₁ + πR/2 = {max} se nikdy nedostane. Je to odmocninová křivka, která nakonec narazí na strop.',
+        'Tvar křivky: v nule začíná na d₁, na obzoru samotného pozorovatele. Prvních pár metrů výšky přidá hodně kilometrů. Pak se ohýbá a odmocnina to prozradí: čtyřikrát vyšší objekt vidíš jen dvakrát dál za obzor. Nad D_max = d₁ + 2πR / 4 = {max} se nedostane nikdy, ani s nekonečně vysokým objektem.',
       'geo.deriveTwoTitle': '2. Potřebná výška jako funkce vzdálenosti',
       'geo.deriveTwoText':
         'Otázka režimu „Meze viditelnosti“: objekt je ve vzdálenosti D, jak vysoký musí být, aby vykoukl nad obzor? Ze stejné rovnice jen vyjádříme h₂ místo D.',
+      'geo.deriveTwoApprox':
+        'Kousek za obzorem je oblouk D − d₁ skoro stejně dlouhý jako tečna t₂. Pythagorova věta pak dá:',
       'geo.deriveTwoShape':
-        'Tvar křivky: až do vzdálenosti d₁ je nula – objekt je ještě před obzorem a je vidět celý. Hned za obzorem roste jako parabola, protože pro malé úhly je 1/cos β − 1 ≈ β²/2. Čím dál, tím strměji, a ve vzdálenosti D_max = {max} má svislou asymptotu: tam už nepomůže žádná výška.',
+        'Tvar křivky: až do d₁ je nula – objekt stojí před obzorem a vidíš ho celý. Za obzorem roste jako parabola: dvakrát dál za obzor potřebuje objekt čtyřikrát vyšší. Pak čím dál strměji. U D_max = {max} dosáhne úhel β 90°, cos β je nula a nulou dělit nejde. Křivka se k té svislé čáře (asymptotě) jen blíží a nikdy ji nedosáhne. Tam už nepomůže žádná výška.',
       'geo.deriveInverse':
-        'Obě funkce jsou navzájem inverzní – jsou to tytéž body, jen s prohozenými osami. Proto má první křivka vodorovný strop přesně tam, kde má druhá svislou asymptotu: v D_max = {max}.',
+        'Obě funkce jsou navzájem inverzní. Jsou to tytéž body, jen s prohozenými osami – jako cos a arccos. Proto má první křivka vodorovný strop přesně tam, kde druhá svislou asymptotu: v D_max = {max}.',
 
       'geo.chartATitle': 'Graf 1: vzdálenost zmizení podle výšky objektu',
       'geo.chartAX': 'výška objektu h₂',
       'geo.chartAY': 'vzdálenost zmizení D',
       'geo.chartANote':
-        'Obyčejné (lineární) osy, žádné logaritmy. Výřez se řídí vybraným objektem, aby byl vidět tvar křivky u výšek, které se opravdu používají. Zelený pás dole je příspěvek pozorovatele – ten je pořád stejný, ať je objekt jakkoli vysoký. Strop D_max = {max} leží daleko nad tímto výřezem.',
+        'Obyčejné osy: každý dílek je stejně velký. Výřez se řídí vybraným objektem, aby byl vidět tvar křivky u výšek, které se opravdu používají. Zelený pás dole je příspěvek pozorovatele. Ten se nemění, ať je objekt jakkoli vysoký. Strop D_max = {max} leží daleko nad výřezem.',
       'geo.chartBTitle': 'Graf 2: potřebná výška podle vzdálenosti',
       'geo.chartBX': 'vzdálenost D',
       'geo.chartBY': 'potřebná výška h₂ (v násobcích R = {r})',
       'geo.chartBNote':
-        'Tentýž typ os, ale celý rozsah až k mezi dohledu {max}, aby byla vidět svislá asymptota. Sněžka i Everest se vejdou do levého dolního rohu u nuly. Přesně proto kreslí režim „Meze viditelnosti“ tutéž křivku v logaritmických osách: jinak by na ní nebylo nic vidět.',
+        'Tentýž typ os, ale celý rozsah až k mezi dohledu {max}, aby byla vidět svislá asymptota. Sněžka i Everest se vejdou do levého dolního rohu u nuly. Přesně proto kreslí režim „Meze viditelnosti“ tutéž křivku na osách, kde je každý dílek 10× větší než předchozí. Jinak by na ní nebylo nic vidět.',
       'geo.markAsymptote': 'mez dohledu',
 
       'ctrl.planet': 'Na jakém tělese jsi',
@@ -163,7 +177,13 @@
       'ctrl.options': 'Nastavení',
       'ctrl.refraction': 'Počítat s ohybem světla (refrakce)',
       'ctrl.refractionHelp':
-        'Vzduch ohýbá paprsky mírně dolů, takže ve skutečnosti dohlédneš asi o 8 % dál, než říká čistá geometrie.',
+        'Vzduch ohýbá paprsky mírně dolů, takže dohlédneš asi o 8 % dál, než říká čistá geometrie. Co je vidět jen díky ohybu, ukáže dalekohled jako přelud nad obzorem.',
+      'ctrl.haze': 'Opar ve vzduchu',
+      'ctrl.hazeHelp':
+        'Vzduch není dokonale průhledný. Každý kilometr ubere kus kontrastu a vzdálené věci blednou do barvy oblohy. Pod 2 % je oko nerozezná.',
+      'ctrl.hazeValue': 'Každý kilometr ubere {p} kontrastu. Přes opar dohlédneš asi {range}.',
+      'ctrl.hazeNone': 'Čistý vzduch. Opar neubírá nic.',
+      'ctrl.hazeAirless': 'Tohle těleso nemá atmosféru, takže ani opar.',
       'ctrl.reset': 'Vrátit na začátek',
 
       'res.heading': 'Čísla',
@@ -183,6 +203,8 @@
       'res.apparentSub': '{n}× Měsíc v úplňku',
       'res.dip': 'Pokles obzoru',
       'res.dipSub': 'o kolik obzor klesá pod vodorovnou rovinu',
+      'res.haze': 'Opar',
+      'res.hazeSub': 'zbylý kontrast · opar prohlédneš na {range}',
       'res.planet': 'Těleso',
       'res.planetSub': 'poloměr {r}',
 
@@ -194,10 +216,15 @@
         'Z výšky {eye} dohlédneš {horizon} daleko. {object} stojí o {beyond} dál, takže spodních {hidden} je schováno za vyboulením povrchu. Zbývá ti horních {visible}, to je {percent} objektu.',
       'status.hidden.title': 'Nevidíš vůbec nic 🙈',
       'status.hidden.text':
-        '{object} je {distance} daleko. Úplně zmizí už od {vanish}, takže se celý schoval za zakřivení povrchu. Vylez výš, nebo se přibliž!',
+        '{object} je {distance} daleko. Zmizí už od {vanish}, takže teď leží celou výškou za zakřivením povrchu. Vylez výš, nebo se přibliž!',
       'status.beyond.title': 'Za hranicí dohledu 🌑',
       'status.beyond.text':
         '{object} je {distance} daleko – to je dál než {maxSight}. Tady už nepomůže žádná výška: i nekonečně vysoká věž by musela prorůst skrz celé těleso ({planet}). Ať vylezeš kamkoli, uvidíš vždycky jen jednu polovinu. Ta druhá zůstane schovaná.',
+      'status.haze.title': 'V oparu už nic nevidíš 🌫️',
+      'status.haze.text':
+        'Zakřivení by ti z objektu nechalo {visible}. Jenže je {distance} daleko a po cestě vzduchem zbyde jen {clarity} kontrastu. Pod 2 % ho oko nerozezná. Přes tenhle opar dohlédneš asi {range}.',
+      'status.mirage':
+        'Bez ohybu světla by z objektu nebylo vidět nic. Vidíš přelud: obraz, který zahnuté paprsky zvednou nad obzor.',
 
       'diagram.title': 'Boční pohled ({planet})',
       'diagram.you': 'TY',
@@ -222,6 +249,9 @@
       'telescope.caption': 'Takhle to uvidíš na vlastní oči.',
       'telescope.nothing': 'Nad obzorem není vidět nic.',
       'telescope.ghost': 'čárkovaně = schovaná část',
+      'telescope.mirage': 'přelud – vidět jen díky ohybu světla',
+      'telescope.haze': 'opar: zbývá {n} kontrastu',
+      'telescope.hazeLost': 'V oparu už není vidět.',
 
       'vanish.heading': 'Kdy objekt zmizí za obzorem?',
       'vanish.big': 'Zmizí úplně ve vzdálenosti',
@@ -275,7 +305,7 @@
       'limits.colDistance': 'Vzdálenost',
       'limits.colHeight': 'Potřebná výška',
       'limits.colCompare': 'Co by stačilo',
-      'limits.enough': 'stačil by {name}',
+      'limits.enough': 'stačí třeba {name}',
       'limits.noneEnough': 'nic z tvého seznamu',
       'limits.explainTitle': 'Proč to nejde donekonečna?',
       'limits.explain':
@@ -313,7 +343,7 @@
       'editor.image.clear': 'Odebrat obrázek',
       'editor.image.hint':
         'Obrázek se uloží přímo do JSON jako base64. Nejlépe funguje SVG, kde objekt stojí přesně na spodní hraně a špička se dotýká horní hrany.',
-      'editor.image.none': 'Zatím bez obrázku',
+      'editor.image.none': 'Bez obrázku. V obrázcích se místo něj ukáže červenobílá výtyčka.',
       'editor.save': 'Uložit do prohlížeče',
       'editor.saved': 'Uloženo ✔',
       'editor.download': 'Stáhnout objects.json',
@@ -378,9 +408,15 @@
         'The line of sight touches the surface at a single point T. A tangent is always perpendicular to the radius drawn to the point of contact, so the angle at T is a right angle. That gives two right triangles — O T A′ for the observer and O T B′ for the object — and cosine plus Pythagoras finish the job.',
       'geo.stepsTitle': 'The calculation',
       'geo.rowRight': 'Triangle O T A′ has a right angle at T, because the tangent ⟂ the radius.',
+      'geo.rowPythagoras':
+        'The legs are R and t₁, the hypotenuse is R + h₁. The cosine of α is the adjacent leg over the hypotenuse. The arc d₁ is the same share of the circumference 2πR as α is of 360°.',
+      'geo.rowObject': 'The same for the object, in triangle O T B′.',
+      'geo.rowApprox':
+        'For small heights the arc d and the tangent t are almost the same length, and h is tiny next to 2R. That gives the rule of thumb: d in kilometres is about k × the square root of the height in metres.',
+      'geo.refractionR': '{planet} · with refraction 7/6 × {r}',
       'geo.furtherTitle': 'And if the object is further still?',
       'geo.furtherText':
-        'Then its base sinks below the horizon. Call γ the angle by which the object overshoots the point of contact; the hidden height comes from the very same right triangle:',
+        'Then its base sinks below the horizon. The object stands an angle γ past the point of contact T. The same right triangle, just with the angle γ, gives the hidden height x:',
 
       'geo.figureTitle': 'The construction',
 
@@ -390,16 +426,21 @@
       'sight.title': 'Can you really see it? Real sightlines across Europe',
       'sight.intro':
         'Real places, their real elevations, and the distance measured along the surface from their coordinates. Eye height is 1.7 m above the ground everywhere. Click “Try it” to load a sightline into the simulation above.',
-      'sight.yes': 'YES',
-      'sight.no': 'NO',
+      'sight.verdict.yes': 'YES',
+      'sight.verdict.no': 'NO',
+      'sight.verdict.haze': 'HAZE',
       'sight.heights': 'eyes {a} · target {b} (above sea level)',
       'sight.marginInside': '{n} to spare',
       'sight.marginOutside': '{n} short',
       'sight.try': 'Try it',
+      'sight.mirage': 'only thanks to bending light',
+      'sight.hazeHides': 'the haze hides it',
       'sight.withRefraction':
         'Computed with refraction on. It stretches the reach by about 8 %. The distances between the places do not move — those come from the map. Switch refraction off in the panel and some rows flip.',
       'sight.withoutRefraction':
         'Computed without refraction — pure geometry. Switch it on in the panel and the borderline rows flip. They live or die on it.',
+      'sight.withHaze':
+        'Haze of {p} per kilometre: you see through about {range} of it. Rows marked HAZE clear the curve but not the air.',
       'sight.terrain':
         'Careful: the calculation knows nothing about the terrain in between. It answers only whether the curve of the Earth hides the view — a hill in the way is another matter. Real visibility also depends on the weather and how clear the air is.',
       'sight.note.plzenAlps':
@@ -437,27 +478,30 @@
       'geo.deriveOneTitle': '1. Vanishing distance as a function of the object’s height',
       'geo.deriveOneText':
         'The question behind “When does it vanish?”: how far can an object of height h₂ still be seen? It vanishes exactly when its top lies on the tangent, and the distance along the surface is then the sum of the two arcs.',
-      'geo.deriveSlope': 'extra distance gained per extra metre of height',
+      'geo.deriveOneApprox':
+        'For small heights the arc is almost as long as the tangent t₂, and h₂ is tiny next to 2R. Pythagoras then leaves:',
       'geo.deriveOneShape':
-        'The shape: at zero it starts at d₁, the observer’s own horizon, and immediately shoots upwards — the slope there is infinite, because arccosine has a vertical tangent at one. The curve then bends over more and more and never rises above D_max = d₁ + πR/2 = {max}. It is a square-root curve that finally hits a ceiling.',
+        'The shape: at zero it starts at d₁, the observer’s own horizon. The first few metres of height add a lot of kilometres. Then it bends over, and the square root gives it away: an object four times taller shows only twice as far past the horizon. It never rises above D_max = d₁ + 2πR / 4 = {max}, not even for an infinitely tall object.',
       'geo.deriveTwoTitle': '2. Required height as a function of distance',
       'geo.deriveTwoText':
         'The question behind “Limits of sight”: the object sits at distance D, how tall must it be to peek over the horizon? The same equation, solved for h₂ instead of D.',
+      'geo.deriveTwoApprox':
+        'Just past the horizon the arc D − d₁ is almost as long as the tangent t₂. Pythagoras then gives:',
       'geo.deriveTwoShape':
-        'The shape: it is flat zero out to d₁ — the object is still short of the horizon and fully visible. Just past the horizon it grows like a parabola, because for small angles 1/cos β − 1 ≈ β²/2. The further out, the steeper, and at D_max = {max} it has a vertical asymptote: beyond that no height helps at all.',
+        'The shape: flat zero out to d₁ – the object stands short of the horizon and you see all of it. Past the horizon it grows like a parabola: twice as far past the horizon takes an object four times taller. Then steeper and steeper. At D_max = {max} the angle β reaches 90°, cos β is zero, and you cannot divide by zero. The curve only creeps towards that vertical line (the asymptote) and never reaches it. No height helps there.',
       'geo.deriveInverse':
-        'The two functions are inverses of each other — the same points with the axes swapped. That is why the first curve has its horizontal ceiling exactly where the second has its vertical asymptote, at D_max = {max}.',
+        'The two functions are inverses of each other. Same points, axes swapped – like cos and arccos. That is why the first curve has its horizontal ceiling exactly where the second has its vertical asymptote: at D_max = {max}.',
 
       'geo.chartATitle': 'Chart 1: vanishing distance against the object’s height',
       'geo.chartAX': 'height of the object h₂',
       'geo.chartAY': 'vanishing distance D',
       'geo.chartANote':
-        'Plain linear axes, no logarithms. The window follows the selected object, so you can see the shape at the heights that actually come up. The green band at the bottom is the observer’s own contribution — it stays the same however tall the object gets. The ceiling D_max = {max} lies far above this window.',
+        'Plain axes: every division is the same size. The window follows the selected object, so you can see the shape at the heights that actually come up. The green band at the bottom is the observer’s own contribution. It stays the same however tall the object gets. The ceiling D_max = {max} lies far above this window.',
       'geo.chartBTitle': 'Chart 2: required height against distance',
       'geo.chartBX': 'distance D',
       'geo.chartBY': 'required height h₂ (in multiples of R = {r})',
       'geo.chartBNote':
-        'The same kind of axes, but the full range out to the sight limit {max}, so the vertical asymptote shows. Everest and a voyage across the sea both fit into the bottom-left corner near zero. That is exactly why the “Limits of sight” mode plots this same curve on logarithmic axes: otherwise there would be nothing to see.',
+        'The same kind of axes, but the full range out to the sight limit {max}, so the vertical asymptote shows. Everest and a voyage across the sea both fit into the bottom-left corner near zero. That is exactly why the “Limits of sight” mode plots this same curve on axes where each division is 10× the one before. Otherwise there would be nothing to see.',
       'geo.markAsymptote': 'sight limit',
 
       'ctrl.planet': 'Which body you are on',
@@ -501,7 +545,13 @@
       'ctrl.options': 'Settings',
       'ctrl.refraction': 'Allow for the bending of light (refraction)',
       'ctrl.refractionHelp':
-        'Air bends light rays slightly downwards, so in reality you see about 8 % further than pure geometry says.',
+        'Air bends light rays slightly downwards, so you see about 8 % further than pure geometry says. Anything visible only because of the bending shows in the telescope as a mirage above the horizon.',
+      'ctrl.haze': 'Haze in the air',
+      'ctrl.hazeHelp':
+        'Air is not perfectly clear. Every kilometre takes a slice of the contrast, and distant things fade into the colour of the sky. Below 2 % the eye cannot pick them out.',
+      'ctrl.hazeValue': 'Every kilometre takes {p} of the contrast. You see through about {range} of it.',
+      'ctrl.hazeNone': 'Clear air. The haze takes nothing.',
+      'ctrl.hazeAirless': 'This body has no atmosphere, so no haze either.',
       'ctrl.reset': 'Start over',
 
       'res.heading': 'The numbers',
@@ -521,21 +571,28 @@
       'res.apparentSub': '{n}× the full Moon',
       'res.dip': 'Horizon dip',
       'res.dipSub': 'how far the horizon drops below the horizontal',
+      'res.haze': 'Haze',
+      'res.hazeSub': 'contrast left · you see through {range} of haze',
       'res.planet': 'Body',
       'res.planetSub': 'radius {r}',
 
       'status.full.title': 'You can see all of it! 🎉',
       'status.full.text':
-        'From a height of {eye} you can see {horizon} away. The {object} stands {distance} from you, still short of your horizon, so the curve takes nothing away yet.',
+        'From a height of {eye} you can see {horizon} away. {object}: {distance} from you, still short of your horizon. The curve takes nothing away yet.',
       'status.partial.title': 'The bottom is hidden 🌊',
       'status.partial.text':
-        'From a height of {eye} you can see {horizon} away. The {object} stands {beyond} further, so the bottom {hidden} is hidden behind the bulge. You still see the top {visible}, which is {percent} of it.',
+        'From a height of {eye} you can see {horizon} away. {object}: {beyond} further than that, so the bottom {hidden} hides behind the bulge. You still see the top {visible}, which is {percent} of it.',
       'status.hidden.title': 'You see nothing at all 🙈',
       'status.hidden.text':
-        'The {object} is {distance} away. It disappears completely beyond {vanish}, so the whole thing is behind the curve. Climb higher or come closer!',
+        '{object}: {distance} away. It vanishes completely from {vanish} on, so all of it sits behind the curve. Climb higher or come closer!',
       'status.beyond.title': 'Past the sight limit 🌑',
       'status.beyond.text':
-        'The {object} is {distance} away — further than {maxSight}. No height helps here: even an infinitely tall tower would have to grow straight through the body ({planet}). However high you climb, you always see just one half. The other half stays hidden.',
+        '{object}: {distance} away, further than {maxSight}. No height helps here: even an infinitely tall tower would have to grow straight through the body ({planet}). However high you climb, you see just one half. The other half stays hidden.',
+      'status.haze.title': 'Lost in the haze 🌫️',
+      'status.haze.text':
+        'The curve would leave you {visible} of it. But it is {distance} away, and only {clarity} of the contrast survives that much air. Below 2 % the eye cannot pick it out. Through this haze you see about {range}.',
+      'status.mirage':
+        'Without bending light none of it would show. What you see is a mirage: an image the curved rays lift above the horizon.',
 
       'diagram.title': 'Side view ({planet})',
       'diagram.you': 'YOU',
@@ -560,6 +617,9 @@
       'telescope.caption': 'This is what your eyes actually see.',
       'telescope.nothing': 'Nothing shows above the horizon.',
       'telescope.ghost': 'dashed = the hidden part',
+      'telescope.mirage': 'mirage – visible only because light bends',
+      'telescope.haze': 'haze: {n} of the contrast left',
+      'telescope.hazeLost': 'Lost in the haze.',
 
       'vanish.heading': 'When does the object vanish?',
       'vanish.big': 'It disappears completely at',
@@ -651,7 +711,7 @@
       'editor.image.clear': 'Remove picture',
       'editor.image.hint':
         'The picture goes straight into the JSON as base64. SVG works best, with the object resting exactly on the bottom edge and its tip touching the top edge.',
-      'editor.image.none': 'No picture yet',
+      'editor.image.none': 'No picture. The views draw a red-and-white ranging pole instead.',
       'editor.save': 'Save into this browser',
       'editor.saved': 'Saved ✔',
       'editor.download': 'Download objects.json',

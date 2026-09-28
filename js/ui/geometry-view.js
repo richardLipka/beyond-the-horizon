@@ -191,6 +191,20 @@
       return HL.format.number(value, value < 1 ? 4 : 2, lang) + '°';
     }
 
+    /**
+     * Uhel do dosazeni: sest platnych cislic, aby zak, ktery si oblouk
+     * prepocita na kalkulacce, dostal stejny vysledek jako aplikace. Se ctyrmi
+     * desetinnymi misty (0,0419°) vychazelo d1 o 5 m vedle.
+     * An angle for a substitution: six significant digits, so a pupil
+     * recomputing the arc on a calculator gets the app's result. With four
+     * decimals (0.0419 deg) d1 came out 5 m off.
+     */
+    function degreesExact(radians, lang) {
+      const value = (radians * 180) / Math.PI;
+      const decimals = Math.min(10, Math.max(2, 5 - Math.floor(Math.log10(Math.max(value, 1e-12)))));
+      return HL.format.number(value, decimals, lang) + '°';
+    }
+
     function renderFigure(root, model) {
       const t = HL.i18n.t;
       const lang = HL.i18n.lang();
@@ -407,7 +421,9 @@
       );
 
       const rAt = roomInside ? { x: O.x - 14, y: O.y - 46 } : stacked(2);
-      put(rAt.x, rAt.y, `R = ${F.distance(r.physicalRadius, lang)}`, 'gm-label', roomInside ? 'end' : 'start', 1);
+      // Tentyz polomer, se kterym se pocita - s refrakci ten efektivni.
+      // The radius actually used - the effective one with refraction.
+      put(rAt.x, rAt.y, `R = ${F.distance(R, lang)}`, 'gm-label', roomInside ? 'end' : 'start', 1);
 
       // Kdyz uz se velky uhel nezvetsuje ani nestlacuje, rika to obrazek.
       // When the large angle is neither enlarged nor squeezed, say so.
@@ -455,10 +471,22 @@
       // zadane hodnoty / the three given values
       container.appendChild(
         el('div', { class: 'given-strip' }, [
+          // S refrakci se v celem vypoctu pouziva efektivni polomer. Drive se
+          // do dosazeni psal skutecny a uhel se pocital z efektivniho, takze
+          // radek "cos a = R / (R + h1)" nesedel s vlastnim vysledkem.
+          // With refraction the whole calculation uses the effective radius.
+          // The substitutions used to show the real one while the angle came
+          // from the effective one, so "cos a = R / (R + h1)" disagreed with
+          // its own result.
           el('div', { class: 'given-item' }, [
             el('span', { class: 'given-symbol', text: 'R' }),
-            el('strong', { text: F.distance(result.physicalRadius, lang) }),
-            el('span', { class: 'given-note', text: app.planetName(state) }),
+            el('strong', { text: F.distance(R, lang) }),
+            el('span', {
+              class: 'given-note',
+              text: result.refraction
+                ? t('geo.refractionR', { planet: app.planetName(state), r: F.distance(result.physicalRadius, lang) })
+                : app.planetName(state),
+            }),
           ]),
           el('div', { class: 'given-item given-observer' }, [
             el('span', { class: 'given-symbol', text: 'h₁' }),
@@ -495,58 +523,56 @@
       // --- postup vypoctu / the calculation ---------------------------------
       const steps = el('div', { class: 'formula-list' });
 
-      steps.appendChild(
-        el('div', { class: 'formula-note', text: t('geo.rowRight') })
-      );
-      steps.appendChild(
-        formulaRow(
-          'cos α = R / (R + h₁)',
-          `= ${num(result.physicalRadius, 1)} / ${num(result.physicalRadius + result.eyeHeight, 1)}`,
-          `α = ${degrees(alpha, lang)}`,
-          'row-observer'
-        )
-      );
-      steps.appendChild(
-        formulaRow(
-          't₁ = √( h₁ · (2R + h₁) )',
-          `= √( ${num(result.eyeHeight, 2)} · ${num(2 * result.physicalRadius + result.eyeHeight, 1)} )`,
-          `t₁ = ${F.distance(t1, lang)}`,
-          'row-observer'
-        )
-      );
-      steps.appendChild(
-        formulaRow('d₁ = R · α', null, `d₁ = ${F.distance(result.horizon, lang)}`, 'row-observer')
-      );
-      steps.appendChild(
-        formulaRow(
-          'cos β = R / (R + h₂)',
-          `= ${num(result.physicalRadius, 1)} / ${num(result.physicalRadius + result.objectHeight, 1)}`,
-          `β = ${degrees(beta, lang)}`,
-          'row-object'
-        )
-      );
-      steps.appendChild(
-        formulaRow(
-          't₂ = √( h₂ · (2R + h₂) )',
-          `= √( ${num(result.objectHeight, 2)} · ${num(2 * result.physicalRadius + result.objectHeight, 1)} )`,
-          `t₂ = ${F.distance(t2, lang)}`,
-          'row-object'
-        )
-      );
-      steps.appendChild(
-        formulaRow('d₂ = R · β', null, `d₂ = ${F.distance(result.objectHorizon, lang)}`, 'row-object')
-      );
+      // Jen Pythagorova veta, kosinus, arkuskosinus a delka oblouku jako cast
+      // obvodu. Uhly ve stupnich - radiany se na zacatku stredni skoly jeste
+      // neuci. / Only Pythagoras, cosine, arccosine and an arc as a share of
+      // the circumference. Angles in degrees: radians are not taught yet at
+      // the start of high school.
+      const Rm = num(R, 1);
+      const side = (h, angle, tangent, arc, cls, names) => {
+        steps.appendChild(
+          formulaRow(
+            `cos ${names.a} = R / (R + ${names.h})`,
+            `= ${Rm} / ${num(R + h, 1)}`,
+            `${names.a} = ${degrees(angle, lang)}`,
+            cls
+          )
+        );
+        steps.appendChild(
+          formulaRow(
+            `${names.t}² = (R + ${names.h})² − R² = ${names.h} · (2R + ${names.h})`,
+            `${names.t} = √( ${num(h, 2)} · ${num(2 * R + h, 1)} )`,
+            `${names.t} = ${F.distance(tangent, lang)}`,
+            cls
+          )
+        );
+        steps.appendChild(
+          formulaRow(
+            `${names.d} = 2π · R · ${names.a} / 360°`,
+            `= 2π · ${Rm} · ${degreesExact(angle, lang)} / 360°`,
+            `${names.d} = ${F.distance(arc, lang)}`,
+            cls
+          )
+        );
+      };
+
+      steps.appendChild(el('div', { class: 'formula-note', text: t('geo.rowRight') }));
+      steps.appendChild(el('div', { class: 'formula-note', text: t('geo.rowPythagoras') }));
+      side(result.eyeHeight, alpha, t1, result.horizon, 'row-observer', { a: 'α', h: 'h₁', t: 't₁', d: 'd₁' });
+      steps.appendChild(el('div', { class: 'formula-note', text: t('geo.rowObject') }));
+      side(result.objectHeight, beta, t2, result.objectHorizon, 'row-object', { a: 'β', h: 'h₂', t: 't₂', d: 'd₂' });
       steps.appendChild(
         formulaRow(
-          'D = d₁ + d₂ = R · (α + β)',
-          null,
+          'D = d₁ + d₂',
+          `= ${F.distance(result.horizon, lang)} + ${F.distance(result.objectHorizon, lang)}`,
           `D = ${F.distance(result.vanishDistance, lang)}`,
           'row-total'
         )
       );
+      steps.appendChild(el('div', { class: 'formula-note', text: t('geo.rowApprox') }));
       steps.appendChild(
         formulaRow(
-          'h ≪ R  ⇒  d ≈ √(2 R h) = k · √h',
+          'h ≪ R  ⇒  d ≈ t = √( h · (2R + h) ) ≈ √(2R · h)',
           `k = √(2R) / 1000`,
           `k = ${num(result.ruleConstant, 2)}`,
           'row-approx'
@@ -564,7 +590,8 @@
         el('section', { class: 'card explain-card' }, [
           el('h3', { class: 'card-title', text: t('geo.furtherTitle') }),
           el('p', { text: t('geo.furtherText') }),
-          el('code', { class: 'formula-symbolic formula-standalone', text: 'h_skr = R · ( 1 / cos γ − 1 ),   γ = (D − d₁) / R' }),
+          el('code', { class: 'formula-symbolic formula-standalone', text: 'γ = 360° · (D − d₁) / (2π · R)' }),
+          el('code', { class: 'formula-symbolic formula-standalone', text: 'cos γ = R / (R + x)   ⇒   x = R / cos γ − R' }),
         ])
       );
 

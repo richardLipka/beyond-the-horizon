@@ -288,6 +288,28 @@ textarea.text-input {
   background: linear-gradient(90deg, var(--aqua-200), var(--sea-400));
 }
 
+/* Posuvnik oparu jde od modre (cisty vzduch) do mlecne bile.
+   The haze slider runs from blue (clear air) to milky white. */
+.range-haze::-webkit-slider-runnable-track {
+  background: linear-gradient(90deg, var(--sea-400), #c9d3d9, #eef1f3);
+}
+
+.range-haze::-moz-range-track {
+  background: linear-gradient(90deg, var(--sea-400), #c9d3d9, #eef1f3);
+}
+
+.field-haze {
+  margin-top: 14px;
+}
+
+.haze-value {
+  margin: 6px 0 0;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--deep-700);
+  font-variant-numeric: tabular-nums;
+}
+
 .range-input::-moz-range-track {
   height: 8px;
   border-radius: 4px;
@@ -455,23 +477,6 @@ textarea.text-input {
   max-width: 68px;
   object-fit: contain;
   object-position: bottom;
-}
-
-/* Zastupna kresba tam, kde objekt zadny obrazek nema (a u vlastniho objektu). */
-.object-thumb svg {
-  width: auto;
-  height: 42px;
-  max-width: 68px;
-}
-
-.thumb-placeholder {
-  color: var(--sea-500);
-  opacity: 0.75;
-}
-
-.object-card.is-active .thumb-placeholder {
-  color: var(--sea-600);
-  opacity: 1;
 }
 
 .object-name {

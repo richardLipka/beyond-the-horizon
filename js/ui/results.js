@@ -33,8 +33,11 @@
     HL.dom.clear(statusHost);
     // Za mezi dohledu uz nejde o "schovany objekt", ale o principialni
     // nemoznost - proto ma vlastni text.
-    const key = r.beyondReach ? 'beyond' : r.status;
-    statusHost.className = 'verdict verdict-' + (r.beyondReach ? 'hidden' : r.status);
+    // Opar, ktery schova i to, co by zakriveni nechalo, ma vlastni verdikt.
+    // Haze hiding what the curve would have left gets a verdict of its own.
+    const key = r.beyondReach ? 'beyond' : r.lostInHaze ? 'haze' : r.status;
+    statusHost.className =
+      'verdict verdict-' + (r.beyondReach || r.lostInHaze ? 'hidden' : r.status);
     const params = {
       eye: F.height(r.eyeHeight, lang),
       horizon: F.distance(r.horizon, lang),
@@ -47,9 +50,16 @@
       vanish: F.distance(r.vanishDistance, lang),
       maxSight: F.distance(r.maxSight, lang),
       planet: model.planet || '',
+      clarity: F.percentAbove(r.clarity, lang),
+      range: F.distance(r.hazeRange, lang),
     };
     statusHost.appendChild(el('h3', { class: 'verdict-title', text: t(`status.${key}.title`) }));
     statusHost.appendChild(el('p', { class: 'verdict-text', text: t(`status.${key}.text`, params) }));
+    // Prelud se hlasi zvlast: geometrie rika "nic", ohyb svetla rika "neco".
+    // A mirage is reported separately: geometry says nothing, bending says something.
+    if (r.mirage && !r.lostInHaze) {
+      statusHost.appendChild(el('p', { class: 'verdict-text verdict-mirage', text: t('status.mirage') }));
+    }
 
     // ---- dlazdice s cisly ------------------------------------------------
     HL.dom.clear(statsHost);
@@ -82,6 +92,16 @@
       )
     );
     statsHost.appendChild(tile(t('res.dip'), F.angle(r.dip, lang), t('res.dipSub')));
+    if (r.haze > 0) {
+      statsHost.appendChild(
+        tile(
+          t('res.haze'),
+          F.percentAbove(r.clarity, lang),
+          t('res.hazeSub', { range: F.distance(r.hazeRange, lang) }),
+          'stat-haze'
+        )
+      );
+    }
     statsHost.appendChild(
       tile(
         t('res.planet'),
