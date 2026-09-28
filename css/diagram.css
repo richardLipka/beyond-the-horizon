@@ -283,13 +283,10 @@
   pointer-events: none;
 }
 
-.ts-mirage {
-  opacity: 0.82;
-}
-
-.ts-mirage-gap {
-  opacity: 0.55;
-}
+/* Pruhlednost preludu a jeho pruhu pocita kod podle oparu, proto ji tady
+   NESMI nastavovat CSS: pravidlo stylopisu v SVG prebije atribut.
+   The opacity of the mirage and its strip is computed in code from the haze,
+   so CSS must NOT set it here: a stylesheet rule beats the attribute in SVG. */
 
 .ts-note {
   font-size: 14px;

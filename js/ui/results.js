@@ -76,7 +76,9 @@
       tile(
         t('res.visible'),
         `${F.height(r.visible, lang)} · ${F.percent(r.visibleFraction, lang)}`,
-        t('res.visibleSub', { total: F.height(r.objectHeight, lang) }),
+        // Nad obzorem ano, ale opar ho schova - dlazdice nesmi tvrdit "vidis".
+        // Above the horizon, but the haze hides it: the tile must not say "you see".
+        t(r.lostInHaze ? 'res.visibleHazeSub' : 'res.visibleSub', { total: F.height(r.objectHeight, lang) }),
         'stat-visible'
       )
     );

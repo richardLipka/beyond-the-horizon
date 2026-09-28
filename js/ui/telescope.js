@@ -22,6 +22,8 @@
 
   /** Jak vysoko nad obzorem se vznasi prelud [px]. / How high a mirage hovers. */
   const MIRAGE_GAP = 12;
+  /** Zarici pruh v mezere pod preludem. / The glowing strip in the gap under it. */
+  const MIRAGE_GAP_OPACITY = 0.55;
 
   let uidCounter = 0;
   const uid = (name) => `ts-${name}-${++uidCounter}`;
@@ -267,8 +269,18 @@
       const visiblePart = svg('g', { transform: gap ? `translate(0 ${-gap})` : null }, [
         svg('g', { 'clip-path': `url(#${aboveId})` }, [art()]),
       ]);
+      // Nakresleny kontrast je presne ten spocitany: pruhlednost = clarity,
+      // u preludu stejne jako u cehokoli jineho. Pocita se a jde do atributu.
+      // Drive mela trida .ts-mirage ve stylopisu vlastni opacity a pravidlo CSS
+      // v SVG prebije atribut, takze prelud zustal videt i v oparu, ktery ho
+      // mel davno schovat. Proto ve stylopisu pro tyhle prvky zadna opacity.
+      // The drawn contrast is exactly the computed one: opacity = clarity, for
+      // a mirage as for anything else. The .ts-mirage class used to set its own
+      // opacity in the stylesheet, and in SVG a CSS rule beats the attribute -
+      // so a mirage stayed visible through haze that should have hidden it.
+      const fade = Math.max(0, r.clarity);
       const holder = svg('g', {
-        opacity: r.clarity < 1 ? Math.max(0, r.clarity).toFixed(3) : null,
+        opacity: fade < 1 ? fade.toFixed(3) : null,
         class: r.mirage ? 'ts-mirage' : null,
       });
       if (r.mirage) {
@@ -292,18 +304,23 @@
           ])
         );
         holder.setAttribute('filter', `url(#${shimmerId})`);
-        // zarici pruh v mezere mezi obrazem a obzorem
-        // the glowing strip in the gap between the image and the horizon
-        scene.appendChild(
-          svg('rect', {
-            x: leftX - 12,
-            y: HORIZON_Y - gap,
-            width: widthPx + 24,
-            height: gap,
-            fill: fogColor,
-            class: 'ts-mirage-gap',
-          })
-        );
+        // Zarici pruh v mezere mezi obrazem a obzorem bledne s oparem
+        // stejne jako obraz sam; kdyz opar prelud schova, neni ani pruh.
+        // The glowing strip in the gap fades with the haze like the image
+        // does; when the haze hides the mirage, there is no strip either.
+        if (!r.lostInHaze) {
+          scene.appendChild(
+            svg('rect', {
+              x: leftX - 12,
+              y: HORIZON_Y - gap,
+              width: widthPx + 24,
+              height: gap,
+              fill: fogColor,
+              opacity: (MIRAGE_GAP_OPACITY * Math.max(0, r.clarity)).toFixed(3),
+              class: 'ts-mirage-gap',
+            })
+          );
+        }
       }
       holder.appendChild(visiblePart);
       scene.appendChild(holder);
@@ -452,8 +469,11 @@
         y: VIEW.h - 26,
         class: 'ts-caption',
         'text-anchor': 'middle',
-        text:
-          r.visible > 0
+        // V oparu ztraceny objekt nikdo nevidi, i kdyz ho zakriveni pusti.
+        // Nobody sees an object lost in haze, even if the curve lets it through.
+        text: r.lostInHaze
+          ? t('telescope.hazeLost')
+          : r.visible > 0
             ? `${F.height(r.visible, lang)} / ${F.height(r.objectHeight, lang)}  ·  ${F.percent(
                 r.visibleFraction,
                 lang
@@ -480,7 +500,9 @@
     // fit on one line they split into two - the width depends on the
     // language, so it is measured.
     const notes = [];
-    if (r.mirage) notes.push(t('telescope.mirage'));
+    // Prelud se hlasi jen tehdy, kdyz ho opar nechal byt - stejne jako verdikt.
+    // A mirage is announced only when the haze has left it alone, as in the verdict.
+    if (r.mirage && !r.lostInHaze) notes.push(t('telescope.mirage'));
     if (r.haze > 0 && r.visible > 0 && !r.lostInHaze) {
       notes.push(t('telescope.haze', { n: F.percentAbove(r.clarity, lang) }));
     }

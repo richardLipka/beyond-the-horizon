@@ -118,6 +118,10 @@ bends — hidden by pure geometry, lifted into view by the air — the telescope
 draws it the way a real Fata Morgana looks over the sea. A shimmering image
 floats above the horizon, with a gap between the two.
 
+Haze works the same on a mirage as on anything else: bending changes the ray's
+direction, not how much air it crosses. A mirage in thick haze is lost like any
+other object.
+
 The switch never changes the telescope's zoom. Its magnification is tuned to
 what shows *without* bending, so turning refraction on reveals more of the
 object at the same scale — the Titanic at 30 km goes from a 2.6 m mast tip to
@@ -431,7 +435,7 @@ reports anything you forgot.
 ```bash
 npm start                       # dev server
 npm run build                   # regenerate the data file
-npm test                        # geometry self-test (80 checks)
+npm test                        # geometry self-test (87 checks)
 node tools/check-strings.mjs    # translation completeness
 ```
 

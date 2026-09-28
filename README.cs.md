@@ -114,6 +114,10 @@ světla – čistá geometrie ho schová, vzduch ho zvedne do výhledu – nakre
 dalekohled tak, jak vypadá skutečná fata morgana nad mořem. Chvějící se obraz
 visí nad obzorem a mezi nimi zůstane mezera.
 
+Opar působí na přelud stejně jako na cokoli jiného: ohyb mění směr paprsku,
+ne to, přes kolik vzduchu vede. V hustém oparu se přelud ztratí jako každý
+jiný objekt.
+
 Přepínač nikdy nemění přiblížení dalekohledu. To se řídí tím, co je vidět *bez*
 ohybu, takže zapnutá refrakce odkryje víc z objektu ve stejném měřítku –
 Titanic ve 30 km vyroste z 2,6 m špičky stěžně na 11 m komínů. Dřív se při
@@ -424,7 +428,7 @@ vypíše, na co se zapomnělo.
 ```bash
 npm start                       # vývojový server
 npm run build                   # přegenerování datového souboru
-npm test                        # kontrola výpočtů (80 testů)
+npm test                        # kontrola výpočtů (87 testů)
 node tools/check-strings.mjs    # úplnost překladů
 ```
 

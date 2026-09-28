@@ -282,7 +282,9 @@
         label: t('map.ringNow'),
         value: F.distance(r.distance, lang),
         detail:
-          r.distance <= r.horizon ? t('map.nowInside') : t('map.nowOutside'),
+          // "Vidis ho cely" neplati, kdyz ho opar schova. / "You see all of it"
+          // is false when the haze hides it.
+          r.distance <= r.horizon ? t(r.lostInHaze ? 'map.nowInsideHaze' : 'map.nowInside') : t('map.nowOutside'),
       },
     ];
 

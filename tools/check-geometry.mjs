@@ -290,6 +290,26 @@ check(
   1e-9
 );
 
+// Ohyb svetla nemeni, pres kolik vzduchu se divas - opar musi pusobit stejne
+// s refrakci i bez ni. / Bending does not change how much air you look
+// through, so haze must act the same with refraction and without it.
+for (const haze of [0.01, 0.05, 0.25]) {
+  const plain = G.solve({ ...ship, haze, refraction: false });
+  const bent = G.solve({ ...ship, haze, refraction: true });
+  check(`opar ${haze * 100} %/km: stejny kontrast s refrakci i bez ni`, bent.clarity, plain.clarity, 1e-12);
+  check(`opar ${haze * 100} %/km: stejny verdikt s refrakci i bez ni`, bent.lostInHaze ? 1 : 0, plain.lostInHaze ? 1 : 0, 0);
+}
+// Prelud (30 m stezen ve 25 km, viz nize) v oparu 25 %/km zmizi taky.
+// A mirage disappears in 25 %/km haze just like anything else.
+check(
+  'prelud v hustem oparu zmizi',
+  G.solve({ planetRadius: R, eyeHeight: 1.7, objectHeight: 30, distance: 25000, refraction: true, haze: 0.25 }).lostInHaze
+    ? 1
+    : 0,
+  1,
+  0
+);
+
 // --- Prelud / mirage --------------------------------------------------------
 // 30 m stezen z 1,7 m: bez ohybu zmizi ve 24,2 km, s ohybem az ve 26,2 km.
 // Ve 25 km je tedy videt jen diky ohybu svetla.

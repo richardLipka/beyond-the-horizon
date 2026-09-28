@@ -3,6 +3,38 @@
 Formát podle [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 verzování podle [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [1.12.2] — 2026-09-28
+
+### Opraveno / Fixed
+
+- **Se zapnutou refrakcí opar přestal působit na přelud.** Třída `.ts-mirage`
+  měla ve stylopisu vlastní průhlednost 0,82 a pravidlo CSS v SVG přebije
+  atribut – průhlednost spočítaná z oparu se tak vůbec neuplatnila. Přelud
+  zůstal vidět i v oparu 25 % na kilometr, kdy verdikt hlásil „V oparu už nic
+  nevidíš“. Ohyb světla přitom nemění, přes kolik vzduchu se díváš, takže
+  opar musí působit stejně s refrakcí i bez ní. Teď působí: nakreslený kontrast
+  je přesně ten spočítaný, u přeludu stejně jako u čehokoli jiného.
+- Přelud měl navíc umělou průhlednost 0,82, takže při kontrastu 2,2 % byl
+  nakreslený na 1,8 % – prakticky neviditelný, a přitom neohlášený jako
+  ztracený v oparu. Umělá průhlednost zmizela; přelud poznáš podle chvění
+  a mezery nad obzorem.
+- Když opar přelud schová, dalekohled už nehlásí „přelud – vidět jen díky
+  ohybu světla“ a nekreslí zářící pruh v mezeře.
+- Když opar schová objekt, který by zakřivení pustilo, přestaly to zapírat
+  i ostatní texty: popisek pod dalekohledem, dlaždice „Vidíš“ („nad obzorem,
+  ale opar ho schová“) a poznámka v kruhovém schématu, která tvrdila „vidíš ho
+  celý“.
+
+### Ověřeno / Verified
+
+Nové kontroly v `check-geometry` (87 celkem): opar dává s refrakcí i bez ní
+stejný kontrast i stejný verdikt a přelud v hustém oparu zmizí. V prohlížeči
+768 nastavení – tři tělesa, čtyři objekty, dvě výšky očí, tři vzdálenosti,
+čtyři úrovně oparu, refrakce zapnutá i vypnutá, oba jazyky: nakreslený kontrast
+se ve všech shoduje se spočítaným, na Měsíci opar není. Přiblížení dalekohledu
+se s přepínačem mění jen u přeludu (108 z 360 dvojic), nikde jinde.
+Dosazení v režimu Geometrie: 168 řádků, všechny sedí.
+
 ## [1.12.1] — 2026-09-28
 
 ### Opraveno / Fixed
@@ -533,6 +565,7 @@ První veřejné vydání. / First public release.
 - **CI** kontrolující výpočty, úplnost překladů a reprodukovatelnost
   vygenerovaného `objects.json`.
 
+[1.12.2]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.12.1...v1.12.2
 [1.12.1]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.12.0...v1.12.1
 [1.12.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.11.1...v1.12.0
 [1.11.1]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.11.0...v1.11.1

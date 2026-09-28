@@ -264,7 +264,9 @@ carries `colors` (`sky`, `surface`, optional `water`, `accent`), a `swatch`, a
 the telescope and the geometry figure so all three agree with the menu. Because
 the palette is per-body, the SVG stylesheet must **not** set `stroke`/`fill` on
 anything painted from it — pass the colour as an attribute and let CSS handle
-only width and opacity, or the class will win over the attribute.
+only width, or the class will win over the attribute. The same holds for
+`opacity` wherever the code computes it (haze, mirage): a CSS `opacity` on that
+element silently overrides the computed value.
 
 **The geometry figure exaggerates its angles on purpose.** Real α is a
 fraction of a degree, so `geometry-view.js` scales the larger of α/β up to
@@ -451,6 +453,15 @@ visible slice `MIRAGE_GAP` px above the horizon, shimmers it with an
 cuts the slice at the horizon must sit INSIDE the translated group — outside it,
 the cut follows the real horizon and an extra `gap` of the hidden part shows.
 For the same reason the hidden ghost is clipped to below the horizon.
+
+A mirage fades in haze exactly like anything else: its opacity is `clarity` and
+nothing more. Bending does not change how much air the ray crosses. Two things
+broke that in 1.12.0 and 1.12.1: `.ts-mirage` set `opacity: 0.82` in the
+stylesheet, which in SVG beats the computed attribute, so haze had no effect on
+a mirage at all; and the 0.82 itself made a mirage at 2.2 % contrast render at
+1.8 %, invisible but not declared lost. When `lostInHaze` is true, every text
+must agree: the verdict, the telescope caption and note, the "You can see" tile
+and the map's note. None of them may still say you see it.
 
 **An object without a picture is drawn as the red-and-white ranging pole**, via
 `HL.objectArt(obj)` (`js/data/rod.js`) — in the diagram, the telescope, the
