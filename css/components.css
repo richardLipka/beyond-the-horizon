@@ -531,8 +531,13 @@ textarea.text-input {
 }
 
 .planet-icon {
-  font-size: 1.35rem;
-  line-height: 1.2;
+  display: block;
+  line-height: 0;
+}
+
+.planet-sphere {
+  width: 28px;
+  height: 28px;
 }
 
 .planet-name {
@@ -1257,7 +1262,7 @@ textarea.text-input {
 .formula-row {
   display: grid;
   grid-template-columns: minmax(190px, 1.2fr) minmax(0, 1.3fr) minmax(140px, auto);
-  align-items: baseline;
+  align-items: center;
   gap: 8px 16px;
   padding: 10px 12px;
   border-radius: var(--radius-sm);
@@ -1265,24 +1270,44 @@ textarea.text-input {
   border-left: 4px solid var(--line);
 }
 
+/* Vzorce sazi prohlizec jako MathML (js/core/math.js). Matematicke pismo je
+   systemove - zadne webove fonty, aplikace musi jet offline.
+   Formulas are native MathML (js/core/math.js). The maths font is a system
+   one - no web fonts, the app has to run offline. */
+.formula-row math,
+.formula-standalone math {
+  font-family: "Cambria Math", "STIX Two Math", "Latin Modern Math", "Times New Roman", math, serif;
+  font-size: 1.14em;
+}
+
+/* MathML se samo nezalomi. Kdyby byl vzorec sirsi nez radek (na telefonu),
+   posune se uvnitr sve bunky, misto aby rozsiril celou stranku.
+   MathML never line-breaks. A formula wider than its row (on a phone) scrolls
+   inside its own cell instead of widening the whole page. */
+.formula-symbolic,
+.formula-sub,
+.formula-standalone {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
 .formula-symbolic {
-  font-family: "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace;
-  font-size: 0.94rem;
+  font-size: 1rem;
   color: var(--deep-800);
 }
 
 .formula-sub {
-  font-family: "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: var(--muted);
-  overflow-wrap: anywhere;
 }
 
 .formula-result {
   font-size: 1rem;
   color: var(--deep-800);
-  font-variant-numeric: tabular-nums;
   text-align: right;
+  white-space: nowrap;
 }
 
 .formula-row.row-observer {
@@ -1313,10 +1338,16 @@ textarea.text-input {
 .formula-standalone {
   display: block;
   margin-top: 10px;
-  padding: 12px 14px;
+  padding: 10px 14px;
   border-radius: var(--radius-sm);
   background: rgba(11, 42, 58, 0.05);
+  color: var(--deep-800);
   font-size: 1rem;
+}
+
+.formula-standalone math[display="block"] {
+  margin: 0;
+  text-align: left;
 }
 
 /* Radek bez dosazeni a bez vysledku si bere celou sirku, aby se dlouhy
@@ -1514,6 +1545,14 @@ textarea.text-input {
   }
   .formula-result {
     text-align: left;
+  }
+  /* Na telefonu se vzorce vejdou na sirku karty, jen kdyz je pismo o kus
+     mensi; posouvani uvnitr bunky je az posledni zachrana.
+     On a phone the formulas fit the card only with a slightly smaller font;
+     scrolling inside the cell is the last resort. */
+  .formula-row math,
+  .formula-standalone math {
+    font-size: 0.96em;
   }
 }
 

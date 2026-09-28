@@ -366,12 +366,21 @@
 
     const apparent = angularSize(visible, distance);
 
-    // Kolik by bylo videt bez ohybu svetla. Kdyz nic a s ohybem neco, je to
+    // Kolik je videt bez ohybu svetla a kolik s nim - OBOJI vzdy, at je
+    // prepinac jakkoli. Dalekohled z toho bere zvetseni, ktere musi byt pro
+    // oba stavy stejne, jinak prepnuti refrakce zmeni i priblizeni a skutecny
+    // rozdil zamaskuje. Kdyz bez ohybu neni videt nic a s nim neco, je to
     // prelud: obraz existuje jen diky zahnutemu paprsku.
-    // What would show without bending. Nothing without it and something with
-    // it means a mirage: the image exists only because the ray curves.
-    const hiddenGeometric = input.refraction ? hiddenHeight(eyeHeight, distance, physicalRadius) : hiddenRaw;
-    const visibleGeometric = Math.max(0, objectHeight - hiddenGeometric);
+    // How much shows without bending and how much with it - BOTH, always,
+    // whatever the switch says. The telescope takes its magnification from
+    // them, and it has to be the same in both states, or toggling refraction
+    // changes the zoom as well and hides the real difference. Nothing without
+    // bending and something with it is a mirage.
+    const visibleGeometric = Math.max(0, objectHeight - hiddenHeight(eyeHeight, distance, physicalRadius));
+    const visibleBent = Math.max(
+      0,
+      objectHeight - hiddenHeight(eyeHeight, distance, effectiveRadius(true, physicalRadius))
+    );
     const mirage = !!input.refraction && visible > 0 && visibleGeometric <= 0;
 
     // Opar se drzi u zeme, ve spodnich HAZE_LAYER metrech vzduchu. Kdo je
@@ -414,6 +423,7 @@
       apparentAngleFull: angularSize(objectHeight, distance),
       moonRatio: apparent / MOON_ANGULAR_DIAMETER,
       visibleGeometric: visibleGeometric,
+      visibleBent: visibleBent,
       mirage: mirage,
       haze: haze,
       hazeShare: hazeShare,

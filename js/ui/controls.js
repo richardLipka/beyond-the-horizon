@@ -73,6 +73,65 @@
     return Math.round(raw * 1000) / 1000;
   };
 
+  let sphereCounter = 0;
+
+  /** Ztmavi barvu '#rrggbb' na dany podil jasu. / Darkens a colour. */
+  function shade(hex, keep) {
+    const m = /^#([0-9a-f]{6})$/i.exec(hex || '');
+    if (!m) return hex;
+    const c = [0, 2, 4].map((i) => Math.round(parseInt(m[1].slice(i, i + 2), 16) * keep));
+    return '#' + c.map((v) => v.toString(16).padStart(2, '0')).join('');
+  }
+
+  /**
+   * Ikona telesa: koule v jeho vlastni barve (tyz odstin jako prouzek pod
+   * dlazdici), s leskem vlevo nahore a tmavsim okrajem. Emoji tu nestaci -
+   * modry kruh je jen jeden, takze Neptun dostal kosoctverec, a na kazde
+   * platforme vypadaji jinak. Saturn si nechava prstenec, Slunce zari.
+   * The body's icon: a sphere in its own colour (the same shade as the strip
+   * under the card), lit from the top left with a darker rim. Emoji will not
+   * do - there is only one blue circle, so Neptune ended up a rhombus, and they
+   * look different on every platform. Saturn keeps its ring, the Sun glows.
+   */
+  function planetSphere(planet) {
+    const svg = HL.dom.svg;
+    const id = 'planet-sphere-' + ++sphereCounter;
+    const colour = planet.swatch;
+    const ring = planet.id === 'saturn';
+    const glow = planet.id === 'sun';
+    const parts = [
+      svg('defs', null, [
+        svg('radialGradient', { id: id, cx: '36%', cy: '32%', r: '72%' }, [
+          svg('stop', { offset: '0%', 'stop-color': '#ffffff', 'stop-opacity': 0.9 }),
+          svg('stop', { offset: '24%', 'stop-color': colour }),
+          svg('stop', { offset: '100%', 'stop-color': shade(colour, 0.5) }),
+        ]),
+      ]),
+    ];
+    if (glow) parts.push(svg('circle', { cx: 16, cy: 16, r: 15, fill: colour, opacity: 0.28 }));
+    const body = svg('circle', { cx: 16, cy: 16, r: ring ? 9 : 11, fill: `url(#${id})` });
+    if (ring) {
+      // Zadni pulka prstence za kouli, predni pred ni.
+      // The back half of the ring behind the ball, the front half before it.
+      parts.push(
+        svg('g', { transform: 'rotate(-18 16 16)', fill: 'none', stroke: shade(colour, 0.7), 'stroke-width': 2 }, [
+          svg('ellipse', { cx: 16, cy: 16, rx: 15, ry: 4.4 }),
+        ]),
+        body,
+        svg('path', {
+          d: 'M 1 16 A 15 4.4 0 0 0 31 16',
+          transform: 'rotate(-18 16 16)',
+          fill: 'none',
+          stroke: shade(colour, 0.7),
+          'stroke-width': 2,
+        })
+      );
+    } else {
+      parts.push(body);
+    }
+    return svg('svg', { viewBox: '0 0 32 32', class: 'planet-sphere', 'aria-hidden': 'true' }, parts);
+  }
+
   /** Horni konec druhe casti posuvniku; nikdy nesmi splynout s prvni. */
   const orbitTop = (max) => Math.max(max, GROUND_MAX * 1.0001);
 
@@ -204,7 +263,7 @@
               onclick: () => app.setPlanet(planet.id),
             },
             [
-              el('span', { class: 'planet-icon', text: planet.icon }),
+              el('span', { class: 'planet-icon' }, [planetSphere(planet)]),
               el('span', { class: 'planet-name', text: HL.i18n.pick(planet.name, planet.id) }),
               // barevny prouzek = presne ta barva, kterou pak ma povrch
               // v obrazcich / the strip is the colour the surface will take

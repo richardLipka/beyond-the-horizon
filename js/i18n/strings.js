@@ -113,22 +113,22 @@
       'geo.deriveOneApprox':
         'Pro malé výšky je oblouk skoro stejně dlouhý jako tečna t₂ a h₂ je proti 2R zanedbatelné. Z Pythagorovy věty pak zbude:',
       'geo.deriveOneShape':
-        'Tvar křivky: v nule začíná na d₁, na obzoru samotného pozorovatele. Prvních pár metrů výšky přidá hodně kilometrů. Pak se ohýbá a odmocnina to prozradí: čtyřikrát vyšší objekt vidíš jen dvakrát dál za obzor. Nad D_max = d₁ + 2πR / 4 = {max} se nedostane nikdy, ani s nekonečně vysokým objektem.',
+        'Tvar křivky: v nule začíná na d₁, na obzoru samotného pozorovatele. Prvních pár metrů výšky přidá hodně kilometrů. Pak se ohýbá a odmocnina to prozradí: čtyřikrát vyšší objekt vidíš jen dvakrát dál za obzor. Nad Dₘₐₓ = d₁ + 2πR / 4 = {max} se nedostane nikdy, ani s nekonečně vysokým objektem.',
       'geo.deriveTwoTitle': '2. Potřebná výška jako funkce vzdálenosti',
       'geo.deriveTwoText':
         'Otázka režimu „Meze viditelnosti“: objekt je ve vzdálenosti D, jak vysoký musí být, aby vykoukl nad obzor? Ze stejné rovnice jen vyjádříme h₂ místo D.',
       'geo.deriveTwoApprox':
         'Kousek za obzorem je oblouk D − d₁ skoro stejně dlouhý jako tečna t₂. Pythagorova věta pak dá:',
       'geo.deriveTwoShape':
-        'Tvar křivky: až do d₁ je nula – objekt stojí před obzorem a vidíš ho celý. Za obzorem roste jako parabola: dvakrát dál za obzor potřebuje objekt čtyřikrát vyšší. Pak čím dál strměji. U D_max = {max} dosáhne úhel β 90°, cos β je nula a nulou dělit nejde. Křivka se k té svislé čáře (asymptotě) jen blíží a nikdy ji nedosáhne. Tam už nepomůže žádná výška.',
+        'Tvar křivky: až do d₁ je nula – objekt stojí před obzorem a vidíš ho celý. Za obzorem roste jako parabola: dvakrát dál za obzor potřebuje objekt čtyřikrát vyšší. Pak čím dál strměji. U Dₘₐₓ = {max} dosáhne úhel β 90°, cos β je nula a nulou dělit nejde. Křivka se k té svislé čáře (asymptotě) jen blíží a nikdy ji nedosáhne. Tam už nepomůže žádná výška.',
       'geo.deriveInverse':
-        'Obě funkce jsou navzájem inverzní. Jsou to tytéž body, jen s prohozenými osami – jako cos a arccos. Proto má první křivka vodorovný strop přesně tam, kde druhá svislou asymptotu: v D_max = {max}.',
+        'Obě funkce jsou navzájem inverzní. Jsou to tytéž body, jen s prohozenými osami – jako cos a arccos. Proto má první křivka vodorovný strop přesně tam, kde druhá svislou asymptotu: v Dₘₐₓ = {max}.',
 
       'geo.chartATitle': 'Graf 1: vzdálenost zmizení podle výšky objektu',
       'geo.chartAX': 'výška objektu h₂',
       'geo.chartAY': 'vzdálenost zmizení D',
       'geo.chartANote':
-        'Obyčejné osy: každý dílek je stejně velký. Výřez se řídí vybraným objektem, aby byl vidět tvar křivky u výšek, které se opravdu používají. Zelený pás dole je příspěvek pozorovatele. Ten se nemění, ať je objekt jakkoli vysoký. Strop D_max = {max} leží daleko nad výřezem.',
+        'Obyčejné osy: každý dílek je stejně velký. Výřez se řídí vybraným objektem, aby byl vidět tvar křivky u výšek, které se opravdu používají. Zelený pás dole je příspěvek pozorovatele. Ten se nemění, ať je objekt jakkoli vysoký. Strop Dₘₐₓ = {max} leží daleko nad výřezem.',
       'geo.chartBTitle': 'Graf 2: potřebná výška podle vzdálenosti',
       'geo.chartBX': 'vzdálenost D',
       'geo.chartBY': 'potřebná výška h₂ (v násobcích R = {r})',
@@ -481,22 +481,22 @@
       'geo.deriveOneApprox':
         'For small heights the arc is almost as long as the tangent t₂, and h₂ is tiny next to 2R. Pythagoras then leaves:',
       'geo.deriveOneShape':
-        'The shape: at zero it starts at d₁, the observer’s own horizon. The first few metres of height add a lot of kilometres. Then it bends over, and the square root gives it away: an object four times taller shows only twice as far past the horizon. It never rises above D_max = d₁ + 2πR / 4 = {max}, not even for an infinitely tall object.',
+        'The shape: at zero it starts at d₁, the observer’s own horizon. The first few metres of height add a lot of kilometres. Then it bends over, and the square root gives it away: an object four times taller shows only twice as far past the horizon. It never rises above Dₘₐₓ = d₁ + 2πR / 4 = {max}, not even for an infinitely tall object.',
       'geo.deriveTwoTitle': '2. Required height as a function of distance',
       'geo.deriveTwoText':
         'The question behind “Limits of sight”: the object sits at distance D, how tall must it be to peek over the horizon? The same equation, solved for h₂ instead of D.',
       'geo.deriveTwoApprox':
         'Just past the horizon the arc D − d₁ is almost as long as the tangent t₂. Pythagoras then gives:',
       'geo.deriveTwoShape':
-        'The shape: flat zero out to d₁ – the object stands short of the horizon and you see all of it. Past the horizon it grows like a parabola: twice as far past the horizon takes an object four times taller. Then steeper and steeper. At D_max = {max} the angle β reaches 90°, cos β is zero, and you cannot divide by zero. The curve only creeps towards that vertical line (the asymptote) and never reaches it. No height helps there.',
+        'The shape: flat zero out to d₁ – the object stands short of the horizon and you see all of it. Past the horizon it grows like a parabola: twice as far past the horizon takes an object four times taller. Then steeper and steeper. At Dₘₐₓ = {max} the angle β reaches 90°, cos β is zero, and you cannot divide by zero. The curve only creeps towards that vertical line (the asymptote) and never reaches it. No height helps there.',
       'geo.deriveInverse':
-        'The two functions are inverses of each other. Same points, axes swapped – like cos and arccos. That is why the first curve has its horizontal ceiling exactly where the second has its vertical asymptote: at D_max = {max}.',
+        'The two functions are inverses of each other. Same points, axes swapped – like cos and arccos. That is why the first curve has its horizontal ceiling exactly where the second has its vertical asymptote: at Dₘₐₓ = {max}.',
 
       'geo.chartATitle': 'Chart 1: vanishing distance against the object’s height',
       'geo.chartAX': 'height of the object h₂',
       'geo.chartAY': 'vanishing distance D',
       'geo.chartANote':
-        'Plain axes: every division is the same size. The window follows the selected object, so you can see the shape at the heights that actually come up. The green band at the bottom is the observer’s own contribution. It stays the same however tall the object gets. The ceiling D_max = {max} lies far above this window.',
+        'Plain axes: every division is the same size. The window follows the selected object, so you can see the shape at the heights that actually come up. The green band at the bottom is the observer’s own contribution. It stays the same however tall the object gets. The ceiling Dₘₐₓ = {max} lies far above this window.',
       'geo.chartBTitle': 'Chart 2: required height against distance',
       'geo.chartBX': 'distance D',
       'geo.chartBY': 'required height h₂ (in multiples of R = {r})',

@@ -114,6 +114,11 @@ světla – čistá geometrie ho schová, vzduch ho zvedne do výhledu – nakre
 dalekohled tak, jak vypadá skutečná fata morgana nad mořem. Chvějící se obraz
 visí nad obzorem a mezi nimi zůstane mezera.
 
+Přepínač nikdy nemění přiblížení dalekohledu. To se řídí tím, co je vidět *bez*
+ohybu, takže zapnutá refrakce odkryje víc z objektu ve stejném měřítku –
+Titanic ve 30 km vyroste z 2,6 m špičky stěžně na 11 m komínů. Dřív se při
+každém přepnutí přiblížení změnilo a přesně tohle zamaskovalo.
+
 ### 🌊 Kdy zmizí?
 
 Vzdálenost, ve které objekt úplně zmizí, ukázaná i jako součet, ze kterého
@@ -159,7 +164,10 @@ pravoúhlé trojúhelníky.
 Každý krok je vypsaný symbolicky, dosazený a vyčíslený, a to jen tím, co zná
 první ročník střední školy: Pythagorova věta, kosinus, arkuskosinus a oblouk
 jako část obvodu. `cos α = R/(R+h₁)`, `t² = (R+h₁)² − R²`, `d = 2πR · α / 360°`,
-`D = d₁ + d₂`. Úhly jsou ve stupních, ne v radiánech. Každé dosazení dá na
+`D = d₁ + d₂`. Vzorce jsou vysázené jako opravdová matematika – zlomky pod
+sebou, odmocnina s čárou, proměnné kurzívou – vlastním MathML prohlížeče, takže
+nepotřebují žádnou knihovnu a fungují offline. Úhly jsou ve stupních, ne
+v radiánech. Každé dosazení dá na
 kalkulačce přesně vypsaný výsledek – i se zapnutou refrakcí, kdy se všude
 počítá s efektivním poloměrem. Úhly v obrázku jsou zvětšené, aby byl čitelný;
 vypsaná čísla jsou skutečná.
@@ -382,7 +390,7 @@ index.html          stránka a pořadí skriptů
 objects.json        data objektů (generováno — needitovat ručně)
 
 css/                theme · layout · components · diagram
-js/core/            geometry · format · store · dom
+js/core/            geometry · format · store · dom · math (sazba MathML)
 js/i18n/            texty (cs + en) · přepínání jazyka
 js/data/            tovární záloha (generováno) · načítání a kontrola · předvolby těles
                     · výtyčka · skutečné rozhledy
@@ -416,7 +424,7 @@ vypíše, na co se zapomnělo.
 ```bash
 npm start                       # vývojový server
 npm run build                   # přegenerování datového souboru
-npm test                        # kontrola výpočtů (75 testů)
+npm test                        # kontrola výpočtů (80 testů)
 node tools/check-strings.mjs    # úplnost překladů
 ```
 

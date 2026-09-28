@@ -439,11 +439,15 @@
       spreadLabels(labels);
     }
 
+    /**
+     * Radek vypoctu. Vsechny tri casti jsou vzorce (HL.math): obecny tvar,
+     * dosazeni a vysledek. / A calculation row; all three parts are formulas.
+     */
     function formulaRow(symbolic, substituted, result, cls) {
       return el('div', { class: 'formula-row' + (cls ? ' ' + cls : '') }, [
-        el('code', { class: 'formula-symbolic', text: symbolic }),
-        substituted ? el('code', { class: 'formula-sub', text: substituted }) : null,
-        el('strong', { class: 'formula-result', text: result }),
+        el('span', { class: 'formula-symbolic' }, [HL.math.render(symbolic)]),
+        substituted ? el('span', { class: 'formula-sub' }, [HL.math.render(substituted)]) : null,
+        el('strong', { class: 'formula-result' }, [HL.math.render(result)]),
       ]);
     }
 
@@ -528,29 +532,32 @@
       // neuci. / Only Pythagoras, cosine, arccosine and an arc as a share of
       // the circumference. Angles in degrees: radians are not taught yet at
       // the start of high school.
-      const Rm = num(R, 1);
+      // Cisla jdou do vzorcu presne tak, jak je naformatoval jazyk.
+      // Numbers enter the formulas exactly as the locale formatted them.
+      const Q = HL.math.quantity;
+      const Rm = `\\num{${num(R, 1)}}`;
       const side = (h, angle, tangent, arc, cls, names) => {
         steps.appendChild(
           formulaRow(
-            `cos ${names.a} = R / (R + ${names.h})`,
-            `= ${Rm} / ${num(R + h, 1)}`,
-            `${names.a} = ${degrees(angle, lang)}`,
+            `cos ${names.a} = \\frac{R}{R + ${names.h}}`,
+            `= \\frac{${Rm}}{\\num{${num(R + h, 1)}}}`,
+            `${names.a} = ${Q(degrees(angle, lang))}`,
             cls
           )
         );
         steps.appendChild(
           formulaRow(
-            `${names.t}² = (R + ${names.h})² − R² = ${names.h} · (2R + ${names.h})`,
-            `${names.t} = √( ${num(h, 2)} · ${num(2 * R + h, 1)} )`,
-            `${names.t} = ${F.distance(tangent, lang)}`,
+            `${names.t}^2 = (R + ${names.h})^2 − R^2 = ${names.h} · (2R + ${names.h})`,
+            `${names.t} = \\sqrt{\\num{${num(h, 2)}} · \\num{${num(2 * R + h, 1)}}}`,
+            `${names.t} = ${Q(F.distance(tangent, lang))}`,
             cls
           )
         );
         steps.appendChild(
           formulaRow(
-            `${names.d} = 2π · R · ${names.a} / 360°`,
-            `= 2π · ${Rm} · ${degreesExact(angle, lang)} / 360°`,
-            `${names.d} = ${F.distance(arc, lang)}`,
+            `${names.d} = \\frac{2π · R · ${names.a}}{360°}`,
+            `= \\frac{2π · ${Rm} · ${Q(degreesExact(angle, lang))}}{360°}`,
+            `${names.d} = ${Q(F.distance(arc, lang))}`,
             cls
           )
         );
@@ -558,23 +565,23 @@
 
       steps.appendChild(el('div', { class: 'formula-note', text: t('geo.rowRight') }));
       steps.appendChild(el('div', { class: 'formula-note', text: t('geo.rowPythagoras') }));
-      side(result.eyeHeight, alpha, t1, result.horizon, 'row-observer', { a: 'α', h: 'h₁', t: 't₁', d: 'd₁' });
+      side(result.eyeHeight, alpha, t1, result.horizon, 'row-observer', { a: 'α', h: 'h_1', t: 't_1', d: 'd_1' });
       steps.appendChild(el('div', { class: 'formula-note', text: t('geo.rowObject') }));
-      side(result.objectHeight, beta, t2, result.objectHorizon, 'row-object', { a: 'β', h: 'h₂', t: 't₂', d: 'd₂' });
+      side(result.objectHeight, beta, t2, result.objectHorizon, 'row-object', { a: 'β', h: 'h_2', t: 't_2', d: 'd_2' });
       steps.appendChild(
         formulaRow(
-          'D = d₁ + d₂',
-          `= ${F.distance(result.horizon, lang)} + ${F.distance(result.objectHorizon, lang)}`,
-          `D = ${F.distance(result.vanishDistance, lang)}`,
+          'D = d_1 + d_2',
+          `= ${Q(F.distance(result.horizon, lang))} + ${Q(F.distance(result.objectHorizon, lang))}`,
+          `D = ${Q(F.distance(result.vanishDistance, lang))}`,
           'row-total'
         )
       );
       steps.appendChild(el('div', { class: 'formula-note', text: t('geo.rowApprox') }));
       steps.appendChild(
         formulaRow(
-          'h ≪ R  ⇒  d ≈ t = √( h · (2R + h) ) ≈ √(2R · h)',
-          `k = √(2R) / 1000`,
-          `k = ${num(result.ruleConstant, 2)}`,
+          'h ≪ R ⇒ d ≈ t = \\sqrt{h · (2R + h)} ≈ \\sqrt{2R · h}',
+          'k = \\frac{\\sqrt{2R}}{1000}',
+          `k = \\num{${num(result.ruleConstant, 2)}}`,
           'row-approx'
         )
       );
@@ -590,8 +597,10 @@
         el('section', { class: 'card explain-card' }, [
           el('h3', { class: 'card-title', text: t('geo.furtherTitle') }),
           el('p', { text: t('geo.furtherText') }),
-          el('code', { class: 'formula-symbolic formula-standalone', text: 'γ = 360° · (D − d₁) / (2π · R)' }),
-          el('code', { class: 'formula-symbolic formula-standalone', text: 'cos γ = R / (R + x)   ⇒   x = R / cos γ − R' }),
+          el('div', { class: 'formula-standalone' }, [HL.math.render('γ = \\frac{360° · (D − d_1)}{2π · R}', true)]),
+          el('div', { class: 'formula-standalone' }, [
+            HL.math.render('cos γ = \\frac{R}{R + x} ⇒ x = \\frac{R}{cos γ} − R', true),
+          ]),
         ])
       );
 

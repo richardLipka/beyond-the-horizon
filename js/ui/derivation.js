@@ -288,9 +288,9 @@
   function formulaRow(symbolic, substituted, result, cls) {
     const solo = !substituted && !result;
     return el('div', { class: 'formula-row' + (solo ? ' formula-solo' : '') + (cls ? ' ' + cls : '') }, [
-      el('code', { class: 'formula-symbolic', text: symbolic }),
-      substituted ? el('code', { class: 'formula-sub', text: substituted }) : null,
-      result ? el('strong', { class: 'formula-result', text: result }) : null,
+      el('span', { class: 'formula-symbolic' }, [HL.math.render(symbolic)]),
+      substituted ? el('span', { class: 'formula-sub' }, [HL.math.render(substituted)]) : null,
+      result ? el('strong', { class: 'formula-result' }, [HL.math.render(result)]) : null,
     ]);
   }
 
@@ -334,29 +334,37 @@
     // --- 1. vzdalenost zmizeni jako funkce vysky --------------------------
     const one = el('div', { class: 'formula-list' });
     one.appendChild(el('div', { class: 'formula-note', text: t('geo.deriveOneText') }));
-    one.appendChild(formulaRow('β = arccos( R / (R + h₂) )', null, null, 'row-object'));
+    one.appendChild(formulaRow('β = arccos \\frac{R}{R + h_2}', null, null, 'row-object'));
     one.appendChild(
       formulaRow(
-        'D(h₂) = d₁ + 2π · R · β / 360°',
-        `= ${F.distance(r.horizon, lang)} + 2π · R · β / 360°`,
+        'D(h_2) = d_1 + \\frac{2π · R · β}{360°}',
+        `= ${HL.math.quantity(F.distance(r.horizon, lang))} + \\frac{2π · R · β}{360°}`,
         null,
         'row-total'
       )
     );
     one.appendChild(el('div', { class: 'formula-note', text: t('geo.deriveOneApprox') }));
-    one.appendChild(formulaRow('h₂ ≪ R   ⇒   D ≈ d₁ + √( 2R · h₂ )', null, null, 'row-approx'));
+    one.appendChild(formulaRow('h_2 ≪ R ⇒ D ≈ d_1 + \\sqrt{2R · h_2}', null, null, 'row-approx'));
 
     // --- 2. potrebna vyska jako funkce vzdalenosti ------------------------
     const two = el('div', { class: 'formula-list' });
     two.appendChild(el('div', { class: 'formula-note', text: t('geo.deriveTwoText') }));
     two.appendChild(
-      formulaRow('D = d₁ + 2π · R · β / 360°   ⇒   β = 360° · (D − d₁) / (2π · R)', null, null, 'row-object')
+      formulaRow(
+        'D = d_1 + \\frac{2π · R · β}{360°} ⇒ β = \\frac{360° · (D − d_1)}{2π · R}',
+        null,
+        null,
+        'row-object'
+      )
     );
-    two.appendChild(formulaRow('cos β = R / (R + h₂)   ⇒   R + h₂ = R / cos β', null, null, 'row-object'));
-    two.appendChild(formulaRow('h₂(D) = R / cos β − R', null, null, 'row-total'));
+    two.appendChild(
+      formulaRow('cos β = \\frac{R}{R + h_2} ⇒ R + h_2 = \\frac{R}{cos β}', null, null, 'row-object')
+    );
+    two.appendChild(formulaRow('h_2(D) = \\frac{R}{cos β} − R', null, null, 'row-total'));
     two.appendChild(el('div', { class: 'formula-note', text: t('geo.deriveTwoApprox') }));
-    two.appendChild(formulaRow('t₂² = (R + h₂)² − R² = h₂ · (2R + h₂) ≈ 2R · h₂', null, null, 'row-approx'));
-    two.appendChild(formulaRow('t₂ ≈ D − d₁   ⇒   h₂ ≈ (D − d₁)² / (2R)', null, null, 'row-approx'));
+    two.appendChild(formulaRow('t_2^2 = (R + h_2)^2 − R^2 = h_2 · (2R + h_2)', null, null, 'row-approx'));
+    two.appendChild(formulaRow('h_2 ≪ R ⇒ t_2^2 ≈ 2R · h_2', null, null, 'row-approx'));
+    two.appendChild(formulaRow('t_2 ≈ D − d_1 ⇒ h_2 ≈ \\frac{(D − d_1)^2}{2R}', null, null, 'row-approx'));
 
     container.appendChild(
       el('section', { class: 'card explain-card' }, [

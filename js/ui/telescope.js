@@ -152,17 +152,40 @@
     }
 
     // ---- meritko / scale --------------------------------------------------
-    // Prelud visi nad obzorem o MIRAGE_GAP vys, takze nahore musi zbyt i na
-    // tu mezeru. / A mirage floats MIRAGE_GAP above the horizon, so the room
-    // above has to leave space for the gap too.
+    // Zvetseni se ridi tim, co je videt BEZ ohybu svetla, a je stejne pro
+    // zapnutou i vypnutou refrakci. Drive se ridilo tim, co je videt prave
+    // ted, takze prepnuti refrakce zmenilo i priblizeni a skutecny rozdil
+    // zamaskovalo: Titanic ve 30 km mel v obou stavech viditelnou cast vysokou
+    // 30 px, prestoze refrakce odkryje ctyrikrat vic, a bez refrakce byl cely
+    // nakresleny 4,3x vetsi. Ted refrakce objekt opravdu zvetsi - odkryje vic
+    // pri stejnem priblizeni - a bez ni se nezvetsuje nic.
+    // The magnification follows what shows WITHOUT bending, and it is the same
+    // with refraction on and off. It used to follow what shows right now, so
+    // toggling refraction changed the zoom too and masked the real difference:
+    // the Titanic at 30 km showed a 30 px visible part in both states although
+    // refraction reveals four times more, and without refraction the whole
+    // ship was drawn 4.3x larger. Now refraction really enlarges the object -
+    // it reveals more at the same zoom - and nothing enlarges without it.
+    const plain = r.visibleGeometric;
+    const bent = r.visibleBent;
+    // Nastaveni, ve kterem je objekt jen prelud: bez ohybu nic, s nim neco.
+    // Rozhoduje nastaveni, ne prepinac, aby mezera nahore byla v obou stavech
+    // stejna. / A setup in which the object is only a mirage. The setup
+    // decides, not the switch, so the room above is the same in both states.
+    const mirageSetup = plain <= 0 && bent > 0;
     const gap = r.mirage ? MIRAGE_GAP : 0;
     const objectHeight = Math.max(r.objectHeight, 1e-6);
-    const roomAbove = HORIZON_Y - (CENTRE.y - RADIUS) - 30 - gap;
+    const roomAbove = HORIZON_Y - (CENTRE.y - RADIUS) - 30 - (mirageSetup ? MIRAGE_GAP : 0);
+    // U preludu neni s cim srovnavat - bez ohybu neni videt nic - tak se
+    // priblizeni ridi tim, co ukaze ohnuty paprsek.
+    // A mirage has nothing to compare against, so the ray that bends decides.
+    const reference = plain > 0 ? plain : bent;
+    const WANTED_PX = 52;
     let scale = roomAbove / objectHeight;
-    if (r.visible > 0) {
-      const visiblePx = r.visible * scale;
-      const wanted = 52;
-      if (visiblePx < wanted) scale = Math.min(wanted / r.visible, roomAbove / r.visible);
+    if (reference > 0 && reference * scale < WANTED_PX) {
+      // I to, co pridal ohyb, se musi vejit nad obzor.
+      // What bending adds has to fit above the horizon as well.
+      scale = Math.min(WANTED_PX / reference, roomAbove / Math.max(bent, reference));
     }
 
     // Siroke objekty (lode) zmensime rovnomerne, aby se nedeformovaly -
@@ -177,17 +200,16 @@
     if (objectHeight * scale * aspect > maxWidth) {
       scale = maxWidth / (objectHeight * aspect);
     }
-    // Siroka hora, ze ktere kouka jen spicka, by se po zmenseni na sirku
-    // okenka scvrkla na par pixelu. Dalekohled ale sirokou horu stejne orizne,
-    // tak se smi roztahnout za okraj - az na 30 px viditelne casti. Meritko je
-    // porad rovnomerne, takze pomer videt / schovano zustava presny.
-    // A wide peak with only its tip showing would shrink to a few pixels once
-    // fitted to the eyepiece's width. A telescope crops a wide mountain anyway,
-    // so it may run past the edge - up to a 30 px visible part. The scale stays
-    // uniform, so the visible-to-hidden ratio is still exact.
-    const MIN_VISIBLE_PX = 30;
-    if (r.visible > 0 && r.visible * scale < MIN_VISIBLE_PX) {
-      scale = Math.min(MIN_VISIBLE_PX / r.visible, roomAbove / r.visible);
+    // Prelud ze siroke hory by po zmenseni na sirku okenka byl par pixelu.
+    // Jen u nej - a jen se zapnutou refrakci, bez ni neni videt nic - se proto
+    // smi hora roztahnout za okraj okenka, az na 30 px viditelne casti.
+    // Meritko je porad rovnomerne, pomer videt / schovano zustava presny.
+    // A mirage of a wide peak would be a few pixels once fitted to the
+    // eyepiece. Only then - and only with refraction on, since nothing shows
+    // without it - may the peak run past the edge, up to a 30 px visible part.
+    const MIRAGE_MIN_PX = 30;
+    if (r.mirage && r.visible * scale < MIRAGE_MIN_PX) {
+      scale = Math.min(MIRAGE_MIN_PX / r.visible, roomAbove / r.visible);
     }
 
     const heightPx = objectHeight * scale;

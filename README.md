@@ -118,6 +118,11 @@ bends — hidden by pure geometry, lifted into view by the air — the telescope
 draws it the way a real Fata Morgana looks over the sea. A shimmering image
 floats above the horizon, with a gap between the two.
 
+The switch never changes the telescope's zoom. Its magnification is tuned to
+what shows *without* bending, so turning refraction on reveals more of the
+object at the same scale — the Titanic at 30 km goes from a 2.6 m mast tip to
+11 m of funnels. It used to re-zoom on every switch and hide exactly that.
+
 ### 🌊 When does it vanish?
 
 The distance at which an object disappears completely, shown as the sum that
@@ -164,7 +169,9 @@ whole problem into two right triangles.
 Every step is written out symbolically, substituted and evaluated, using only
 what the first year of high school knows: Pythagoras, cosine, arccosine, and an
 arc as a share of the circumference. `cos α = R/(R+h₁)`, `t² = (R+h₁)² − R²`,
-`d = 2πR · α / 360°`, `D = d₁ + d₂`. Angles are in degrees, not radians. Every
+`d = 2πR · α / 360°`, `D = d₁ + d₂`. The formulas are typeset as real maths —
+stacked fractions, root bars, italic variables — by the browser's own MathML, so
+they need no library and work offline. Angles are in degrees, not radians. Every
 substitution reproduces its own result on a calculator — with refraction on as
 well, where the effective radius is used throughout. The drawn angles are
 enlarged so the figure is readable; the printed numbers are the real ones.
@@ -390,7 +397,7 @@ index.html          the page and the script order
 objects.json        object data (generated — do not hand-edit)
 
 css/                theme · layout · components · diagram
-js/core/            geometry · format · store · dom
+js/core/            geometry · format · store · dom · math (MathML typesetting)
 js/i18n/            strings (cs + en) · language switching
 js/data/            factory fallback (generated) · loading & validation · planet presets
                     · ranging pole · real sightlines
@@ -424,7 +431,7 @@ reports anything you forgot.
 ```bash
 npm start                       # dev server
 npm run build                   # regenerate the data file
-npm test                        # geometry self-test (75 checks)
+npm test                        # geometry self-test (80 checks)
 node tools/check-strings.mjs    # translation completeness
 ```
 

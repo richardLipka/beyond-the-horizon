@@ -3,6 +3,34 @@
 Formát podle [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 verzování podle [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [1.12.1] — 2026-09-28
+
+### Opraveno / Fixed
+
+- **Dalekohled měnil přiblížení s přepínačem refrakce.** Zvětšení se řídilo
+  tím, co je právě vidět, takže přepnutí refrakce zároveň přiblížilo nebo
+  oddálilo obraz a skutečný rozdíl zamaskovalo. Titanic ve 30 km měl viditelnou
+  část vysokou 30 px s refrakcí i bez ní, přestože refrakce odkryje 4,3× víc,
+  a bez refrakce byla celá loď nakreslená 4,3× větší. Teď je přiblížení v obou
+  stavech stejné: refrakce objekt zvětší přesně o tolik, o kolik ho odkryje,
+  a bez ní se nezvětšuje nic. Ověřeno na sedmi objektech – zvětšení odpovídá
+  fyzikálnímu poměru (1,26× u Mont Blancu, 4,25× u Titanicu).
+- Oříznutí široké hory za okraj okénka platí jen pro přelud se zapnutou
+  refrakcí; ve verzi 1.12.0 se uplatnilo i bez ní.
+- Na telefonu přetékal jeden vzorec přes okraj stránky.
+
+### Změněno / Changed
+
+- **Vzorce jsou vysázené jako matematika.** Zlomky pod sebou, odmocnina
+  s čárou přes celý výraz, proměnné kurzívou, jména funkcí stojatě – místo
+  neproporcionálního písma jako v kódu. Sází je vlastní MathML prohlížeče, bez
+  knihovny a i z `file://`. Dlouhý řetěz rovností se rozdělil na dva kroky.
+- `D_max` se v textu píše s opravdovým indexem: Dₘₐₓ.
+- **Tělesa v nabídce jsou koule v barvě tělesa.** Neptun byl kosočtverec,
+  protože modré kolečko mezi emoji je jen jedno a zabral ho Uran. Teď je
+  každé těleso stínovaná koule ve stejné barvě jako proužek pod ní, Saturn
+  s prstencem, Slunce se září.
+
 ## [1.12.0] — 2026-09-28
 
 ### Přidáno / Added
@@ -505,6 +533,7 @@ První veřejné vydání. / First public release.
 - **CI** kontrolující výpočty, úplnost překladů a reprodukovatelnost
   vygenerovaného `objects.json`.
 
+[1.12.1]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.12.0...v1.12.1
 [1.12.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.11.1...v1.12.0
 [1.11.1]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.11.0...v1.11.1
 [1.11.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.10.0...v1.11.0

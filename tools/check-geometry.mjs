@@ -303,5 +303,19 @@ check('prelud: s ohybem je kus videt', mirage.visible > 0 ? 1 : 0, 1, 0);
 check('ve 15 km je stezen videt i bez ohybu', G.solve({ ...mast, distance: 15000, refraction: true }).mirage ? 1 : 0, 0, 0);
 check('bez refrakce prelud nevznikne', G.solve({ ...mast, distance: 25000, refraction: false }).mirage ? 1 : 0, 0, 0);
 
+// Obe viditelne casti se pocitaji vzdy, at je prepinac jakkoli - dalekohled
+// z nich bere zvetseni, ktere musi byt v obou stavech stejne.
+// Both visible parts are computed whatever the switch says: the telescope
+// takes its magnification from them, and it must match in both states.
+const ship30 = { planetRadius: R, eyeHeight: 1.7, objectHeight: 53, distance: 30000 };
+const off30 = G.solve({ ...ship30, refraction: false });
+const on30 = G.solve({ ...ship30, refraction: true });
+check('bez refrakce je videt presne visibleGeometric', off30.visible, off30.visibleGeometric, 1e-9);
+check('s refrakci je videt presne visibleBent', on30.visible, on30.visibleBent, 1e-9);
+check('obe casti nezavisi na prepinaci (bez ohybu)', on30.visibleGeometric, off30.visibleGeometric, 1e-9);
+check('obe casti nezavisi na prepinaci (s ohybem)', on30.visibleBent, off30.visibleBent, 1e-9);
+// Titanic ve 30 km z 1,7 m: bez ohybu 2,58 m, s ohybem 11,05 m - 4,3x vic.
+check('Titanic ve 30 km: refrakce odkryje 4,3x vic', on30.visible / off30.visible, 4.28, 0.02);
+
 console.log(failures === 0 ? '\nVsechny kontroly prosly / all checks passed' : `\n${failures} chyb / failures`);
 process.exit(failures === 0 ? 0 : 1);

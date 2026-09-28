@@ -62,7 +62,7 @@ check, and `check-strings`. Run all three before committing.
 ## Architecture
 
 ```
-core/     geometry, format, store, dom   — no DOM knowledge above geometry, no language
+core/     geometry, format, store, dom, math   — no language; geometry has no DOM
 i18n/     strings + language switching
 data/     load / validate / save objects.json (+ factory fallback), planet presets,
           the ranging pole for objects without a picture, real sightlines
@@ -402,6 +402,34 @@ is on. They used to print the physical radius into `cos α = R/(R+h₁)` while �
 came from the effective one, so the row disagreed with its own result by 7.4 %.
 Angles in substitutions carry six significant digits (`degreesExact`): with four
 decimals a pupil recomputing the arc on a calculator was 5 m off.
+
+**The telescope's magnification must not depend on the refraction switch.**
+It is tuned to `visibleGeometric` (what shows without bending) and capped so that
+`visibleBent` still fits; `solve` computes both on every call, whatever the
+switch says. It used to follow the current `visible`, so toggling refraction
+re-zoomed and cancelled the physics out: the Titanic at 30 km showed a 30 px
+visible part in both states although refraction reveals 4.3× more, and without
+refraction the whole ship was drawn 4.3× larger. Only a mirage may zoom further
+(to a 30 px slice, running past the eyepiece), and only with refraction on —
+without it there is nothing to zoom into.
+
+**Formulas are MathML, written in a small TeX subset** (`js/core/math.js`):
+`\frac{}{}`, `\sqrt{}`, `^`, `_`, `\num{}` for a number exactly as `HL.format`
+printed it, `\text{}` for units, `\,` for a thin space. `HL.math.quantity()`
+turns "5,03 km" into that notation. Browsers typeset MathML natively, so there
+is no library and `file://` still works. Three details matter: `displaystyle` is
+on, or fractions in the substitutions shrink to script size; brackets are
+non-stretchy, or an index inside makes them overgrown; and MathML never
+line-breaks, so a long chain has to be split into two rows (the cells also scroll
+internally as a last resort, so the page can never scroll sideways). Every
+`<math>` keeps its source in `data-tex`, which is how the substitutions are
+checked against their results.
+
+**Planet icons are drawn spheres, not emoji.** Emoji have one blue circle, so
+Neptune had ended up a rhombus, and emoji look different on every platform.
+`planetSphere()` in `controls.js` shades each body's `swatch` colour — the same
+colour as the strip under its card — with a ring for Saturn and a glow for the
+Sun. `planets.js` no longer carries an `icon` field.
 
 **Haze is contrast lost per kilometre**, `T = (1 − p)^D`, and below 2 %
 (Koschmieder's threshold, `CONTRAST_THRESHOLD`) the object is gone —
