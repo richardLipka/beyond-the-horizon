@@ -3,6 +3,59 @@
 Formát podle [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 verzování podle [Semantic Versioning](https://semver.org/lang/cs/).
 
+## [1.13.0] — 2026-09-29
+
+### Přidáno / Added
+
+- **Režim pro učitele v Geometrii.** Klepnutím na číslo v obrázku nebo ve
+  výpočtu se z něj stane otazník; štítky nad obrázkem to zvládnou
+  i z klávesnice. Otazník se rozšíří všude, odkud by šla hodnota vyčíst:
+  do dosazení (`R + h₁` se schová s `R` i s `h₁`), do zadání nahoře i do
+  popisků grafů pod výpočtem. Řádek „Úloha: dopočítej …“ vyjmenuje, co chybí,
+  v pořadí výpočtu. *Nech jen zadání* schová všechno vypočtené.
+- **Černobílá konstrukce pro tisk.** Bílá koule, černé čáry, strana
+  pozorovatele plnou čarou a strana objektu čárkovaně – v obrázku, ve výpočtu
+  i v obou grafech. Tlačítko *Vytisknout* a tiskový styl, který schová
+  hlavičku, nastavení, patičku a všechna tlačítka.
+- Stažené soubory se jmenují podle jazyka: `za-obzorem-mapa.png`,
+  `beyond-the-horizon-map.png`. Úloha s otazníky má vlastní jméno
+  (`…-geometrie-uloha`), aby nepřepsala řešení.
+
+### Opraveno / Fixed
+
+- **Hlavní obrázek se stahoval jako černý obdélník.** Export přepisuje
+  spočítané styly do souboru, ale hodnotu `none` zahazoval jako prázdnou.
+  Jenže `fill: none` ze stylopisu je v SVG podstatná: bez ní má cesta černou
+  výplň. Rámeček, vlnky, obrysy a křivky grafů se tak změnily v černé plochy,
+  v dalekohledu stejně jako v grafech. Teď se zapíše každá hodnota, která se
+  liší od rodiče, jako atribut, kterému rozumí i starší programy. Soubor
+  s diagramem je navíc menší než polovina (23 kB místo 56 kB).
+- **Barevné popisky v obrázcích nikdy nefungovaly.** Pravidlo
+  `.chart-svg text` (třída + prvek) přebilo každou barevnou třídu popisku,
+  celkem 27 tříd. Popisek „schováno“ v dalekohledu byl tmavě modrý na tmavé
+  vodě místo bílého, popisky os a poznámky nezešedly a v Geometrii nebyly
+  popisky pozorovatele modré a objektu červené. Popisek obzoru dostal tmavší
+  odstín žluté, čistá slunečná na světlé obloze skoro nebyla vidět.
+- Popisek „schováno“ v dalekohledu zajel pod obrubu, když byla schovaná
+  většina objektu. Teď klesne jen tam, kde je kruh ještě širší než on.
+- Popisek výšky očí v bočním pohledu přeškrtávala čára pohledu. Zvedne se nad
+  ni, a když tam je popisek obzoru, uhne pod ni.
+- Konstrukce v Geometrii měla nahoře prázdnou čtvrtinu obrázku a poznámka
+  „Úhly jsou zvětšené…“ ležela na kouli bez podkladu.
+- Tlačítka SVG a PNG v kartách „Co uvidím?“ měla po přepnutí jazyka nápovědu
+  v původním jazyce.
+
+### Ověřeno / Verified
+
+Každý stažený obrázek se znovu načte do stránky bez stylopisu a porovná se
+s živým obrázkem prvek po prvku ve 22 vlastnostech. 8 obrázků v 8 scénách
+(výchozí, opar, ztraceno v oparu, Měsíc, Slunce, oběžná dráha, angličtina,
+černobílá úloha): 64 exportů, žádný rozdíl. Tlačítka: 32 stažení, 16 souborů
+v obou jazycích. Konstrukce ve 140 nastaveních (7 těles, 5 výšek očí,
+2 objekty, s otazníky i bez): žádný popisek mimo obrázek, žádné dva přes sebe.
+Popisek očí ve 108 scénách: ani jednou ho nepřeškrtne čára pohledu. Zbývají
+dva okrajové případy s kótou výšky na Jupiteru a na Slunci.
+
 ## [1.12.2] — 2026-09-28
 
 ### Opraveno / Fixed
@@ -565,6 +618,7 @@ První veřejné vydání. / First public release.
 - **CI** kontrolující výpočty, úplnost překladů a reprodukovatelnost
   vygenerovaného `objects.json`.
 
+[1.13.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.12.2...v1.13.0
 [1.12.2]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.12.1...v1.12.2
 [1.12.1]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.12.0...v1.12.1
 [1.12.0]: https://github.com/richardLipka/beyond-the-horizon/compare/v1.11.1...v1.12.0

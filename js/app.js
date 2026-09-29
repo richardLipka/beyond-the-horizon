@@ -35,6 +35,12 @@
     // podil kontrastu, ktery ubere kazdy kilometr vzduchu (0 = cisty vzduch)
     // share of contrast each kilometre of air takes away (0 = clear air)
     haze: 0,
+    // Rezim Geometrie: ucitel nahradi hodnoty otazniky a vznikne uloha;
+    // cernobila verze je pro tisk. / The geometry mode: a teacher swaps
+    // values for question marks to make a task; black and white is for print.
+    geoTeacher: false,
+    geoAsked: [],
+    geoBw: false,
   };
 
   const store = HL.createStore(
@@ -155,6 +161,9 @@
           customName: state.customName,
           refraction: state.refraction,
           haze: state.haze,
+          geoTeacher: state.geoTeacher,
+          geoAsked: state.geoAsked,
+          geoBw: state.geoBw,
         })
       );
     } catch (e) {
@@ -268,6 +277,27 @@
 
     setMode(mode) {
       store.set({ mode: mode });
+    },
+
+    /** Rezim pro ucitele: hodnoty jdou nahradit otaznikem. */
+    setGeoTeacher(on) {
+      store.set({ geoTeacher: !!on });
+    },
+
+    /** Otaznik u jedne hodnoty zapne nebo vypne. / Toggles one question mark. */
+    toggleAsked(key) {
+      const asked = store.get().geoAsked;
+      store.set({ geoAsked: asked.includes(key) ? asked.filter((k) => k !== key) : asked.concat(key) });
+    },
+
+    /** Nastavi cely seznam otazniku najednou. / Sets the whole list at once. */
+    setAsked(keys) {
+      store.set({ geoAsked: keys.slice() });
+    },
+
+    /** Cernobila konstrukce pro tisk. / Black-and-white figure for print. */
+    setGeoBw(on) {
+      store.set({ geoBw: !!on });
     },
 
     selectObject(id) {
@@ -414,9 +444,9 @@
     // Tlacitka pro stazeni obrazku. Karty rezimu "Co uvidim?" jsou napevno
     // v index.html, takze staci pripojit jednou; ostatni rezimy si je
     // pridavaji samy pri vykresleni.
-    HL.Exporter.attach(qs('#diagramTitle'), () => nodes.diagram, 'za-obzorem-diagram');
-    HL.Exporter.attach(qs('#telescopeTitle'), () => nodes.telescope, 'za-obzorem-dalekohled');
-    HL.Exporter.attach(qs('#mapTitle'), () => nodes.horizonMap, 'za-obzorem-mapa');
+    HL.Exporter.attach(qs('#diagramTitle'), () => nodes.diagram, 'diagram');
+    HL.Exporter.attach(qs('#telescopeTitle'), () => nodes.telescope, 'telescope');
+    HL.Exporter.attach(qs('#mapTitle'), () => nodes.horizonMap, 'map');
     views.vanish = HL.VanishPanel.mount(qs('#vanishPanel'), app);
     views.limits = HL.LimitsPanel.mount(qs('#limitsPanel'), app);
     views.geometry = HL.GeometryPanel.mount(qs('#geometryPanel'), app);
@@ -435,6 +465,7 @@
       if (object && object.defaultDistance) patch.distance = object.defaultDistance;
     }
     if (patch.mode === 'editor') patch.mode = 'see';
+    if (!Array.isArray(patch.geoAsked)) patch.geoAsked = [];
 
     store.subscribe(render);
     store.set(patch);

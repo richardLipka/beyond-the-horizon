@@ -444,15 +444,30 @@
     }
 
     if (hiddenPx > 6) {
-      scene.appendChild(
-        svg('text', {
-          x: CENTRE.x,
-          y: Math.min(HORIZON_Y + hiddenPx / 2 + 6, CENTRE.y + RADIUS - 16),
-          class: 'ts-hidden-label',
-          'text-anchor': 'middle',
-          text: `${t('diagram.hidden')}: ${F.height(r.hidden, lang)}`,
-        })
-      );
+      const hiddenLabel = svg('text', {
+        x: CENTRE.x,
+        y: HORIZON_Y + hiddenPx / 2 + 6,
+        class: 'ts-hidden-label',
+        'text-anchor': 'middle',
+        text: `${t('diagram.hidden')}: ${F.height(r.hidden, lang)}`,
+      });
+      scene.appendChild(hiddenLabel);
+      // Dole se kruh zuzuje. Popisek smi klesnout jen tam, kde je tetiva
+      // uvnitr obruby jeste sirsi nez on - jinak mu obruba useknula konce
+      // ("schovano: 26,7 m" u plachetnice ve 22 km).
+      // The circle narrows towards the bottom. The label may sink only as far
+      // as the chord inside the rim is still wider than the label, or the rim
+      // cut off both its ends.
+      let halfWidth = 0;
+      try {
+        halfWidth = hiddenLabel.getBBox().width / 2;
+      } catch (e) {
+        /* jeste nevykresleno / not rendered yet */
+      }
+      if (!(halfWidth > 0)) halfWidth = hiddenLabel.textContent.length * 4.8;
+      const inner = RADIUS - 16;
+      const lowest = CENTRE.y + Math.sqrt(Math.max(0, inner * inner - Math.pow(halfWidth + 6, 2))) - 5;
+      hiddenLabel.setAttribute('y', Math.max(HORIZON_Y + 22, Math.min(Number(hiddenLabel.getAttribute('y')), lowest)));
     }
 
     // ---- obruba dalekohledu / eyepiece rim -------------------------------

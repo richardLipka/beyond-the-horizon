@@ -22,6 +22,9 @@
  *                 the locale formatted it (spaces and decimal comma kept)
  *   \text{km}     jednotka nebo slovo stojatym pismem / upright text
  *   \,            uzka mezera / thin space
+ *   \ask          otaznik misto hodnoty, kterou ma zak dopocitat (rezim
+ *                 pro ucitele) / a question mark in place of a value the
+ *                 pupil has to work out (teacher mode)
  * Unicode indexy (h + lower 1) a mocniny (upper 2) se prevedou samy; cos, arccos
  * a spol. se poznaji a sazi stojate.
  * Unicode indices and powers are converted; cos, arccos and friends are
@@ -95,6 +98,7 @@
         if (name === 'num') return token('mn', raw());
         if (name === 'text') return token('mtext', raw());
         if (name === ',') return node('mspace', { width: '0.17em' });
+        if (name === 'ask') return token('mi', '?', { mathvariant: 'normal', class: 'math-ask' });
         throw new Error('math: unknown command \\' + name);
       }
       const rest = src.slice(i);

@@ -372,7 +372,7 @@
         el('section', { class: 'card' }, [
           el('h3', { class: 'card-title card-title-row' }, [
             document.createTextNode(t('limits.chartTitle')),
-            HL.Exporter.buttons(() => chart, 'za-obzorem-meze-viditelnosti'),
+            HL.Exporter.buttons(() => chart, 'limits'),
           ]),
           chart,
           el('p', { class: 'hint', text: t('limits.curveNote') }),

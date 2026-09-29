@@ -108,6 +108,21 @@
     );
   }
 
+  /**
+   * Hodnota, nebo otaznik, kdyz ji ucitel v rezimu Geometrie schoval - jinak
+   * by ji graf pod ulohou prozradil.
+   * The value, or a question mark when the teacher hid it in the geometry
+   * mode - otherwise the chart under the task would give it away.
+   */
+  function shown(model, key, text) {
+    return model.ask && model.ask(key) ? '?' : text;
+  }
+
+  /** Totez uvnitr vzorce. / The same inside a formula. */
+  function shownTex(model, key, tex) {
+    return model.ask && model.ask(key) ? '\\ask' : tex;
+  }
+
   /** Spoji body do cesty; hodnoty mimo ramecek se orezou nahore. */
   function polyline(points) {
     let d = '';
@@ -150,7 +165,7 @@
         y: Math.min(Y(r.horizon) - 8, AREA.y1 - 8),
         class: 'ch-band-label ch-halo',
         'text-anchor': 'start',
-        text: `d₁ = ${F.distance(r.horizon, lang)}`,
+        text: `d₁ = ${shown(model, 'd1', F.distance(r.horizon, lang))}`,
       })
     );
 
@@ -177,7 +192,7 @@
           y: y - 14,
           class: 'ch-marker-label ch-halo',
           'text-anchor': toLeft ? 'end' : 'start',
-          text: `${model.objectName} · ${F.distance(r.vanishDistance, lang)}`,
+          text: `${model.objectName} · ${shown(model, 'D', F.distance(r.vanishDistance, lang))}`,
         })
       );
     }
@@ -213,7 +228,7 @@
         return n === 0 ? '0' : n === 1 ? 'R' : `${n}R`;
       },
       xTitle: t('geo.chartBX'),
-      yTitle: t('geo.chartBY', { r: F.distance(R, lang) }),
+      yTitle: t('geo.chartBY', { r: shown(model, 'R', F.distance(R, lang)) }),
     };
     const { X, Y } = frame(root, spec);
 
@@ -267,7 +282,7 @@
           y: y - 14,
           class: 'ch-marker-label ch-halo',
           'text-anchor': 'start',
-          text: `${model.objectName} · ${F.distance(r.vanishDistance, lang)}`,
+          text: `${model.objectName} · ${shown(model, 'D', F.distance(r.vanishDistance, lang))}`,
         })
       );
     }
@@ -338,7 +353,7 @@
     one.appendChild(
       formulaRow(
         'D(h_2) = d_1 + \\frac{2π · R · β}{360°}',
-        `= ${HL.math.quantity(F.distance(r.horizon, lang))} + \\frac{2π · R · β}{360°}`,
+        `= ${shownTex(model, 'd1', HL.math.quantity(F.distance(r.horizon, lang)))} + \\frac{2π · R · β}{360°}`,
         null,
         'row-total'
       )
@@ -382,11 +397,11 @@
 
     container.appendChild(
       chartCard(t('geo.chartATitle'), t('geo.chartANote', { max: maxSight }), chartVanish, model,
-        'za-obzorem-graf-vzdalenost-zmizeni')
+        'chartVanishing')
     );
     container.appendChild(
       chartCard(t('geo.chartBTitle'), t('geo.chartBNote', { max: maxSight }), chartRequired, model,
-        'za-obzorem-graf-potrebna-vyska')
+        'chartRequired')
     );
   }
 

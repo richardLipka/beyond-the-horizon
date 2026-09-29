@@ -7,9 +7,15 @@
 
 /* --- spolecne / shared ---------------------------------------------------- */
 
-.diagram-svg text,
-.telescope-svg text,
-.chart-svg text {
+/* Vychozi pismo a barva textu v obrazcich. :where() drzi specificitu na nule:
+   ".chart-svg text" (trida + prvek) drive prebilo kazdou barevnou tridu
+   popisku, takze popisek schovane casti v dalekohledu byl tmave modry na
+   tmave vode misto bileho a popisky os nikdy nezesedly.
+   The default font and colour for text in the pictures. :where() keeps the
+   specificity at zero: ".chart-svg text" (class + element) used to beat every
+   colour class on a label, so the telescope's hidden-part label was dark blue
+   on dark water instead of white, and axis labels never turned grey. */
+:where(.diagram-svg, .telescope-svg, .chart-svg) text {
   font-family: var(--font);
   fill: var(--deep-800);
 }
@@ -163,10 +169,14 @@
 
 /* popisky / labels */
 
+/* Tmavsi odstin slunecne zlute: cista --sun na svetle obloze skoro neni
+   videt. Stejna barva jako "za obzorem" v meritku pod obrazkem.
+   A darker shade of the sun colour: plain --sun is barely visible on a pale
+   sky. Same colour as "beyond the horizon" on the ruler below. */
 .dg-label {
   font-size: 18px;
   font-weight: 700;
-  fill: var(--sun);
+  fill: #b57312;
 }
 
 .dg-you {
@@ -423,7 +433,7 @@
 
 /* --- kruhove schema / the circular map ------------------------------------ */
 
-.map-svg text {
+:where(.map-svg) text {
   font-family: var(--font);
   fill: var(--deep-800);
 }
@@ -622,7 +632,7 @@
 
 /* --- rezim Geometrie / the geometry construction -------------------------- */
 
-.geometry-svg text {
+:where(.geometry-svg) text {
   font-family: var(--font);
   fill: var(--deep-800);
 }
@@ -749,9 +759,116 @@
   fill: var(--coral-dark);
 }
 
+/* Poznamka lezi pres kouli, proto ma bilou obalku. / The note sits over the
+   ball, hence the white halo. */
 .gm-note {
   font-size: 14px;
   fill: var(--muted);
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3.4px;
+  stroke-linejoin: round;
+}
+
+/* Otaznik misto hodnoty v rezimu pro ucitele.
+   A question mark in place of a value, in teacher mode. */
+.gm-ask {
+  fill: var(--coral-dark);
+  font-weight: 800;
+}
+
+.geo-teacher .gm-q {
+  cursor: pointer;
+}
+
+.geo-teacher .gm-q:hover {
+  text-decoration: underline;
+}
+
+/* --- cernobila konstrukce pro tisk / black and white for print ----------- */
+/* Tady stylopis zamerne prebiji atributy: barvy koule prichazeji z palety
+   telesa jako atributy a pro tisk se maji zahodit. Pozorovatel je plnou
+   carou, objekt carkovane - to nahradi modrou a cervenou.
+   Here the stylesheet deliberately beats the attributes: the ball's colours
+   arrive from the body's palette as attributes and must go for print. The
+   observer is drawn solid and the object dashed, in place of blue and red. */
+.geo-bw .gm-body {
+  fill: #fff;
+  stroke: #000;
+}
+
+.geo-bw .gm-radius,
+.geo-bw .gm-hypotenuse,
+.geo-bw .gm-sight,
+.geo-bw .gm-right-angle,
+.geo-bw .gm-arc,
+.geo-bw .gm-height,
+.geo-bw .gm-angle {
+  stroke: #000;
+}
+
+.geo-bw .gm-hypotenuse {
+  opacity: 1;
+}
+
+.geo-bw .gm-sight {
+  stroke-width: 2.6;
+}
+
+.geo-bw .gm-arc {
+  stroke-width: 5;
+  stroke-linecap: butt;
+}
+
+.geo-bw .gm-height {
+  stroke-width: 4;
+  stroke-linecap: butt;
+}
+
+.geo-bw .gm-arc-object {
+  stroke-dasharray: 10 6;
+}
+
+.geo-bw .gm-height-object {
+  stroke-dasharray: 6 4;
+}
+
+.geo-bw .gm-angle-object {
+  stroke-dasharray: 5 4;
+}
+
+.geo-bw .gm-point {
+  fill: #000;
+}
+
+.geo-bw .geometry-svg text,
+.geo-bw .gm-ask {
+  fill: #000;
+}
+
+/* Grafy pod konstrukci / the charts under the construction */
+.geo-bw .ch-band-full {
+  fill: #ededed;
+}
+
+.geo-bw .ch-curve,
+.geo-bw .ch-marker-start,
+.geo-bw .ch-marker-vanish,
+.geo-bw .ch-now,
+.geo-bw .ch-now-dot {
+  stroke: #000;
+}
+
+.geo-bw .ch-grid {
+  stroke: #d0d0d0;
+}
+
+.geo-bw .ch-frame {
+  stroke: #000;
+}
+
+.geo-bw .chart-svg text {
+  fill: #000;
 }
 
 /* Znacka prerusene cary na stozaru: skutecna vyska je vetsi nez obrazek.

@@ -967,15 +967,50 @@
       // The label belongs to the eye, but the eye can lie far outside the
       // picture - sixteen radii to the left with a high orbit and a large
       // distance - so it is kept inside the frame in both directions.
-      scene.appendChild(
-        text(
-          clampTo(eyeP.x + 16, PLOT.x0 + 10, PLOT.x1 - 150),
-          clampTo(eyeP.y - 10, PLOT.y0 + 22, PLOT.y1 - 8),
-          eyeLabel,
-          'dg-dim-label dg-halo',
-          'start'
-        )
+      const eyeText = text(
+        clampTo(eyeP.x + 16, PLOT.x0 + 10, PLOT.x1 - 150),
+        clampTo(eyeP.y - 10, PLOT.y0 + 22, PLOT.y1 - 8),
+        eyeLabel,
+        'dg-dim-label dg-halo',
+        'start'
       );
+      scene.appendChild(eyeText);
+      // Primka pohledu vede z oka doprava primo pres popisek a bila obalka
+      // pismen ji zakryje jen napul. Popisek se proto zvedne nad ni - nad oba
+      // jeji body pod levym i pravym krajem popisku, protoze primka muze
+      // stoupat i klesat (Jupiter, nizko polozene oko).
+      // The line of sight runs from the eye to the right straight through the
+      // label, and the letters' white halo hides only half of it. The label is
+      // lifted above it - above the line under both its left and right ends,
+      // since the line may rise or fall (Jupiter with a low eye).
+      if (sightDx > 0) {
+        let width = 0;
+        try {
+          width = eyeText.getBBox().width;
+        } catch (e) {
+          /* jeste nevykresleno / not rendered yet */
+        }
+        if (!(width > 0)) width = eyeLabel.length * 9;
+        const labelX = Number(eyeText.getAttribute('x'));
+        const lineY = (x) => eyePixel.y + (sightDy / sightDx) * (x - eyePixel.x);
+        const lifted = Math.min(Number(eyeText.getAttribute('y')), lineY(labelX) - 8, lineY(labelX + width) - 8);
+        eyeText.setAttribute('y', Math.max(PLOT.y0 + 22, lifted));
+        // Nad primkou muze byt tesne u oka popisek obzoru (male teleso, nizko
+        // polozene oko). Pak patri popisek oka pod primku.
+        // Right above the line may sit the horizon's label (a small body, a
+        // low eye); the eye's label then goes under the line instead.
+        const horizonLabel = scene.querySelector('.dg-label');
+        try {
+          const a = eyeText.getBBox();
+          const h = horizonLabel ? horizonLabel.getBBox() : null;
+          if (h && a.x < h.x + h.width && h.x < a.x + a.width && a.y < h.y + h.height && h.y < a.y + a.height) {
+            const below = Math.max(lineY(labelX), lineY(labelX + width)) + 20;
+            eyeText.setAttribute('y', Math.min(PLOT.y1 - 8, below));
+          }
+        } catch (e) {
+          /* jeste nevykresleno / not rendered yet */
+        }
+      }
     }
 
     // ramecek plochy / plot frame

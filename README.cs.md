@@ -10,7 +10,7 @@ Pro žáky základních škol. Česky i anglicky. Bez knihoven, bez sestavován�
 🇬🇧 **[English version of this file →](README.md)**
 ▶️ **[Živá ukázka](https://richardlipka.github.io/beyond-the-horizon/)**
 
-![Hlavní diagram: pozorovatel vysoký 1,7 m se dívá na Titanic 25 km daleko, 32,9 m je schováno za vyboulením Země](docs/preview-diagram-cs.svg)
+![Hlavní diagram: pozorovatel vysoký 1,7 m se dívá na Titanic 25 km daleko, 32,5 m je schováno za vyboulením Země](docs/preview-diagram-cs.svg)
 
 ---
 
@@ -28,7 +28,7 @@ cesty, měřítko vzdálenosti s ryskami i měřítkovou úsečku. Vedle toho ku
 okénko ukazuje, co bys viděl na vlastní oči — schovaná část je čárkovaný duch
 pod hladinou.
 
-<img src="docs/preview-telescope.svg" width="330" alt="Pohled dalekohledem: horních 20,1 m Titaniku nad obzorem, zbytek čárkovaně pod hladinou">
+<img src="docs/preview-telescope.svg" width="330" alt="Pohled dalekohledem: horních 20,5 m Titaniku nad obzorem, zbytek čárkovaně pod hladinou">
 
 Pod dalekohledem je kruhové schéma tělesa, jak by vypadalo z vesmíru přímo nad
 tebou, a leží na něm **tři kružnice ve skutečném poměru**: tvůj obzor,
@@ -194,6 +194,22 @@ potřebuje logaritmické osy.
 kousek za obzorem je oblouk skoro stejně dlouhý jako tečna. Tvary křivek se pak
 dají říct větou, kterou si žák ověří sám: čtyřikrát vyšší objekt je vidět jen
 dvakrát dál za obzor a dvakrát dál za obzor potřebuje objekt čtyřikrát vyšší.
+
+**Režim pro učitele** udělá z konstrukce pracovní list. Klepni na libovolné
+číslo v obrázku nebo ve výpočtu a změní se na otazník; štítky nad obrázkem
+udělají totéž z klávesnice. Otazník se rozšíří všude, odkud by šla hodnota
+vyčíst. Schovej `α` a v řádku s obloukem bude `2π · R · ? / 360°`. Schovej
+`h₁` a zmizí s ním i `R + h₁`. Skryté hodnoty přestanou vypisovat i grafy pod
+výpočtem. Řádek s úlohou řekne, co zbývá dopočítat, a *Nech jen zadání* schová
+všechno vypočtené najednou.
+
+**Černobíle pro tisk** překreslí celý panel bez barev: strana pozorovatele plnou
+čarou, strana objektu čárkovaně. *Vytisknout* vytiskne jen otevřený režim, bez
+hlavičky stránky a bez panelu s nastavením.
+
+Každý obrázek v aplikaci jde stáhnout jako **SVG** nebo **PNG**. Soubor nese
+vlastní styly, takže v dokumentu vypadá stejně jako na obrazovce, a jmenuje se
+podle zvoleného jazyka (`za-obzorem-geometrie-uloha.png`).
 
 ### 🔭 Uvidím to doopravdy?
 

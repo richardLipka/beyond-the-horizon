@@ -281,7 +281,26 @@ tangent really is tangent — and every printed number is the true one. Keep the
 20 px. Every label also goes through the single `put()` helper so `spreadLabels()`
 can measure the real `getBBox()` boxes afterwards and step colliding ones apart;
 labels are only tested against *earlier* ones, so the pass always terminates.
-If you add a label, add it via `put()` with a sensible direction.
+If you add a label, add it via `put()` with a sensible direction; a label that
+carries a value goes through `valued()`, which adds the teacher-mode hooks.
+
+**Teacher mode swaps values for question marks, and a question mark has to
+spread.** `QUANTITIES` lists every value a teacher may hide (R, h₁, h₂, α, t₁,
+d₁, β, t₂, d₂, D, k). State is `geoTeacher`, `geoAsked` and `geoBw`, saved
+with the rest of the UI; the list survives switching teacher mode off. A hidden
+value must not be readable anywhere else: every number in a substitution is
+built with `numOr(keys, tex)`, where `keys` are all the values it depends on
+(`R + h₁` hides with either), and the derivation below gets `model.ask` so its
+`d₁` substitution and the chart labels (`d₁`, `D`, `R` in the axis title)
+follow. A new number anywhere in the geometry panel needs the same treatment.
+The panel is rebuilt on every change, so focus is put back by `data-focus`.
+
+**Black and white is the one place where CSS deliberately beats the palette
+attributes.** `.geo-bw` repaints the ball white with a black outline and all
+strokes black; the observer stays solid and the object goes dashed, in the
+figure, the formula rows and the given strip alike. Print styles live in
+`layout.css` and hide the header, the settings panel, the footer and every
+button, so *Print* gives a worksheet.
 
 **`horizon-map.js` draws the two circles at TRUE scale, and that is the whole
 point.** From 1.7 m on the Earth the horizon is 0.12 px on a 150 px globe — it
@@ -382,6 +401,29 @@ diagram caption — wipes the buttons out. Two of the six disappeared exactly th
 way. `HL.Exporter` inlines *computed* styles onto a clone rather than fetching a
 stylesheet, because under `file://` neither `fetch` nor `document.styleSheets`
 is available.
+
+It writes them as **presentation attributes**, not `style="…"`, and it must
+never drop `none`. Up to 1.12 it skipped `none` as if it were empty, but a
+stylesheet's `fill: none` is real information in SVG: without it a path is
+filled black, so the frame, the waves and every chart curve became black areas
+and the main picture downloaded as one black rectangle. Inherited properties
+are written only where they differ from the parent, the others only where they
+differ from their initial value, and the clone's own presentation attributes
+are removed first so a stale one cannot win. To verify an export, parse the
+serialised file into a stylesheet-free iframe and compare every element's
+computed paint with the live one — "0 mismatches" is the bar, and a black box
+is invisible to any check that only looks at the file.
+
+File names come from `export.prefix` + `export.name.<key>` in the current
+language, so callers pass a key (`'diagram'`, `'telescope'`, …), never a
+file name.
+
+**The base text rule of every picture is wrapped in `:where()`.** Plain
+`.chart-svg text { fill: … }` is class + element and beats every single-class
+colour rule on a label. It did so for 27 classes until 1.13: the telescope's
+"hidden" label was dark blue on dark water instead of white, axis labels never
+turned grey and the geometry labels were never blue or red. Keep the default
+at zero specificity and let the classes win.
 
 **Breakpoints are two, and they are independent.** `.stage-row` (telescope beside
 the numbers) stacks at 1100 px because it needs more room than the panel alone;

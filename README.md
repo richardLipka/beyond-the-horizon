@@ -10,7 +10,7 @@ Built for elementary-school pupils. Czech and English. No dependencies, no build
 🇨🇿 **[Česká verze tohoto souboru →](README.cs.md)**
 ▶️ **[Live demo](https://richardlipka.github.io/beyond-the-horizon/)**
 
-![The main diagram: an observer 1.7 m tall looking at the Titanic 25 km away, with 32.9 m hidden behind the bulge of the Earth](docs/preview-diagram.svg)
+![The main diagram: an observer 1.7 m tall looking at the Titanic 25 km away, with 32.5 m hidden behind the bulge of the Earth](docs/preview-diagram.svg)
 
 ---
 
@@ -28,7 +28,7 @@ much is left, the bulge of water halfway across, a distance ruler with ticks and
 a scale bar. Next to it, a round eyepiece view shows what your eyes would
 actually see — the hidden part drawn as a dashed ghost below the waterline.
 
-<img src="docs/preview-telescope.svg" width="330" alt="The telescope view: the top 20.1 m of the Titanic above the horizon, the rest a dashed ghost below">
+<img src="docs/preview-telescope.svg" width="330" alt="The telescope view: the top 20.5 m of the Titanic above the horizon, the rest a dashed ghost below">
 
 Below the telescope sits a circular map of the body seen from space, directly
 above you, carrying **three circles at true scale**: your horizon, the distance
@@ -199,6 +199,22 @@ because just past the horizon the arc is almost as long as the tangent. That
 turns the two shapes into sentences a pupil can check: a four times taller
 object shows only twice as far past the horizon, and twice as far past the
 horizon needs an object four times taller.
+
+**Teacher mode** turns the construction into a worksheet. Click any number in
+the figure or the calculation and it becomes a question mark; the chips above
+the figure do the same from the keyboard. A question mark spreads to every place
+the value could be read from. Hide `α` and the arc row shows
+`2π · R · ? / 360°`. Hide `h₁` and `R + h₁` goes with it. The charts below
+stop printing hidden values too. A task line says what is left to work out, and
+*Keep only the givens* hides every computed value at once.
+
+**Black and white for print** redraws the whole panel without colour: the
+observer's side in solid lines, the object's side dashed. *Print* prints only
+the open mode, without the page header and the settings panel.
+
+Every picture in the app downloads as **SVG** or **PNG**. The file carries its
+own styling, so it looks the same in a document as on screen, and its name
+follows the current language (`beyond-the-horizon-geometry-task.png`).
 
 ### 🔭 Can you really see it?
 

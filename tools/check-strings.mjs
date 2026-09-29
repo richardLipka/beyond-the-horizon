@@ -78,6 +78,8 @@ const RUNTIME_PREFIXES = [
   'editor.baseline.',
   'sight.note.',
   'sight.verdict.',
+  'geo.q.',
+  'export.name.',
 ];
 
 const sourceFiles = ['../index.html', '../js/app.js'];

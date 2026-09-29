@@ -27,7 +27,7 @@
   const svg = HL.dom.svg;
   const G = HL.geometry;
 
-  const VIEW = { w: 900, h: 560 };
+  const VIEW = { w: 900, h: 500 };
 
   /** Nejvetsi kresleny polomer telesa. / The largest drawn radius. */
   const R_MAX = 236;
@@ -42,10 +42,17 @@
   const R_MIN = 62;
   /** Vodorovny okraj na popisky. / Side margin left for labels. */
   const SIDE_ROOM = 96;
-  /** Kde lezi tecna, kdyz je koule nakreslena v plne velikosti. */
-  const TOP_Y_BASE = 216;
+  /**
+   * Kde lezi tecna, kdyz je koule nakreslena v plne velikosti. Nad ni se
+   * vejdou tri rady popisku; drive tu bylo 216 a horni ctvrtina obrazku (i
+   * stazeneho) zustala prazdna.
+   * Where the tangent sits when the ball is drawn full size. Three rows of
+   * labels fit above it; this used to be 216, which left the top quarter of
+   * the picture (and of the download) empty.
+   */
+  const TOP_Y_BASE = 128;
   /** Nejnize, kam smi sahnout spodek koule. */
-  const BOTTOM_ROOM = 530;
+  const BOTTOM_ROOM = 470;
 
   /**
    * Nejvetsi a nejmensi kresleny uhel [rad].
@@ -63,6 +70,26 @@
    */
   const DRAW_MAX = 0.72;
   const DRAW_MIN = 0.4;
+
+  /**
+   * Hodnoty, ktere ucitel muze nahradit otaznikem, v poradi, v jakem se
+   * pocitaji. Prvni tri jsou zadane, ostatni se dopocitavaji.
+   * The values a teacher may swap for a question mark, in the order they are
+   * worked out. The first three are given, the rest are computed.
+   */
+  const QUANTITIES = [
+    { key: 'R', symbol: 'R', given: true },
+    { key: 'h1', symbol: 'h₁', given: true },
+    { key: 'h2', symbol: 'h₂', given: true },
+    { key: 'alpha', symbol: 'α' },
+    { key: 't1', symbol: 't₁' },
+    { key: 'd1', symbol: 'd₁' },
+    { key: 'beta', symbol: 'β' },
+    { key: 't2', symbol: 't₂' },
+    { key: 'd2', symbol: 'd₂' },
+    { key: 'D', symbol: 'D' },
+    { key: 'k', symbol: 'k' },
+  ];
 
   let uidCounter = 0;
   const uid = (name) => `gm-${name}-${++uidCounter}`;
@@ -342,6 +369,20 @@
         labels.push({ node: node, dir: dir || 0 });
         return node;
       };
+      // Popisek s hodnotou. V rezimu pro ucitele na nej jde klepnout a misto
+      // hodnoty muze stat otaznik. / A label carrying a value. In teacher
+      // mode it is clickable and may show a question mark instead.
+      const ask = model.ask || (() => false);
+      const valued = (x, y, key, prefix, value, cls, anchor, dir) => {
+        const node = put(x, y, prefix, cls, anchor, dir);
+        if (ask(key)) node.appendChild(svg('tspan', { class: 'gm-ask', text: '?' }));
+        else node.appendChild(document.createTextNode(value));
+        if (model.teacher) {
+          node.setAttribute('data-q', key);
+          node.classList.add('gm-q');
+        }
+        return node;
+      };
 
       // --- body / the points -------------------------------------------------
       for (const p of [
@@ -381,8 +422,8 @@
       put(betaAt.x, betaAt.y, 'β', 'gm-symbol gm-object-fill', 'middle', -1);
 
       // --- sloupce s hodnotami nad tecnou / value stacks above the tangent --
-      put(eye.x, TOP_Y - 38, `α = ${degrees(alpha, lang)}`, 'gm-label gm-observer-fill', 'middle', -1);
-      put(top.x, TOP_Y - 38, `β = ${degrees(beta, lang)}`, 'gm-label gm-object-fill', 'middle', -1);
+      valued(eye.x, TOP_Y - 38, 'alpha', 'α = ', degrees(alpha, lang), 'gm-label gm-observer-fill', 'middle', -1);
+      valued(top.x, TOP_Y - 38, 'beta', 'β = ', degrees(beta, lang), 'gm-label gm-object-fill', 'middle', -1);
       put(eye.x, TOP_Y - 60, t('geo.observerLabel'), 'gm-role gm-observer-fill', 'middle', -1);
       put(top.x, TOP_Y - 60, t('geo.objectLabel'), 'gm-role gm-object-fill', 'middle', -1);
 
@@ -400,21 +441,25 @@
       const d1At = roomInside ? point(-aDraw / 2, R_DRAW - 34 * k) : stacked(0);
       const d2At = roomInside ? point(bDraw / 2, R_DRAW - 34 * k) : stacked(1);
       const dimAnchor = roomInside ? 'middle' : 'start';
-      put(d1At.x, d1At.y, `d₁ = ${F.distance(r.horizon, lang)}`, 'gm-label gm-observer-fill', dimAnchor, 1);
-      put(d2At.x, d2At.y, `d₂ = ${F.distance(r.objectHorizon, lang)}`, 'gm-label gm-object-fill', dimAnchor, 1);
+      valued(d1At.x, d1At.y, 'd1', 'd₁ = ', F.distance(r.horizon, lang), 'gm-label gm-observer-fill', dimAnchor, 1);
+      valued(d2At.x, d2At.y, 'd2', 'd₂ = ', F.distance(r.objectHorizon, lang), 'gm-label gm-object-fill', dimAnchor, 1);
 
-      put(
+      valued(
         A.x - 24,
         (A.y + eye.y) / 2 + 5,
-        `h₁ = ${F.height(r.eyeHeight, lang)}`,
+        'h1',
+        'h₁ = ',
+        F.height(r.eyeHeight, lang),
         'gm-label gm-observer-fill',
         'end',
         -1
       );
-      put(
+      valued(
         B.x + 24,
         (B.y + top.y) / 2 + 5,
-        `h₂ = ${F.height(r.objectHeight, lang)}`,
+        'h2',
+        'h₂ = ',
+        F.height(r.objectHeight, lang),
         'gm-label gm-object-fill',
         'start',
         -1
@@ -423,7 +468,7 @@
       const rAt = roomInside ? { x: O.x - 14, y: O.y - 46 } : stacked(2);
       // Tentyz polomer, se kterym se pocita - s refrakci ten efektivni.
       // The radius actually used - the effective one with refraction.
-      put(rAt.x, rAt.y, `R = ${F.distance(R, lang)}`, 'gm-label', roomInside ? 'end' : 'start', 1);
+      valued(rAt.x, rAt.y, 'R', 'R = ', F.distance(R, lang), 'gm-label', roomInside ? 'end' : 'start', 1);
 
       // Kdyz uz se velky uhel nezvetsuje ani nestlacuje, rika to obrazek.
       // When the large angle is neither enlarged nor squeezed, say so.
@@ -441,15 +486,106 @@
 
     /**
      * Radek vypoctu. Vsechny tri casti jsou vzorce (HL.math): obecny tvar,
-     * dosazeni a vysledek. / A calculation row; all three parts are formulas.
+     * dosazeni a vysledek. Klic vysledku dovoli v rezimu pro ucitele na
+     * vysledek klepnout. / A calculation row; all three parts are formulas.
+     * The result's key makes it clickable in teacher mode.
      */
-    function formulaRow(symbolic, substituted, result, cls) {
+    function formulaRow(symbolic, substituted, result, cls, key, teacher) {
+      const answer = el('strong', { class: 'formula-result' }, [HL.math.render(result)]);
+      if (key && teacher) answer.setAttribute('data-q', key);
       return el('div', { class: 'formula-row' + (cls ? ' ' + cls : '') }, [
         el('span', { class: 'formula-symbolic' }, [HL.math.render(symbolic)]),
         substituted ? el('span', { class: 'formula-sub' }, [HL.math.render(substituted)]) : null,
-        el('strong', { class: 'formula-result' }, [HL.math.render(result)]),
+        answer,
       ]);
     }
+
+    /** "a, b a c" / "a, b and c" */
+    function listOf(items) {
+      if (items.length < 2) return items.join('');
+      return items.slice(0, -1).join(', ') + ' ' + HL.i18n.t('geo.and') + ' ' + items[items.length - 1];
+    }
+
+    /**
+     * Lista nad konstrukci: rezim pro ucitele, cernobily tisk a tisk.
+     * The strip above the construction: teacher mode, black and white, print.
+     */
+    function toolbar(state, isAsked) {
+      const t = HL.i18n.t;
+      const toggle = (checked, label, focus, onchange) =>
+        el('label', { class: 'switch' }, [
+          el('input', {
+            type: 'checkbox',
+            checked: checked,
+            'data-focus': focus,
+            onchange: (e) => onchange(e.target.checked),
+          }),
+          el('span', { class: 'switch-track' }, [el('span', { class: 'switch-knob' })]),
+          el('span', { class: 'switch-text', text: label }),
+        ]);
+
+      const row = el('div', { class: 'geo-tools-row' }, [
+        toggle(state.geoTeacher, t('geo.teacher'), 'teacher', (on) => app.setGeoTeacher(on)),
+        toggle(state.geoBw, t('geo.bw'), 'bw', (on) => app.setGeoBw(on)),
+        el('button', {
+          type: 'button',
+          class: 'export-btn geo-print',
+          'data-focus': 'print',
+          text: t('geo.print'),
+          onclick: () => window.print(),
+        }),
+      ]);
+      const box = el('section', { class: 'card geo-tools' }, [row]);
+      if (!state.geoTeacher) return box;
+
+      const chips = QUANTITIES.map((q) =>
+        el('button', {
+          type: 'button',
+          class: 'chip geo-chip' + (isAsked(q.key) ? ' is-active' : ''),
+          'aria-pressed': isAsked(q.key) ? 'true' : 'false',
+          'aria-label': q.symbol + ' – ' + t('geo.q.' + q.key),
+          title: t('geo.q.' + q.key),
+          'data-focus': 'q-' + q.key,
+          text: q.symbol,
+          onclick: () => app.toggleAsked(q.key),
+        })
+      );
+      box.appendChild(el('p', { class: 'hint', text: t('geo.teacherHint') }));
+      box.appendChild(
+        el('div', { class: 'geo-chips' }, [
+          el('span', { class: 'chips-title', text: t('geo.askTitle') }),
+          el('div', { class: 'chips' }, chips),
+          el('div', { class: 'geo-presets' }, [
+            el('button', {
+              type: 'button',
+              class: 'export-btn',
+              'data-focus': 'preset-computed',
+              text: t('geo.askComputed'),
+              onclick: () => app.setAsked(QUANTITIES.filter((q) => !q.given).map((q) => q.key)),
+            }),
+            el('button', {
+              type: 'button',
+              class: 'export-btn',
+              'data-focus': 'preset-none',
+              text: t('geo.askNone'),
+              onclick: () => app.setAsked([]),
+            }),
+          ]),
+        ])
+      );
+      return box;
+    }
+
+    // Klepnuti na hodnotu v obrazku, v zadani nebo ve vysledku prepne
+    // otaznik. Posluchac je jeden pro cely panel, protoze se panel pri
+    // kazde zmene kresli znovu. / A click on a value in the figure, the
+    // givens or a result toggles its question mark. One listener for the
+    // whole panel, since the panel is redrawn on every change.
+    container.addEventListener('click', (event) => {
+      if (!app.state().geoTeacher) return;
+      const hit = event.target.closest && event.target.closest('[data-q]');
+      if (hit && container.contains(hit)) app.toggleAsked(hit.getAttribute('data-q'));
+    });
 
     function update(state, result, object) {
       const t = HL.i18n.t;
@@ -463,7 +599,29 @@
       const t1 = G.horizonLineOfSight(result.eyeHeight, R);
       const t2 = G.horizonLineOfSight(result.objectHeight, R);
 
+      // Otazniky plati jen v rezimu pro ucitele; seznam si ale pamatuje i mimo
+      // nej. / Question marks apply in teacher mode only; the list is kept.
+      const teacher = !!state.geoTeacher;
+      const known = new Set(QUANTITIES.map((q) => q.key));
+      const askedList = (state.geoAsked || []).filter((key) => known.has(key));
+      const isAsked = (key) => teacher && askedList.includes(key);
+      // Cislo v dosazeni: otaznik, kdyz z nej jde vycist schovanou hodnotu.
+      // Soucet R + h1 prozradi R i h1, proto se schova s kteroukoli z nich.
+      // A number in a substitution becomes a question mark when a hidden
+      // value could be read from it: R + h1 gives away both R and h1.
+      const numOr = (keys, tex) => (keys.some(isAsked) ? '\\ask' : tex);
+      const valueOr = (key, tex) => (isAsked(key) ? '\\ask' : tex);
+
+      // Po prekresleni vratit fokus tam, kde byl (prepinace, stitky).
+      // Put the focus back where it was after the redraw.
+      const focused =
+        document.activeElement && container.contains(document.activeElement)
+          ? document.activeElement.getAttribute('data-focus')
+          : null;
+
       HL.dom.clear(container);
+      container.classList.toggle('geo-teacher', teacher);
+      container.classList.toggle('geo-bw', !!state.geoBw);
 
       container.appendChild(
         el('header', { class: 'panel-head' }, [
@@ -472,7 +630,18 @@
         ])
       );
 
+      container.appendChild(toolbar(state, isAsked));
+
       // zadane hodnoty / the three given values
+      const given = (key, cls, symbol, value, note) => {
+        const item = el('div', { class: 'given-item' + (cls ? ' ' + cls : '') }, [
+          el('span', { class: 'given-symbol', text: symbol }),
+          isAsked(key) ? el('strong', { class: 'given-ask', text: '?' }) : el('strong', { text: value }),
+          el('span', { class: 'given-note', text: note }),
+        ]);
+        if (teacher) item.setAttribute('data-q', key);
+        return item;
+      };
       container.appendChild(
         el('div', { class: 'given-strip' }, [
           // S refrakci se v celem vypoctu pouziva efektivni polomer. Drive se
@@ -482,40 +651,41 @@
           // The substitutions used to show the real one while the angle came
           // from the effective one, so "cos a = R / (R + h1)" disagreed with
           // its own result.
-          el('div', { class: 'given-item' }, [
-            el('span', { class: 'given-symbol', text: 'R' }),
-            el('strong', { text: F.distance(R, lang) }),
-            el('span', {
-              class: 'given-note',
-              text: result.refraction
-                ? t('geo.refractionR', { planet: app.planetName(state), r: F.distance(result.physicalRadius, lang) })
-                : app.planetName(state),
-            }),
-          ]),
-          el('div', { class: 'given-item given-observer' }, [
-            el('span', { class: 'given-symbol', text: 'h₁' }),
-            el('strong', { text: F.height(result.eyeHeight, lang) }),
-            el('span', { class: 'given-note', text: t('geo.observerLabel') }),
-          ]),
-          el('div', { class: 'given-item given-object' }, [
-            el('span', { class: 'given-symbol', text: 'h₂' }),
-            el('strong', { text: F.height(result.objectHeight, lang) }),
-            el('span', { class: 'given-note', text: HL.i18n.pick(object.name, object.id) }),
-          ]),
+          given(
+            'R',
+            '',
+            'R',
+            F.distance(R, lang),
+            result.refraction
+              ? isAsked('R')
+                ? t('geo.refractionAsked', { planet: app.planetName(state) })
+                : t('geo.refractionR', { planet: app.planetName(state), r: F.distance(result.physicalRadius, lang) })
+              : app.planetName(state)
+          ),
+          given('h1', 'given-observer', 'h₁', F.height(result.eyeHeight, lang), t('geo.observerLabel')),
+          given('h2', 'given-object', 'h₂', F.height(result.objectHeight, lang), HL.i18n.pick(object.name, object.id)),
         ])
       );
+
+      // Zadani ulohy - to, co maji zaci dopocitat, v poradi vypoctu.
+      // The task: what the pupils have to work out, in the order of the
+      // calculation.
+      const wanted = QUANTITIES.filter((q) => isAsked(q.key)).map((q) => q.symbol);
+      if (wanted.length) {
+        container.appendChild(el('p', { class: 'geo-task', text: t('geo.task', { list: listOf(wanted) }) }));
+      }
 
       const figure = svg('svg', { class: 'geometry-svg', xmlns: HL.dom.SVG_NS });
       container.appendChild(
         el('section', { class: 'card' }, [
           el('h3', { class: 'card-title card-title-row' }, [
             document.createTextNode(t('geo.figureTitle')),
-            HL.Exporter.buttons(() => figure, 'za-obzorem-geometrie'),
+            HL.Exporter.buttons(() => figure, wanted.length ? 'geometryTask' : 'geometry'),
           ]),
           figure,
         ])
       );
-      renderFigure(figure, { result: result, look: HL.planetLook(state.planet) });
+      renderFigure(figure, { result: result, look: HL.planetLook(state.planet), ask: isAsked, teacher: teacher });
 
       container.appendChild(
         el('section', { class: 'card explain-card' }, [
@@ -526,6 +696,8 @@
 
       // --- postup vypoctu / the calculation ---------------------------------
       const steps = el('div', { class: 'formula-list' });
+      const row = (symbolic, substituted, answer, cls, key) =>
+        steps.appendChild(formulaRow(symbolic, substituted, answer, cls, key, teacher));
 
       // Jen Pythagorova veta, kosinus, arkuskosinus a delka oblouku jako cast
       // obvodu. Uhly ve stupnich - radiany se na zacatku stredni skoly jeste
@@ -535,55 +707,66 @@
       // Cisla jdou do vzorcu presne tak, jak je naformatoval jazyk.
       // Numbers enter the formulas exactly as the locale formatted them.
       const Q = HL.math.quantity;
-      const Rm = `\\num{${num(R, 1)}}`;
-      const side = (h, angle, tangent, arc, cls, names) => {
-        steps.appendChild(
-          formulaRow(
-            `cos ${names.a} = \\frac{R}{R + ${names.h}}`,
-            `= \\frac{${Rm}}{\\num{${num(R + h, 1)}}}`,
-            `${names.a} = ${Q(degrees(angle, lang))}`,
-            cls
-          )
+      const Rm = numOr(['R'], `\\num{${num(R, 1)}}`);
+      const side = (h, angle, tangent, arc, cls, names, keys) => {
+        row(
+          `cos ${names.a} = \\frac{R}{R + ${names.h}}`,
+          `= \\frac{${Rm}}{${numOr(['R', keys.h], `\\num{${num(R + h, 1)}}`)}}`,
+          `${names.a} = ${valueOr(keys.a, Q(degrees(angle, lang)))}`,
+          cls,
+          keys.a
         );
-        steps.appendChild(
-          formulaRow(
-            `${names.t}^2 = (R + ${names.h})^2 − R^2 = ${names.h} · (2R + ${names.h})`,
-            `${names.t} = \\sqrt{\\num{${num(h, 2)}} · \\num{${num(2 * R + h, 1)}}}`,
-            `${names.t} = ${Q(F.distance(tangent, lang))}`,
-            cls
-          )
+        row(
+          `${names.t}^2 = (R + ${names.h})^2 − R^2 = ${names.h} · (2R + ${names.h})`,
+          `${names.t} = \\sqrt{${numOr([keys.h], `\\num{${num(h, 2)}}`)} · ${numOr(['R', keys.h], `\\num{${num(2 * R + h, 1)}}`)}}`,
+          `${names.t} = ${valueOr(keys.t, Q(F.distance(tangent, lang)))}`,
+          cls,
+          keys.t
         );
-        steps.appendChild(
-          formulaRow(
-            `${names.d} = \\frac{2π · R · ${names.a}}{360°}`,
-            `= \\frac{2π · ${Rm} · ${Q(degreesExact(angle, lang))}}{360°}`,
-            `${names.d} = ${Q(F.distance(arc, lang))}`,
-            cls
-          )
+        row(
+          `${names.d} = \\frac{2π · R · ${names.a}}{360°}`,
+          `= \\frac{2π · ${Rm} · ${valueOr(keys.a, Q(degreesExact(angle, lang)))}}{360°}`,
+          `${names.d} = ${valueOr(keys.d, Q(F.distance(arc, lang)))}`,
+          cls,
+          keys.d
         );
       };
 
       steps.appendChild(el('div', { class: 'formula-note', text: t('geo.rowRight') }));
       steps.appendChild(el('div', { class: 'formula-note', text: t('geo.rowPythagoras') }));
-      side(result.eyeHeight, alpha, t1, result.horizon, 'row-observer', { a: 'α', h: 'h_1', t: 't_1', d: 'd_1' });
+      side(
+        result.eyeHeight,
+        alpha,
+        t1,
+        result.horizon,
+        'row-observer',
+        { a: 'α', h: 'h_1', t: 't_1', d: 'd_1' },
+        { a: 'alpha', h: 'h1', t: 't1', d: 'd1' }
+      );
       steps.appendChild(el('div', { class: 'formula-note', text: t('geo.rowObject') }));
-      side(result.objectHeight, beta, t2, result.objectHorizon, 'row-object', { a: 'β', h: 'h_2', t: 't_2', d: 'd_2' });
-      steps.appendChild(
-        formulaRow(
-          'D = d_1 + d_2',
-          `= ${Q(F.distance(result.horizon, lang))} + ${Q(F.distance(result.objectHorizon, lang))}`,
-          `D = ${Q(F.distance(result.vanishDistance, lang))}`,
-          'row-total'
-        )
+      side(
+        result.objectHeight,
+        beta,
+        t2,
+        result.objectHorizon,
+        'row-object',
+        { a: 'β', h: 'h_2', t: 't_2', d: 'd_2' },
+        { a: 'beta', h: 'h2', t: 't2', d: 'd2' }
+      );
+      row(
+        'D = d_1 + d_2',
+        `= ${valueOr('d1', Q(F.distance(result.horizon, lang)))} + ${valueOr('d2', Q(F.distance(result.objectHorizon, lang)))}`,
+        `D = ${valueOr('D', Q(F.distance(result.vanishDistance, lang)))}`,
+        'row-total',
+        'D'
       );
       steps.appendChild(el('div', { class: 'formula-note', text: t('geo.rowApprox') }));
-      steps.appendChild(
-        formulaRow(
-          'h ≪ R ⇒ d ≈ t = \\sqrt{h · (2R + h)} ≈ \\sqrt{2R · h}',
-          'k = \\frac{\\sqrt{2R}}{1000}',
-          `k = \\num{${num(result.ruleConstant, 2)}}`,
-          'row-approx'
-        )
+      row(
+        'h ≪ R ⇒ d ≈ t = \\sqrt{h · (2R + h)} ≈ \\sqrt{2R · h}',
+        'k = \\frac{\\sqrt{2R}}{1000}',
+        `k = ${valueOr('k', `\\num{${num(result.ruleConstant, 2)}}`)}`,
+        'row-approx',
+        'k'
       );
 
       container.appendChild(
@@ -608,7 +791,13 @@
       HL.Derivation.render(container, {
         result: result,
         objectName: HL.i18n.pick(object.name, object.id),
+        ask: isAsked,
       });
+
+      if (focused) {
+        const again = container.querySelector(`[data-focus="${focused}"]`);
+        if (again) again.focus();
+      }
     }
 
     return { update };

@@ -1356,6 +1356,142 @@ textarea.text-input {
   grid-template-columns: 1fr;
 }
 
+/* --- rezim pro ucitele a tisk / teacher mode and print -------------------- */
+
+.geo-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 18px;
+}
+
+.geo-tools-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 26px;
+}
+
+.geo-print {
+  margin-left: auto;
+  font-size: 0.78rem;
+}
+
+.geo-tools .hint {
+  margin: 0;
+}
+
+.geo-chips .chips {
+  margin-top: 6px;
+}
+
+/* Symboly velicin jako ve vzorcich: kurzivou a matematickym pismem.
+   Quantity symbols as in the formulas: italic, in the maths font. */
+.geo-chip {
+  min-width: 2.6em;
+  font-family: "Cambria Math", "STIX Two Math", "Latin Modern Math", "Times New Roman", serif;
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.geo-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+/* Zadani ulohy nad konstrukci. / The task statement above the construction. */
+.geo-task {
+  margin: 0;
+  padding: 10px 16px;
+  border-left: 6px solid var(--coral);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  box-shadow: var(--shadow-sm);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--deep-800);
+}
+
+.given-ask,
+.math-ask {
+  color: var(--coral-dark);
+  font-weight: 800;
+}
+
+/* V rezimu pro ucitele jde na hodnoty klepnout. / Clickable values. */
+.geo-teacher .given-item[data-q],
+.geo-teacher .formula-result[data-q] {
+  cursor: pointer;
+}
+
+.geo-teacher .given-item[data-q]:hover,
+.geo-teacher .formula-result[data-q]:hover {
+  outline: 2px dashed var(--sea-400);
+  outline-offset: 3px;
+}
+
+/* Cernobile: zadne barevne plochy ani stiny. Pozorovatel plnou carou,
+   objekt carkovane, stejne jako v obrazku.
+   Black and white: no coloured areas, no shadows. Observer solid, object
+   dashed, as in the figure. */
+.geo-bw .given-item,
+.geo-bw .geo-task {
+  background: #fff;
+  box-shadow: none;
+  border: 1px solid #000;
+  border-left: 6px solid #000;
+}
+
+.geo-bw .given-object {
+  border-left-style: dashed;
+}
+
+.geo-bw .given-symbol,
+.geo-bw .given-item strong,
+.geo-bw .given-note,
+.geo-bw .given-ask,
+.geo-bw .math-ask,
+.geo-bw .geo-task {
+  color: #000;
+}
+
+.geo-bw .formula-row,
+.geo-bw .formula-row.row-total {
+  background: #fff;
+  border-left-color: #000;
+}
+
+.geo-bw .formula-row.row-object {
+  border-left-style: dashed;
+}
+
+.geo-bw .formula-row.row-approx {
+  border-left-color: #888;
+}
+
+.geo-bw .formula-row .formula-result,
+.geo-bw .formula-symbolic,
+.geo-bw .formula-sub,
+.geo-bw .formula-standalone {
+  color: #000;
+}
+
+.geo-bw .formula-standalone,
+.geo-bw .derive-inverse {
+  background: #fff;
+  border: 1px solid #000;
+  color: #000;
+}
+
+/* Sedy pomocny text je na papire bledy. / Grey helper text prints faint. */
+.geo-bw .formula-note,
+.geo-bw .panel-sub,
+.geo-bw .hint {
+  color: #222;
+}
+
 /* --- export obrazku / picture export -------------------------------------- */
 
 /* Titulek karty s tlacitky vpravo. */

@@ -193,3 +193,46 @@
     flex-wrap: wrap;
   }
 }
+
+/* --- tisk / print -----------------------------------------------------------
+   Tiskne se jen prave otevreny rezim: bez hlavicky, panelu s nastavenim,
+   paticky a tlacitek. Obrazek ani radek vypoctu se nerozdeli mezi dve strany.
+   Only the open mode is printed: no header, settings panel, footer or buttons.
+   No picture and no calculation row is split across two pages. */
+@media print {
+  @page {
+    margin: 12mm;
+  }
+  body {
+    background: #fff;
+  }
+  .app-header,
+  .controls,
+  .app-footer,
+  .export-buttons,
+  .geo-tools,
+  .panel-actions {
+    display: none !important;
+  }
+  #main {
+    display: block;
+    max-width: none;
+    padding: 0;
+  }
+  .card {
+    box-shadow: none;
+    border: 1px solid #bbb;
+  }
+  svg,
+  .formula-row,
+  .formula-standalone,
+  .given-item,
+  .geo-task {
+    break-inside: avoid;
+  }
+  .formula-symbolic,
+  .formula-sub,
+  .formula-standalone {
+    overflow: visible;
+  }
+}

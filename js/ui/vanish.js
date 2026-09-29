@@ -176,7 +176,7 @@
         el('section', { class: 'card' }, [
           el('h3', { class: 'card-title card-title-row' }, [
             document.createTextNode(t('vanish.chartTitle')),
-            HL.Exporter.buttons(() => chartSvg, 'za-obzorem-graf-zmizeni'),
+            HL.Exporter.buttons(() => chartSvg, 'vanish'),
           ]),
           chartSvg,
           el('p', { class: 'hint', text: t('vanish.hoverNote') }),
